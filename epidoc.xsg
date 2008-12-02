@@ -1,0 +1,27 @@
+NL = "\n"
+SIC = "(!)"
+SP = [ \t]
+WORDDIV = "/"
+ABBR = "(-)"
+WORD = ([^ \/\n\t\[\]<>\|\'\!\(\)]+) (MAX)
+
+
+file : [lines l] = <ab> [lines l] </>
+
+lines : [line l] [NL] [lines more] = <lb/> [line l] [lines more]
+	: =
+
+line : [item i] [items is] = [item i] [items is]
+
+items : [item i] [items is] = [item i] [items is]
+	: =
+
+item >: [SP] = [SP]
+	>: "." = <gap extent="1"></>
+	>: [flat f] = [flat f]
+
+flat >: [WORD w] [SIC] = <sic> [WORD w] </>
+	>: "[" [WORD w] "]" = <supplied reason="lost"> [WORD w] </>
+	>: [WORD a] [WORDDIV] [WORD b] = [WORD a]<lb type="worddiv"/>[WORD b]
+	>: [WORD w] [ABBR] = <abbr> [WORD w] </>
+	>: [WORD w] = [WORD w]

@@ -1,7 +1,7 @@
 require 'test/unit'
 
 require 'java'
-require File.join(File.dirname(__FILE__), *%w".. xsugar-all.jar")
+require File.join(File.dirname(__FILE__), *%w".. lib xsugar-all.jar")
 
 module XSugar
   include_package 'dk.brics.xsugar'

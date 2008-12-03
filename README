@@ -1,0 +1,6 @@
+The Ruby testing uses JRuby, so you should invoke rake with:
+  
+  jruby -S rake
+  
+Since the XSugar jar requires Java 1.6, make sure your JAVA_HOME is set to a
+Java 1.6 install when running JRuby.

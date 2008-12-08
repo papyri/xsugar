@@ -12,4 +12,12 @@ class GrammarTest < Test::Unit::TestCase
     def ab(xml)
       return "<ab>#{xml}</ab>"
     end
+    
+    def lb(xmlline)
+      return "<lb></lb>#{xmlline}"
+    end
+    
+    def assert_equal_fragment_transform(expect, input)
+      assert_equal ab(lb(expect)), @xsugar.non_xml_to_xml(input)
+    end
 end

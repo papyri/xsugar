@@ -9,6 +9,7 @@ WORD = ([^ \/\n\t\[\]<>\|\'\!\(\)]+) (MAX)
 file : [lines l] = <ab> [lines l] </>
 
 lines : [line l] [NL] [lines more] = <lb/> [line l] [lines more]
+	: [line l] = <lb/> [line l]
 	: =
 
 line : [item i] [items is] = [item i] [items is]

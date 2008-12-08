@@ -7,7 +7,9 @@ class GrammarTest < Test::Unit::TestCase
     # puts epidoc_content
     # puts non_xml_to_xml(epidoc_content)
     puts non_xml_to_xml("test\n")
+    puts non_xml_to_xml("test\ntest2\n")
     puts xml_to_non_xml(non_xml_to_xml("test\n"))
-    assert_equal "test\n", xml_to_non_xml(non_xml_to_xml("test\n"))
+    assert_equal "test", xml_to_non_xml(non_xml_to_xml("test"))
+    assert_equal "test1\ntest2", xml_to_non_xml(non_xml_to_xml("test1\ntest2"))
   end
 end

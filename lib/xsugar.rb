@@ -17,6 +17,10 @@ class RXSugar
   module XSugarOperations
     include_package 'dk.brics.grammar.operations'
   end
+  
+  module XSugarReversibility
+    include_package 'dk.brics.xsugar.reversibility'
+  end
 
   def initialize(grammar)
     # Most of this is taken from XSugar source in
@@ -24,7 +28,8 @@ class RXSugar
     # charset = java.nio.charset.Charset.defaultCharset.name
     charset = java.nio.charset.Charset.forName("UTF-8").name
     
-    out = java.io.PrintWriter.new(java.lang.System.out, true)
+    @out = java.io.PrintWriter.new(java.lang.System.out, true)
+    @verbose = false
 
     parser = XSugar::StylesheetParser.new
     @stylesheet = parser.parse(grammar, 'dummy.xsg', charset)
@@ -41,8 +46,8 @@ class RXSugar
     @normalized_l_grammar = normalizing_grammar_builder.getNonXMLGrammar
     @normalized_x_grammar = normalizing_grammar_builder.getXMLGrammar
 
-    @parser_l = XSugarParser::Parser.new(@l_grammar, out)
-    @parser_x = XSugarParser::Parser.new(@normalized_x_grammar, out)
+    @parser_l = XSugarParser::Parser.new(@l_grammar, @out)
+    @parser_x = XSugarParser::Parser.new(@normalized_x_grammar, @out)
   end
 
   def non_xml_to_xml(text)
@@ -68,6 +73,12 @@ class RXSugar
     rescue NativeException => e
       return e.cause
     end
+  end
+  
+  def reversible?
+    reversibility_checker = XSugarReversibility::ReversibilityChecker.new(@out, @verbose)
+    reversibility_checker.check(@normalized_l_grammar, @normalized_x_grammar,
+      0, '', '', false)
   end
   
   def print_grammars

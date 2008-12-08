@@ -72,4 +72,8 @@ class GrammarTest < Test::Unit::TestCase
   def test_unicode_greek_reversibility
     assert_equal_non_xml_to_xml_to_non_xml 'ςερτυθιοπασδφγηξκλζχψωβνμ', 'ςερτυθιοπασδφγηξκλζχψωβνμ'
   end
+  
+  def test_xsugar_reversibility_true
+    assert @xsugar.reversible?
+  end
 end

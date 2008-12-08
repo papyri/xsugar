@@ -1,10 +1,6 @@
 require 'test_helper'
 
 class GrammarTest < Test::Unit::TestCase
-  def test_sic
-    assert_equal_fragment_transform '<sic>test</sic>', 'test(!)'
-  end
-  
   def test_expansion
     # Ancient abbreviation whose resolution is known
     # CHET-C expands this to <expan>a<supplied reason="abbreviation">b</supplied></expan>

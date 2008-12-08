@@ -44,20 +44,28 @@ class RXSugar
   end
 
   def non_xml_to_xml(text)
-    ast = @parser_l.parse(text, 'dummy.txt')
-    output = XSugarOperations::Unparser.new(@x_grammar).unparse(ast)
-    output = XSugarXML::EndTagNameAdder.new.fix(output)
-    output = XSugarXML::NamespaceAdder.new(@stylesheet).fix(output)
-    return output
+    begin
+      ast = @parser_l.parse(text, 'dummy.txt')
+      output = XSugarOperations::Unparser.new(@x_grammar).unparse(ast)
+      output = XSugarXML::EndTagNameAdder.new.fix(output)
+      output = XSugarXML::NamespaceAdder.new(@stylesheet).fix(output)
+      return output
+    rescue NativeException => e
+      return e.cause
+    end
   end
 
   def xml_to_non_xml(xml)
     norm = XSugarXML::InputNormalizer.new
     input = norm.normalize(xml, 'dummy.xml')
-    ast = @parser_x.parse(input, 'dummy.xml')
-    XSugarXML::ASTUnescaper.new.unescape(ast)
-    output = XSugarOperations::Unparser.new(@normalized_l_grammar).unparse(ast)
-    return output
+    begin
+      ast = @parser_x.parse(input, 'dummy.xml')
+      XSugarXML::ASTUnescaper.new.unescape(ast)
+      output = XSugarOperations::Unparser.new(@normalized_l_grammar).unparse(ast)
+      return output
+    rescue NativeException => e
+      return e.cause
+    end
   end
   
   def print_grammars

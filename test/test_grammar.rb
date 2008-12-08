@@ -13,5 +13,6 @@ class GrammarTest < Test::Unit::TestCase
   
   def test_sic
     assert_equal_fragment_transform "<sic>test</sic>", "test(!)"
+    assert_equal_fragment_transform "test1 <sic>test2</sic>", "test1 test2(!)"
   end
 end

@@ -56,7 +56,7 @@ class GrammarTest < Test::Unit::TestCase
   end
 
   def test_unicode_underdot_unclear
-    assert_equal_fragment_transform '<unclear reason="damage" cert="high">a</unclear>', 'ạ'
+    assert_equal_fragment_transform '<unclear reason="undefined" cert="high">a</unclear>', 'ạ'
   end
   
   def test_simple_reversibility

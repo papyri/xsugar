@@ -59,4 +59,15 @@ class RXSugar
     output = XSugarOperations::Unparser.new(@normalized_l_grammar).unparse(ast)
     return output
   end
+  
+  def print_grammars
+    puts "Left-hand-side grammar:"
+    puts @l_grammar
+    puts "Right-hand-side grammar:"
+    puts @x_grammar
+    puts "Normalized left-hand-side grammar:"
+    puts @normalized_l_grammar
+    puts "Normalized right-hand-side grammar:"
+    puts @normalized_x_grammar
+  end
 end

@@ -17,6 +17,8 @@ module XSugarParser
 end
 
 class GrammarTest < Test::Unit::TestCase
+  # Most of this is taken from XSugar source in
+  # src/dk/brics/xsugar/Main.java
   charset = java.nio.charset.Charset.defaultCharset.name
   out = java.io.PrintWriter.new(java.lang.System.out, true)
   

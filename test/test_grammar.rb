@@ -12,14 +12,14 @@ class GrammarTest < Test::Unit::TestCase
   end
   
   def test_unicode_greek_reversibility
-    assert_equal_non_xml_to_xml_to_non_xml "ςερτυθιοπασδφγηξκλζχψωβνμ", "ςερτυθιοπασδφγηξκλζχψωβνμ"
+    assert_equal_non_xml_to_xml_to_non_xml 'ςερτυθιοπασδφγηξκλζχψωβνμ', 'ςερτυθιοπασδφγηξκλζχψωβνμ'
   end
   
   def test_sic
-    assert_equal_fragment_transform "<sic>test</sic>", "test(!)"
+    assert_equal_fragment_transform '<sic>test</sic>', 'test(!)'
   end
-  
+
   def test_bracket_gap
-    assert_equal_fragment_transform "a<supplied reason=\"omitted\">b</supplied>c", "a<b>c"
+    assert_equal_fragment_transform 'a<supplied reason="omitted">b</supplied>c', 'a<b>c'
   end
 end

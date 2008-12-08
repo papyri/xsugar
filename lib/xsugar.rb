@@ -21,7 +21,9 @@ class RXSugar
   def initialize(grammar)
     # Most of this is taken from XSugar source in
     # src/dk/brics/xsugar/Main.java
-    charset = java.nio.charset.Charset.defaultCharset.name
+    # charset = java.nio.charset.Charset.defaultCharset.name
+    charset = java.nio.charset.Charset.forName("UTF-8").name
+    
     out = java.io.PrintWriter.new(java.lang.System.out, true)
 
     parser = XSugar::StylesheetParser.new

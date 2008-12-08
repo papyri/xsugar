@@ -25,8 +25,8 @@ class GrammarTest < Test::Unit::TestCase
   
   def test_expansion
     # Ancient abbreviation whose resolution is known
-    # This is how CHET-C transforms it, though the spreadsheet suggests simply <expan>a<ex>b</ex></expan>
-    assert_equal_fragment_transform '<expan>a<supplied reason="abbreviation">b</supplied></expan>', 'a(b)'
+    # CHET-C expands this to <expan>a<supplied reason="abbreviation">b</supplied></expan>
+    assert_equal_fragment_transform '<expan>a<ex cert="high">b</ex></expan>', 'a(b)'
   end
 
   def test_damage_unicode_underdot

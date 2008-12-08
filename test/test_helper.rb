@@ -19,6 +19,7 @@ class GrammarTest < Test::Unit::TestCase
     
     def assert_equal_fragment_transform(expected, input)
       assert_equal ab(lb(expected)), @xsugar.non_xml_to_xml(input)
+      assert_equal input, @xsugar.xml_to_non_xml(ab(lb(expected)))
       assert_equal_non_xml_to_xml_to_non_xml input, input
       assert_equal_xml_fragment_to_non_xml_to_xml expected, expected
     end

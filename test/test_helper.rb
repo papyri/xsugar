@@ -2,7 +2,6 @@ require 'test/unit'
 
 require 'java'
 require File.join(File.dirname(__FILE__), *%w".. lib xsugar-all.jar")
-# require File.join(File.dirname(__FILE__), *%w".. lib grammar.jar")
 
 class GrammarTest < Test::Unit::TestCase
   module XSugar
@@ -64,5 +63,9 @@ class GrammarTest < Test::Unit::TestCase
       XSugarXML::ASTUnescaper.new.unescape(ast)
       output = XSugarOperations::Unparser.new(@normalized_l_grammar).unparse(ast)
       return output
+    end
+    
+    def ab(xml)
+      return "<ab>#{xml}</ab>"
     end
 end

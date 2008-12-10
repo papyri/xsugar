@@ -125,10 +125,9 @@ class GrammarTest < Test::Unit::TestCase
   
   def test_lost
     # modern ed restores lost text
-    # TODO: tests for στ[ρατηγός or στρατ]ηγός examples
-    # Are those intended to close on word/line breaks, or span them?
     assert_equal_fragment_transform '[abc]', '<supplied reason="lost">abc</supplied>'
     assert_equal_fragment_transform 'a[b]c', 'a<supplied reason="lost">b</supplied>c'
+    assert_equal_fragment_transform 'a[bc def g]hi', 'a<supplied reason="lost">bc def g</supplied>hi'
   end
   
   def test_lost_uncertain
@@ -157,6 +156,10 @@ class GrammarTest < Test::Unit::TestCase
   def test_quotation_marks
     # quotation marks on papyrus
     assert_equal_fragment_transform '"abc"', '<q>abc</q>'
+  end
+  
+  def test_uncertain_diacritical_diaresis
+    
   end
   
   def test_simple_reversibility

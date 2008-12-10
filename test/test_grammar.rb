@@ -138,6 +138,8 @@ class GrammarTest < Test::Unit::TestCase
   def test_unicode_underdot_unclear
     # eds read dotted letter with less than full confidence
     # TODO: handle existing cert attributes
+    # In the current DDB_EpiDoc_XML, only 1809/270095 unclear tags have a cert attribute
+    # Those that do all have cert="low"
     assert_equal_fragment_transform 'ạ', '<unclear reason="undefined">a</unclear>'
   end
   

@@ -8,8 +8,8 @@ NUM = [0-9]+
 
 file : [lines l] = <ab> [lines l] </>
 
-lines : [linenumber n] _ [line l] [NL] [lines more] = [linenumber n] [line l] [lines more]
-	: [linenumber n] _ [line l] = [linenumber n] [line l]
+lines : [linenumber n] " " [line l] [NL] [lines more] = [linenumber n] [line l] [lines more]
+	: [linenumber n] " " [line l] = [linenumber n] [line l]
 	: =
 
 linenumber : [NUM n] "." = <lb n=[NUM n] />

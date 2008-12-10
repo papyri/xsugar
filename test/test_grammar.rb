@@ -60,17 +60,17 @@ class GrammarTest < Test::Unit::TestCase
   end
   
   def test_simple_reversibility
-    assert_equal_non_xml_to_xml_to_non_xml "test", "test"
-    assert_equal_non_xml_to_xml_to_non_xml "test1\ntest2", "test1\ntest2"
+    assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test"
+    assert_equal_non_xml_to_xml_to_non_xml "1. test1\n2. test2", "1. test1\n2. test2"
   end
   
   def test_xml_trailing_newline_stripped
-    assert_equal_non_xml_to_xml_to_non_xml "test", "test\n"
-    assert_equal_non_xml_to_xml_to_non_xml "test1\ntest2", "test1\ntest2\n"
+    assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test\n"
+    assert_equal_non_xml_to_xml_to_non_xml "1. test1\n2. test2", "1. test1\n2. test2\n"
   end
   
   def test_unicode_greek_reversibility
-    assert_equal_non_xml_to_xml_to_non_xml 'ςερτυθιοπασδφγηξκλζχψωβνμ', 'ςερτυθιοπασδφγηξκλζχψωβνμ'
+    assert_equal_non_xml_to_xml_to_non_xml '1. ςερτυθιοπασδφγηξκλζχψωβνμ', '1. ςερτυθιοπασδφγηξκλζχψωβνμ'
   end
   
   def test_xsugar_reversibility_true

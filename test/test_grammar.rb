@@ -3,7 +3,6 @@ require 'test_helper'
 class GrammarTest < Test::Unit::TestCase
   def test_expansion
     # Ancient abbreviation whose resolution is known
-    # CHET-C expands this to <expan>a<supplied reason="abbreviation">b</supplied></expan>
     assert_equal_fragment_transform 'a(b)', '<expan>a<ex cert="high">b</ex></expan>'
   end
   

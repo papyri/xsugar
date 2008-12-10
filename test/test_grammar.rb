@@ -126,6 +126,8 @@ class GrammarTest < Test::Unit::TestCase
   
   def test_lost
     # modern ed restores lost text
+    # TODO: tests for στ[ρατηγός or στρατ]ηγός examples
+    # Are those intended to close on word/line breaks, or span them?
     assert_equal_fragment_transform '[abc]', '<supplied reason="lost">abc</supplied>'
     assert_equal_fragment_transform 'a[b]c', 'a<supplied reason="lost">b</supplied>c'
   end

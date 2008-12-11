@@ -34,7 +34,7 @@ class GrammarTest < Test::Unit::TestCase
     # (upz.2.158 lb=29):
     #   <expan><ex>ὀβολοὺς 2 1/2 1/4</ex></expan><num value="2"/><num value="1/2"/><num value="1/4"/>
     # (sb.16.12325 lb=13):
-    #   <expan><ex>ὀβολοὺς</ex></expan> <num value="3">γ</num> <num value="1/2">������</num>
+    #   <expan><ex>ὀβολοὺς</ex></expan> <num value="3">γ</num> <num value="1/2">𐅵</num>
     # And even other complex ways (sb.24.16185 lb=12):
     #   <expan><ex>ὀβολοὺς 4</ex><ex>ὀβολοῦ 1/2</ex></expan><num value="4"/><num value="1/2"/>
     # TODO: Get EpiDoc guidance on how this should be handled?
@@ -228,8 +228,32 @@ class GrammarTest < Test::Unit::TestCase
     assert_equal_fragment_transform '"abc def ghi"', '<q>abc def ghi</q>'
   end
   
-  def test_uncertain_diacritical_diaresis
-    
+  def test_uncertain_diacritical_diaeresis
+    # Google Doc has U+00AD = soft hyphen before U+00A8 = diaeresis
+    # RB notes: I have dropped the soft hyphen
+    assert_equal_fragment_transform 'a(¨)bc', '<hi rend="diaeresis">a</hi>bc'
+    # test with precombined unicode just to be sure
+    assert_equal_fragment_transform 'Ἰ(¨)ουστινιανοῦ', '<hi rend="diaeresis">Ἰ</hi>ουστινιανοῦ'
+  end
+  
+  def test_uncertain_diacritical_varia
+    assert_equal_fragment_transform 'abcde(`)f', 'abcd<hi rend="varia">e</hi>f'
+  end
+  
+  def test_uncertain_diacritical_oxia
+    assert_equal_fragment_transform 'abcde(΄)f', 'abcd<hi rend="oxia">e</hi>f'
+  end
+  
+  def test_uncertain_diacritical_dasia
+    assert_equal_fragment_transform 'a(῾)bcdef', '<hi rend="dasia">a</hi>bcdef'
+  end
+  
+  def test_uncertain_diacritical_psili
+    assert_equal_fragment_transform 'a(᾿)bcdef', '<hi rend="psili">a</hi>bcdef'
+  end
+  
+  def test_uncertain_diacritical_perispomeni
+    assert_equal_fragment_transform 'a(῀)bcdef', '<hi rend="perispomeni">a</hi>bcdef'
   end
   
   def test_simple_reversibility

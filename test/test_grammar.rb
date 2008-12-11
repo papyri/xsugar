@@ -163,12 +163,15 @@ class GrammarTest < Test::Unit::TestCase
     # Scribe omitted character(s) and modern ed inserted it
     assert_equal_fragment_transform 'a<b>c', 'a<supplied reason="omitted">b</supplied>c'
     assert_equal_fragment_transform '<abc>', '<supplied reason="omitted">abc</supplied>'
+    assert_equal_fragment_transform 'we will <we will> rock you', 'we will <supplied reason="omitted">we will</supplied> rock you'
+    assert_equal_fragment_transform 'we ea<t the fi>sh', 'we ea<supplied reason="omitted">t the fi</supplied>sh'
   end
   
   # http://www.stoa.org/epidoc/gl/5/erroneousinclusion.html
   def test_sic
     # scribe wrote unnecessary characters and modern ed flagged them as such
     assert_equal_fragment_transform '{test}', '<sic>test</sic>'
+    assert_equal_fragment_transform 'te{sting 1 2} 3', 'te<sic>sting 1 2</sic> 3'
   end
   
   # http://www.stoa.org/epidoc/gl/5/supplementforlost.html

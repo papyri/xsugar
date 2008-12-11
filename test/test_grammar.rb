@@ -187,7 +187,7 @@ class GrammarTest < Test::Unit::TestCase
     # modern ed restores lost text, with less than total confidence; this proved messy to handle in IDP1
     assert_equal_fragment_transform 'a[bc?]', 'a<supplied reason="lost" cert="low">bc</supplied>'
   end
-
+  
   # http://www.stoa.org/epidoc/gl/5/unclear.html
   def test_unicode_underdot_unclear
     # eds read dotted letter with less than full confidence
@@ -201,6 +201,12 @@ class GrammarTest < Test::Unit::TestCase
   def test_unicode_underdot_unclear_combining
     # eds read dotted letter with less than full confidence
     assert_equal_fragment_transform 'ạḅc̣', '<unclear reason="undefined">abc</unclear>'
+  end
+  
+  # http://www.stoa.org/epidoc/gl/5/unclear.html
+  # http://www.stoa.org/epidoc/gl/5/supplementforlost.html
+  def test_unicode_underdot_unclear_combining_with_lost
+    assert_equal_fragment_transform 'ạḅ[c̣ de]f', '<unclear reason="undefined">ab</unclear><supplied reason="lost"><unclear reason="undefined">c</unclear> de</supplied>f'
   end
   
   # http://www.stoa.org/epidoc/gl/5/deletion.html

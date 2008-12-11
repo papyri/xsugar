@@ -213,12 +213,14 @@ class GrammarTest < Test::Unit::TestCase
   def test_ancient_erasure
     # ancient erasure/cancellation/expunction
     assert_equal_fragment_transform 'a[[bc]]', 'a<del rend="erasure">bc</del>'
+    assert_equal_fragment_transform 'ab[[c def g]]hi', 'ab<del rend="erasure">c def g</del>hi'
   end
   
   # no EpiDoc guideline, inherited from TEI
   def test_quotation_marks
     # quotation marks on papyrus
     assert_equal_fragment_transform '"abc"', '<q>abc</q>'
+    assert_equal_fragment_transform '"abc def ghi"', '<q>abc def ghi</q>'
   end
   
   def test_uncertain_diacritical_diaresis

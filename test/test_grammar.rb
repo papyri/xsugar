@@ -11,7 +11,7 @@ class GrammarTest < Test::Unit::TestCase
     assert_equal_fragment_transform '(abc)', '<expan><ex>abc</ex></expan>'
   end
   
-  def test_ambiguous_symbol_expansion
+  def test_counting_symbol_expansion
     # A single symbol (one day representable in Unicode) was used to
     # indicate some number of things (usually monetary denominations)
     # The example used for this is 
@@ -28,7 +28,7 @@ class GrammarTest < Test::Unit::TestCase
     # Then either of these methods used in conjunction with fractions
     # (upz.2.158 lb=29):
     #   <expan><ex>ὀβολοὺς 2 1/2 1/4</ex></expan><num value="2"/><num value="1/2"/><num value="1/4"/>
-    # (sb.16.12325 lb=13)
+    # (sb.16.12325 lb=13):
     #   <expan><ex>ὀβολοὺς</ex></expan> <num value="3">γ</num> <num value="1/2">������</num>
     # And even other complex ways (sb.24.16185 lb=12):
     #   <expan><ex>ὀβολοὺς 4</ex><ex>ὀβολοῦ 1/2</ex></expan><num value="4"/><num value="1/2"/>

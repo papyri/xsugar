@@ -14,6 +14,25 @@ class GrammarTest < Test::Unit::TestCase
   def test_ambiguous_symbol_expansion
     # A single symbol (one day representable in Unicode) was used to
     # indicate some number of things (usually monetary denominations)
+    # The example used for this is 
+    #  (ὀβολοὺς 3) = <expan><ex>ὀβολοὺς 3</ex></expan>
+    # Which can also be represented by U+1017E = GREEK THREE OBOLS SIGN
+    # To make things even more interesting, in existing DDb these are
+    # tagged in the following ways:
+    # * Closed XML num element following num text inside
+    # monetary denomination expan (stud.pal.22.176 lb=9):
+    #   <expan><ex>ὀβολοὺς 3</ex></expan><num value="3"/>
+    # * XML num element with num text following monetary denomination expan
+    # (stud.pal.22.180 lb=21):
+    #   <expan><ex>ὀβολοὺς</ex></expan> <num value="8">η</num>
+    # Then either of these methods used in conjunction with fractions
+    # (upz.2.158 lb=29):
+    #   <expan><ex>ὀβολοὺς 2 1/2 1/4</ex></expan><num value="2"/><num value="1/2"/><num value="1/4"/>
+    # (sb.16.12325 lb=13)
+    #   <expan><ex>ὀβολοὺς</ex></expan> <num value="3">γ</num> <num value="1/2">������</num>
+    # And even other complex ways (sb.24.16185 lb=12):
+    #   <expan><ex>ὀβολοὺς 4</ex><ex>ὀβολοῦ 1/2</ex></expan><num value="4"/><num value="1/2"/>
+    # TODO: Get EpiDoc guidance on how this should be handled?
     assert_equal_fragment_transform '(abc 123)', '<expan><ex>abc 123</ex></expan>'
   end
   

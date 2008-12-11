@@ -87,8 +87,9 @@ class GrammarTest < Test::Unit::TestCase
   def test_illegible_gap_ca
     # Some number of illegible characters greater than 3
     assert_equal_fragment_transform 'ca.4', '<gap reason="illegible" extent="4" unit="character"></gap>'
-    assert_equal_fragment_transform 'ca.5', '<gap reason="illegible" extent="5" unit="character"></gap>'
-    assert_equal_fragment_transform 'ca.10', '<gap reason="illegible" extent="10" unit="character"></gap>'
+    (4..100).each do |n|
+      assert_equal_fragment_transform "ca.#{n}", "<gap reason=\"illegible\" extent=\"#{n}\" unit=\"character\"></gap>"
+    end
   end
   
   # http://www.stoa.org/epidoc/gl/5/vestiges.html
@@ -96,8 +97,9 @@ class GrammarTest < Test::Unit::TestCase
   def test_vestige_lines
     # vestiges of N lines, mere smudges really, visible
     assert_equal_fragment_transform 'vestig.3lin', '<gap reason="illegible" extent="3" unit="line" desc="vestiges"></gap>'
-    assert_equal_fragment_transform 'vestig.5lin', '<gap reason="illegible" extent="5" unit="line" desc="vestiges"></gap>'
-    assert_equal_fragment_transform 'vestig.10lin', '<gap reason="illegible" extent="10" unit="line" desc="vestiges"></gap>'
+    (1..100).each do |n|
+      assert_equal_fragment_transform "vestig.#{n}lin", "<gap reason=\"illegible\" extent=\"#{n}\" unit=\"line\" desc=\"vestiges\"></gap>"
+    end
   end
   
   # http://www.stoa.org/epidoc/gl/5/vestiges.html
@@ -105,8 +107,9 @@ class GrammarTest < Test::Unit::TestCase
   def test_vestige_lines_ca
     # vestiges of rough number of lines, mere smudges really, visible
     assert_equal_fragment_transform 'vestig.ca.3lin', '<gap reason="illegible" extent="3" unit="line" precision="circa" desc="vestiges"></gap>'
-    assert_equal_fragment_transform 'vestig.ca.5lin', '<gap reason="illegible" extent="5" unit="line" precision="circa" desc="vestiges"></gap>'
-    assert_equal_fragment_transform 'vestig.ca.10lin', '<gap reason="illegible" extent="10" unit="line" precision="circa" desc="vestiges"></gap>'
+    (1..100).each do |n|
+      assert_equal_fragment_transform "vestig.ca.#{n}lin", "<gap reason=\"illegible\" extent=\"#{n}\" unit=\"line\" precision=\"circa\" desc=\"vestiges\"></gap>"
+    end
   end
   
   # http://www.stoa.org/epidoc/gl/5/vestiges.html
@@ -133,8 +136,9 @@ class GrammarTest < Test::Unit::TestCase
   def test_lost_characters
     # Some number of characters is lost
     assert_equal_fragment_transform 'lost.3char', '<gap reason="lost" extent="3" unit="character"></gap>'
-    assert_equal_fragment_transform 'lost.5char', '<gap reason="lost" extent="5" unit="character"></gap>'
-    assert_equal_fragment_transform 'lost.10char', '<gap reason="lost" extent="10" unit="character"></gap>'
+    (1..100).each do |n|
+      assert_equal_fragment_transform "lost.#{n}char", "<gap reason=\"lost\" extent=\"#{n}\" unit=\"character\"></gap>"
+    end
   end
   
   # FIXME: reconcile with test_lost_gap_unknown
@@ -147,8 +151,9 @@ class GrammarTest < Test::Unit::TestCase
   def test_lost_lines
     # Some number of lines is lost
     assert_equal_fragment_transform 'lost.3lin', '<gap reason="lost" extent="3" unit="line"></gap>'
-    assert_equal_fragment_transform 'lost.5lin', '<gap reason="lost" extent="5" unit="line"></gap>'
-    assert_equal_fragment_transform 'lost.10lin', '<gap reason="lost" extent="10" unit="line"></gap>'
+    (1..100).each do |n|
+      assert_equal_fragment_transform "lost.#{n}lin", "<gap reason=\"lost\" extent=\"#{n}\" unit=\"line\"></gap>"
+    end
   end
   
   # http://www.stoa.org/epidoc/gl/5/lostline.html
@@ -230,6 +235,17 @@ class GrammarTest < Test::Unit::TestCase
   def test_simple_reversibility
     assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test"
     assert_equal_non_xml_to_xml_to_non_xml "1. test1\n2. test2", "1. test1\n2. test2"
+  end
+  
+  def test_line_numbering_reversibility_exhaustive
+    (1..100).each do |num_lines|
+      str = ''
+      (1..num_lines).each do |this_line|
+        str += "#{this_line}. test#{this_line}\n"
+      end
+      str.chomp!
+      assert_equal_non_xml_to_xml_to_non_xml str, str
+    end
   end
   
   def test_xml_trailing_newline_stripped

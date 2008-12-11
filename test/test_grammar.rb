@@ -132,30 +132,30 @@ class GrammarTest < Test::Unit::TestCase
   # FIXME: reconcile with test_lost_dot_gap
   def test_lost_characters
     # Some number of characters is lost
-    assert_equal_fragment_transform 'lost.3char', '<gap reason="lost" "extent="3" unit="character"></gap>'
-    assert_equal_fragment_transform 'lost.5char', '<gap reason="lost" "extent="5" unit="character"></gap>'
-    assert_equal_fragment_transform 'lost.10char', '<gap reason="lost" "extent="10" unit="character"></gap>'
+    assert_equal_fragment_transform 'lost.3char', '<gap reason="lost" extent="3" unit="character"></gap>'
+    assert_equal_fragment_transform 'lost.5char', '<gap reason="lost" extent="5" unit="character"></gap>'
+    assert_equal_fragment_transform 'lost.10char', '<gap reason="lost" extent="10" unit="character"></gap>'
   end
   
   # FIXME: reconcile with test_lost_gap_unknown
   def test_lost_characters_unknown
     # Some unknown number of lost characters
-    assert_equal_fragment_transform 'lost.?char', '<gap reason="lost" "extent="unknown" unit="character"></gap>'
+    assert_equal_fragment_transform 'lost.?char', '<gap reason="lost" extent="unknown" unit="character"></gap>'
   end
   
   # http://www.stoa.org/epidoc/gl/5/lostline.html
   def test_lost_lines
     # Some number of lines is lost
-    assert_equal_fragment_transform 'lost.3lin', '<gap reason="lost" "extent="3" unit="line"></gap>'
-    assert_equal_fragment_transform 'lost.5lin', '<gap reason="lost" "extent="5" unit="line"></gap>'
-    assert_equal_fragment_transform 'lost.10lin', '<gap reason="lost" "extent="10" unit="line"></gap>'
+    assert_equal_fragment_transform 'lost.3lin', '<gap reason="lost" extent="3" unit="line"></gap>'
+    assert_equal_fragment_transform 'lost.5lin', '<gap reason="lost" extent="5" unit="line"></gap>'
+    assert_equal_fragment_transform 'lost.10lin', '<gap reason="lost" extent="10" unit="line"></gap>'
   end
   
   # http://www.stoa.org/epidoc/gl/5/lostline.html
   # FIXME: reconcile with test_gap_break
   def test_lost_lines_unknown
     # Some unknown number of lost lines
-    assert_equal_fragment_transform 'lost.?lin', '<gap reason="lost" "extent="unknown" unit="line"></gap>'
+    assert_equal_fragment_transform 'lost.?lin', '<gap reason="lost" extent="unknown" unit="line"></gap>'
   end
   
   # http://www.stoa.org/epidoc/gl/5/erroneousomission.html

@@ -1,30 +1,217 @@
-NL = "\n"
+NL = [\r\n]+
 SIC = "(!)"
-SP = [ \t]
+SP = [ ]
 WORDDIV = "/"
 ABBR = "(-)"
-WORD = ([^ \/\n\t\[\]<>\|\'\!\(\)]+) (MAX)
+
+UNDERDOT = "\u0323"
+
+CA = "ca."[ ]*"\?"
+LEADCA = "ca."[ ]*
+WORD = ([^ \/\n\r\t\[\]<>\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+WORDS = ([^\/\n\r\t\[\]<>\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
 NUM = [0-9]+
+ANYLETTER = [^\/\n\r\t\[\]<>\|\'\!\(\)\{\}\?\"¨]
+//VARIA = <ANYLETTER>"(`)"
 
-file : [lines l] = <ab> [lines l] </>
+BEGWORD = [^\/\n\t\[\]<>\|\'\!\(\)\{\}\?\"¨]*
 
-lines : [linenumber n] " " [line l] [NL] [lines more] = [linenumber n] [line l] [lines more]
-	: [linenumber n] " " [line l] = [linenumber n] [line l]
-	: =
+UNCLEAR = (<ANYLETTER><UNDERDOT>)+
 
-linenumber : [NUM n] "." = <lb n=[NUM n] />
+LEFTOVER = ([^<NL><SIC><SP><WORDDIV><ABBR><NUM><WORD><WORDS>]+)
+//TINY_TILDE = [\u00A8]
 
-line : [item i] [items is] = [item i] [items is]
+SMNUM = [2-3]{1}
+DOT = [.]
+LGNUM = [4-9]{1}
+STNUM = [1-9]+[0-9]+
+ABBRJF = "( )"
+VSNUM = [1-9]{1}
 
-items : [item i] [items is] = [item i] [items is]
-	: =
+Relost = "reason=lost"
+Certlow = "cert=low"
 
-item >: [SP] = [SP]
-	>: "." = <gap extent="1"></>
+file : [lines l] = <ab> [lines l]</>
+
+// save  lines : [line n] [lines more] = [line n] [lines more] 
+lines : [line n] [NL] [lines more] = [line n] [lines more] 
+        >: [line q] = [line q]  
+        : =
+
+line  //: [linenumber x] [items m] [NL] = [linenumber x] [items m]
+       : [linenumber x] [items m] = [linenumber x] [items m]
+       //: [linenumber x] [items m] [NL] = [linenumber x] [items m] "\u000A"
+
+     
+	  
+linenumber : [NUM n] "." " " = <lb n=[NUM n] />
+
+items 
+ 	: [item i] [items more] = [item i] [items more]  
+	>: [item p] = [item p]	
+
+
+unclears_SP_non_terminal : [SP] [UNDERDOT] [unclears_SP_non_terminal mu] = "\u00A0" [unclears_SP_non_terminal mu]
+								 >: [SP] [UNDERDOT] = "\u00A0"
+
+unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [ANYLETTER a] [unclears_non_terminal mu]
+								 >: [ANYLETTER a] [UNDERDOT] = [ANYLETTER a]
+
+item 
+	//---test unclear characters = underdots
+	: [unclears_SP_non_terminal u] = <unclear reason="undefined">[unclears_SP_non_terminal u]</>
+	>: [unclears_non_terminal u] = <unclear reason="undefined">[unclears_non_terminal u]</>
+	//: [SP] [UNDERDOT] = <unclear reason="undefined">"\u00A0"</>
+	//>: [ANYLETTER a] [UNDERDOT] = <unclear reason="undefined">[ANYLETTER a]</>
+
+	//---test_uncertain_diacritical_diaeresis---
+	// (¨)
+  : [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
+	
+	//---test_uncertain_diacritical_varia---
+	// (`)
+	: [ANYLETTER a] "(`)" = <hi rend="varia">[ANYLETTER a]</>	
+	
+	//---test_uncertain_diacritical_dasia---
+  // (῾)
+	: [ANYLETTER a] "(῾)" = <hi rend="dasia">[ANYLETTER a]</>
+			
+	//---test_uncertain_diacritical_psili---
+	// (᾿)
+  : [ANYLETTER a] "(᾿)" = <hi rend="psili">[ANYLETTER a]</>
+	
+	//---test_uncertain_diacritical_oxia---
+	// (΄)
+  : [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
+	
+	//---test_uncertain_diacritical_perispomeni---
+	// (῀)
+  : [ANYLETTER a] "(῀)" = <hi rend="perispomeni">[ANYLETTER a]</>
+	
+	//---test_superescript---
+	// \ /
+  : "\\" [WORD a] "\/" = <hi rend="superscript">[WORD a]</>
+  
+  //---test_subcript---
+	// / \
+  : "\/" [WORD a] "\\" = <hi rend="subscript">[WORD a]</>
+		
+	//---test_illegible_dot_gap---
+	// ., .2, .3
+    : [DOT] = <gap reason="illegible" extent="1" unit="character"></>
+	: "." [SMNUM n] = <gap reason="illegible" extent=[SMNUM n] unit="character"></>  
+	
+	//---test_illegible_gap_ca---
+	// ., .2, .3
+	//: "ca." [LGNUM j] = <gap reason="illegible" extent=[LGNUM j] unit="character"></>
+	//: "ca." [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character"></>
+	: [LEADCA] [LGNUM j] = <gap reason="illegible" extent=[LGNUM j] unit="character"></>
+	: [LEADCA] [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character"></>
+	
 	>: [flat f] = [flat f]
 
-flat >: [WORD w] [SIC] = <sic> [WORD w] </>
-	>: "[" [WORD w] "]" = <supplied reason="lost"> [WORD w] </>
-	>: [WORD a] [WORDDIV] [WORD b] = [WORD a]<lb type="worddiv"/>[WORD b]
-	>: [WORD w] [ABBR] = <abbr> [WORD w] </>
-	>: [WORD w] = [WORD w]
+
+	
+flat 
+	//---test_expand low cert---
+	// (abc?)
+	: "(" "?" ")" = <expan><ex cert="low"></></>
+	
+	//---test_expand low cert---
+	// (abc?)
+	: "(" [WORD w] "?" ")" = <expan><ex cert="low">[WORD w]</></>
+	
+	//---test_expansion---
+	// a(b)
+	: [WORD a] "(" [WORD b] ")" = <expan>[WORD a]<ex>[WORD b]</></>
+	
+	//---test_abbreviation_unknown_resolution---
+	// ab( )
+	: [WORD w] [ABBRJF] = <abbr> [WORD w] </>
+	
+	//---test_symbol_expansion---
+	// (abc)
+	: "(" [WORD a] ")" = <expan><ex>[WORD a]</></>
+	
+	//---test_vestige_lines---
+	// vestig.#{n}lin
+	: "vestig." [VSNUM v] "lin" = <gap reason="illegible" extent=[VSNUM v] unit="line" desc="vestiges"></>
+ 	: "vestig." [STNUM v] "lin" = <gap reason="illegible" extent=[STNUM v] unit="line" desc="vestiges"></>
+	
+	//---test_vestige_lines_ca---
+	// vestig.ca.#{n}lin
+	: "vestig.ca." [VSNUM v] "lin" = <gap reason="illegible" extent=[VSNUM v] unit="line" precision="circa" desc="vestiges"></>
+ 	: "vestig.ca." [STNUM v] "lin" = <gap reason="illegible" extent=[STNUM v] unit="line" precision="circa" desc="vestiges"></>
+	
+	//---test_vestige_lines_unknown---
+	// vestig.?lin
+	: "vestig.?lin" = <gap reason="illegible" extent="unknown" unit="line"></>
+	
+	//---test_vestige_characters---
+	// vestig
+	: "vestig" = <gap reason="illegible" extent="unknown" unit="character" desc="vestiges"></>
+	
+	//---test_gap_breaks---
+	// BREAK
+	: "BREAK" = <gap reason="lost" extent="unknown" unit="line"></>
+	
+	//---test_lost_lines---
+	// lost.#{n}lin
+	: "lost." [VSNUM v] "lin" = <gap reason="lost" extent=[VSNUM v] unit="line"></>
+ 	: "lost." [STNUM v] "lin" = <gap reason="lost" extent=[STNUM v] unit="line"></>
+	
+	//---test_quotation_marks---
+	// " "
+	>: "\"" [WORDS w] "\"" = <q>[WORDS w]</>
+	
+	//---test_omitted---
+	//< >
+  >: "<" [WORDS w] ">" = <supplied reason="omitted">[WORDS w]</>
+	
+	//---test_sic---
+	//sic
+	>: "{" [WORDS w] "}" = <sic>[WORDS w]</>	
+	
+	//: "[" [BEGWORD a] "ca." _ "\?" [WORDS f] "]" = <supplied reason="lost7">[BEGWORD a]<gap reason="lost5" extent="unknown" unit="character"></>[WORDS f]</>
+
+		
+	//---multiple tests see inside_brackets production---
+	// [ ], [[ ]], [ca.?] etc...
+	: "[" [inside_brackets i] "]" =  [inside_brackets i] 	
+	
+	//---test_illegible_gap_unknown---
+	// ca.?
+	: [CA] = <gap reason="illegible" extent="unknown" unit="character"></>
+	
+	>: [ANYLETTER a] = [ANYLETTER a]
+	
+	
+	
+inside_brackets 
+	
+	//---test_lost_dot_gap---
+	// ., .2, .3 inside brackets
+	: "." = <gap reason="lost" extent="1" unit="character"></>
+    : "." [SMNUM n] = <gap reason="lost" extent=[SMNUM n] unit="character"></>
+	
+	:  [BEGWORD a] "ca." _ "\?" [WORDS f]   = <supplied reason="lost7">[BEGWORD a]<gap reason="lost5" extent="unknown" unit="character"></>[WORDS f]</>
+
+	
+	//---test_ancient_erasure---
+	// [[ ]] erasure
+	>: "[" [WORDS w] "]" = <del rend="erasure">[WORDS w]</>	
+	
+	//---test_lost---
+	// [ ] lost
+	//>:  [WORDS w]  = <supplied reason="lost">[WORDS w]</>
+	>: [items is] = <supplied reason="lost">[items is]</>
+
+	//---test_lost_gap_unknown---
+	// [ ca.? ]  	
+	>: [CA] = <gap reason="lost" extent="unknown" unit="character"></>
+	
+	//---test_lost_uncertain---
+	// [ ? ] uncertain lost
+	>:  [WORDS w] "\?" = <supplied reason="lost" cert="low">[WORDS w]</>
+	
+			

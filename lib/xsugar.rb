@@ -1,5 +1,13 @@
-require 'java'
-require File.join(File.dirname(__FILE__), *%w".. lib xsugar-all.jar")
+XSUGAR_JAR_PATH = File.join(File.dirname(__FILE__), *%w".. lib xsugar-all.jar")
+
+begin
+  require 'java'
+  require XSUGAR_JAR_PATH
+rescue LoadError
+  require 'rubygems'
+  require 'rjb'
+  Rjb::load(classpath = ".:#{XSUGAR_JAR_PATH}", jvmargs=[])
+end
 
 class RXSugar
   module XSugar

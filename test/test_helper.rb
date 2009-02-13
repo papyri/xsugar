@@ -3,9 +3,7 @@ require File.join(File.dirname(__FILE__), *%w".. lib xsugar")
 
 class GrammarTest < Test::Unit::TestCase
   def setup
-    grammar_file = File.join(File.dirname(__FILE__), *%w".. epidoc.xsg")
-    xsg = File.readlines(grammar_file).to_s
-    @xsugar = RXSugar.new(xsg)
+    @xsugar = RXSugarHelper.rxsugar_from_grammar
   end
   
   protected    

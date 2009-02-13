@@ -1,16 +1,21 @@
-XSUGAR_JAR_PATH = File.join(File.dirname(__FILE__), *%w".. lib xsugar-all.jar")
-
-ENV['JAVA_HOME'] = '/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home'
+require 'xsugar_helper'
 
 if(RUBY_PLATFORM == 'java')
   require 'java'
-  require XSUGAR_JAR_PATH
+  require RXSugarHelper::XSUGAR_JAR_PATH
   require File.join(File.dirname(__FILE__), 'modules_jruby')
 else
-  require 'rubygems'
-  require 'rjb'
-  Rjb::load(classpath = ".:#{XSUGAR_JAR_PATH}", jvmargs=[])
-  require File.join(File.dirname(__FILE__), 'modules_rjb')
+  begin
+    require 'rubygems'
+    require 'rjb'
+    Rjb::load(classpath = ".:#{RXSugarHelper::XSUGAR_JAR_PATH}", jvmargs=[])
+    require File.join(File.dirname(__FILE__), 'modules_rjb')
+  rescue LoadError, RuntimeError
+    # We aren't running inside JRuby, and we either don't have RJB 
+    # or can't load the XSugar JAR because it's Java 6.
+    # Punt and try to fork a JRuby child then provide the same RXSugar
+    # interface over it.
+  end
 end
 
 class RXSugar

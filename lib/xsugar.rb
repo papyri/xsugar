@@ -1,35 +1,19 @@
 XSUGAR_JAR_PATH = File.join(File.dirname(__FILE__), *%w".. lib xsugar-all.jar")
 
+ENV['JAVA_HOME'] = '/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home'
+
 if(RUBY_PLATFORM == 'java')
   require 'java'
   require XSUGAR_JAR_PATH
+  require File.join(File.dirname(__FILE__), 'modules_jruby')
 else
   require 'rubygems'
   require 'rjb'
   Rjb::load(classpath = ".:#{XSUGAR_JAR_PATH}", jvmargs=[])
+  require File.join(File.dirname(__FILE__), 'modules_rjb')
 end
 
 class RXSugar
-  module XSugar
-    include_package 'dk.brics.xsugar'
-  end
-
-  module XSugarXML
-    include_package 'dk.brics.xsugar.xml'
-  end
-
-  module XSugarParser
-    include_package 'dk.brics.grammar.parser'
-  end
-
-  module XSugarOperations
-    include_package 'dk.brics.grammar.operations'
-  end
-  
-  module XSugarReversibility
-    include_package 'dk.brics.xsugar.reversibility'
-  end
-
   def initialize(grammar)
     # Most of this is taken from XSugar source in
     # src/dk/brics/xsugar/Main.java

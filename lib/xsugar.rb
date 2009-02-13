@@ -1,4 +1,4 @@
-require 'xsugar_helper'
+require File.join(File.dirname(__FILE__), 'xsugar_helper')
 
 if(RUBY_PLATFORM == 'java')
   require 'java'

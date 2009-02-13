@@ -1,16 +1,21 @@
 #!/usr/bin/env ruby
 require File.join(File.dirname(__FILE__), *%w"lib xsugar")
 
-if ARGV.length != 2
-  puts "Usage: #{$0} grammar.xsg input.xml > output.txt"
+xml_file = STDIN
+grammar_file = RXSugarHelper::DEFAULT_GRAMMAR
+
+if ARGV.length >= 1 && ARGV[0] == '--help'
+  puts "Usage: #{$0} < input.xml > output.txt\n" +
+       "       #{$0} grammar.xsg < input.xml > output.txt\n" +
+       "       #{$0} grammar.xsg input.xml > output.txt"
   Process.exit
 end
 
-grammar_file = ARGV[0]
-xml_file = ARGV[1]
-xsg = File.readlines(grammar_file).to_s
-@xsugar = RXSugar.new(xsg)
+if ARGV.length >= 1
+  grammar_file = ARGV[0]
+  if ARGV.length >= 2
+    xml_file = ARGV[1]
+  end
+end
 
-xml_content = File.readlines(xml_file).to_s
-
-puts @xsugar.xml_to_non_xml(xml_content)
+RXSugarHelper.xml_file_to_non_xml(xml_file, grammar_file)

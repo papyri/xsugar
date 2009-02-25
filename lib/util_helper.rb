@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'xsugar')
+require File.join(File.dirname(__FILE__), 'rxsugar')
 
 class UtilHelper
   def initialize(from, to)

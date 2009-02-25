@@ -6,12 +6,12 @@ module RXSugar
     
     module ClassMethods
       def xml2nonxml(content)
-        ruby_file = File.join(File.dirname(__FILE__), 'xml2nonxml.rb')
+        ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin xml2nonxml.rb')
         jruby_pipe(ruby_file, content)
       end
       
       def nonxml2xml(content)
-        ruby_file = File.join(File.dirname(__FILE__), 'nonxml2xml.rb')
+        ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin nonxml2xml.rb')
         jruby_pipe(ruby_file, content)
       end
       

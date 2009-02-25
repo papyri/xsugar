@@ -1,4 +1,4 @@
 #!/usr/bin/env jruby
 require File.join(File.dirname(__FILE__), *%w'.. lib util_helper')
 
-UtilHelper.new('txt', 'xml').main
+RXSugar::UtilHelper.new('txt', 'xml').main

@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.join(File.dirname(__FILE__), 'test_helper')
 
 class GrammarTest < Test::Unit::TestCase
   # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html
@@ -34,7 +34,7 @@ class GrammarTest < Test::Unit::TestCase
     # (upz.2.158 lb=29):
     #   <expan><ex>ὀβολοὺς 2 1/2 1/4</ex></expan><num value="2"/><num value="1/2"/><num value="1/4"/>
     # (sb.16.12325 lb=13):
-    #   <expan><ex>ὀβολοὺς</ex></expan> <num value="3">γ</num> <num value="1/2">𐅵</num>
+    #   <expan><ex>ὀβολοὺς</ex></expan> <num value="3">γ</num> <num value="1/2">ŵ</num>
     # And even other complex ways (sb.24.16185 lb=12):
     #   <expan><ex>ὀβολοὺς 4</ex><ex>ὀβολοῦ 1/2</ex></expan><num value="4"/><num value="1/2"/>
     # TODO: Get EpiDoc guidance on how this should be handled?

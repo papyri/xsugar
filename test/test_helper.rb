@@ -1,9 +1,10 @@
 require 'test/unit'
-require File.join(File.dirname(__FILE__), *%w".. lib xsugar")
+require File.join(File.dirname(__FILE__), *%w".. lib rxsugar")
 
 class GrammarTest < Test::Unit::TestCase
+  include RXSugar::RXSugarHelper
   def setup
-    @xsugar = RXSugarHelper.rxsugar_from_grammar
+    @xsugar = rxsugar_from_grammar
   end
   
   protected    

@@ -1,5 +1,5 @@
 module RXSugar
-  module JRuby
+  module JRubyHelper
     def self.included(base)
       base.extend(ClassMethods)
     end

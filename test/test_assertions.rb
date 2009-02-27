@@ -24,6 +24,13 @@ module GrammarAssertions
   end
 
   def assert_equal_xml_fragment_to_non_xml_to_xml_fragment(expected, input)
-    assert_equal ab(lb(expected)), @xsugar.non_xml_to_xml(@xsugar.xml_to_non_xml(ab(lb(input))))
+    xml_to_non_xml = @xsugar.xml_to_non_xml(ab(lb(input)))
+    if xml_to_non_xml.class == Java::DkBricsGrammarParser::ParseException
+      raise "ParseException"
+    else
+      non_xml_to_xml_from_xml_to_non_xml =
+        @xsugar.non_xml_to_xml(xml_to_non_xml)
+      assert_equal ab(lb(expected)), non_xml_to_xml_from_xml_to_non_xml
+    end
   end
 end

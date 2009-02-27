@@ -1,3 +1,5 @@
+require 'rexml/document'
+
 module RXSugar
   module RXSugarHelper
     XSUGAR_JAR_PATH = File.join(File.dirname(__FILE__), *%w".. lib xsugar-all.jar")
@@ -28,6 +30,32 @@ module RXSugar
       end
     
       output.puts rxsugar.non_xml_to_xml(non_xml_content)
+    end
+    
+    def collapse_nodes_to_single_line(nodes)
+      processed = ''
+      nodes.each do |node|
+        node.to_s.each_line do |line|
+          processed += line.chomp.strip
+        end
+      end
+      processed
+    end
+    
+    def get_abs_from_edition_div(xml)
+      REXML::XPath.match(REXML::Document.new(xml), '/TEI.2/text/body/div[@type = "edition"]/ab')
+    end
+    
+    def identifying_string_from_element(rexml)
+      identifier = rexml.name
+      rexml.attributes.each do |name, value|
+        identifier += " " + name + "=\"#{value}\""
+      end
+      identifier
+    end
+    
+    def get_non_empty_element_children(rexml)
+      REXML::XPath.match(rexml, '*[node()]')
     end
   end
 end

@@ -17,8 +17,12 @@ module RXSugar
       else
         xml_content = IO.readlines(xml_file).to_s
       end
-    
-      output.puts rxsugar.xml_to_non_xml(xml_content)
+      
+      begin
+        output.puts rxsugar.xml_to_non_xml(xml_content)
+      rescue NativeException => e
+        output.puts e.cause
+      end
     end
   
     def non_xml_file_to_xml(non_xml_file = STDIN, grammar_file = DEFAULT_GRAMMAR, output = STDOUT)
@@ -28,8 +32,12 @@ module RXSugar
       else
         non_xml_content = IO.readlines(non_xml_file).to_s
       end
-    
-      output.puts rxsugar.non_xml_to_xml(non_xml_content)
+      
+      begin
+        output.puts rxsugar.non_xml_to_xml(non_xml_content)
+      rescue NativeException => e
+        output.puts e.cause
+      end
     end
     
     def collapse_nodes_to_single_line(nodes)

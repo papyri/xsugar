@@ -177,7 +177,8 @@ namespace :coverage do
       end
     end
     
-    puts "Failing: #{xml_files_failing.length} / #{xml_files.length}"
+    puts "Failing:           #{xml_files_failing.length} / #{xml_files.length}"
+    puts "Non-empty passing: #{xml_files_passing.length} / #{xml_files.length}"
     error_frequencies.pretty_print(passing_fragments)
     
     puts "\nPassing XML files with content:\n" + 

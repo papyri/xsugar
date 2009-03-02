@@ -19,7 +19,11 @@ namespace :coverage do
     require 'lib/rxsugar'
     require 'test/test_assertions'
     
-    DDB_DATA_PATH = '../idp.data/DDB_EpiDoc_XML/p.oxy/'
+    if ENV.include?('DDB_DATA_PATH')
+      DDB_DATA_PATH = ENV['DDB_DATA_PATH']
+    else
+      DDB_DATA_PATH = '../idp.data/DDB_EpiDoc_XML'
+    end
     
     class DDbCoverage
       include GrammarAssertions
@@ -34,7 +38,7 @@ namespace :coverage do
     
     ddbcov = DDbCoverage.new
     
-    xml_files = Dir[DDB_DATA_PATH + '**/*.xml']
+    xml_files = Dir[DDB_DATA_PATH + '/**/*.xml']
     puts "#{xml_files.length} XML files being checked in path #{DDB_DATA_PATH} "
     full_parse_errors = 0
     passing_fragments = 0

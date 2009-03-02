@@ -123,7 +123,7 @@ namespace :coverage do
           keys = [xml_child.name, xml_child.name, xml_child.name]
           xml_child.attributes.each_attribute do |attr|
             keys[1] += " #{attr.name}"
-            keys[2] += " #{attr.name}='#{attr.value}'"
+            keys[2] += " #{attr.name}=\"#{attr.value}\""
           end
           # returns [[:element, "num"],[:element_attr, "num val"],...]
           @frequency_types.zip(keys)

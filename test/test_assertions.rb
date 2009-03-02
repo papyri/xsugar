@@ -2,6 +2,8 @@ require 'test/unit'
 
 module GrammarAssertions
   class ParseError < ::StandardError; end
+  class XMLParseError < ParseError; end
+  class NonXMLParseError < ParseError; end
   
   include Test::Unit::Assertions
   
@@ -26,13 +28,19 @@ module GrammarAssertions
   end
 
   def assert_equal_xml_fragment_to_non_xml_to_xml_fragment(expected, input)
-    xml_to_non_xml = @xsugar.xml_to_non_xml(ab(lb(input)))
-    if xml_to_non_xml.class == Java::DkBricsGrammarParser::ParseException
-      raise ParseError
-    else
-      non_xml_to_xml_from_xml_to_non_xml =
-        @xsugar.non_xml_to_xml(xml_to_non_xml)
-      assert_equal ab(lb(expected)), non_xml_to_xml_from_xml_to_non_xml
+    begin
+      xml_to_non_xml = @xsugar.xml_to_non_xml(ab(lb(input)))
+    rescue NativeException => e
+      raise XMLParseError
     end
+    
+    begin
+    non_xml_to_xml_from_xml_to_non_xml =
+      @xsugar.non_xml_to_xml(xml_to_non_xml)
+    rescue NativeException => e
+      raise NonXMLParseError
+    end
+    
+    assert_equal ab(lb(expected)), non_xml_to_xml_from_xml_to_non_xml
   end
 end

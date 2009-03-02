@@ -159,7 +159,7 @@ namespace :coverage do
       end
       
       # do each fragment individually
-      ddbcov.get_non_empty_element_children(abs).each do |child|
+      ddbcov.get_non_lb_element_children(abs).each do |child|
         xml_fragment_content = child.to_s.tr("'",'"')
         fragment_reference = XMLFragmentReference.new(xml_file, child)
         begin

@@ -65,5 +65,9 @@ module RXSugar
     def get_non_empty_element_children(rexml)
       REXML::XPath.match(rexml, '*[node()]')
     end
+    
+    def get_non_lb_element_children(rexml)
+      REXML::XPath.match(rexml, '*[not(self::lb)]')
+    end
   end
 end

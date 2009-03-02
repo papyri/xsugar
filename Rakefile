@@ -149,9 +149,11 @@ namespace :coverage do
       
       # try whole abs
       begin
-        ddbcov.xsugar.xml_to_non_xml(
-          ddbcov.collapse_nodes_to_single_line(abs))
-        xml_files_passing << xml_file
+        collapsed = ddbcov.collapse_nodes_to_single_line(abs)
+        ddbcov.xsugar.xml_to_non_xml(collapsed)
+        if collapsed.length > "<ab/>".length
+          xml_files_passing << xml_file
+        end
       rescue NativeException => e
         xml_files_failing << xml_file
       end
@@ -178,7 +180,7 @@ namespace :coverage do
     puts "Failing: #{xml_files_failing.length} / #{xml_files.length}"
     error_frequencies.pretty_print(passing_fragments)
     
-    puts "\nPassing XML files:\n" + 
+    puts "\nPassing XML files with content:\n" + 
       xml_files_passing.map{|i| i.sub(/#{DDB_DATA_PATH}\/?/,'')}.join("\n")
   end
 end

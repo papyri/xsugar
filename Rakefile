@@ -22,6 +22,7 @@ namespace :coverage do
     if ENV.include?('DDB_DATA_PATH')
       DDB_DATA_PATH = ENV['DDB_DATA_PATH']
     else
+      warn 'Use "rake coverage:ddb DDB_DATA_PATH=../path/to/dir" to override default data dir'
       DDB_DATA_PATH = '../idp.data/DDB_EpiDoc_XML'
     end
     

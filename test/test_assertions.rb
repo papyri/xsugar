@@ -1,6 +1,8 @@
 require 'test/unit'
 
 module GrammarAssertions
+  class ParseError < ::StandardError; end
+  
   include Test::Unit::Assertions
   
   def ab(xml)
@@ -26,7 +28,7 @@ module GrammarAssertions
   def assert_equal_xml_fragment_to_non_xml_to_xml_fragment(expected, input)
     xml_to_non_xml = @xsugar.xml_to_non_xml(ab(lb(input)))
     if xml_to_non_xml.class == Java::DkBricsGrammarParser::ParseException
-      raise "ParseException"
+      raise ParseError
     else
       non_xml_to_xml_from_xml_to_non_xml =
         @xsugar.non_xml_to_xml(xml_to_non_xml)

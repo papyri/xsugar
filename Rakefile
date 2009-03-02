@@ -47,7 +47,7 @@ namespace :coverage do
           passing_fragments += 1
         rescue Test::Unit::AssertionFailedError => e
           reversibility_errors += 1
-        rescue RuntimeError => e
+        rescue GrammarAssertions::ParseError => e
           parse_errors += 1
         end
       end

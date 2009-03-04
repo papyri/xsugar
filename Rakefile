@@ -26,6 +26,13 @@ namespace :coverage do
       DDB_DATA_PATH = '../idp.data/DDB_EpiDoc_XML'
     end
     
+    if ENV.include?('SAMPLE_FRAGMENTS')
+      SAMPLE_FRAGMENTS = ENV['SAMPLE_FRAGMENTS'].to_i
+    else
+      warn 'Use SAMPLE_FRAGMENTS=n to output n sample fragments per error line (0 for unlimited)'
+      SAMPLE_FRAGMENTS = -1
+    end
+    
     class DDbCoverage
       include GrammarAssertions
       include RXSugar::RXSugarHelper
@@ -43,6 +50,12 @@ namespace :coverage do
       def initialize(xml_file, xml_content)
         @xml_file = xml_file
         @xml_content = xml_content
+      end
+    end
+    
+    class Array
+      def shuffle
+        sort_by { rand }
       end
     end
     
@@ -107,6 +120,21 @@ namespace :coverage do
         end
       end
       
+      def print_sample_fragments(frag_array)
+        sample_fragments = ''
+        if SAMPLE_FRAGMENTS > 0
+          frag_slice = frag_array[0, SAMPLE_FRAGMENTS]
+        else
+          frag_slice = frag_array
+        end
+        frag_slice.each do |frag_ref|
+          sample_fragments += "    " +
+            frag_ref.xml_file.to_s + ": " +
+            frag_ref.xml_content.to_s + "\n"
+        end
+        puts sample_fragments
+      end
+      
       def errors_by_frequency(error_type, frequency_type)
         max_key_length =
           @frequencies[error_type][frequency_type].keys.max{|a,b|
@@ -115,6 +143,9 @@ namespace :coverage do
           |a,b| b[1].length<=>a[1].length}.each do |elem|
             puts elem[0].to_s.ljust(max_key_length) + ": " +
               elem[1].length.to_s
+            if SAMPLE_FRAGMENTS > -1
+              print_sample_fragments(elem[1].shuffle)
+            end
           end
       end
       
@@ -145,6 +176,7 @@ namespace :coverage do
     
     xml_files.each do |xml_file|
       xml_content = IO.readlines(xml_file).to_s
+      xml_file = xml_file.sub(/#{DDB_DATA_PATH}\/?/,'')
       abs = ddbcov.get_abs_from_edition_div(xml_content)
       
       # try whole abs
@@ -182,6 +214,6 @@ namespace :coverage do
     error_frequencies.pretty_print(passing_fragments)
     
     puts "\nPassing XML files with content:\n" + 
-      xml_files_passing.map{|i| i.sub(/#{DDB_DATA_PATH}\/?/,'')}.join("\n")
+      xml_files_passing.join("\n")
   end
 end

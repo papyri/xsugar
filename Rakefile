@@ -63,7 +63,7 @@ namespace :coverage do
       attr_reader :frequencies
       
       def initialize()
-        @error_types = [:parse, :reversibility]
+        @error_types = [:parse, :reversibility, :pass]
         @frequency_types = [:element, :element_attr, :element_attr_val]
         
         @frequencies = Hash.new()
@@ -99,15 +99,16 @@ namespace :coverage do
         return length
       end
       
-      def pretty_print(passing_fragments)
+      def pretty_print
         parse_errors = error_length(:parse)
         reversibility_errors = error_length(:reversibility)
-        total_elements = passing_fragments + parse_errors + reversibility_errors
+        passing_length = error_length(:pass)
+        total_elements = passing_length + parse_errors + reversibility_errors
         
-        max_count_length = ([passing_fragments, parse_errors, reversibility_errors].max{|a,b| a.to_s.length <=> b.to_s.length}).to_s.length
+        max_count_length = ([passing_length, parse_errors, reversibility_errors].max{|a,b| a.to_s.length <=> b.to_s.length}).to_s.length
 
         puts total_elements.to_s + " element fragments checked"
-        puts "Passing:              #{passing_fragments.to_s.rjust(max_count_length)} / #{total_elements}"
+        puts "Passing:              #{passing_length.to_s.rjust(max_count_length)} / #{total_elements}"
         puts "Parse Errors:         #{parse_errors.to_s.rjust(max_count_length)} / #{total_elements}"
         puts "Reversibility Errors: #{reversibility_errors.to_s.rjust(max_count_length)} / #{total_elements}"
         
@@ -144,7 +145,7 @@ namespace :coverage do
             puts elem[0].to_s.ljust(max_key_length) + ": " +
               elem[1].length.to_s
             if SAMPLE_FRAGMENTS > -1
-              print_sample_fragments(elem[1].shuffle)
+              print_sample_fragments(elem[1])
             end
           end
       end
@@ -198,6 +199,7 @@ namespace :coverage do
           ddbcov.assert_equal_xml_fragment_to_non_xml_to_xml_fragment(
             xml_fragment_content, xml_fragment_content)
           passing_fragments += 1
+          error_frequencies.add_error(:pass, fragment_reference)
         rescue GrammarAssertions::NonXMLParseError,
                Test::Unit::AssertionFailedError => e
           reversibility_errors += 1
@@ -211,7 +213,7 @@ namespace :coverage do
     
     puts "Failing:           #{xml_files_failing.length} / #{xml_files.length}"
     puts "Non-empty passing: #{xml_files_passing.length} / #{xml_files.length}"
-    error_frequencies.pretty_print(passing_fragments)
+    error_frequencies.pretty_print
     
     puts "\nPassing XML files with content:\n" + 
       xml_files_passing.join("\n")

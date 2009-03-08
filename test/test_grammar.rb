@@ -56,41 +56,37 @@ if(RUBY_PLATFORM == 'java')
   
     # http://www.stoa.org/epidoc/gl/5/lostcertain.html
     def test_lost_dot_gap
-      # Some number of missing characters not greater than 3
-      # TODO: [ca.N]
-      assert_equal_fragment_transform '[.]', '<gap reason="lost" extent="1" unit="character"></gap>'
+      # Some number of missing characters
+      assert_equal_fragment_transform '[.1]', '<gap reason="lost" extent="1" unit="character"></gap>'
       assert_equal_fragment_transform '[.2]', '<gap reason="lost" extent="2" unit="character"></gap>'
       assert_equal_fragment_transform '[.3]', '<gap reason="lost" extent="3" unit="character"></gap>'
+      (4..100).each do |n|
+        assert_equal_fragment_transform "[.#{n}]", "<gap reason=\"lost\" extent=\"#{n}\" unit=\"character\"></gap>"
+      end
     end
   
     # http://www.stoa.org/epidoc/gl/5/lostcertain.html
     # but extent="unknown" not explicitly combined with unit="character" in guidelines
     def test_lost_gap_unknown
       # Some unknown number of lost characters
-      assert_equal_fragment_transform '[ca.?]', '<gap reason="lost" extent="unknown" unit="character"></gap>'
+      assert_equal_fragment_transform '[.?]', '<gap reason="lost" extent="unknown" unit="character"></gap>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/vestiges.html
     def test_illegible_dot_gap
       # Some number of illegible characters not greater than 3
-      assert_equal_fragment_transform '.', '<gap reason="illegible" extent="1" unit="character"></gap>'
+      assert_equal_fragment_transform '.1', '<gap reason="illegible" extent="1" unit="character"></gap>'
       assert_equal_fragment_transform '.2', '<gap reason="illegible" extent="2" unit="character"></gap>'
       assert_equal_fragment_transform '.3', '<gap reason="illegible" extent="3" unit="character"></gap>'
+      (4..100).each do |n|
+        assert_equal_fragment_transform ".#{n}", "<gap reason=\"illegible\" extent=\"#{n}\" unit=\"character\"></gap>"
+      end
     end
   
     # http://www.stoa.org/epidoc/gl/5/vestiges.html
     def test_illegible_gap_unknown
       # Some unknown number of illegible letters
-      assert_equal_fragment_transform 'ca.?', '<gap reason="illegible" extent="unknown" unit="character"></gap>'
-    end
-  
-    # http://www.stoa.org/epidoc/gl/5/vestiges.html
-    def test_illegible_gap_ca
-      # Some number of illegible characters greater than 3
-      assert_equal_fragment_transform 'ca.4', '<gap reason="illegible" extent="4" unit="character"></gap>'
-      (4..100).each do |n|
-        assert_equal_fragment_transform "ca.#{n}", "<gap reason=\"illegible\" extent=\"#{n}\" unit=\"character\"></gap>"
-      end
+      assert_equal_fragment_transform '.?', '<gap reason="illegible" extent="unknown" unit="character"></gap>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/vestiges.html
@@ -128,27 +124,6 @@ if(RUBY_PLATFORM == 'java')
     end
   
     # http://www.stoa.org/epidoc/gl/5/lostline.html
-    def test_gap_break
-      # The text breaks off completely
-      assert_equal_fragment_transform 'BREAK', '<gap reason="lost" extent="unknown" unit="line"></gap>'
-    end
-  
-    # FIXME: reconcile with test_lost_dot_gap
-    def test_lost_characters
-      # Some number of characters is lost
-      assert_equal_fragment_transform 'lost.3char', '<gap reason="lost" extent="3" unit="character"></gap>'
-      (1..100).each do |n|
-        assert_equal_fragment_transform "lost.#{n}char", "<gap reason=\"lost\" extent=\"#{n}\" unit=\"character\"></gap>"
-      end
-    end
-  
-    # FIXME: reconcile with test_lost_gap_unknown
-    def test_lost_characters_unknown
-      # Some unknown number of lost characters
-      assert_equal_fragment_transform 'lost.?char', '<gap reason="lost" extent="unknown" unit="character"></gap>'
-    end
-  
-    # http://www.stoa.org/epidoc/gl/5/lostline.html
     def test_lost_lines
       # Some number of lines is lost
       assert_equal_fragment_transform 'lost.3lin', '<gap reason="lost" extent="3" unit="line"></gap>'
@@ -158,7 +133,6 @@ if(RUBY_PLATFORM == 'java')
     end
   
     # http://www.stoa.org/epidoc/gl/5/lostline.html
-    # FIXME: reconcile with test_gap_break
     def test_lost_lines_unknown
       # Some unknown number of lost lines
       assert_equal_fragment_transform 'lost.?lin', '<gap reason="lost" extent="unknown" unit="line"></gap>'

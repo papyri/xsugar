@@ -46,6 +46,7 @@ namespace :coverage do
     
     class XMLFragmentReference
       attr_reader :xml_file, :xml_content
+      attr_accessor :text
       
       def initialize(xml_file, xml_content)
         @xml_file = xml_file
@@ -131,7 +132,9 @@ namespace :coverage do
         frag_slice.each do |frag_ref|
           sample_fragments += "    " +
             frag_ref.xml_file.to_s + ": " +
-            frag_ref.xml_content.to_s + "\n"
+            frag_ref.xml_content.to_s
+          sample_fragments += "  <=>  " + frag_ref.text.to_s unless frag_ref.text.nil?
+          sample_fragments += "\n"
         end
         puts sample_fragments
       end
@@ -196,7 +199,8 @@ namespace :coverage do
         xml_fragment_content = child.to_s.tr("'",'"')
         fragment_reference = XMLFragmentReference.new(xml_file, child)
         begin
-          ddbcov.assert_equal_xml_fragment_to_non_xml_to_xml_fragment(
+          fragment_reference.text =
+            ddbcov.assert_equal_xml_fragment_to_non_xml_to_xml_fragment(
             xml_fragment_content, xml_fragment_content)
           passing_fragments += 1
           error_frequencies.add_error(:pass, fragment_reference)

@@ -42,5 +42,6 @@ module GrammarAssertions
     end
     
     assert_equal ab(lb(expected)), non_xml_to_xml_from_xml_to_non_xml
+    return xml_to_non_xml
   end
 end

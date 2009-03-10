@@ -273,6 +273,10 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<:a|orth|<:b|orth|c:>:>', '<choice><corr>a</corr><sic><choice><corr>b</corr><sic>c</sic></choice></sic></choice>'
     end
     
+    def test_subst
+      assert_equal_fragment_transform '<:a|subst|b:>', '<subst><add place="inline">a</add><del rend="corrected">b</del></subst>'
+    end
+    
     def test_glyph
       assert_equal_fragment_transform '!!stauros', '<g type="stauros"></g>'
       assert_equal_fragment_transform '!!stauros,♱', '<g type="stauros">♱</g>'

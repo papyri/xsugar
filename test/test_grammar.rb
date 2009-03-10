@@ -7,6 +7,10 @@ if(RUBY_PLATFORM == 'java')
       # Ancient abbreviation whose resolution is known
       assert_equal_fragment_transform 'a(b)', '<expan>a<ex>b</ex></expan>'
     end
+    
+    def test_expansion_multiple
+      assert_equal_fragment_transform 'ab(c)def(gh)i', '<expan>ab<ex>c</ex>def<ex>gh</ex>i</expan>'
+    end
   
     # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html
     def test_symbol_expansion

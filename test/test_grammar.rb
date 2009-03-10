@@ -255,6 +255,12 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<:a|orth|b:>', '<choice><corr>a</corr><sic>b</sic></choice>'
       assert_equal_fragment_transform '<:a|orth|<:b|orth|c:>:>', '<choice><corr>a</corr><sic><choice><corr>b</corr><sic>c</sic></choice></sic></choice>'
     end
+    
+    def test_glyph
+      assert_equal_fragment_transform '!!stauros', '<g type="stauros"></g>'
+      assert_equal_fragment_transform '!!stauros,♱', '<g type="stauros">♱</g>'
+      assert_equal_fragment_transform '!!filler(extension)', '<g type="filler" rend="extension"></g>'
+    end
   
     def test_simple_reversibility
       assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test"

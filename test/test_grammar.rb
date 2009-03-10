@@ -310,6 +310,10 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '〚/abcdefg〛', '<del rend="slashes">abcdefg</del>'
     end
     
+    def test_note
+      assert_equal_fragment_transform '/*abcdefg*/', '<note lang="en">abcdefg</note>'
+    end
+    
     def test_simple_reversibility
       assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test"
       assert_equal_non_xml_to_xml_to_non_xml "1. test1\n2. test2", "1. test1\n2. test2"

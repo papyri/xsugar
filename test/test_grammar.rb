@@ -242,6 +242,11 @@ if(RUBY_PLATFORM == 'java')
     def test_num_myriads
       assert_equal_fragment_transform '<#μυρίαδες<#β=2#><#Βφ=2500#>=22500#>', '<num value="22500">μυρίαδες<num value="2">β</num><num value="2500">Βφ</num></num>'
     end
+    
+    def test_choice
+      assert_equal_fragment_transform '<:a|orth|b:>', '<choice><corr>a</corr><sic>b</sic></choice>'
+      assert_equal_fragment_transform '<:a|orth|<:b|orth|c:>:>', '<choice><corr>a</corr><sic><choice><corr>b</corr><sic>c</sic></choice></sic></choice>'
+    end
   
     def test_simple_reversibility
       assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test"

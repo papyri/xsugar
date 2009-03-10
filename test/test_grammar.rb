@@ -300,6 +300,10 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '\Πωλίων ἀπάτωρ?/', '<add place="supralinear" cert="low">\Πωλίων ἀπάτωρ/</add>'
     end
     
+    def test_space_unknown
+      assert_equal_fragment_transform 'vac.?', '<space extent="unknown" unit="character"></space>'
+    end
+    
     def test_simple_reversibility
       assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test"
       assert_equal_non_xml_to_xml_to_non_xml "1. test1\n2. test2", "1. test1\n2. test2"

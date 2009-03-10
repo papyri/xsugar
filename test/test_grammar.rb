@@ -230,6 +230,18 @@ if(RUBY_PLATFORM == 'java')
     def test_uncertain_diacritical_perispomeni
       assert_equal_fragment_transform 'a(῀)bcdef', '<hi rend="perispomeni">a</hi>bcdef'
     end
+    
+    def test_num_simple
+      assert_equal_fragment_transform '<#α=1#>', '<num value="1">α</num>'
+      assert_equal_fragment_transform '<#α=#>', '<num>α</num>'
+      assert_equal_fragment_transform '<#=1#>', '<num value="1"></num>'
+      assert_equal_fragment_transform '<#δ=1/4#>', '<num value="1/4">δ</num>'
+      assert_equal_fragment_transform '<#ιδ=14#>', '<num value="14">ιδ</num>'
+    end
+    
+    def test_num_myriads
+      assert_equal_fragment_transform '<#μυρίαδες<#β=2#><#Βφ=2500#>=22500#>', '<num value="22500">μυρίαδες<num value="2">β</num><num value="2500">Βφ</num>'
+    end
   
     def test_simple_reversibility
       assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test"

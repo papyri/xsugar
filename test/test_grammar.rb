@@ -261,6 +261,11 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '!!stauros,♱', '<g type="stauros">♱</g>'
       assert_equal_fragment_transform '!!filler(extension)', '<g type="filler" rend="extension"></g>'
     end
+    
+    def test_hand_shift
+      assert_equal_fragment_transform '$m1', '<handShift new="m1"></handShift>'
+      assert_equal_fragment_transform '$m20', '<handShift new="m20"></handShift>' 
+    end
   
     def test_simple_reversibility
       assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test"

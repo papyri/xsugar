@@ -323,6 +323,12 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '----', '<milestone rend="horizontal-rule" unit="undefined"></milestone>'
     end
     
+    def test_figure
+      ['seal', 'stamp', 'drawing'].each do |figdesc|
+        assert_equal_fragment_transform "fig.#{figdesc}", "<figure><figDesc>#{figdesc}</figDesc></figure>"
+      end
+    end
+    
     def test_simple_reversibility
       assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test"
       assert_equal_non_xml_to_xml_to_non_xml "1. test1\n2. test2", "1. test1\n2. test2"

@@ -88,6 +88,10 @@ if(RUBY_PLATFORM == 'java')
       # Some unknown number of illegible letters
       assert_equal_fragment_transform '.?', '<gap reason="illegible" extent="unknown" unit="character"></gap>'
     end
+    
+    def test_illegible_dot_gap_extentmax
+      assert_equal_fragment_transform '.2-3', '<gap reason="illegible" extent="2" extentmax="3" unit="character"></gap>'
+    end
   
     # http://www.stoa.org/epidoc/gl/5/vestiges.html
     # but no desc="vestiges"

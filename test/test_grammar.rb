@@ -15,6 +15,7 @@ if(RUBY_PLATFORM == 'java')
     def test_expansion_with_supp
       assert_equal_fragment_transform 'abc[def] [gh]i(jk)', 'abc<supplied reason="lost">def</supplied> <expan><supplied reason="lost">gh</supplied>i<ex>jk</ex></expan>'
       assert_equal_fragment_transform 'a[b(cd)]', '<expan>a<supplied reason="lost">b<ex>cd</ex></supplied></expan>'
+      assert_equal_fragment_transform '[(eton)]', '<expan><supplied reason="lost"><ex>eton</ex></supplied></expan>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html

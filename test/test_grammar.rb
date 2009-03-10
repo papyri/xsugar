@@ -277,6 +277,12 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<:a|subst|b:>', '<subst><add place="inline">a</add><del rend="corrected">b</del></subst>'
     end
     
+    def test_app_lem
+      assert_equal_fragment_transform '<:a|BL:1.215|b:>', '<app type="BL"><lem resp="1.215">a</lem><rdg>b</rdg></app>'
+      assert_equal_fragment_transform '<:a|editorial:bgu 3 p.4|b:>', '<app type="editorial"><lem resp="bgu 3 p.4">a</lem><rdg>b</rdg></app>'
+      assert_equal_fragment_transform '<:a|alternative:|b:>', '<app type="alternative"><lem>a</lem><rdg>b</rdg></app>'
+    end
+    
     def test_glyph
       assert_equal_fragment_transform '!!stauros', '<g type="stauros"></g>'
       assert_equal_fragment_transform '!!stauros,♱', '<g type="stauros">♱</g>'

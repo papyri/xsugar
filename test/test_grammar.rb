@@ -154,6 +154,10 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform 'we will <we will> rock you', 'we will <supplied reason="omitted">we will</supplied> rock you'
       assert_equal_fragment_transform 'we ea<t the fi>sh', 'we ea<supplied reason="omitted">t the fi</supplied>sh'
     end
+    
+    def test_omitted_cert_low
+      assert_equal_fragment_transform '<τοῦ?>', '<supplied reason="omitted" cert="low">τοῦ</supplied>'
+    end
   
     # http://www.stoa.org/epidoc/gl/5/erroneousinclusion.html
     def test_sic

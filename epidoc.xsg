@@ -8,10 +8,13 @@ UNDERDOT = "\u0323"
 
 CA = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
-WORD = ([^ \/\n\r\t\[\]<>\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
-WORDS = ([^\/\n\r\t\[\]<>\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+WORDSCRIPT = ([^ \/\\\n\r\t\[\]<>_#@~\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+// WORD breaks at space and WORDS allows space (therefore multiple words)
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+WORDS = ([^\/\\\n\r\t\[\]<>_#@~\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
 NUM = [0-9]+
-ANYLETTER = [^\/\n\r\t\[\]<>\|\'\!\(\)\{\}\?\"¨]
+ANYLETTER = [^\/\\\n\r\t\[\]<>_#@~\*\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]
+ONELETTER = [^\/\\\n\r\t\[\]<>_#@~\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]{1}
 //VARIA = <ANYLETTER>"(`)"
 
 BEGWORD = [^\/\n\t\[\]<>\|\'\!\(\)\{\}\?\"¨]*
@@ -27,6 +30,15 @@ LGNUM = [4-9]{1}
 STNUM = [1-9]+[0-9]+
 ABBRJF = "( )"
 VSNUM = [1-9]{1}
+QUESTION = [\?]?
+
+// symbolnum is for recognizing either a fraction or whole number with multiple digits
+SYMBOLNUM = [0-9]+\/{1}[0-9]+|[0-9]+
+APPNUM = [0-9]+\.{1}[0-9]+
+
+HANDSHIFT = m{1}[0-9]+
+
+LANGLIST = ((Demotic)|(Coptic)|(Arabic)|(Nabatean)|(Aramaic))
 
 Relost = "reason=lost"
 Certlow = "cert=low"
@@ -56,6 +68,13 @@ unclears_SP_non_terminal : [SP] [UNDERDOT] [unclears_SP_non_terminal mu] = "\u00
 
 unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [ANYLETTER a] [unclears_non_terminal mu]
 								 >: [ANYLETTER a] [UNDERDOT] = [ANYLETTER a]
+								 
+expand 	: [WORD a] "(" [WORD b] ")" [expand more] = [WORD a]<ex>[WORD b]</>[expand more]
+			>: [WORD a] "(" [WORD b] ")" = [WORD a]<ex>[WORD b]</>
+			
+expandi : [items a] "(" [WORD b] ")" [expandi more] = [items a]<ex>[WORD b]</>[expandi more]
+			>: [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
+			
 
 item 
 	//---test unclear characters = underdots
@@ -63,6 +82,23 @@ item
 	>: [unclears_non_terminal u] = <unclear reason="undefined">[unclears_non_terminal u]</>
 	//: [SP] [UNDERDOT] = <unclear reason="undefined">"\u00A0"</>
 	//>: [ANYLETTER a] [UNDERDOT] = <unclear reason="undefined">[ANYLETTER a]</>
+	
+	//---expand loop and items---
+	: [expand e] = <expan>[expand e]</>
+	>: [expandi e] = <expan>[expandi e]</>
+	
+	//---choice---
+	//  <:a|orth|b|:> 
+	: "<:" [WORD a] "?" "|orth|" [WORD b] ":>" = <choice><corr cert="low">[WORD a]</><sic>[WORD b]</></>
+	: "<:" [WORD a] "|orth|" [WORD b] ":>" = <choice><corr>[WORD a]</><sic>[WORD b]</></>
+	>: "<:" [items a] "|orth|" [WORD b] ":>" = <choice><corr>[items a]</><sic>[WORD b]</></>
+	>: "<:" [WORD a] "|orth|" [items b] ":>" = <choice><corr>[WORD a]</><sic>[items b]</></>
+	>: "<:" [items a] "|orth|" [items b] ":>" = <choice><corr>[items a]</><sic>[items b]</></>
+	
+	//---milestone---
+	//  '----' or  '--------'
+	: "--------" = <milestone rend="horizontal-rule" unit="undefined"></>
+	: "----" = <milestone rend="paragraphos" unit="undefined"></>
 
 	//---test_uncertain_diacritical_diaeresis---
 	// (¨)
@@ -88,25 +124,137 @@ item
 	// (῀)
   : [ANYLETTER a] "(῀)" = <hi rend="perispomeni">[ANYLETTER a]</>
 	
-	//---test_superescript---
-	// \ /
-  : "\\" [WORD a] "\/" = <hi rend="superscript">[WORD a]</>
-  
-  //---test_subcript---
-	// / \
-  : "\/" [WORD a] "\\" = <hi rend="subscript">[WORD a]</>
+//VARIA = <ANYLETTER>"(`)"
 		
 	//---test_illegible_dot_gap---
-	// ., .2, .3
-    : [DOT] = <gap reason="illegible" extent="1" unit="character"></>
-	: "." [SMNUM n] = <gap reason="illegible" extent=[SMNUM n] unit="character"></>  
+	// .1, .2, .3
+    //: [DOT] = <gap reason="illegible" extent="1" unit="character"></>
+	: "." [VSNUM n] = <gap reason="illegible" extent=[VSNUM n] unit="character"></>  
+	: "." [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character"></>
+	
+	//---test_illegible_dot_lin---
+	// .1lin, .2lin, .3lin
+	: "." [VSNUM n] "lin" = <gap unit="line" extent=[VSNUM n] reason="illegible"></>  
+	: "." [STNUM j] "lin" = <gap unit="line" extent=[STNUM j]  reason="illegible"></>
 	
 	//---test_illegible_gap_ca---
-	// ., .2, .3
+	// ca.1, ca.2, ca.3
 	//: "ca." [LGNUM j] = <gap reason="illegible" extent=[LGNUM j] unit="character"></>
 	//: "ca." [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character"></>
-	: [LEADCA] [LGNUM j] = <gap reason="illegible" extent=[LGNUM j] unit="character"></>
-	: [LEADCA] [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character"></>
+	: [LEADCA] [VSNUM j] = <gap reason="illegible" extent=[VSNUM j] unit="character" precision="circa"></>
+	: [LEADCA] [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character" precision="circa"></>
+	
+	//---test_lang_gap---
+	//(Lang: Demotic 2 lines)
+	: "(Lang: " [LANGLIST l] " " [VSNUM v] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[VSNUM v] unit="line"></>
+	: "(Lang: " [LANGLIST l] " " [STNUM s] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[STNUM s] unit="line"></>
+	
+	
+	//---test_lines_not_transcribed---
+	//"2 lines not transcribed"
+	: "\"" [VSNUM v] " lines not transcribed\"" = <gap reason="ellipsis" extent=[VSNUM v] unit="line"></>
+	: "\"" [STNUM s] " lines not transcribed\"" = <gap reason="ellipsis" extent=[STNUM s] unit="line"></>
+	
+	//---perpendicular_lines---
+	//(23, perp)
+	: "(" [VSNUM v] ", perp)" = <lb rend="perpendicular" n=[VSNUM v]/>
+	: "(" [STNUM s] ", perp)" = <lb rend="perpendicular" n=[STNUM s]/>
+	
+	//---inverse_lines---
+	//(23, inv)
+	: "(" [VSNUM v] ", inv)" = <lb rend="inverse" n=[VSNUM v]/>
+	: "(" [STNUM s] ", inv)" = <lb rend="inverse" n=[STNUM s]/>
+	
+	//---subscript---
+	//   /abc\
+	: "\/" [WORD a] "\\" = <hi rend="subscript">[WORD a]</>
+	
+	//---superscript---?????? commented out for supralinear
+	//   \abc/
+    //: "\\" [WORD a] "\/" = <hi rend="superscript">[WORD a]</>
+	
+	//---add_place_supralinear---
+	//   \abc/
+    : "\\" [WORDS a] "\/" = <add place="supralinear">[WORDS a]</>
+	: "\\" [WORDS a] "?" "\/" = <add place="supralinear" cert="low">[WORDS a]</>
+	
+	//---supraline_underline---
+	//   \abc/
+    : "\|\|" [WORD a] "\|\|" = <hi rend="supraline-underline">[WORD a]</>
+	
+	//---undefined_parallel---
+	//  _abc_  - underlines
+    : "_" [WORDS a] "_" = <supplied reason="undefined" evidence="parallel">[WORDS a]</>
+	: "_" [WORDS a] "?" "_" = <supplied reason="undefined" evidence="parallel" cert="low">[WORDS a]</>
+		
+	//---lost_parallel---
+	//  _[abc]_  - underlines
+    : "_[" [WORD a] "]_" = <supplied reason="lost" evidence="parallel">[WORD a]</>
+	
+	//---number or fraction_no_symbol---
+	//  #a#1/2# a = character representation and then the fraction it equals between next #'s
+    	: "<#=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]/>
+		: "<#" [WORD o] "=#>" = <num>[WORD o]</>
+	
+	//---fraction_number and whole_number symbol and multi_symbol---
+	//  <#a#1/2#> a = symbol representation and then the number/fraction it equals after '='
+    	: "<#" [WORD o] "=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]>[WORD o]</>
+		
+	//---choice---
+	//  <:a|orth|b|:> 
+	//: "<:" [WORD a] "|orth|" [WORD b] ":>" = <choice><corr>[WORD a]</><sic>[WORD b]</></>
+	
+	//---subst---
+	//  <:a|subst|b|:> 
+	: "<:" [WORD a] "|subst|" [WORD b] ":>" = <subst><add place="inline">[WORD a]</><del rend="corrected">[WORD b]</></>
+	
+	//---app_lem---
+	//  <|abc|def|> 
+	: "<:" [WORD a] "|BL:" [APPNUM c] "|" [WORD b] [QUESTION q] ":>" = <app type="BL"><lem resp=[APPNUM c]>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
+	>: "<:" [items a] "|BL:" [APPNUM c] "|" [WORD b] ":>" = <app type="BL"><lem resp=[APPNUM c]>[items a]</><rdg>[WORD b]</></>
+	>: "<:" [WORD a] "|BL:" [APPNUM c] "|" [items b] ":>" = <app type="BL"><lem resp=[APPNUM c]>[WORD a]</><rdg>[items b]</></>
+	>: "<:" [items a] "|BL:" [APPNUM c] "|" [items b] ":>" = <app type="BL"><lem resp=[APPNUM c]>[items a]</><rdg>[items b]</></>
+	: "<:" [WORD a] "|editorial:" [WORDS e] "|" [WORD b] ":>" = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[WORD b]</></>
+	>: "<:" [items a] "|editorial:" [WORDS e] "|" [WORD b] ":>" = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[WORD b]</></>
+	>: "<:" [WORD a] "|editorial:" [WORDS e] "|" [items b] ":>" = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[items b]</></>
+	>: "<:" [items a] "|editorial:" [WORDS e] "|" [items b] ":>" = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[items b]</></>
+	: "<:" [WORD a] "|alternative:|" [WORD b] ":>" = <app type="alternative"><lem>[WORD a]</><rdg>[WORD b]</></>
+	>: "<:" [items a] "|alternative:|" [WORD b] ":>" = <app type="alternative"><lem>[items a]</><rdg>[WORD b]</></>
+	>: "<:" [WORD a] "|alternative:|" [items b] ":>" = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
+	>: "<:" [items a] "|alternative:|" [items b] ":>" = <app type="alternative"><lem>[items a]</><rdg>[items b]</></>
+	
+	//---glyph---
+	//  '!!a', '!!a,b', '!!filler(a)' 
+	: "!!" [WORD a] " " = <g type=[WORD a]></>
+	: "!!" [WORD a] "," [WORD b] " " = <g type=[WORD a]>[WORD b]</>
+	: "!!filler(" [WORD a] ")" " " = <g type="filler" rend=[WORD a]></>
+	
+	//---hand_shift---
+	//  $m# 
+	: "$" [HANDSHIFT h] " " = <handShift new=[HANDSHIFT h]></>
+	
+	//---space_unknown---
+	//  vac.? 
+	: "vac.?" = <space extent="unknown" unit="character"></>
+	
+	//---note---
+	//  /*abcdefg*/ 
+	: "\/*" [WORDS a] [QUESTION b] "*\/" = <note lang="en">[WORDS a][QUESTION b]</>
+	: "\/*" [QUESTION b] "*\/" = <note lang="en">[QUESTION b]</>
+	
+	//---foreign_lang---
+	//  ~veni vedi vici~la 
+	: "~" [WORDS a] "~" [WORD b] " " = <foreign lang=[WORD b]>[WORDS a]</>
+	
+	//---figure---
+	//  fig.seal 
+	: "fig." [WORD a] " " = <figure><figDesc>[WORD a]</></>
+	
+	//---del_rend---
+	//  not brackets - already defined in inside-brackets
+	//: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
+	//: "〚-" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a]</>
+	//: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a]</>
 	
 	>: [flat f] = [flat f]
 
@@ -114,7 +262,7 @@ item
 	
 flat 
 	//---test_expand low cert---
-	// (abc?)
+	// (?)
 	: "(" "?" ")" = <expan><ex cert="low"></></>
 	
 	//---test_expand low cert---
@@ -123,7 +271,7 @@ flat
 	
 	//---test_expansion---
 	// a(b)
-	: [WORD a] "(" [WORD b] ")" = <expan>[WORD a]<ex>[WORD b]</></>
+	>: [WORD a] "(" [WORD b] ")" = <expan>[WORD a]<ex>[WORD b]</></>
 	
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
@@ -132,6 +280,10 @@ flat
 	//---test_symbol_expansion---
 	// (abc)
 	: "(" [WORD a] ")" = <expan><ex>[WORD a]</></>
+	
+	//---test_counting_symbol_expansion---????????????????????????
+	// (abc)
+	: "(" [WORD a] __ [WORD b] ")" = <expan><ex>[WORD a] __ [WORD b]</></>
 	
 	//---test_vestige_lines---
 	// vestig.#{n}lin
@@ -151,14 +303,18 @@ flat
 	// vestig
 	: "vestig" = <gap reason="illegible" extent="unknown" unit="character" desc="vestiges"></>
 	
-	//---test_gap_breaks---
+	//---test_gap_breaks--- not sure where this came from - seems to not be needed and not defined otherwise
 	// BREAK
-	: "BREAK" = <gap reason="lost" extent="unknown" unit="line"></>
+	//: "BREAK" = <gap reason="lost" extent="unknown" unit="line"></>
 	
 	//---test_lost_lines---
 	// lost.#{n}lin
 	: "lost." [VSNUM v] "lin" = <gap reason="lost" extent=[VSNUM v] unit="line"></>
  	: "lost." [STNUM v] "lin" = <gap reason="lost" extent=[STNUM v] unit="line"></>
+	
+			//---test_lost_lines_unknown---
+	// lost.#{n}lin
+	: "lost." "?" "lin" = <gap reason="lost" extent="unknown" unit="line"></>
 	
 	//---test_quotation_marks---
 	// " "
@@ -167,21 +323,24 @@ flat
 	//---test_omitted---
 	//< >
   >: "<" [WORDS w] ">" = <supplied reason="omitted">[WORDS w]</>
+  >: "<" [WORDS w] "?" ">" = <supplied reason="omitted" cert="low">[WORDS w]</>
 	
 	//---test_sic---
 	//sic
 	>: "{" [WORDS w] "}" = <sic>[WORDS w]</>	
 	
-	//: "[" [BEGWORD a] "ca." _ "\?" [WORDS f] "]" = <supplied reason="lost7">[BEGWORD a]<gap reason="lost5" extent="unknown" unit="character"></>[WORDS f]</>
-
-		
+			
 	//---multiple tests see inside_brackets production---
 	// [ ], [[ ]], [ca.?] etc...
 	: "[" [inside_brackets i] "]" =  [inside_brackets i] 	
 	
 	//---test_illegible_gap_unknown---
+	// .?
+	: ".?" = <gap reason="illegible" extent="unknown" unit="character"></>
+	
+		//---test_illegible_gap_unknown_ca---
 	// ca.?
-	: [CA] = <gap reason="illegible" extent="unknown" unit="character"></>
+	: [CA] = <gap reason="illegible" extent="unknown" unit="character" precision="circa"></>
 	
 	>: [ANYLETTER a] = [ANYLETTER a]
 	
@@ -190,28 +349,40 @@ flat
 inside_brackets 
 	
 	//---test_lost_dot_gap---
-	// ., .2, .3 inside brackets
-	: "." = <gap reason="lost" extent="1" unit="character"></>
-    : "." [SMNUM n] = <gap reason="lost" extent=[SMNUM n] unit="character"></>
+	// .1, .2, .3 inside brackets
+    : "." [VSNUM n] = <gap reason="lost" extent=[VSNUM n] unit="character"></>
+	: "." [STNUM n] = <gap reason="lost" extent=[STNUM n] unit="character"></>
 	
-	:  [BEGWORD a] "ca." _ "\?" [WORDS f]   = <supplied reason="lost7">[BEGWORD a]<gap reason="lost5" extent="unknown" unit="character"></>[WORDS f]</>
+	//---test_lost_dot_max---
+	// .#{n}-#{n}
+	: "." [VSNUM v] "-" [VSNUM w] = <gap reason="lost" extent=[VSNUM v] extentmax=[VSNUM w] unit="character"></>
+ 	: "." [STNUM v] "-" [STNUM w] = <gap reason="lost" extent=[STNUM v] extentmax=[STNUM w] unit="character"></>
+		
+	//:  [BEGWORD a] "ca." _ "\?" [WORDS f]   = <supplied reason="lost7">[BEGWORD a]<gap reason="lost5" extent="unknown" unit="character"></>[WORDS f]</>
 
 	
 	//---test_ancient_erasure---
 	// [[ ]] erasure
-	>: "[" [WORDS w] "]" = <del rend="erasure">[WORDS w]</>	
+	>: "[-" [WORDS w] "]" = <del rend="cross-strokes">[WORDS w]</>
+	>: "[\/" [WORDS w] "]" = <del rend="slashes">[WORDS w]</>
+	//this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
+	>: "[" [WORDS w] "]" = <del rend="erasure">[WORDS w]</>
 	
-	//---test_lost---
-	// [ ] lost
-	//>:  [WORDS w]  = <supplied reason="lost">[WORDS w]</>
-	>: [items is] = <supplied reason="lost">[items is]</>
-
-	//---test_lost_gap_unknown---
+		//---test_lost_gap_unknown---
+	// [ .? ]  	
+	>: ".?" = <gap reason="lost" extent="unknown" unit="character"></>
+	
+	//---test_lost_gap_unknown_ca---
 	// [ ca.? ]  	
-	>: [CA] = <gap reason="lost" extent="unknown" unit="character"></>
+	>: [CA] = <gap reason="lost" extent="unknown" unit="character" precision="circa"></>
 	
 	//---test_lost_uncertain---
 	// [ ? ] uncertain lost
 	>:  [WORDS w] "\?" = <supplied reason="lost" cert="low">[WORDS w]</>
+	
+	//---test_lost--- - placed at the end so all other possibilities of inside brackets are checked before looping through 'items' production
+	// [ ] lost
+	//>:  [WORDS w]  = <supplied reason="lost">[WORDS w]</>
+	>: [items is] = <supplied reason="lost">[items is]</>
 	
 			

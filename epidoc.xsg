@@ -8,13 +8,13 @@ UNDERDOT = "\u0323"
 
 CA = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
-WORDSCRIPT = ([^ \/\\\n\r\t\[\]<>_#@~\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+WORDSCRIPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
 // WORD breaks at space and WORDS allows space (therefore multiple words)
-WORD = ([^ \/\\\n\r\t\[\]<>_#@~\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
-WORDS = ([^\/\\\n\r\t\[\]<>_#@~\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
 NUM = [0-9]+
-ANYLETTER = [^\/\\\n\r\t\[\]<>_#@~\*\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]
-ONELETTER = [^\/\\\n\r\t\[\]<>_#@~\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]{1}
+ANYLETTER = [^\/\\\n\r\t\[\]<>_#@~〚〛\*\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]
+ONELETTER = [^\/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]{1}
 //VARIA = <ANYLETTER>"(`)"
 
 BEGWORD = [^\/\n\t\[\]<>\|\'\!\(\)\{\}\?\"¨]*
@@ -252,9 +252,20 @@ item
 	
 	//---del_rend---
 	//  not brackets - already defined in inside-brackets
-	//: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
-	//: "〚-" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a]</>
-	//: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a]</>
+	: "〚-" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a]</>
+	>: "〚-" [items a] "〛" = <del rend="cross-strokes">[items a]</>
+	: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a]</>
+//this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
+	: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
+	
+	
+	//---test_ancient_erasure---
+	// [[ ]] erasure - double brackets
+	//: "[-" [WORDS w] "]" = <del rend="cross-strokes">[WORDS w]</>
+	//>: "[-" [items w] "]" = <del rend="cross-strokes">[items w]</>
+	//: "[\/" [WORDS w] "]" = <del rend="slashes">[WORDS w]</>
+	//this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
+	//>: "[" [WORDS w] "]" = <del rend="erasure">[WORDS w]</>
 	
 	>: [flat f] = [flat f]
 
@@ -363,10 +374,10 @@ inside_brackets
 	
 	//---test_ancient_erasure---
 	// [[ ]] erasure
-	>: "[-" [WORDS w] "]" = <del rend="cross-strokes">[WORDS w]</>
-	>: "[\/" [WORDS w] "]" = <del rend="slashes">[WORDS w]</>
+	//>: "[-" [WORDS w] "]" = <del rend="cross-strokes">[WORDS w]</>
+	//>: "[\/" [WORDS w] "]" = <del rend="slashes">[WORDS w]</>
 	//this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
-	>: "[" [WORDS w] "]" = <del rend="erasure">[WORDS w]</>
+	//>: "[" [WORDS w] "]" = <del rend="erasure">[WORDS w]</>
 	
 		//---test_lost_gap_unknown---
 	// [ .? ]  	

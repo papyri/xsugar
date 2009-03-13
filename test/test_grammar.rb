@@ -218,8 +218,8 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/deletion.html
     def test_ancient_erasure
       # ancient erasure/cancellation/expunction
-      assert_equal_fragment_transform 'a[[bc]]', 'a<del rend="erasure">bc</del>'
-      assert_equal_fragment_transform 'ab[[c def g]]hi', 'ab<del rend="erasure">c def g</del>hi'
+      assert_equal_fragment_transform 'a〚bc〛', 'a<del rend="erasure">bc</del>'
+      assert_equal_fragment_transform 'ab〚c def g〛hi', 'ab<del rend="erasure">c def g</del>hi'
     end
   
     # no EpiDoc guideline, inherited from TEI

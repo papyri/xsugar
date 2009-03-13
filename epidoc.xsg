@@ -69,11 +69,9 @@ unclears_SP_non_terminal : [SP] [UNDERDOT] [unclears_SP_non_terminal mu] = "\u00
 unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [ANYLETTER a] [unclears_non_terminal mu]
 								 >: [ANYLETTER a] [UNDERDOT] = [ANYLETTER a]
 								 
-expand 	: [WORD a] "(" [WORD b] ")" [expand more] = [WORD a]<ex>[WORD b]</>[expand more]
-			>: [WORD a] "(" [WORD b] ")" = [WORD a]<ex>[WORD b]</>
-			
-expandi : [items a] "(" [WORD b] ")" [expandi more] = [items a]<ex>[WORD b]</>[expandi more]
-			>: [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
+//expandi : [items a] "(" [WORD b] ")" [expandi more] = [items a]<ex>[WORD b]</>[expandi more]
+//			>: [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
+//			//>: [items a] = [items a]
 			
 
 item 
@@ -82,10 +80,6 @@ item
 	>: [unclears_non_terminal u] = <unclear reason="undefined">[unclears_non_terminal u]</>
 	//: [SP] [UNDERDOT] = <unclear reason="undefined">"\u00A0"</>
 	//>: [ANYLETTER a] [UNDERDOT] = <unclear reason="undefined">[ANYLETTER a]</>
-	
-	//---expand loop and items---
-	: [expand e] = <expan>[expand e]</>
-	>: [expandi e] = <expan>[expandi e]</>
 	
 	//---choice---
 	//  <:a|orth|b|:> 
@@ -354,6 +348,18 @@ flat
 	: [CA] = <gap reason="illegible" extent="unknown" unit="character" precision="circa"></>
 	
 	>: [ANYLETTER a] = [ANYLETTER a]
+		
+	//---expand loop and items---
+	: [expand e] = <expan>[expand e]</>
+	>: [expand e] [WORD a] = <expan>[expand e] [WORD a]</>
+	//>: [expandi e] = <expan>[expandi e]</>
+	
+	
+expand 	: [WORD a] "(" [WORD b] ")" [expand more] = [WORD a]<ex>[WORD b]</>[expand more]
+			//>: [WORD a] [expand more] = [WORD a] [expand more]
+			//>: "(" [WORD b] ")" [expand more] = <ex>[WORD b]</>[expand more]
+			>: [WORD a] "(" [WORD b] ")" = [WORD a]<ex>[WORD b]</>
+			//>: [WORD a] = [WORD a]
 	
 	
 	
@@ -369,16 +375,6 @@ inside_brackets
 	: "." [VSNUM v] "-" [VSNUM w] = <gap reason="lost" extent=[VSNUM v] extentmax=[VSNUM w] unit="character"></>
  	: "." [STNUM v] "-" [STNUM w] = <gap reason="lost" extent=[STNUM v] extentmax=[STNUM w] unit="character"></>
 		
-	//:  [BEGWORD a] "ca." _ "\?" [WORDS f]   = <supplied reason="lost7">[BEGWORD a]<gap reason="lost5" extent="unknown" unit="character"></>[WORDS f]</>
-
-	
-	//---test_ancient_erasure---
-	// [[ ]] erasure
-	//>: "[-" [WORDS w] "]" = <del rend="cross-strokes">[WORDS w]</>
-	//>: "[\/" [WORDS w] "]" = <del rend="slashes">[WORDS w]</>
-	//this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
-	//>: "[" [WORDS w] "]" = <del rend="erasure">[WORDS w]</>
-	
 		//---test_lost_gap_unknown---
 	// [ .? ]  	
 	>: ".?" = <gap reason="lost" extent="unknown" unit="character"></>

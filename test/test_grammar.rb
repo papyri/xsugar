@@ -297,7 +297,7 @@ if(RUBY_PLATFORM == 'java')
     
     def test_add_place_supralinear
       assert_equal_fragment_transform '\ε/', '<add place="supralinear">ε</add>'
-      assert_equal_fragment_transform '\Πωλίων ἀπάτωρ?/', '<add place="supralinear" cert="low">\Πωλίων ἀπάτωρ/</add>'
+      assert_equal_fragment_transform '\Πωλίων ἀπάτωρ?/', '<add place="supralinear" cert="low">Πωλίων ἀπάτωρ</add>'
     end
     
     def test_space_unknown

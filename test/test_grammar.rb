@@ -10,6 +10,7 @@ if(RUBY_PLATFORM == 'java')
     
     def test_expansion_multiple
       assert_equal_fragment_transform 'ab(c)def(gh)i', '<expan>ab<ex>c</ex>def<ex>gh</ex>i</expan>'
+	  assert_equal_fragment_transform 'ab(c)def(gh)i(j)', '<expan>ab<ex>c</ex>def<ex>gh</ex>i<ex>j</ex></expan>'
     end
     
     def test_expansion_with_supp
@@ -285,14 +286,14 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_glyph
-      assert_equal_fragment_transform '!!stauros', '<g type="stauros"></g>'
-      assert_equal_fragment_transform '!!stauros,♱', '<g type="stauros">♱</g>'
-      assert_equal_fragment_transform '!!filler(extension)', '<g type="filler" rend="extension"></g>'
+      assert_equal_fragment_transform '!!stauros ', '<g type="stauros"></g>'
+      assert_equal_fragment_transform '!!stauros,♱ ', '<g type="stauros">♱</g>'
+      assert_equal_fragment_transform '!!filler(extension) ', '<g type="filler" rend="extension"></g>'
     end
     
     def test_hand_shift
-      assert_equal_fragment_transform '$m1', '<handShift new="m1"></handShift>'
-      assert_equal_fragment_transform '$m20', '<handShift new="m20"></handShift>' 
+      assert_equal_fragment_transform '$m1 ', '<handShift new="m1"></handShift>'
+      assert_equal_fragment_transform '$m20 ', '<handShift new="m20"></handShift>' 
     end
     
     def test_add_place_supralinear
@@ -315,7 +316,7 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_foreign_lang
-      assert_equal_fragment_transform '~veni vedi vici~la', '<foreign lang="la">veni vedi vici</foreign>'
+      assert_equal_fragment_transform '~veni vedi vici~la ', '<foreign lang="la">veni vedi vici</foreign>'
     end
     
     def test_milestone
@@ -325,7 +326,7 @@ if(RUBY_PLATFORM == 'java')
     
     def test_figure
       ['seal', 'stamp', 'drawing'].each do |figdesc|
-        assert_equal_fragment_transform "fig.#{figdesc}", "<figure><figDesc>#{figdesc}</figDesc></figure>"
+        assert_equal_fragment_transform "fig.#{figdesc} ", "<figure><figDesc>#{figdesc}</figDesc></figure>"
       end
     end
     

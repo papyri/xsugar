@@ -127,6 +127,11 @@ item
 	: "." [VSNUM n] = <gap reason="illegible" extent=[VSNUM n] unit="character"></>  
 	: "." [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character"></>
 	
+	//---test_lost_dot_max---
+	// .#{n}-#{n}
+	: "." [VSNUM v] "-" [VSNUM w] = <gap reason="illegible" extent=[VSNUM v] extentmax=[VSNUM w] unit="character"></>
+ 	: "." [STNUM v] "-" [STNUM w] = <gap reason="illegible" extent=[STNUM v] extentmax=[STNUM w] unit="character"></>
+	
 	//---test_illegible_dot_lin---
 	// .1lin, .2lin, .3lin
 	: "." [VSNUM n] "lin" = <gap unit="line" extent=[VSNUM n] reason="illegible"></>  

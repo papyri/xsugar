@@ -256,7 +256,7 @@ item
 	>: "〚-" [items a] "〛" = <del rend="cross-strokes">[items a]</>
 	: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a]</>
 //this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
-	: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
+	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
 	
 	
 	//---test_ancient_erasure---

@@ -31,6 +31,7 @@ LGNUM = [4-9]{1}
 STNUM = [1-9]+[0-9]+
 ABBRJF = "( )"
 VSNUM = [1-9]{1}
+MULTNUM = [0-9]+
 QUESTION = [\?]?
 
 // symbolnum is for recognizing either a fraction or whole number with multiple digits
@@ -129,8 +130,9 @@ item
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n}
-	: "." [VSNUM v] "-" [VSNUM w] = <gap reason="illegible" extent=[VSNUM v] extentmax=[VSNUM w] unit="character"></>
- 	: "." [STNUM v] "-" [STNUM w] = <gap reason="illegible" extent=[STNUM v] extentmax=[STNUM w] unit="character"></>
+	: "." [MULTNUM v] "-" [MULTNUM w] = <gap reason="illegible" extent=[MULTNUM v] extentmax=[MULTNUM w] unit="character"></>
+	//: "." [VSNUM v] "-" [VSNUM w] = <gap reason="illegible" extent=[VSNUM v] extentmax=[VSNUM w] unit="character"></>
+ 	//: "." [STNUM v] "-" [STNUM w] = <gap reason="illegible" extent=[STNUM v] extentmax=[STNUM w] unit="character"></>
 	
 	//---test_illegible_dot_lin---
 	// .1lin, .2lin, .3lin
@@ -384,8 +386,9 @@ inside_brackets
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n}
-	: "." [VSNUM v] "-" [VSNUM w] = <gap reason="lost" extent=[VSNUM v] extentmax=[VSNUM w] unit="character"></>
- 	: "." [STNUM v] "-" [STNUM w] = <gap reason="lost" extent=[STNUM v] extentmax=[STNUM w] unit="character"></>
+	: "." [MULTNUM v] "-" [MULTNUM w] = <gap reason="lost" extent=[MULTNUM v] extentmax=[MULTNUM w] unit="character"></>
+	//: "." [VSNUM v] "-" [VSNUM w] = <gap reason="lost" extent=[VSNUM v] extentmax=[VSNUM w] unit="character"></>
+ 	//: "." [STNUM v] "-" [STNUM w] = <gap reason="lost" extent=[STNUM v] extentmax=[STNUM w] unit="character"></>
 		
 		//---test_lost_gap_unknown---
 	// [ .? ]  	

@@ -102,6 +102,18 @@ if(RUBY_PLATFORM == 'java')
     
     def test_illegible_dot_gap_extentmax
       assert_equal_fragment_transform '.2-3', '<gap reason="illegible" extent="2" extentmax="3" unit="character"></gap>'
+	  assert_equal_fragment_transform '.7-14', '<gap reason="illegible" extent="7" extentmax="14" unit="character"></gap>'
+	  assert_equal_fragment_transform '.31-77', '<gap reason="illegible" extent="31" extentmax="77" unit="character"></gap>'
+    end
+	
+	def test_lost_dot_gap_extentmax
+      # Some number of missing characters
+      assert_equal_fragment_transform '[.1-2]', '<gap reason="lost" extent="1" extentmax="2" unit="character"></gap>'
+      assert_equal_fragment_transform '[.7-14]', '<gap reason="lost" extent="7" extentmax="14" unit="character"></gap>'
+      assert_equal_fragment_transform '[.31-77]', '<gap reason="lost" extent="31" extentmax="77" unit="character"></gap>'
+      (11..100).each do |n|
+        assert_equal_fragment_transform "[.10-#{n}]", "<gap reason=\"lost\" extent=\"10\" extentmax=\"#{n}\" unit=\"character\"></gap>"
+      end
     end
   
     # http://www.stoa.org/epidoc/gl/5/vestiges.html

@@ -341,8 +341,8 @@ flat
 	>: "{" [WORDS w] "}" = <sic>[WORDS w]</>	
 	
 	//---expand loop and items---
-	: [WORD a] "[" [WORD b] "(" [WORD c] " )" "]" = <expan>[WORD a]<supplied reason="lost">[WORD b]<ex>[WORD c]</></></>
-	//: [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] " )" [WORDOPT d] "]" [WORDOPT e] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
+	//: [WORD a] "[" [WORD b] "(" [WORD c] ")" "]" = <expan>[WORD a]<supplied reason="lost">[WORD b]<ex>[WORD c]</></></>
+	: [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	: [expand e] = <expan>[expand e]</>
 	>: [expand e] [WORD a] = <expan>[expand e] [WORD a]</>
 	>: __ [expandi e] = __ <expan>[expandi e]</>

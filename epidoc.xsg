@@ -70,11 +70,10 @@ unclears_SP_non_terminal : [SP] [UNDERDOT] [unclears_SP_non_terminal mu] = "\u00
 
 unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [ANYLETTER a] [unclears_non_terminal mu]
 								 >: [ANYLETTER a] [UNDERDOT] = [ANYLETTER a]
-								 
-//expandi : [items a] "(" [WORD b] ")" [expandi more] = [items a]<ex>[WORD b]</>[expandi more]
-//			>: [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
-//			//>: [items a] = [items a]
-			
+		 
+morenum : "<#" [WORD w] "=" [SYMBOLNUM x] "#>" [morenum y] = <num value=[SYMBOLNUM x]>[WORD w]</>  [morenum y]
+			   >: "<#" [WORD w] "=" [SYMBOLNUM x] "#>" = <num value=[SYMBOLNUM x]>[WORD w]</>
+		 
 
 item 
 	//---test unclear characters = underdots
@@ -131,8 +130,6 @@ item
 	//---test_lost_dot_max---
 	// .#{n}-#{n}
 	: "." [MULTNUM v] "-" [MULTNUM w] = <gap reason="illegible" extent=[MULTNUM v] extentmax=[MULTNUM w] unit="character"></>
-	//: "." [VSNUM v] "-" [VSNUM w] = <gap reason="illegible" extent=[VSNUM v] extentmax=[VSNUM w] unit="character"></>
- 	//: "." [STNUM v] "-" [STNUM w] = <gap reason="illegible" extent=[STNUM v] extentmax=[STNUM w] unit="character"></>
 	
 	//---test_illegible_dot_lin---
 	// .1lin, .2lin, .3lin
@@ -201,6 +198,7 @@ item
 	//---fraction_number and whole_number symbol and multi_symbol---
 	//  <#a#1/2#> a = symbol representation and then the number/fraction it equals after '='
     	: "<#" [WORD o] "=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]>[WORD o]</>
+		: "<#" [WORD o] [morenum m] "=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]>[WORD o] [morenum m]</>
 		
 	//---choice---
 	//  <:a|orth|b|:> 
@@ -387,9 +385,7 @@ inside_brackets
 	//---test_lost_dot_max---
 	// .#{n}-#{n}
 	: "." [MULTNUM v] "-" [MULTNUM w] = <gap reason="lost" extent=[MULTNUM v] extentmax=[MULTNUM w] unit="character"></>
-	//: "." [VSNUM v] "-" [VSNUM w] = <gap reason="lost" extent=[VSNUM v] extentmax=[VSNUM w] unit="character"></>
- 	//: "." [STNUM v] "-" [STNUM w] = <gap reason="lost" extent=[STNUM v] extentmax=[STNUM w] unit="character"></>
-		
+			
 		//---test_lost_gap_unknown---
 	// [ .? ]  	
 	>: ".?" = <gap reason="lost" extent="unknown" unit="character"></>

@@ -258,6 +258,7 @@ flat
 	//---test_expand low cert---
 	// (abc?)
 	: "(" [WORD w] "?" ")" = <expan><ex cert="low">[WORD w]</></>
+	>: [WORD a] "(" [WORD b] "?" ")" = <expan>[WORD a]<ex cert="low">[WORD b]</></>
 	
 	//---test_expansion---
 	// a(b)
@@ -266,6 +267,7 @@ flat
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
 	: [WORD w] [ABBR] = <abbr> [WORD w] </>
+	>: [items w] [ABBR] = <abbr>[items w]</>
 	
 	//---test_symbol_expansion---
 	// (abc)

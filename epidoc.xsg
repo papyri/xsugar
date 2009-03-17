@@ -4,6 +4,8 @@ ABBR = "( )"
 
 BEGOPT = "<:"
 ENDOPT = ":>"
+BEGNUM = "<#"
+ENDNUM = "#>"
 
 UNDERDOT = "\u0323"
 //ca. with 0 or more spaces followed by ? mark
@@ -58,8 +60,8 @@ unclears_SP_non_terminal : [SP] [UNDERDOT] [unclears_SP_non_terminal mu] = "\u00
 unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [ANYLETTER a] [unclears_non_terminal mu]
 								 >: [ANYLETTER a] [UNDERDOT] = [ANYLETTER a]
 		 
-morenum : "<#" [WORD w] "=" [SYMBOLNUM x] "#>" [morenum y] = <num value=[SYMBOLNUM x]>[WORD w]</>  [morenum y]
-			   >: "<#" [WORD w] "=" [SYMBOLNUM x] "#>" = <num value=[SYMBOLNUM x]>[WORD w]</>
+morenum : [BEGNUM] [WORD w] "=" [SYMBOLNUM x] [ENDNUM] [morenum y] = <num value=[SYMBOLNUM x]>[WORD w]</>  [morenum y]
+			   >: [BEGNUM] [WORD w] "=" [SYMBOLNUM x] [ENDNUM] = <num value=[SYMBOLNUM x]>[WORD w]</>
 		 
 
 item 
@@ -164,13 +166,13 @@ item
 	
 	//---number or fraction_no_symbol---
 	//  #a#1/2# a = character representation and then the fraction it equals between next #'s
-    : "<#=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]/>
-	: "<#" [WORD o] "=#>" = <num>[WORD o]</>
+    : "<#=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]/>
+	: [BEGNUM] [WORD o] "=#>" = <num>[WORD o]</>
 	
 	//---fraction_number and whole_number symbol and multi_symbol---
 	//  <#a#1/2#> a = symbol representation and then the number/fraction it equals after '='
-    : "<#" [WORD o] "=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]>[WORD o]</>
-	: "<#" [WORD o] [morenum m] "=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]>[WORD o] [morenum m]</>
+    : [BEGNUM] [WORD o] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[WORD o]</>
+	: [BEGNUM] [WORD o] [morenum m] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[WORD o] [morenum m]</>
 		
 	//---choice---
 	//  <:a|orth|b|:> 

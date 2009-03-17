@@ -17,7 +17,7 @@ WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿�
 NUM = [0-9]+
 ANYLETTER = [^\/\\\n\r\t\[\]<>_#@~〚〛\*\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]
 
-DOT = [.]
+DOT = "."
 QUESTION = [\?]?
 
 // symbolnum is for recognizing either a fraction or whole number with multiple digits
@@ -82,7 +82,7 @@ item
 
 	//---test_uncertain_diacritical_diaeresis---
 	// (¨)
-  : [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
+	: [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
 	
 	//---test_uncertain_diacritical_varia---
 	// (`)
@@ -94,30 +94,27 @@ item
 			
 	//---test_uncertain_diacritical_psili---
 	// (᾿)
-  : [ANYLETTER a] "(᾿)" = <hi rend="psili">[ANYLETTER a]</>
+	: [ANYLETTER a] "(᾿)" = <hi rend="psili">[ANYLETTER a]</>
 	
 	//---test_uncertain_diacritical_oxia---
 	// (΄)
-  : [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
+	: [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
 	
 	//---test_uncertain_diacritical_perispomeni---
 	// (῀)
-  : [ANYLETTER a] "(῀)" = <hi rend="perispomeni">[ANYLETTER a]</>
+	: [ANYLETTER a] "(῀)" = <hi rend="perispomeni">[ANYLETTER a]</>
 	
-//VARIA = <ANYLETTER>"(`)"
-		
 	//---test_illegible_dot_gap---
 	// .1, .2, .3
-    //: [DOT] = <gap reason="illegible" extent="1" unit="character"></>
-	: "." [NUM n] = <gap reason="illegible" extent=[NUM n] unit="character"></>  
+	: [DOT] [NUM n] = <gap reason="illegible" extent=[NUM n] unit="character"></>  
 	
-	//---test_lost_dot_max---
+	//---test_illegible_dot_max---
 	// .#{n}-#{n}
-	: "." [NUM v] "-" [NUM w] = <gap reason="illegible" extent=[NUM v] extentmax=[NUM w] unit="character"></>
+	: [DOT] [NUM v] "-" [NUM w] = <gap reason="illegible" extent=[NUM v] extentmax=[NUM w] unit="character"></>
 	
 	//---test_illegible_dot_lin---
 	// .1lin, .2lin, .3lin
-	: "." [NUM n] "lin" = <gap unit="line" extent=[NUM n] reason="illegible"></>  
+	: [DOT] [NUM n] "lin" = <gap unit="line" extent=[NUM n] reason="illegible"></>  
 	
 	//---test_illegible_gap_ca---
 	// ca.1, ca.2, ca.3
@@ -340,11 +337,11 @@ inside_brackets
 	
 	//---test_lost_dot_gap---
 	// .1, .2, .3 inside brackets
-	: "." [NUM n] = <gap reason="lost" extent=[NUM n] unit="character"></>
+	: [DOT] [NUM n] = <gap reason="lost" extent=[NUM n] unit="character"></>
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n}
-	: "." [NUM v] "-" [NUM w] = <gap reason="lost" extent=[NUM v] extentmax=[NUM w] unit="character"></>
+	: [DOT] [NUM v] "-" [NUM w] = <gap reason="lost" extent=[NUM v] extentmax=[NUM w] unit="character"></>
 			
 	//---test_lost_gap_unknown---
 	// [ .? ]  	

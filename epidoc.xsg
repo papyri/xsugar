@@ -24,6 +24,8 @@ QUESTION = [\?]?
 
 // symbolnum is for recognizing either a fraction or whole number with multiple digits
 SYMBOLNUM = [0-9]+\/{1}[0-9]+|[0-9]+
+// symnummulti is for recognizing multiple fractions or whole numbers with multiple digits divided by 1 or more spaces
+SYMNUMMULTI = ([0-9]+\/{1}[0-9]+[ ]+|[0-9]+[ ]+)+
 // appnum is for recognizing app_lem number
 APPNUM = [0-9]+\.{1}[0-9]+
 
@@ -167,12 +169,14 @@ item
 	//---number or fraction_no_symbol---
 	//  #a#1/2# a = character representation and then the fraction it equals between next #'s
     : "<#=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]/>
+	: "<#=" [SYMNUMMULTI m] "#>" = <num value=[SYMNUMMULTI m]/>
 	: [BEGNUM] [WORD o] "=#>" = <num>[WORD o]</>
 	
 	//---fraction_number and whole_number symbol and multi_symbol---
 	//  <#a#1/2#> a = symbol representation and then the number/fraction it equals after '='
     : [BEGNUM] [WORD o] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[WORD o]</>
 	: [BEGNUM] [WORD o] [morenum m] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[WORD o] [morenum m]</>
+	>: [BEGNUM] [items o] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[items o]</>
 		
 	//---choice---
 	//  <:a|orth|b|:> 

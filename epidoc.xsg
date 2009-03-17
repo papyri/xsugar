@@ -31,7 +31,6 @@ LGNUM = [4-9]{1}
 STNUM = [1-9]+[0-9]+
 ABBRJF = "( )"
 VSNUM = [1-9]{1}
-MULTNUM = [0-9]+
 QUESTION = [\?]?
 
 // symbolnum is for recognizing either a fraction or whole number with multiple digits
@@ -124,45 +123,52 @@ item
 	//---test_illegible_dot_gap---
 	// .1, .2, .3
     //: [DOT] = <gap reason="illegible" extent="1" unit="character"></>
-	: "." [VSNUM n] = <gap reason="illegible" extent=[VSNUM n] unit="character"></>  
-	: "." [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character"></>
+	: "." [NUM n] = <gap reason="illegible" extent=[NUM n] unit="character"></>  
+	//: "." [VSNUM n] = <gap reason="illegible" extent=[VSNUM n] unit="character"></>  
+	//: "." [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character"></>
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n}
-	: "." [MULTNUM v] "-" [MULTNUM w] = <gap reason="illegible" extent=[MULTNUM v] extentmax=[MULTNUM w] unit="character"></>
+	: "." [NUM v] "-" [NUM w] = <gap reason="illegible" extent=[NUM v] extentmax=[NUM w] unit="character"></>
 	
 	//---test_illegible_dot_lin---
 	// .1lin, .2lin, .3lin
-	: "." [VSNUM n] "lin" = <gap unit="line" extent=[VSNUM n] reason="illegible"></>  
-	: "." [STNUM j] "lin" = <gap unit="line" extent=[STNUM j]  reason="illegible"></>
+	: "." [NUM n] "lin" = <gap unit="line" extent=[NUM n] reason="illegible"></>  
+	//: "." [VSNUM n] "lin" = <gap unit="line" extent=[VSNUM n] reason="illegible"></>  
+	//: "." [STNUM j] "lin" = <gap unit="line" extent=[STNUM j]  reason="illegible"></>
 	
 	//---test_illegible_gap_ca---
 	// ca.1, ca.2, ca.3
 	//: "ca." [LGNUM j] = <gap reason="illegible" extent=[LGNUM j] unit="character"></>
 	//: "ca." [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character"></>
-	: [LEADCA] [VSNUM j] = <gap reason="illegible" extent=[VSNUM j] unit="character" precision="circa"></>
-	: [LEADCA] [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character" precision="circa"></>
+	: [LEADCA] [NUM j] = <gap reason="illegible" extent=[NUM j] unit="character" precision="circa"></>
+	//: [LEADCA] [VSNUM j] = <gap reason="illegible" extent=[VSNUM j] unit="character" precision="circa"></>
+	//: [LEADCA] [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character" precision="circa"></>
 	
 	//---test_lang_gap---
 	//(Lang: Demotic 2 lines)
-	: "(Lang: " [LANGLIST l] " " [VSNUM v] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[VSNUM v] unit="line"></>
-	: "(Lang: " [LANGLIST l] " " [STNUM s] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[STNUM s] unit="line"></>
+	: "(Lang: " [LANGLIST l] " " [NUM v] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[NUM v] unit="line"></>
+	//: "(Lang: " [LANGLIST l] " " [VSNUM v] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[VSNUM v] unit="line"></>
+	//: "(Lang: " [LANGLIST l] " " [STNUM s] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[STNUM s] unit="line"></>
 	
 	
 	//---test_lines_not_transcribed---
 	//"2 lines not transcribed"
-	: "\"" [VSNUM v] " lines not transcribed\"" = <gap reason="ellipsis" extent=[VSNUM v] unit="line"></>
-	: "\"" [STNUM s] " lines not transcribed\"" = <gap reason="ellipsis" extent=[STNUM s] unit="line"></>
+	: "\"" [NUM v] " lines not transcribed\"" = <gap reason="ellipsis" extent=[NUM v] unit="line"></>
+	//: "\"" [VSNUM v] " lines not transcribed\"" = <gap reason="ellipsis" extent=[VSNUM v] unit="line"></>
+	//: "\"" [STNUM s] " lines not transcribed\"" = <gap reason="ellipsis" extent=[STNUM s] unit="line"></>
 	
 	//---perpendicular_lines---
 	//(23, perp)
-	: "(" [VSNUM v] ", perp)" = <lb rend="perpendicular" n=[VSNUM v]/>
-	: "(" [STNUM s] ", perp)" = <lb rend="perpendicular" n=[STNUM s]/>
+	: "(" [NUM v] ", perp)" = <lb rend="perpendicular" n=[NUM v]/>
+	//: "(" [VSNUM v] ", perp)" = <lb rend="perpendicular" n=[VSNUM v]/>
+	//: "(" [STNUM s] ", perp)" = <lb rend="perpendicular" n=[STNUM s]/>
 	
 	//---inverse_lines---
 	//(23, inv)
-	: "(" [VSNUM v] ", inv)" = <lb rend="inverse" n=[VSNUM v]/>
-	: "(" [STNUM s] ", inv)" = <lb rend="inverse" n=[STNUM s]/>
+	: "(" [NUM v] ", inv)" = <lb rend="inverse" n=[NUM v]/>
+	//: "(" [VSNUM v] ", inv)" = <lb rend="inverse" n=[VSNUM v]/>
+	//: "(" [STNUM s] ", inv)" = <lb rend="inverse" n=[STNUM s]/>
 	
 	//---subscript---
 	//   /abc\
@@ -298,13 +304,15 @@ flat
 	
 	//---test_vestige_lines---
 	// vestig.#{n}lin
-	: "vestig." [VSNUM v] "lin" = <gap reason="illegible" extent=[VSNUM v] unit="line" desc="vestiges"></>
- 	: "vestig." [STNUM v] "lin" = <gap reason="illegible" extent=[STNUM v] unit="line" desc="vestiges"></>
+	: "vestig." [NUM v] "lin" = <gap reason="illegible" extent=[NUM v] unit="line" desc="vestiges"></>
+	//: "vestig." [VSNUM v] "lin" = <gap reason="illegible" extent=[VSNUM v] unit="line" desc="vestiges"></>
+ 	//: "vestig." [STNUM v] "lin" = <gap reason="illegible" extent=[STNUM v] unit="line" desc="vestiges"></>
 	
 	//---test_vestige_lines_ca---
 	// vestig.ca.#{n}lin
-	: "vestig.ca." [VSNUM v] "lin" = <gap reason="illegible" extent=[VSNUM v] unit="line" precision="circa" desc="vestiges"></>
- 	: "vestig.ca." [STNUM v] "lin" = <gap reason="illegible" extent=[STNUM v] unit="line" precision="circa" desc="vestiges"></>
+	: "vestig.ca." [NUM v] "lin" = <gap reason="illegible" extent=[NUM v] unit="line" precision="circa" desc="vestiges"></>
+	//: "vestig.ca." [VSNUM v] "lin" = <gap reason="illegible" extent=[VSNUM v] unit="line" precision="circa" desc="vestiges"></>
+ 	//: "vestig.ca." [STNUM v] "lin" = <gap reason="illegible" extent=[STNUM v] unit="line" precision="circa" desc="vestiges"></>
 	
 	//---test_vestige_lines_unknown---
 	// vestig.?lin
@@ -320,8 +328,9 @@ flat
 	
 	//---test_lost_lines---
 	// lost.#{n}lin
-	: "lost." [VSNUM v] "lin" = <gap reason="lost" extent=[VSNUM v] unit="line"></>
- 	: "lost." [STNUM v] "lin" = <gap reason="lost" extent=[STNUM v] unit="line"></>
+	: "lost." [NUM v] "lin" = <gap reason="lost" extent=[NUM v] unit="line"></>
+	//: "lost." [VSNUM v] "lin" = <gap reason="lost" extent=[VSNUM v] unit="line"></>
+ 	//: "lost." [STNUM v] "lin" = <gap reason="lost" extent=[STNUM v] unit="line"></>
 	
 			//---test_lost_lines_unknown---
 	// lost.#{n}lin
@@ -379,12 +388,13 @@ inside_brackets
 	
 	//---test_lost_dot_gap---
 	// .1, .2, .3 inside brackets
-    : "." [VSNUM n] = <gap reason="lost" extent=[VSNUM n] unit="character"></>
-	: "." [STNUM n] = <gap reason="lost" extent=[STNUM n] unit="character"></>
+	: "." [NUM n] = <gap reason="lost" extent=[NUM n] unit="character"></>
+    //: "." [VSNUM n] = <gap reason="lost" extent=[VSNUM n] unit="character"></>
+	//: "." [STNUM n] = <gap reason="lost" extent=[STNUM n] unit="character"></>
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n}
-	: "." [MULTNUM v] "-" [MULTNUM w] = <gap reason="lost" extent=[MULTNUM v] extentmax=[MULTNUM w] unit="character"></>
+	: "." [NUM v] "-" [NUM w] = <gap reason="lost" extent=[NUM v] extentmax=[NUM w] unit="character"></>
 			
 		//---test_lost_gap_unknown---
 	// [ .? ]  	

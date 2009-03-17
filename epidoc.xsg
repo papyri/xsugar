@@ -6,6 +6,8 @@ BEGOPT = "<:"
 ENDOPT = ":>"
 BEGNUM = "<#"
 ENDNUM = "#>"
+BEGSEG = "<\&"
+ENDSEG = "\&>"
 
 UNDERDOT = "\u0323"
 //ca. with 0 or more spaces followed by ? mark
@@ -13,11 +15,11 @@ CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
 
 // WORD breaks at space and WORDS allows space (therefore multiple words)
-WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
-WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
-WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]*) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]*) (MAX)
 NUM = [0-9]+
-ANYLETTER = [^\/\\\n\r\t\[\]<>_#@~〚〛\*\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]
+ANYLETTER = [^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]
 
 DOT = "."
 QUESTION = [\?]?
@@ -317,6 +319,10 @@ flat
 	//---test_sic---
 	//sic
 	>: "{" [WORDS w] "}" = <sic>[WORDS w]</>	
+	
+	//---test_seg---
+	//seg
+	>: [BEGSEG] [items i] [ENDSEG] = <seg cert="low">[items i]</>	
 	
 	//---expand loop and items---
 	: [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>

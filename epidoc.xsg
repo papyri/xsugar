@@ -35,6 +35,7 @@ QUESTION = [\?]?
 
 // symbolnum is for recognizing either a fraction or whole number with multiple digits
 SYMBOLNUM = [0-9]+\/{1}[0-9]+|[0-9]+
+// appnum is for recognizing app_lem number
 APPNUM = [0-9]+\.{1}[0-9]+
 
 HANDSHIFT = m{1}[0-9]+
@@ -78,8 +79,6 @@ item
 	//---test unclear characters = underdots
 	: [unclears_SP_non_terminal u] = <unclear reason="undefined">[unclears_SP_non_terminal u]</>
 	>: [unclears_non_terminal u] = <unclear reason="undefined">[unclears_non_terminal u]</>
-	//: [SP] [UNDERDOT] = <unclear reason="undefined">"\u00A0"</>
-	//>: [ANYLETTER a] [UNDERDOT] = <unclear reason="undefined">[ANYLETTER a]</>
 	
 	//---choice---
 	//  <:a|orth|b|:> 
@@ -103,7 +102,7 @@ item
 	: [ANYLETTER a] "(`)" = <hi rend="varia">[ANYLETTER a]</>	
 	
 	//---test_uncertain_diacritical_dasia---
-  // (῾)
+    // (῾)
 	: [ANYLETTER a] "(῾)" = <hi rend="dasia">[ANYLETTER a]</>
 			
 	//---test_uncertain_diacritical_psili---
@@ -124,8 +123,6 @@ item
 	// .1, .2, .3
     //: [DOT] = <gap reason="illegible" extent="1" unit="character"></>
 	: "." [NUM n] = <gap reason="illegible" extent=[NUM n] unit="character"></>  
-	//: "." [VSNUM n] = <gap reason="illegible" extent=[VSNUM n] unit="character"></>  
-	//: "." [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character"></>
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n}
@@ -134,41 +131,26 @@ item
 	//---test_illegible_dot_lin---
 	// .1lin, .2lin, .3lin
 	: "." [NUM n] "lin" = <gap unit="line" extent=[NUM n] reason="illegible"></>  
-	//: "." [VSNUM n] "lin" = <gap unit="line" extent=[VSNUM n] reason="illegible"></>  
-	//: "." [STNUM j] "lin" = <gap unit="line" extent=[STNUM j]  reason="illegible"></>
 	
 	//---test_illegible_gap_ca---
 	// ca.1, ca.2, ca.3
-	//: "ca." [LGNUM j] = <gap reason="illegible" extent=[LGNUM j] unit="character"></>
-	//: "ca." [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character"></>
 	: [LEADCA] [NUM j] = <gap reason="illegible" extent=[NUM j] unit="character" precision="circa"></>
-	//: [LEADCA] [VSNUM j] = <gap reason="illegible" extent=[VSNUM j] unit="character" precision="circa"></>
-	//: [LEADCA] [STNUM j] = <gap reason="illegible" extent=[STNUM j] unit="character" precision="circa"></>
 	
 	//---test_lang_gap---
 	//(Lang: Demotic 2 lines)
 	: "(Lang: " [LANGLIST l] " " [NUM v] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[NUM v] unit="line"></>
-	//: "(Lang: " [LANGLIST l] " " [VSNUM v] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[VSNUM v] unit="line"></>
-	//: "(Lang: " [LANGLIST l] " " [STNUM s] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[STNUM s] unit="line"></>
-	
 	
 	//---test_lines_not_transcribed---
 	//"2 lines not transcribed"
 	: "\"" [NUM v] " lines not transcribed\"" = <gap reason="ellipsis" extent=[NUM v] unit="line"></>
-	//: "\"" [VSNUM v] " lines not transcribed\"" = <gap reason="ellipsis" extent=[VSNUM v] unit="line"></>
-	//: "\"" [STNUM s] " lines not transcribed\"" = <gap reason="ellipsis" extent=[STNUM s] unit="line"></>
 	
 	//---perpendicular_lines---
 	//(23, perp)
 	: "(" [NUM v] ", perp)" = <lb rend="perpendicular" n=[NUM v]/>
-	//: "(" [VSNUM v] ", perp)" = <lb rend="perpendicular" n=[VSNUM v]/>
-	//: "(" [STNUM s] ", perp)" = <lb rend="perpendicular" n=[STNUM s]/>
 	
 	//---inverse_lines---
 	//(23, inv)
 	: "(" [NUM v] ", inv)" = <lb rend="inverse" n=[NUM v]/>
-	//: "(" [VSNUM v] ", inv)" = <lb rend="inverse" n=[VSNUM v]/>
-	//: "(" [STNUM s] ", inv)" = <lb rend="inverse" n=[STNUM s]/>
 	
 	//---subscript---
 	//   /abc\
@@ -198,13 +180,13 @@ item
 	
 	//---number or fraction_no_symbol---
 	//  #a#1/2# a = character representation and then the fraction it equals between next #'s
-    	: "<#=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]/>
-		: "<#" [WORD o] "=#>" = <num>[WORD o]</>
+    : "<#=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]/>
+	: "<#" [WORD o] "=#>" = <num>[WORD o]</>
 	
 	//---fraction_number and whole_number symbol and multi_symbol---
 	//  <#a#1/2#> a = symbol representation and then the number/fraction it equals after '='
-    	: "<#" [WORD o] "=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]>[WORD o]</>
-		: "<#" [WORD o] [morenum m] "=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]>[WORD o] [morenum m]</>
+    : "<#" [WORD o] "=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]>[WORD o]</>
+	: "<#" [WORD o] [morenum m] "=" [SYMBOLNUM s] "#>" = <num value=[SYMBOLNUM s]>[WORD o] [morenum m]</>
 		
 	//---choice---
 	//  <:a|orth|b|:> 
@@ -265,14 +247,6 @@ item
 	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
 	
 	
-	//---test_ancient_erasure---
-	// [[ ]] erasure - double brackets
-	//: "[-" [WORDS w] "]" = <del rend="cross-strokes">[WORDS w]</>
-	//>: "[-" [items w] "]" = <del rend="cross-strokes">[items w]</>
-	//: "[\/" [WORDS w] "]" = <del rend="slashes">[WORDS w]</>
-	//this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
-	//>: "[" [WORDS w] "]" = <del rend="erasure">[WORDS w]</>
-	
 	>: [flat f] = [flat f]
 
 
@@ -305,14 +279,10 @@ flat
 	//---test_vestige_lines---
 	// vestig.#{n}lin
 	: "vestig." [NUM v] "lin" = <gap reason="illegible" extent=[NUM v] unit="line" desc="vestiges"></>
-	//: "vestig." [VSNUM v] "lin" = <gap reason="illegible" extent=[VSNUM v] unit="line" desc="vestiges"></>
- 	//: "vestig." [STNUM v] "lin" = <gap reason="illegible" extent=[STNUM v] unit="line" desc="vestiges"></>
 	
 	//---test_vestige_lines_ca---
 	// vestig.ca.#{n}lin
 	: "vestig.ca." [NUM v] "lin" = <gap reason="illegible" extent=[NUM v] unit="line" precision="circa" desc="vestiges"></>
-	//: "vestig.ca." [VSNUM v] "lin" = <gap reason="illegible" extent=[VSNUM v] unit="line" precision="circa" desc="vestiges"></>
- 	//: "vestig.ca." [STNUM v] "lin" = <gap reason="illegible" extent=[STNUM v] unit="line" precision="circa" desc="vestiges"></>
 	
 	//---test_vestige_lines_unknown---
 	// vestig.?lin
@@ -329,8 +299,6 @@ flat
 	//---test_lost_lines---
 	// lost.#{n}lin
 	: "lost." [NUM v] "lin" = <gap reason="lost" extent=[NUM v] unit="line"></>
-	//: "lost." [VSNUM v] "lin" = <gap reason="lost" extent=[VSNUM v] unit="line"></>
- 	//: "lost." [STNUM v] "lin" = <gap reason="lost" extent=[STNUM v] unit="line"></>
 	
 			//---test_lost_lines_unknown---
 	// lost.#{n}lin
@@ -342,15 +310,14 @@ flat
 	
 	//---test_omitted---
 	//< >
-  >: "<" [WORDS w] ">" = <supplied reason="omitted">[WORDS w]</>
-  >: "<" [WORDS w] "?" ">" = <supplied reason="omitted" cert="low">[WORDS w]</>
+	>: "<" [WORDS w] ">" = <supplied reason="omitted">[WORDS w]</>
+	>: "<" [WORDS w] "?" ">" = <supplied reason="omitted" cert="low">[WORDS w]</>
 	
 	//---test_sic---
 	//sic
 	>: "{" [WORDS w] "}" = <sic>[WORDS w]</>	
 	
 	//---expand loop and items---
-	//: [WORD a] "[" [WORD b] "(" [WORD c] ")" "]" = <expan>[WORD a]<supplied reason="lost">[WORD b]<ex>[WORD c]</></></>
 	: [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	: [expand e] = <expan>[expand e]</>
 	>: [expand e] [WORD a] = <expan>[expand e] [WORD a]</>
@@ -366,7 +333,7 @@ flat
 	// .?
 	: ".?" = <gap reason="illegible" extent="unknown" unit="character"></>
 	
-		//---test_illegible_gap_unknown_ca---
+	//---test_illegible_gap_unknown_ca---
 	// ca.?
 	: [CA] = <gap reason="illegible" extent="unknown" unit="character" precision="circa"></>
 	
@@ -380,8 +347,6 @@ expand 	: [WORD a] "(" [WORD b] ")" [expand more] = [WORD a]<ex>[WORD b]</>[expa
 			
 expandi : [items a] "(" [WORD b] ")" [expandi more] = [items a]<ex>[WORD b]</>[expandi more]
 			>: [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
-			// sucked up too muich >: "[" [inside_brackets i] "]" [expandi more] =  [inside_brackets i] [expandi more] 
-//			//>: [items a] = [items a]
 				
 	
 inside_brackets 
@@ -389,14 +354,12 @@ inside_brackets
 	//---test_lost_dot_gap---
 	// .1, .2, .3 inside brackets
 	: "." [NUM n] = <gap reason="lost" extent=[NUM n] unit="character"></>
-    //: "." [VSNUM n] = <gap reason="lost" extent=[VSNUM n] unit="character"></>
-	//: "." [STNUM n] = <gap reason="lost" extent=[STNUM n] unit="character"></>
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n}
 	: "." [NUM v] "-" [NUM w] = <gap reason="lost" extent=[NUM v] extentmax=[NUM w] unit="character"></>
 			
-		//---test_lost_gap_unknown---
+	//---test_lost_gap_unknown---
 	// [ .? ]  	
 	>: ".?" = <gap reason="lost" extent="unknown" unit="character"></>
 	
@@ -410,7 +373,6 @@ inside_brackets
 	
 	//---test_lost--- - placed at the end so all other possibilities of inside brackets are checked before looping through 'items' production
 	// [ ] lost
-	//>:  [WORDS w]  = <supplied reason="lost">[WORDS w]</>
 	>: [items is] = <supplied reason="lost">[items is]</>
 	
 			

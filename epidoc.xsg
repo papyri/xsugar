@@ -1,36 +1,20 @@
 NL = [\r\n]+
-SIC = "(!)"
 SP = [ ]
-WORDDIV = "/"
-ABBR = "(-)"
+ABBR = "( )"
 
 UNDERDOT = "\u0323"
-
-CA = "ca."[ ]*"\?"
+//ca. with 0 or more spaces followed by ? mark
+CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
-WORDSCRIPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+
 // WORD breaks at space and WORDS allows space (therefore multiple words)
 WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
 WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]*) (MAX)
 NUM = [0-9]+
 ANYLETTER = [^\/\\\n\r\t\[\]<>_#@~〚〛\*\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]
-ONELETTER = [^\/\\\n\r\t\[\]<>_#@~〚〛\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]{1}
-//VARIA = <ANYLETTER>"(`)"
 
-BEGWORD = [^\/\n\t\[\]<>\|\'\!\(\)\{\}\?\"¨]*
-
-UNCLEAR = (<ANYLETTER><UNDERDOT>)+
-
-LEFTOVER = ([^<NL><SIC><SP><WORDDIV><ABBR><NUM><WORD><WORDS>]+)
-//TINY_TILDE = [\u00A8]
-
-SMNUM = [2-3]{1}
 DOT = [.]
-LGNUM = [4-9]{1}
-STNUM = [1-9]+[0-9]+
-ABBRJF = "( )"
-VSNUM = [1-9]{1}
 QUESTION = [\?]?
 
 // symbolnum is for recognizing either a fraction or whole number with multiple digits
@@ -266,7 +250,7 @@ flat
 	
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
-	: [WORD w] [ABBRJF] = <abbr> [WORD w] </>
+	: [WORD w] [ABBR] = <abbr> [WORD w] </>
 	
 	//---test_symbol_expansion---
 	// (abc)
@@ -335,7 +319,7 @@ flat
 	
 	//---test_illegible_gap_unknown_ca---
 	// ca.?
-	: [CA] = <gap reason="illegible" extent="unknown" unit="character" precision="circa"></>
+	: [CAUNKNOWN] = <gap reason="illegible" extent="unknown" unit="character" precision="circa"></>
 	
 	>: [ANYLETTER a] = [ANYLETTER a]
 		
@@ -365,7 +349,7 @@ inside_brackets
 	
 	//---test_lost_gap_unknown_ca---
 	// [ ca.? ]  	
-	>: [CA] = <gap reason="lost" extent="unknown" unit="character" precision="circa"></>
+	>: [CAUNKNOWN] = <gap reason="lost" extent="unknown" unit="character" precision="circa"></>
 	
 	//---test_lost_uncertain---
 	// [ ? ] uncertain lost

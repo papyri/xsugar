@@ -127,7 +127,7 @@ item
 	: "(Lang: " [LANGLIST l] " " [NUM v] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[NUM v] unit="line"></>
 	
 	//---test_lines_not_transcribed---
-	//"2 lines not transcribed"
+	//"lines not transcribed"
 	: "\"" [NUM v] " lines not transcribed\"" = <gap reason="ellipsis" extent=[NUM v] unit="line"></>
 	
 	//---perpendicular_lines---
@@ -180,7 +180,11 @@ item
 	
 	//---subst---
 	//  <:a|subst|b|:> 
+	: [BEGOPT] [WORD a] "|subst|" [WORD b] "?" [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected" cert="low">[WORD b]</></>
 	: [BEGOPT] [WORD a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[WORD b]</></>
+	>: [BEGOPT] [items a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORD b]</></>
+	>: [BEGOPT] [WORD a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
 	
 	//---app_lem---
 	//  <|abc|def|> 
@@ -192,6 +196,10 @@ item
 	>: [BEGOPT] [items a] "|editorial:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|editorial:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|editorial:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[items b]</></>
+	: [BEGOPT] [WORD a] "|editorial:|" [WORD b] [ENDOPT] = <app type="editorial"><lem>[WORD a]</><rdg>[WORD b]</></>
+	>: [BEGOPT] [items a] "|editorial:|" [WORD b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[WORD b]</></>
+	>: [BEGOPT] [WORD a] "|editorial:|" [items b] [ENDOPT] = <app type="editorial"><lem>[WORD a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|editorial:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]</></>
 	: [BEGOPT] [WORD a] "|alternative:|" [WORD b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [items a] "|alternative:|" [WORD b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|alternative:|" [items b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
@@ -202,6 +210,7 @@ item
 	: "!!" [WORD a] " " = <g type=[WORD a]></>
 	: "!!" [WORD a] "," [WORD b] " " = <g type=[WORD a]>[WORD b]</>
 	: "!!filler(" [WORD a] ")" " " = <g type="filler" rend=[WORD a]></>
+	: "!!@" [WORD a] " " = <orig><g type=[WORD a]></></>
 	
 	//---hand_shift---
 	//  $m# 
@@ -354,7 +363,7 @@ inside_brackets
 	>: [CAUNKNOWN] = <gap reason="lost" extent="unknown" unit="character" precision="circa"></>
 	
 	//---test_lost_uncertain---
-	// [ ? ] uncertain lost
+	// [ abc? ] uncertain lost
 	>:  [WORDS w] "\?" = <supplied reason="lost" cert="low">[WORDS w]</>
 	
 	//---test_lost--- - placed at the end so all other possibilities of inside brackets are checked before looping through 'items' production

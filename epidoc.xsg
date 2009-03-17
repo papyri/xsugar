@@ -2,6 +2,9 @@ NL = [\r\n]+
 SP = [ ]
 ABBR = "( )"
 
+BEGOPT = "<:"
+ENDOPT = ":>"
+
 UNDERDOT = "\u0323"
 //ca. with 0 or more spaces followed by ? mark
 CAUNKNOWN = "ca."[ ]*"\?"
@@ -66,12 +69,12 @@ item
 	
 	//---choice---
 	//  <:a|orth|b|:> 
-	: "<:" [WORD a] "?" "|orth|" [WORD b] ":>" = <choice><corr cert="low">[WORD a]</><sic>[WORD b]</></>
-	: "<:" [WORD a] "|orth|" [WORD b] ":>" = <choice><corr>[WORD a]</><sic>[WORD b]</></>
-	>: "<:" [items a] "|orth|" [WORD b] ":>" = <choice><corr>[items a]</><sic>[WORD b]</></>
-	>: "<:" [WORD a] "|orth|" [items b] ":>" = <choice><corr>[WORD a]</><sic>[items b]</></>
-	>: "<:" [items a] "|orth|" [items b] ":>" = <choice><corr>[items a]</><sic>[items b]</></>
-	
+	: [BEGOPT] [WORD a] "?" "|orth|" [WORD b] [ENDOPT] = <choice><corr cert="low">[WORD a]</><sic>[WORD b]</></>
+	: [BEGOPT] [WORD a] "|orth|" [WORD b] [ENDOPT] = <choice><corr>[WORD a]</><sic>[WORD b]</></>
+	>: [BEGOPT] [items a] "|orth|" [WORD b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORD b]</></>
+	>: [BEGOPT] [WORD a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORD a]</><sic>[items b]</></>
+	>: [BEGOPT] [items a] "|orth|" [items b] [ENDOPT] = <choice><corr>[items a]</><sic>[items b]</></>
+
 	//---milestone---
 	//  '----' or  '--------'
 	: "--------" = <milestone rend="horizontal-rule" unit="undefined"></>
@@ -174,27 +177,27 @@ item
 		
 	//---choice---
 	//  <:a|orth|b|:> 
-	//: "<:" [WORD a] "|orth|" [WORD b] ":>" = <choice><corr>[WORD a]</><sic>[WORD b]</></>
+	//: [BEGOPT] [WORD a] "|orth|" [WORD b] [ENDOPT] = <choice><corr>[WORD a]</><sic>[WORD b]</></>
 	
 	//---subst---
 	//  <:a|subst|b|:> 
-	: "<:" [WORD a] "|subst|" [WORD b] ":>" = <subst><add place="inline">[WORD a]</><del rend="corrected">[WORD b]</></>
+	: [BEGOPT] [WORD a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[WORD b]</></>
 	
 	//---app_lem---
 	//  <|abc|def|> 
-	: "<:" [WORD a] "|BL:" [APPNUM c] "|" [WORD b] [QUESTION q] ":>" = <app type="BL"><lem resp=[APPNUM c]>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
-	>: "<:" [items a] "|BL:" [APPNUM c] "|" [WORD b] ":>" = <app type="BL"><lem resp=[APPNUM c]>[items a]</><rdg>[WORD b]</></>
-	>: "<:" [WORD a] "|BL:" [APPNUM c] "|" [items b] ":>" = <app type="BL"><lem resp=[APPNUM c]>[WORD a]</><rdg>[items b]</></>
-	>: "<:" [items a] "|BL:" [APPNUM c] "|" [items b] ":>" = <app type="BL"><lem resp=[APPNUM c]>[items a]</><rdg>[items b]</></>
-	: "<:" [WORD a] "|editorial:" [WORDS e] "|" [WORD b] ":>" = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[WORD b]</></>
-	>: "<:" [items a] "|editorial:" [WORDS e] "|" [WORD b] ":>" = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[WORD b]</></>
-	>: "<:" [WORD a] "|editorial:" [WORDS e] "|" [items b] ":>" = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[items b]</></>
-	>: "<:" [items a] "|editorial:" [WORDS e] "|" [items b] ":>" = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[items b]</></>
-	: "<:" [WORD a] "|alternative:|" [WORD b] ":>" = <app type="alternative"><lem>[WORD a]</><rdg>[WORD b]</></>
-	>: "<:" [items a] "|alternative:|" [WORD b] ":>" = <app type="alternative"><lem>[items a]</><rdg>[WORD b]</></>
-	>: "<:" [WORD a] "|alternative:|" [items b] ":>" = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
-	>: "<:" [items a] "|alternative:|" [items b] ":>" = <app type="alternative"><lem>[items a]</><rdg>[items b]</></>
-	
+	: [BEGOPT] [WORD a] "|BL:" [APPNUM c] "|" [WORD b] [QUESTION q] [ENDOPT] = <app type="BL"><lem resp=[APPNUM c]>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
+	>: [BEGOPT] [items a] "|BL:" [APPNUM c] "|" [WORD b] [ENDOPT] = <app type="BL"><lem resp=[APPNUM c]>[items a]</><rdg>[WORD b]</></>
+	>: [BEGOPT] [WORD a] "|BL:" [APPNUM c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[APPNUM c]>[WORD a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|BL:" [APPNUM c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[APPNUM c]>[items a]</><rdg>[items b]</></>
+	: [BEGOPT] [WORD a] "|editorial:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[WORD b]</></>
+	>: [BEGOPT] [items a] "|editorial:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[WORD b]</></>
+	>: [BEGOPT] [WORD a] "|editorial:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|editorial:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[items b]</></>
+	: [BEGOPT] [WORD a] "|alternative:|" [WORD b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[WORD b]</></>
+	>: [BEGOPT] [items a] "|alternative:|" [WORD b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[WORD b]</></>
+	>: [BEGOPT] [WORD a] "|alternative:|" [items b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|alternative:|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]</></>
+
 	//---glyph---
 	//  '!!a', '!!a,b', '!!filler(a)' 
 	: "!!" [WORD a] " " = <g type=[WORD a]></>

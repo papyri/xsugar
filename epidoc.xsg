@@ -154,6 +154,7 @@ item
 	//   \abc/
     : "\\" [WORDS a] "\/" = <add place="supralinear">[WORDS a]</>
 	: "\\" [WORDS a] "?" "\/" = <add place="supralinear" cert="low">[WORDS a]</>
+	>: "\\" [items a] "\/" = <add place="supralinear">[items a]</>
 	
 	//---supraline_underline---
 	//   \abc/
@@ -315,6 +316,7 @@ flat
 	//< >
 	>: "<" [WORDS w] ">" = <supplied reason="omitted">[WORDS w]</>
 	>: "<" [WORDS w] "?" ">" = <supplied reason="omitted" cert="low">[WORDS w]</>
+	>: "<" [items i] ">" = <supplied reason="omitted">[items i]</>
 	
 	//---test_sic---
 	//sic

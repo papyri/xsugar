@@ -70,8 +70,11 @@ morenum : [BEGNUM] [WORD w] "=" [SYMBOLNUM x] [ENDNUM] [morenum y] = <num value=
 
 item 
 	//---test unclear characters = underdots
-	: [unclears_SP_non_terminal u] = <unclear reason="undefined">[unclears_SP_non_terminal u]</>
-	>: [unclears_non_terminal u] = <unclear reason="undefined">[unclears_non_terminal u]</>
+	: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
+	>: [unclears_SP_non_terminal u] "!" = <unclear reason="undefined">[unclears_SP_non_terminal u]</>
+	>: [unclears_non_terminal u] "!" = <unclear reason="undefined">[unclears_non_terminal u]</>
+	>: [unclears_SP_non_terminal u] "?" = <unclear reason="undefined" cert="low">[unclears_SP_non_terminal u]</>
+	>: [unclears_non_terminal u] "?" = <unclear reason="undefined" cert="low">[unclears_non_terminal u]</>
 	
 	//---choice---
 	//  <:a|orth|b|:> 
@@ -145,6 +148,7 @@ item
 	//---subscript---
 	//   /abc\
 	: "\/" [WORD a] "\\" = <hi rend="subscript">[WORD a]</>
+	>: "\/" [items i] "\\" = <hi rend="subscript">[items i]</>
 	
 	//---superscript---?????? commented out for supralinear
 	//   \abc/
@@ -156,10 +160,19 @@ item
 	: "\\" [WORDS a] "?" "\/" = <add place="supralinear" cert="low">[WORDS a]</>
 	>: "\\" [items a] "\/" = <add place="supralinear">[items a]</>
 	
-	//---supraline_underline---
+	//---grave---
 	//   \abc/
-    : "\|\|" [WORD a] "\|\|" = <hi rend="supraline-underline">[WORD a]</>
+    : "\|*" [WORD a] "*\|" = <hi rend="grave">[WORD a]</>
 	
+	//---supraline---
+	//   ||abc||
+    : "\|\|" [WORD a] "\|\|" = <hi rend="supraline">[WORD a]</>
+	>: "\|\|" [items i] "\|\|" = <hi rend="supraline">[items i]</>
+	
+	//---supraline_underline---
+	//   |_abc_|
+    : "\|_" [WORD a] "_\|" = <hi rend="supraline-underline">[WORD a]</>
+		
 	//---undefined_parallel---
 	//  _abc_  - underlines
     : "_" [WORDS a] "_" = <supplied reason="undefined" evidence="parallel">[WORDS a]</>
@@ -214,10 +227,11 @@ item
 
 	//---glyph---
 	//  '!!a', '!!a,b', '!!filler(a)' 
-	: "!!" [WORDS a] " " = <g type=[WORDS a]></>
+	: "!!" [WORD a] " " = <g type=[WORD a]></>
 	: "!!" [WORD a] "," [WORD b] " " = <g type=[WORD a]>[WORD b]</>
 	: "!!filler(" [WORD a] ")" " " = <g type="filler" rend=[WORD a]></>
 	: "!!@" [WORD a] " " = <orig><g type=[WORD a]></></>
+	>: "!!" [WORDS a] " " = <g type=[WORDS a]></>
 	
 	//---hand_shift---
 	//  $m# 

@@ -213,19 +213,19 @@ if(RUBY_PLATFORM == 'java')
       # TODO: handle existing cert attributes
       # In the current DDB_EpiDoc_XML, only 1809/270095 unclear tags have a cert attribute
       # Those that do all have cert="low"
-      assert_equal_fragment_transform 'ạ', '<unclear reason="undefined">a</unclear>'
+      assert_equal_fragment_transform 'ạ!', '<unclear reason="undefined">a</unclear>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/unclear.html
     def test_unicode_underdot_unclear_combining
       # eds read dotted letter with less than full confidence
-      assert_equal_fragment_transform 'ạḅc̣', '<unclear reason="undefined">abc</unclear>'
+      assert_equal_fragment_transform 'ạḅc̣!', '<unclear reason="undefined">abc</unclear>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/unclear.html
     # http://www.stoa.org/epidoc/gl/5/supplementforlost.html
     def test_unicode_underdot_unclear_combining_with_lost
-      assert_equal_fragment_transform 'ạḅ[c̣ de]f', '<unclear reason="undefined">ab</unclear><supplied reason="lost"><unclear reason="undefined">c</unclear> de</supplied>f'
+      assert_equal_fragment_transform 'ạḅ![c̣! de]f', '<unclear reason="undefined">ab</unclear><supplied reason="lost"><unclear reason="undefined">c</unclear> de</supplied>f'
     end
   
     # http://www.stoa.org/epidoc/gl/5/deletion.html

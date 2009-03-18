@@ -27,7 +27,7 @@ QUESTION = [\?]?
 // symbolnum is for recognizing either a fraction or whole number with multiple digits
 SYMBOLNUM = [0-9]+\/{1}[0-9]+|[0-9]+
 // symnummulti is for recognizing multiple fractions or whole numbers with multiple digits divided by 1 or more spaces
-SYMNUMMULTI = ([0-9]+\/{1}[0-9]+[ ]+|[0-9]+[ ]+)+
+SYMNUMMULTI = ([ ]*[0-9]+\/{1}[0-9]+[ ]+|[ ]*[0-9]+[ ]+)+
 // appnum is for recognizing app_lem number
 APPNUM = [0-9]+\.{1}[0-9]+
 
@@ -214,7 +214,7 @@ item
 
 	//---glyph---
 	//  '!!a', '!!a,b', '!!filler(a)' 
-	: "!!" [WORD a] " " = <g type=[WORD a]></>
+	: "!!" [WORDS a] " " = <g type=[WORDS a]></>
 	: "!!" [WORD a] "," [WORD b] " " = <g type=[WORD a]>[WORD b]</>
 	: "!!filler(" [WORD a] ")" " " = <g type="filler" rend=[WORD a]></>
 	: "!!@" [WORD a] " " = <orig><g type=[WORD a]></></>

@@ -259,6 +259,7 @@ item
 	//---foreign_lang---
 	//  ~veni vedi vici~la 
 	: "~" [WORDS a] "~" [WORD b] " " = <foreign lang=[WORD b]>[WORDS a]</>
+	>: "~" [items a] "~" [WORD b] " " = <foreign lang=[WORD b]>[items a]</>
 	
 	//---figure---
 	//  fig.seal 

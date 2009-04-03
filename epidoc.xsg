@@ -269,9 +269,20 @@ item
 	//  not brackets - already defined in inside-brackets
 	: "〚-" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a]</>
 	>: "〚-" [items a] "〛" = <del rend="cross-strokes">[items a]</>
+// repeat of above with NL at end - if fix XML may not need these 2 lines
+	>: "〚-" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a] [NL]</>
+	>: "〚-" [items a] "〛" = <del rend="cross-strokes">[items a] [NL]</>
 	: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a]</>
+	>: "〚\/" [items a] "〛" = <del rend="slashes">[items a]</>
+// repeat of above with NL at end - if fix XML may not need these 2 lines
+	>: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a] [NL]</>
+	>: "〚\/" [items a] "〛" = <del rend="slashes">[items a] [NL]</>
 //this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
 	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
+	>: "〚" [items a] "〛" = <del rend="erasure">[items a]</>
+// repeat of above with NL at end - if fix XML may not need these 2 lines
+	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a] [NL]</>
+	>: "〚" [items a] "〛" = <del rend="erasure">[items a] [NL]</>
 	
 	
 	>: [flat f] = [flat f]

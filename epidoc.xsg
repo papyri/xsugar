@@ -254,6 +254,7 @@ item
 	//  /*abcdefg*/ 
 	: "\/*" [WORDS a] [QUESTION b] "*\/" = <note lang="en">[WORDS a][QUESTION b]</>
 	: "\/*" [QUESTION b] "*\/" = <note lang="en">[QUESTION b]</>
+	>: "\/*" [items b] "*\/" = <note lang="en">[items b]</>
 	
 	//---foreign_lang---
 	//  ~veni vedi vici~la 

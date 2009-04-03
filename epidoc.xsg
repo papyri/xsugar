@@ -303,6 +303,7 @@ flat
 	// (abc?)
 	: "(" [WORD w] "?" ")" = <expan><ex cert="low">[WORD w]</></>
 	>: [WORD a] "(" [WORD b] "?" ")" = <expan>[WORD a]<ex cert="low">[WORD b]</></>
+	>: [items a] "(" [WORD b] "?" ")" = <expan>[items a]<ex cert="low">[WORD b]</></>
 	
 	//---test_expansion---
 	// a(b)

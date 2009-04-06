@@ -419,9 +419,13 @@ inside_brackets
 	// [ ca.? ]  	
 	>: [CAUNKNOWN] = <gap reason="lost" extent="unknown" unit="character" precision="circa"></>
 	
+	//---test_lost_words---
+	// [ abc def ] lost words
+	: [WORDS w] = <supplied reason="lost">[WORDS w]</>
+	
 	//---test_lost_uncertain---
 	// [ abc? ] uncertain lost
-	>:  [WORDS w] "\?" = <supplied reason="lost" cert="low">[WORDS w]</>
+	>: [WORDS w] "\?" = <supplied reason="lost" cert="low">[WORDS w]</>
 	
 	//---test_lost--- - placed at the end so all other possibilities of inside brackets are checked before looping through 'items' production
 	// [ ] lost

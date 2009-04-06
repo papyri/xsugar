@@ -308,6 +308,7 @@ flat
 	//---test_expansion---
 	// a(b)
 	>: [WORD a] "(" [WORD b] __")" = <expan>[WORD a]<ex>[WORD b] __</></>
+	>: [WORDS a] "(" [WORDS b] ")" = <expan>[WORDS a]<ex>[WORDS b]</></>
 	
 	//---test_symbol_expansion---
 	// (abc)
@@ -328,6 +329,10 @@ flat
 	//---test_vestige_lines_unknown---
 	// vestig.?lin
 	: "vestig.?lin" = <gap reason="illegible" extent="unknown" unit="line"></>
+	
+	//---test_vestige_known_char---
+	// vestig.!.#{n}
+	: "vestig.!." [NUM v] = <gap reason="vestig" extent=[NUM v] unit="character"></>
 	
 	//---test_vestige_characters---
 	// vestig

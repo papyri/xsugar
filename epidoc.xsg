@@ -363,6 +363,7 @@ flat
 	//---test_sic---
 	//sic
 	>: "{" [WORDS w] "}" = <sic>[WORDS w]</>	
+	>: "{" [items w] "}" = <sic>[items w]</>
 	
 	//---test_seg---
 	//seg

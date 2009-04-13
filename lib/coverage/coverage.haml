@@ -63,12 +63,14 @@
     - p = Proc.new do |element, hidden, block|
       - tab_up
       %div{:id => element.div_id, :class => element.error_class, :style => "display:#{hidden ? 'none' : ''};"}
-        = element.name + " (" + element.length.to_s + " instances)"
+        - if !hidden
+          = element.name
+          = " (" + element.length.to_s + " instances)"
         - if element.examples?
           .toggle_button
             %a{:onclick => "toggle_div('#{element.div_id}-examples');"}
               Examples
-          .examples{:id => element.div_id + "-examples", :style => "display:none;"}
+          .examples{:id => element.div_id + "-examples", :style => "display:#{element.depth == 2 ? '' : 'none'};"}
             - for example in element.examples
               .filename
                 %a{:href => "http://halsted.vis.uky.edu/gitweb/?p=idp.data.git;a=blob;hb=HEAD;f=DDB_EpiDoc_XML/" + example.xml_file}
@@ -90,6 +92,7 @@
             .toggle_button
               %a{:onclick => "toggle_div('#{child.div_id}');"}
                 = child.name
+              = " (" + child.length.to_s + " instances)"
             - block.call(child, true, block)
       - tab_down
     - for ddb_element in ddb_elements

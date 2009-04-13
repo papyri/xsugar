@@ -82,7 +82,7 @@
                   %code
                     = element.error_class == :pass ? "<=>" : "=>"
                 .leiden
-                  = html_escape(example.text)
+                  = html_escape(example.text.sub(/^1\. /, ''))
               %hr
         - if element.children?
           Children:

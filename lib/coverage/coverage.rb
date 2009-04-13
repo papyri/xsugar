@@ -155,26 +155,30 @@ module RXSugar
             @frequencies[error_type][:element_attr].each_key do |attr_key|
               frequency_type_keys =  frequency_type_keys_from_xml(@frequencies[error_type][:element_attr][attr_key].first.xml_content)
               if frequency_type_keys[0][1] == key
-                # add this child
-                child_element = ElementNode.new
-                child_element.name = attr_key
-                child_element.depth = 1
-                child_element.error_class = error_type
-                child_element.length = @frequencies[error_type][:element_attr][attr_key].length
-                child_element.examples = slice_fragments(@frequencies[error_type][:element_attr][attr_key])
-                @frequencies[error_type][:element_attr_val].each_key do |attr_val_key|
-                  child_frequency_type_keys =  frequency_type_keys_from_xml(@frequencies[error_type][:element_attr_val][attr_val_key].first.xml_content)
-                  if child_frequency_type_keys[1][1] == attr_key
-                    child_child_element = ElementNode.new
-                    child_child_element.name = attr_val_key
-                    child_child_element.depth = 2
-                    child_child_element.error_class = error_type
-                    child_child_element.length = @frequencies[error_type][:element_attr_val][attr_val_key].length
-                    child_child_element.examples = slice_fragments(@frequencies[error_type][:element_attr_val][attr_val_key])
-                    child_element.children << child_child_element
+                if !((attr_key == key) && (@frequencies[error_type][:element_attr][attr_key].length == @frequencies[error_type][:element][key].length))
+                  # add this child
+                  child_element = ElementNode.new
+                  child_element.name = attr_key
+                  child_element.depth = 1
+                  child_element.error_class = error_type
+                  child_element.length = @frequencies[error_type][:element_attr][attr_key].length
+                  child_element.examples = slice_fragments(@frequencies[error_type][:element_attr][attr_key])
+                  @frequencies[error_type][:element_attr_val].each_key do |attr_val_key|
+                    child_frequency_type_keys =  frequency_type_keys_from_xml(@frequencies[error_type][:element_attr_val][attr_val_key].first.xml_content)
+                    if child_frequency_type_keys[1][1] == attr_key
+                      if !((attr_val_key == attr_key) && (@frequencies[error_type][:element_attr_val][attr_val_key].length == @frequencies[error_type][:element_attr][attr_key].length))
+                        child_child_element = ElementNode.new
+                        child_child_element.name = attr_val_key
+                        child_child_element.depth = 2
+                        child_child_element.error_class = error_type
+                        child_child_element.length = @frequencies[error_type][:element_attr_val][attr_val_key].length
+                        child_child_element.examples = slice_fragments(@frequencies[error_type][:element_attr_val][attr_val_key])
+                        child_element.children << child_child_element
+                      end
+                    end
                   end
+                  this_element.children << child_element
                 end
-                this_element.children << child_element
               end
             end
             root_elements << this_element

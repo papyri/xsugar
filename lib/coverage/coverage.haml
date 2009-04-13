@@ -77,7 +77,7 @@
                 \:
               .xml
                 %code= html_escape(example.xml_content)
-              - if example.text != ''
+              - if element.error_class != :parse
                 .sep
                   %code
                     = element.error_class == :pass ? "<=>" : "=>"

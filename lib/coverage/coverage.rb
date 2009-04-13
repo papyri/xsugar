@@ -18,7 +18,7 @@ module RXSugar
       end
       
       def div_id
-        @name.tr(' "=', '-')
+        @error_class.to_s + '-' + @name.tr(' "=', '-')
       end
       
       def children?

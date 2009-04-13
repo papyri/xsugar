@@ -3,11 +3,22 @@ require 'test/test_assertions'
 
 module RXSugar
   module Coverage
-    class Runner
-      def initialize()
-        
+    class ElementNode
+      attr_reader :children, :examples
+      attr_accessor :name
+      
+      def initialize
+        @children = Array.new
+        @examples = Array.new
+        @name = ''
       end
       
+      def children?
+        @children.length
+      end
+    end
+    
+    class Runner      
       def run(data_path)
         ddbcov = DDbCoverage.new
 

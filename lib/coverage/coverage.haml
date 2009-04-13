@@ -1,16 +1,52 @@
-- p = Proc.new do |element, block|
-  %div{:id => }
-    .examples
-      - for example in element.examples
-        .xml
-          %code= example.xml
-        .leiden
-          = example.leiden
-    - if element.children?
-      .toggle_button
-        %a{:onclick => "toggle_div('')"}
-          +
-      - for child in element.children
-        block.call(child, block)
-- for ddb_element in ddb_elements
-  - p.call(element, p)
+!!! XML
+!!!
+%html
+  %head
+    %style{ :type => "text/css" }
+      :sass
+        !pass_color = #66FF66
+        !reversibility_color = #FFFF99
+        !parse_color = #CC6666
+        .pass
+          background-color = !pass_color
+        .reversibility
+          background-color = !reversibility_color
+        .parse
+          background-color = !parse_color
+        .toggle_button
+          a
+            text-decoration: underline
+            cursor: pointer
+    :javascript
+      function toggle_div(obj) {
+        var el = document.getElementById(obj);
+        if ( el.style.display != "none" ) {
+          el.style.display = 'none';
+        }
+        else {
+          el.style.display = '';
+        }
+      }
+  %body
+    - p = Proc.new do |element, hidden, block|
+      - tab_up
+      %div{:id => element.div_id, :class => element.error_class, :style => "display:#{hidden ? 'none' : ''};"}
+        %p
+          = element.name + ": " + element.length.to_s
+        .examples{:id => element.div_id + "-examples", :style => "display:none;"}
+          - for example in element.examples
+            .filename
+              = example.xml_file
+            .xml
+              %code= html_escape(example.xml_content)
+            .leiden
+              = example.text
+        - for child in element.children
+          .toggle_button
+            %p
+              %a{:onclick => "toggle_div('#{child.div_id}');"}
+                = child.name
+          - block.call(child, true, block)
+      - tab_down
+    - for ddb_element in ddb_elements
+      - p.call(ddb_element, false, p)

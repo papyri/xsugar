@@ -1,16 +1,24 @@
 require 'lib/rxsugar'
 require 'test/test_assertions'
 
+require 'rubygems'
+require 'haml'
+
 module RXSugar
   module Coverage
     class ElementNode
-      attr_reader :children, :examples
-      attr_accessor :name
+      attr_accessor :children, :examples, :name, :error_class, :length
       
       def initialize
         @children = Array.new
         @examples = Array.new
         @name = ''
+        @error_class = ''
+        @length = 0
+      end
+      
+      def div_id
+        @name.tr(' "=', '-')
       end
       
       def children?
@@ -76,6 +84,14 @@ module RXSugar
 
         puts "\nPassing XML files with content:\n" + 
           xml_files_passing.join("\n")
+        
+        ddb_elements = error_frequencies.to_tree
+        puts ddb_elements
+        coverage_template = IO.read(File.join(File.dirname(__FILE__), 'coverage.haml'))
+        haml_engine = Haml::Engine.new(coverage_template)
+        open('coverage.html','w') {|file|
+          file.write(haml_engine.render(Object.new, :ddb_elements => ddb_elements)) }
+        
       end
     end
     
@@ -116,6 +132,51 @@ module RXSugar
               Hash.new{|hash,key| hash[key] = Array.new()}
           end
         end
+      end
+      
+      def to_tree
+        root_elements = Array.new
+        
+        # This is a mess, could probably be done recursively.
+        @error_types.reverse.each do |error_type|
+          @frequencies[error_type][:element].each_key do |key|
+            this_element = ElementNode.new
+            this_element.name = key
+            this_element.error_class = error_type
+            this_element.length = @frequencies[error_type][:element][key].length
+            this_element.examples = slice_fragments(@frequencies[error_type][:element][key])
+            @frequencies[error_type][:element_attr].each_key do |attr_key|
+              if attr_key != key
+                frequency_type_keys =  frequency_type_keys_from_xml(@frequencies[error_type][:element_attr][attr_key].first.xml_content)
+                if frequency_type_keys[0][1] == key
+                  # add this child
+                  child_element = ElementNode.new
+                  child_element.name = attr_key
+                  child_element.error_class = error_type
+                  child_element.length = @frequencies[error_type][:element_attr][attr_key].length
+                  child_element.examples = slice_fragments(@frequencies[error_type][:element_attr][attr_key])
+                  @frequencies[error_type][:element_attr_val].each_key do |attr_val_key|
+                    if attr_val_key != attr_key
+                      child_frequency_type_keys =  frequency_type_keys_from_xml(@frequencies[error_type][:element_attr_val][attr_val_key].first.xml_content)
+                      if child_frequency_type_keys[1][1] == attr_key
+                        child_child_element = ElementNode.new
+                        child_child_element.name = attr_val_key
+                        child_child_element.error_class = error_type
+                        child_child_element.length = @frequencies[error_type][:element_attr_val][attr_val_key].length
+                        child_child_element.examples = slice_fragments(@frequencies[error_type][:element_attr_val][attr_val_key])
+                        child_element.children << child_child_element
+                      end
+                    end
+                  end
+                  this_element.children << child_element
+                end
+              end
+            end
+            root_elements << this_element
+          end
+        end
+        
+        return root_elements
       end
   
       def add_error(error_type, fragment_reference)
@@ -164,11 +225,7 @@ module RXSugar
   
       def print_sample_fragments(frag_array)
         sample_fragments = ''
-        if SAMPLE_FRAGMENTS > 0
-          frag_slice = frag_array[0, SAMPLE_FRAGMENTS]
-        else
-          frag_slice = frag_array
-        end
+        frag_slice = slice_fragments(frag_array)
         frag_slice.each do |frag_ref|
           sample_fragments += "    " +
             frag_ref.xml_file.to_s + ": " +
@@ -194,6 +251,15 @@ module RXSugar
       end
   
       protected
+        def slice_fragments(frag_array)
+          if SAMPLE_FRAGMENTS > 0
+            frag_slice = frag_array[0, SAMPLE_FRAGMENTS]
+          else
+            frag_slice = frag_array
+          end
+          return frag_slice
+        end
+        
         def frequency_type_keys_from_xml(xml_child)
           keys = [xml_child.name, xml_child.name, xml_child.name]
           xml_child.attributes.each_attribute do |attr|

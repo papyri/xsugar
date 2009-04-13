@@ -32,6 +32,13 @@ namespace :coverage do
       SAMPLE_FRAGMENTS = -1
     end
     
+    if ENV.include?('HTML_OUTPUT')
+      HTML_OUTPUT = ENV['HTML_OUTPUT']
+    else
+      warn 'Use HTML_OUTPUT=file.html to generate HTML output'
+      HTML_OUTPUT = ''
+    end
+    
     RXSugar::Coverage::Runner.new.run(DDB_DATA_PATH)
   end
 end

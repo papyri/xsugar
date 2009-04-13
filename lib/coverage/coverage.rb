@@ -90,11 +90,13 @@ module RXSugar
         puts "\nPassing XML files with content:\n" + 
           xml_files_passing.join("\n")
         
-        ddb_elements = error_frequencies.to_tree
-        coverage_template = IO.read(File.join(File.dirname(__FILE__), 'coverage.haml'))
-        haml_engine = Haml::Engine.new(coverage_template)
-        open('coverage.html','w') {|file|
-          file.write(haml_engine.render(Object.new, :ddb_elements => ddb_elements)) }
+        if HTML_OUTPUT != ''
+          ddb_elements = error_frequencies.to_tree
+          coverage_template = IO.read(File.join(File.dirname(__FILE__), 'coverage.haml'))
+          haml_engine = Haml::Engine.new(coverage_template)
+          open(HTML_OUTPUT,'w') {|file|
+            file.write(haml_engine.render(Object.new, :ddb_elements => ddb_elements)) }
+        end
         
       end
     end

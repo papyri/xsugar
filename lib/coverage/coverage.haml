@@ -1,0 +1,16 @@
+- p = Proc.new do |element, block|
+  %div{:id => }
+    .examples
+      - for example in element.examples
+        .xml
+          %code= example.xml
+        .leiden
+          = example.leiden
+    - if element.children?
+      .toggle_button
+        %a{:onclick => "toggle_div('')"}
+          +
+      - for child in element.children
+        block.call(child, block)
+- for ddb_element in ddb_elements
+  - p.call(element, p)

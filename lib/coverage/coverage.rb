@@ -91,7 +91,6 @@ module RXSugar
           xml_files_passing.join("\n")
         
         ddb_elements = error_frequencies.to_tree
-        puts ddb_elements
         coverage_template = IO.read(File.join(File.dirname(__FILE__), 'coverage.haml'))
         haml_engine = Haml::Engine.new(coverage_template)
         open('coverage.html','w') {|file|

@@ -228,6 +228,7 @@ item
 	//---app_lem---
 	//  <|abc|def|> 
 	: [BEGOPT] [WORD a] "|BL:" [WORDS c] "|" [WORD b] [QUESTION q] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
+	>: [BEGOPT] [WORDOPT a] "|BL:" [WORDS c] "|" [WORDOPT b] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[WORDOPT a]</><rdg>[WORDOPT b]</></>
 	>: [BEGOPT] [items a] "|BL:" [WORDS c] "|" [WORD b] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[items a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|BL:" [WORDS c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|BL:" [WORDS c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[items a]</><rdg>[items b]</></>
@@ -326,6 +327,7 @@ flat
 	: "(" [WORDSNUM a] ")" = <expan><ex>[WORDSNUM a]</></>
 //	: "(" [WORD a] ")" = <expan><ex>[WORD a]</></> - commented out to remove vert ambig with wordsnum above
 	: "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
+//10
 	>: [expandex e] = <expan>[expandex e]</>
 	>: "(" [items a] ")" = <expan><ex>[items a]</></>
 
@@ -371,6 +373,7 @@ flat
 	
 	//---test_omitted---
 	//< >
+//20
 	>: "<" [WORDS w] ">" = <supplied reason="omitted">[WORDS w]</>
 	>: "<" [WORDS w] "?" ">" = <supplied reason="omitted" cert="low">[WORDS w]</>
 	>: "<" [items i] ">" = <supplied reason="omitted">[items i]</>
@@ -396,7 +399,7 @@ flat
 			
 	//---multiple tests see inside_brackets production---
 	// [ ], [[ ]], [ca.?] etc...
-	: "[" [inside_brackets i] "]" =  [inside_brackets i] 	
+	>: "[" [inside_brackets i] "]" =  [inside_brackets i] 	
 	
 	//---test_illegible_gap_unknown---
 	// .?

@@ -68,11 +68,11 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/lostcertain.html
     def test_lost_dot_gap
       # Some number of missing characters
-      assert_equal_fragment_transform '[.1]', '<gap reason="lost" extent="1" unit="character"></gap>'
-      assert_equal_fragment_transform '[.2]', '<gap reason="lost" extent="2" unit="character"></gap>'
-      assert_equal_fragment_transform '[.3]', '<gap reason="lost" extent="3" unit="character"></gap>'
+      assert_equal_fragment_transform '[.1]', '<gap reason="lost" extent="1" unit="character"/>'
+      assert_equal_fragment_transform '[.2]', '<gap reason="lost" extent="2" unit="character"/>'
+      assert_equal_fragment_transform '[.3]', '<gap reason="lost" extent="3" unit="character"/>'
       (4..100).each do |n|
-        assert_equal_fragment_transform "[.#{n}]", "<gap reason=\"lost\" extent=\"#{n}\" unit=\"character\"></gap>"
+        assert_equal_fragment_transform "[.#{n}]", "<gap reason=\"lost\" extent=\"#{n}\" unit=\"character\"/>"
       end
     end
   
@@ -80,39 +80,39 @@ if(RUBY_PLATFORM == 'java')
     # but extent="unknown" not explicitly combined with unit="character" in guidelines
     def test_lost_gap_unknown
       # Some unknown number of lost characters
-      assert_equal_fragment_transform '[.?]', '<gap reason="lost" extent="unknown" unit="character"></gap>'
+      assert_equal_fragment_transform '[.?]', '<gap reason="lost" extent="unknown" unit="character"/>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/vestiges.html
     def test_illegible_dot_gap
       # Some number of illegible characters not greater than 3
-      assert_equal_fragment_transform '.1', '<gap reason="illegible" extent="1" unit="character"></gap>'
-      assert_equal_fragment_transform '.2', '<gap reason="illegible" extent="2" unit="character"></gap>'
-      assert_equal_fragment_transform '.3', '<gap reason="illegible" extent="3" unit="character"></gap>'
+      assert_equal_fragment_transform '.1', '<gap reason="illegible" extent="1" unit="character"/>'
+      assert_equal_fragment_transform '.2', '<gap reason="illegible" extent="2" unit="character"/>'
+      assert_equal_fragment_transform '.3', '<gap reason="illegible" extent="3" unit="character"/>'
       (4..100).each do |n|
-        assert_equal_fragment_transform ".#{n}", "<gap reason=\"illegible\" extent=\"#{n}\" unit=\"character\"></gap>"
+        assert_equal_fragment_transform ".#{n}", "<gap reason=\"illegible\" extent=\"#{n}\" unit=\"character\"/>"
       end
     end
   
     # http://www.stoa.org/epidoc/gl/5/vestiges.html
     def test_illegible_gap_unknown
       # Some unknown number of illegible letters
-      assert_equal_fragment_transform '.?', '<gap reason="illegible" extent="unknown" unit="character"></gap>'
+      assert_equal_fragment_transform '.?', '<gap reason="illegible" extent="unknown" unit="character"/>'
     end
     
     def test_illegible_dot_gap_extentmax
-      assert_equal_fragment_transform '.2-3', '<gap reason="illegible" extent="2" extentmax="3" unit="character"></gap>'
-	  assert_equal_fragment_transform '.7-14', '<gap reason="illegible" extent="7" extentmax="14" unit="character"></gap>'
-	  assert_equal_fragment_transform '.31-77', '<gap reason="illegible" extent="31" extentmax="77" unit="character"></gap>'
+      assert_equal_fragment_transform '.2-3', '<gap reason="illegible" extent="2" extentmax="3" unit="character"/>'
+	  assert_equal_fragment_transform '.7-14', '<gap reason="illegible" extent="7" extentmax="14" unit="character"/>'
+	  assert_equal_fragment_transform '.31-77', '<gap reason="illegible" extent="31" extentmax="77" unit="character"/>'
     end
 	
 	def test_lost_dot_gap_extentmax
       # Some number of missing characters
-      assert_equal_fragment_transform '[.1-2]', '<gap reason="lost" extent="1" extentmax="2" unit="character"></gap>'
-      assert_equal_fragment_transform '[.7-14]', '<gap reason="lost" extent="7" extentmax="14" unit="character"></gap>'
-      assert_equal_fragment_transform '[.31-77]', '<gap reason="lost" extent="31" extentmax="77" unit="character"></gap>'
+      assert_equal_fragment_transform '[.1-2]', '<gap reason="lost" extent="1" extentmax="2" unit="character"/>'
+      assert_equal_fragment_transform '[.7-14]', '<gap reason="lost" extent="7" extentmax="14" unit="character"/>'
+      assert_equal_fragment_transform '[.31-77]', '<gap reason="lost" extent="31" extentmax="77" unit="character"/>'
       (11..100).each do |n|
-        assert_equal_fragment_transform "[.10-#{n}]", "<gap reason=\"lost\" extent=\"10\" extentmax=\"#{n}\" unit=\"character\"></gap>"
+        assert_equal_fragment_transform "[.10-#{n}]", "<gap reason=\"lost\" extent=\"10\" extentmax=\"#{n}\" unit=\"character\"/>"
       end
     end
   
@@ -120,9 +120,9 @@ if(RUBY_PLATFORM == 'java')
     # but no desc="vestiges"
     def test_vestige_lines
       # vestiges of N lines, mere smudges really, visible
-      assert_equal_fragment_transform 'vestig.3lin', '<gap reason="illegible" extent="3" unit="line" desc="vestiges"></gap>'
+      assert_equal_fragment_transform 'vestig.3lin', '<gap reason="illegible" extent="3" unit="line" desc="vestiges"/>'
       (1..100).each do |n|
-        assert_equal_fragment_transform "vestig.#{n}lin", "<gap reason=\"illegible\" extent=\"#{n}\" unit=\"line\" desc=\"vestiges\"></gap>"
+        assert_equal_fragment_transform "vestig.#{n}lin", "<gap reason=\"illegible\" extent=\"#{n}\" unit=\"line\" desc=\"vestiges\"/>"
       end
     end
   
@@ -130,9 +130,9 @@ if(RUBY_PLATFORM == 'java')
     # but no desc="vestiges"
     def test_vestige_lines_ca
       # vestiges of rough number of lines, mere smudges really, visible
-      assert_equal_fragment_transform 'vestig.ca.3lin', '<gap reason="illegible" extent="3" unit="line" precision="circa" desc="vestiges"></gap>'
+      assert_equal_fragment_transform 'vestig.ca.3lin', '<gap reason="illegible" extent="3" unit="line" precision="circa" desc="vestiges"/>'
       (1..100).each do |n|
-        assert_equal_fragment_transform "vestig.ca.#{n}lin", "<gap reason=\"illegible\" extent=\"#{n}\" unit=\"line\" precision=\"circa\" desc=\"vestiges\"></gap>"
+        assert_equal_fragment_transform "vestig.ca.#{n}lin", "<gap reason=\"illegible\" extent=\"#{n}\" unit=\"line\" precision=\"circa\" desc=\"vestiges\"/>"
       end
     end
   
@@ -140,29 +140,29 @@ if(RUBY_PLATFORM == 'java')
     # should this have desc="vestiges"?
     def test_vestige_lines_unknown
       # vestiges of an unspecified number of lines, mere smudges, visible
-      assert_equal_fragment_transform 'vestig.?lin', '<gap reason="illegible" extent="unknown" unit="line"></gap>'
+      assert_equal_fragment_transform 'vestig.?lin', '<gap reason="illegible" extent="unknown" unit="line"/>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/vestiges.html
     # but no desc="vestiges"
     def test_vestige_characters
       # vestiges of an unspecified number of characters, mere smudges, visible
-      assert_equal_fragment_transform 'vestig', '<gap reason="illegible" extent="unknown" unit="character" desc="vestiges"></gap>'
+      assert_equal_fragment_transform 'vestig', '<gap reason="illegible" extent="unknown" unit="character" desc="vestiges"/>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/lostline.html
     def test_lost_lines
       # Some number of lines is lost
-      assert_equal_fragment_transform 'lost.3lin', '<gap reason="lost" extent="3" unit="line"></gap>'
+      assert_equal_fragment_transform 'lost.3lin', '<gap reason="lost" extent="3" unit="line"/>'
       (1..100).each do |n|
-        assert_equal_fragment_transform "lost.#{n}lin", "<gap reason=\"lost\" extent=\"#{n}\" unit=\"line\"></gap>"
+        assert_equal_fragment_transform "lost.#{n}lin", "<gap reason=\"lost\" extent=\"#{n}\" unit=\"line\"/>"
       end
     end
   
     # http://www.stoa.org/epidoc/gl/5/lostline.html
     def test_lost_lines_unknown
       # Some unknown number of lost lines
-      assert_equal_fragment_transform 'lost.?lin', '<gap reason="lost" extent="unknown" unit="line"></gap>'
+      assert_equal_fragment_transform 'lost.?lin', '<gap reason="lost" extent="unknown" unit="line"/>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/erroneousomission.html
@@ -273,7 +273,8 @@ if(RUBY_PLATFORM == 'java')
     def test_num_simple
       assert_equal_fragment_transform '<#α=1#>', '<num value="1">α</num>'
       assert_equal_fragment_transform '<#α=#>', '<num>α</num>'
-      assert_equal_fragment_transform '<#=1#>', '<num value="1"></num>'
+	  #below is only num test changed for empty tag processing
+      assert_equal_fragment_transform '<#=1#>', '<num value="1"/>'
       assert_equal_fragment_transform '<#δ=1/4#>', '<num value="1/4">δ</num>'
       assert_equal_fragment_transform '<#ιδ=14#>', '<num value="14">ιδ</num>'
     end
@@ -298,14 +299,14 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_glyph
-      assert_equal_fragment_transform '!!stauros ', '<g type="stauros"></g>'
+      assert_equal_fragment_transform '!!stauros ', '<g type="stauros"/>'
       assert_equal_fragment_transform '!!stauros,♱ ', '<g type="stauros">♱</g>'
-      assert_equal_fragment_transform '!!filler(extension) ', '<g type="filler" rend="extension"></g>'
+      assert_equal_fragment_transform '!!filler(extension) ', '<g type="filler" rend="extension"/>'
     end
     
     def test_hand_shift
-      assert_equal_fragment_transform '$m1 ', '<handShift new="m1"></handShift>'
-      assert_equal_fragment_transform '$m20 ', '<handShift new="m20"></handShift>' 
+      assert_equal_fragment_transform '$m1 ', '<handShift new="m1"/>'
+      assert_equal_fragment_transform '$m20 ', '<handShift new="m20"/>' 
     end
     
     def test_add_place_supralinear
@@ -314,7 +315,7 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_space_unknown
-      assert_equal_fragment_transform 'vac.?', '<space extent="unknown" unit="character"></space>'
+      assert_equal_fragment_transform 'vac.?', '<space extent="unknown" unit="character"/>'
     end
     
     def test_del_rend
@@ -332,8 +333,8 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_milestone
-      assert_equal_fragment_transform '----', '<milestone rend="paragraphos" unit="undefined"></milestone>'
-      assert_equal_fragment_transform '--------', '<milestone rend="horizontal-rule" unit="undefined"></milestone>'
+      assert_equal_fragment_transform '----', '<milestone rend="paragraphos" unit="undefined"/>'
+      assert_equal_fragment_transform '--------', '<milestone rend="horizontal-rule" unit="undefined"/>'
     end
     
     def test_figure

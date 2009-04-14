@@ -17,6 +17,8 @@ LEADCA = "ca."[ ]*
 // WORD breaks at space and WORDS allows space (therefore multiple words)
 WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+// wordsnum allow '/' for fractional numbers
+WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
 
 // WORDOPT breaks at space but has * so allows for no word to exist also in that position
 WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]*) (MAX)
@@ -307,16 +309,20 @@ flat
 	
 	//---test_expansion---
 	// a(b)
-	>: [WORD a] "(" [WORD b] __")" = <expan>[WORD a]<ex>[WORD b] __</></>
+// comment the next line - causes 5 reversability and passing errors in EXPAN in BGU.1 - bgurakcov0414_v06
+//	>: [WORD a] "(" [WORD b] __")" = <expan>[WORD a]<ex>[WORD b] __</></>
 	>: [WORDS a] "(" [WORDS b] ")" = <expan>[WORDS a]<ex>[WORDS b]</></>
 	
 	//---test_symbol_expansion---
 	// (abc)
-	: "(" [WORD a] ")" = <expan><ex>[WORD a]</></>
+	: "(" [WORDSNUM a] ")" = <expan><ex>[WORDSNUM a]</></>
+//	: "(" [WORD a] ")" = <expan><ex>[WORD a]</></> - commented out to remove vert ambig with wordsnum above
+	: "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
+	
 	
 	//---test_counting_symbol_expansion---????????????????????????
 	// (abc)
-	: "(" [WORD a] __ [WORD b] ")" = <expan><ex>[WORD a] __ [WORD b]</></>
+	//: "(" [WORD a] __ [WORD b] ")" = <expan><ex>[WORD a] __ [WORD b]</></>
 	
 	//---test_vestige_lines---
 	// vestig.#{n}lin

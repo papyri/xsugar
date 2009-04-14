@@ -12,7 +12,8 @@ module GrammarAssertions
   end
 
   def lb(xmlline)
-    return "<lb n=\"1\"></lb>#{xmlline}"
+    return "<lb n=\"1\"/>#{xmlline}"
+	#return "<lb n=\"1\"></lb>#{xmlline}"
   end
 
   def assert_equal_fragment_transform(non_xml_fragment, xml_fragment)

@@ -318,8 +318,8 @@ flat
 	: "(" [WORDSNUM a] ")" = <expan><ex>[WORDSNUM a]</></>
 //	: "(" [WORD a] ")" = <expan><ex>[WORD a]</></> - commented out to remove vert ambig with wordsnum above
 	: "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
-	
-	
+	>: [expandex e] = <expan>[expandex e]</>
+
 	//---test_counting_symbol_expansion---????????????????????????
 	// (abc)
 	//: "(" [WORD a] __ [WORD b] ")" = <expan><ex>[WORD a] __ [WORD b]</></>
@@ -402,6 +402,9 @@ flat
 	
 expand 	: [WORD a] "(" [WORD b] ")" [expand more] = [WORD a]<ex>[WORD b]</>[expand more]
 			>: [WORD a] "(" [WORD b] ")" = [WORD a]<ex>[WORD b]</>
+			
+expandex : "(" [WORDS b] ")" [expandex more] = <ex>[WORDS b]</>[expandex more]
+			>: "(" [WORDS b] ")" = <ex>[WORDS b]</>
 			
 expandi : [items a] "(" [WORD b] ")" [expandi more] = [items a]<ex>[WORD b]</>[expandi more]
 			>: [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>

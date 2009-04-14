@@ -1,5 +1,6 @@
 NL = [\r\n]+
 SP = [ ]
+SPO = [ ]+ (MAX)
 ABBR = "( )"
 
 BEGOPT = "<:"
@@ -79,6 +80,13 @@ morenum : [BEGNUM] [WORD w] "=" [SYMBOLNUM x] [ENDNUM] [morenum y] = <num value=
 		 
 
 item 
+
+	: [expand e] = <expan>[expand e]</>
+	: [expand e] [WORD a] = <expan>[expand e] [WORD a]</>
+	>: [expandi e] = <expan>[expandi e]</>
+	>: [expandi e] [WORD a] = <expan>[expandi e] [WORD a]</>
+  	>: [SPO s] [expandi e] = [SPO s] <expan>[expandi e]</>
+	
 	//---test unclear characters = underdots
 	: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
 	>: [unclears_SP_non_terminal u] "!" = <unclear reason="undefined">[unclears_SP_non_terminal u]</>
@@ -380,10 +388,10 @@ flat
 	: [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [items a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	: [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] "?" ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
-	: [expand e] = <expan>[expand e]</>
-	>: [expand e] [WORD a] = <expan>[expand e] [WORD a]</>
-	>: [expandi e] = <expan>[expandi e]</>
-	>: __ [expandi e] [WORD a] = __ <expan>[expandi e] [WORD a]</>
+//	: [expand e] = <expan>[expand e]</>
+//	>: [expand e] [WORD a] = <expan>[expand e] [WORD a]</>
+//	>: [expandi e] = <expan>[expandi e]</>
+//	>: __ [expandi e] [WORD a] = __ <expan>[expandi e] [WORD a]</>
 	
 			
 	//---multiple tests see inside_brackets production---
@@ -442,5 +450,9 @@ inside_brackets
 	//---test_lost--- - placed at the end so all other possibilities of inside brackets are checked before looping through 'items' production
 	// [ ] lost
 	>: [items is] = <supplied reason="lost">[items is]</>
+	// the line below causes horizontal ambiguity if you put WORD or WORDS in it.  ANYLETTER is close to WORDS because it allows spaces but not comma - when added a
+// comma to ANYLETTER it really messed things up so took it back out.  ANYLETTER keeps the horizontal ambiguity out of the grammar it gets is close to WORDS in
+// solving grammar (within 1 on BGU.1 so going to leave that for now.  Not sure why WORD/WORDS causes ambiguity and ANYLETTER doesn't.
+	>: [ANYLETTER w] [items is] = <supplied reason="lost">[ANYLETTER w] [items is]</>
 	
 			

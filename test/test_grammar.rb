@@ -294,14 +294,14 @@ if(RUBY_PLATFORM == 'java')
     
     def test_app_lem
       assert_equal_fragment_transform '<:a|BL:1.215|b:>', '<app type="BL"><lem resp="1.215">a</lem><rdg>b</rdg></app>'
-      assert_equal_fragment_transform '<:a|editorial:bgu 3 p.4|b:>', '<app type="editorial"><lem resp="bgu 3 p.4">a</lem><rdg>b</rdg></app>'
-      assert_equal_fragment_transform '<:a|alternative:|b:>', '<app type="alternative"><lem>a</lem><rdg>b</rdg></app>'
+      assert_equal_fragment_transform '<:a|ed:bgu 3 p.4|b:>', '<app type="editorial"><lem resp="bgu 3 p.4">a</lem><rdg>b</rdg></app>'
+      assert_equal_fragment_transform '<:a|alt:|b:>', '<app type="alternative"><lem>a</lem><rdg>b</rdg></app>'
     end
     
     def test_glyph
-      assert_equal_fragment_transform '!!stauros ', '<g type="stauros"/>'
-      assert_equal_fragment_transform '!!stauros,♱ ', '<g type="stauros">♱</g>'
-      assert_equal_fragment_transform '!!filler(extension) ', '<g type="filler" rend="extension"/>'
+      assert_equal_fragment_transform '‼stauros ', '<g type="stauros"/>'
+      assert_equal_fragment_transform '‼stauros,♱ ', '<g type="stauros">♱</g>'
+      assert_equal_fragment_transform '‼filler(extension) ', '<g type="filler" rend="extension"/>'
     end
     
     def test_hand_shift

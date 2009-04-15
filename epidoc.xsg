@@ -16,19 +16,19 @@ CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
 
 // WORD breaks at space and WORDS allows space (therefore multiple words)
-WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
-WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼]+) (MAX)
+WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼]+) (MAX)
 // wordsnum allow '/' for fractional numbers
-WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼]+) (MAX)
 
 // WORDOPT breaks at space but has * so allows for no word to exist also in that position
-WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]*) (MAX)
+WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼]*) (MAX)
 
 //tempexpword will allow [ and ] to appear in words - see if this passes more tests
-TEMPEXPWORD = ([^ \/\\\n\r\t<>_#@~\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]+) (MAX)
+TEMPEXPWORD = ([^ \/\\\n\r\t<>_#@~\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼]+) (MAX)
 
 NUM = [0-9]+
-ANYLETTER = [^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀]
+ANYLETTER = [^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼]
 
 DOT = "."
 QUESTION = [\?]?
@@ -153,7 +153,7 @@ item
 	
 	//---test_lines_not_transcribed---
 	//"lines not transcribed"
-	: "\"" [NUM v] " lines not transcribed\"" = <gap reason="ellipsis" extent=[NUM v] unit="line"></>
+	: "(Lines: " [NUM v] " not transcribed)" = <gap reason="ellipsis" extent=[NUM v] unit="line"></>
 	
 	//---perpendicular_lines---
 	//(23, perp)
@@ -184,13 +184,13 @@ item
     : "\|*" [WORD a] "*\|" = <hi rend="grave">[WORD a]</>
 	
 	//---supraline---
-	//   ||abc||
-    : "\|\|" [WORD a] "\|\|" = <hi rend="supraline">[WORD a]</>
-	>: "\|\|" [items i] "\|\|" = <hi rend="supraline">[items i]</>
+	//   ¯abc¯ - uses non-combining macron
+    : "¯" [WORD a] "¯" = <hi rend="supraline">[WORD a]</>
+	>: "¯" [items i] "¯" = <hi rend="supraline">[items i]</>
 	
 	//---supraline_underline---
 	//   |_abc_|
-    : "\|_" [WORD a] "_\|" = <hi rend="supraline-underline">[WORD a]</>
+    : "≡" [WORD a] "≡" = <hi rend="supraline-underline">[WORD a]</>
 		
 	//---undefined_parallel---
 	//  _abc_  - underlines
@@ -246,12 +246,12 @@ item
 	>: [BEGOPT] [items a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]</></>
 
 	//---glyph---
-	//  '!!a', '!!a,b', '!!filler(a)' 
-	: "!!" [WORD a] " " = <g type=[WORD a]></>
-	: "!!" [WORD a] "," [WORD b] " " = <g type=[WORD a]>[WORD b]</>
-	: "!!filler(" [WORD a] ")" " " = <g type="filler" rend=[WORD a]></>
-	: "!!@" [WORD a] " " = <orig><g type=[WORD a]></></>
-	>: "!!" [WORDS a] " " = <g type=[WORDS a]></>
+	//  '‼a', '‼a,b', '‼filler(a), ‼@a , ‼a b ' 
+	: "‼" [WORD a] " " = <g type=[WORD a]></>
+	: "‼" [WORD a] "," [WORD b] " " = <g type=[WORD a]>[WORD b]</>
+	: "‼filler(" [WORD a] ")" " " = <g type="filler" rend=[WORD a]></>
+	: "‼@" [WORD a] " " = <orig><g type=[WORD a]></></>
+	>: "‼" [WORDS a] " " = <g type=[WORDS a]></>
 	
 	//---hand_shift---
 	//  $m# 

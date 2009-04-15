@@ -1,0 +1,99 @@
+!!! XML
+!!!
+%html
+  %head
+    %style{ :type => "text/css" }
+      :sass
+        !pass_color = #66FF66
+        !reversibility_color = #FFFF99
+        !parse_color = #CC6666
+        =element
+          margin: .25em
+          padding: .25em
+          padding-left: .5em
+          border: 1px solid black
+        .pass
+          +element
+          background-color = !pass_color
+        .reversibility
+          +element
+          background-color = !reversibility_color
+        .parse
+          +element
+          background-color = !parse_color
+        .toggle_button
+          a
+            text-decoration: underline
+            cursor: pointer
+            color: blue
+        .examples
+          +element
+          background-color: white
+          .filename, .xml, .leiden, .sep
+            padding-left: 1em
+            float: left
+          hr
+            clear: both
+            display: block
+            visibility: hidden
+        #key
+          +element
+          width: 10em
+          border: 1px dashed black
+          background-color: silver
+    :javascript
+      function toggle_div(obj) {
+        var el = document.getElementById(obj);
+        if ( el.style.display != "none" ) {
+          el.style.display = 'none';
+        }
+        else {
+          el.style.display = '';
+        }
+      }
+  %body
+    #key
+      Key:
+      .pass
+        Passing
+      .reversibility
+        Reversibility error
+      .parse
+        Parse Error
+    - p = Proc.new do |element, hidden, block|
+      - tab_up
+      %div{:id => element.div_id, :class => element.error_class, :style => "display:#{hidden ? 'none' : ''};"}
+        - if !hidden
+          = element.name
+          = " (" + element.length.to_s + " instances)"
+        - if element.examples?
+          .toggle_button
+            %a{:onclick => "toggle_div('#{element.div_id}-examples');"}
+              Examples
+          .examples{:id => element.div_id + "-examples", :style => "display:#{element.depth == 2 ? '' : 'none'};"}
+            - for example in element.examples
+              .filename
+                %a{:href => "http://halsted.vis.uky.edu/gitweb/?p=idp.data.git;a=blob;hb=HEAD;f=DDB_EpiDoc_XML/" + example.xml_file}
+                  = example.xml_file
+              .sep
+                \:
+              .xml
+                %code= html_escape(example.xml_content)
+              - if element.error_class != :parse
+                .sep
+                  %code
+                    = element.error_class == :pass ? "<=>" : "=>"
+                .leiden
+                  = html_escape(example.text.sub(/^1\. /, ''))
+              %hr
+        - if element.children?
+          Children:
+          - for child in element.children
+            .toggle_button
+              %a{:onclick => "toggle_div('#{child.div_id}');"}
+                = child.name
+              = " (" + child.length.to_s + " instances)"
+            - block.call(child, true, block)
+      - tab_down
+    - for ddb_element in ddb_elements
+      - p.call(ddb_element, false, p)

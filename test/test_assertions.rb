@@ -45,4 +45,8 @@ module GrammarAssertions
     assert_equal ab(lb(expected)), non_xml_to_xml_from_xml_to_non_xml
     return xml_to_non_xml
   end
+  
+  def transform_xml_fragment_to_non_xml(input)
+    xml_to_non_xml = @xsugar.xml_to_non_xml(ab(lb(input)))
+  end
 end

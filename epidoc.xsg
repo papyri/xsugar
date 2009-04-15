@@ -349,7 +349,7 @@ flat
 	
 	//---test_vestige_known_char---
 	// vestig.!.#{n}
-	: "vestig.!." [NUM v] = <gap reason="vestig" extent=[NUM v] unit="character"></>
+	: "vestig." [NUM v] "char" = <gap reason="vestig" extent=[NUM v] unit="character"></>
 	
 	//---test_vestige_characters---
 	// vestig

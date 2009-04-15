@@ -56,7 +56,7 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/abbreviationsnotunderstood.html
     def test_abbreviation_unknown_resolution
       # Ancient abbreviation whose resolution is unknown
-      assert_equal_fragment_transform 'ab( )', '<abbr>ab</abbr>'
+      assert_equal_fragment_transform 'ab(  )', '<abbr>ab</abbr>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html
@@ -320,7 +320,7 @@ if(RUBY_PLATFORM == 'java')
     
     def test_del_rend
       assert_equal_fragment_transform '〚abcdefg〛', '<del rend="erasure">abcdefg</del>'
-      assert_equal_fragment_transform '〚-abcdefg〛', '<del rend="cross-strokes">abcdefg</del>'
+      assert_equal_fragment_transform '〚Xabcdefg〛', '<del rend="cross-strokes">abcdefg</del>'
       assert_equal_fragment_transform '〚/abcdefg〛', '<del rend="slashes">abcdefg</del>'
     end
     
@@ -339,7 +339,7 @@ if(RUBY_PLATFORM == 'java')
     
     def test_figure
       ['seal', 'stamp', 'drawing'].each do |figdesc|
-        assert_equal_fragment_transform "fig.#{figdesc} ", "<figure><figDesc>#{figdesc}</figDesc></figure>"
+        assert_equal_fragment_transform "\##{figdesc} ", "<figure><figDesc>#{figdesc}</figDesc></figure>"
       end
     end
     

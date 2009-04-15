@@ -1,7 +1,7 @@
 NL = [\r\n]+
 SP = [ ]
 SPO = [ ]+ (MAX)
-ABBR = "( )"
+ABBR = "(  )"
 
 BEGOPT = "<:"
 ENDOPT = ":>"
@@ -274,15 +274,15 @@ item
 	
 	//---figure---
 	//  fig.seal 
-	: "fig." [WORD a] " " = <figure><figDesc>[WORD a]</></>
+	: "#" [WORD a] " " = <figure><figDesc>[WORD a]</></>
 	
 	//---del_rend---
 	//  not brackets - already defined in inside-brackets
-	: "〚-" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a]</>
-	>: "〚-" [items a] "〛" = <del rend="cross-strokes">[items a]</>
+	: "〚X" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a]</>
+	>: "〚X" [items a] "〛" = <del rend="cross-strokes">[items a]</>
 // repeat of above with NL at end - if fix XML may not need these 2 lines
-	>: "〚-" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a] [NL]</>
-	>: "〚-" [items a] "〛" = <del rend="cross-strokes">[items a] [NL]</>
+	>: "〚X" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a] [NL]</>
+	>: "〚X" [items a] "〛" = <del rend="cross-strokes">[items a] [NL]</>
 	: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a]</>
 	>: "〚\/" [items a] "〛" = <del rend="slashes">[items a]</>
 // repeat of above with NL at end - if fix XML may not need these 2 lines
@@ -308,7 +308,7 @@ flat
 	
 	//---test_expand low cert---
 	// (?)
-	: "(" "?" ")" = <expan><ex cert="low"></></>
+	: "(" "  ?" ")" = <expan><ex cert="low"></></>
 	
 	//---test_expand low cert---
 	// (abc?)

@@ -248,6 +248,8 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform 'a(¨)bc', '<hi rend="diaeresis">a</hi>bc'
       # test with precombined unicode just to be sure
       assert_equal_fragment_transform 'Ἰ(¨)ουστινιανοῦ', '<hi rend="diaeresis">Ἰ</hi>ουστινιανοῦ'
+	  # test with unclears - ex. p.mert.3.125.xml
+	  assert_equal_fragment_transform 'ạ(¨)bc', '<hi rend="diaeresis"><unclear reason="undefined">a</unclear></hi>bc'
     end
   
     def test_uncertain_diacritical_varia
@@ -269,7 +271,27 @@ if(RUBY_PLATFORM == 'java')
     def test_uncertain_diacritical_perispomeni
       assert_equal_fragment_transform 'a(῀)bcdef', '<hi rend="perispomeni">a</hi>bcdef'
     end
-    
+	
+	def test_uncertain_diacritical_spiritus_asper 
+	#can also be known as greek dasia when combined with space per wikipeidia
+      assert_equal_fragment_transform 'a( ῾)bc', '<hi rend="asper">a</hi>bc'
+    end
+        
+	def test_uncertain_diacritical_acute
+      assert_equal_fragment_transform 'a(´)bc', '<hi rend="acute">a</hi>bc'
+    end
+        
+		def test_uncertain_diacritical_circumflex
+      assert_equal_fragment_transform 'a(^)bc', '<hi rend="circumflex">a</hi>bc'
+	  assert_equal_fragment_transform 'ạ(^)bc', '<hi rend="circumflex"><unclear reason="undefined">a</unclear></hi>bc'
+    end
+	
+	def test_uncertain_diacritical_spiritus_lenis 
+	#can also be known as greek psili when combined with space per wikipeidia
+      assert_equal_fragment_transform 'a( ᾿)bc', '<hi rend="lenis">a</hi>bc'
+	  assert_equal_fragment_transform 'ạ( ᾿)bc', '<hi rend="lenis"><unclear reason="undefined">a</unclear></hi>bc'
+    end
+        
     def test_num_simple
       assert_equal_fragment_transform '<#α=1#>', '<num value="1">α</num>'
       assert_equal_fragment_transform '<#α=#>', '<num>α</num>'

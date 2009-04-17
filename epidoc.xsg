@@ -17,6 +17,7 @@ LEADCA = "ca."[ ]*
 
 // WORD breaks at space and WORDS allows space (therefore multiple words)
 WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
+WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^\u0323]+) (MAX)
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
 // wordsnum allow '/' for fractional numbers
 WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
@@ -97,10 +98,15 @@ item
 	//---choice---
 	//  <:a|orth|b|:> 
 	: [BEGOPT] [WORD a] "?" "|orth|" [WORD b] [ENDOPT] = <choice><corr cert="low">[WORD a]</><sic>[WORD b]</></>
+// the line below causes horizontal ambiguity but does what it needs to - set up for case such as   p.cair.zen/p.cair.zen.3/p.cair.zen.3.59403.xml
+// will see if it handles it tomorrow and what else it does
+	>: [BEGOPT] [WORD a] "?" [items c] "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[WORD a][items c]</><sic>[items d]</></>
 	: [BEGOPT] [WORD a] "|orth|" [WORD b] [ENDOPT] = <choice><corr>[WORD a]</><sic>[WORD b]</></>
 	>: [BEGOPT] [items a] "|orth|" [WORD b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORD a]</><sic>[items b]</></>
 	>: [BEGOPT] [items a] "|orth|" [items b] [ENDOPT] = <choice><corr>[items a]</><sic>[items b]</></>
+	>: [BEGOPT] "|orth|" [WORD b] [ENDOPT] = <choice><corr></><sic>[WORD b]</></>
+	>: [BEGOPT] "|orth|" [items b] [ENDOPT] = <choice><corr></><sic>[items b]</></>
 
 	//---milestone---
 	//  '----' or  '--------'
@@ -263,7 +269,7 @@ item
 	>: [BEGOPT] [items a] "|alt:|" [WORD b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]</></>
-
+	
 	//---glyph---
 	//  '‼a', '‼a,b', '‼filler(a), ‼@a , ‼a b ' 
 	: "‼" [WORD a] " " = <g type=[WORD a]></>
@@ -322,8 +328,10 @@ item
 flat 
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
-	: [WORD w] [ABBR] = <abbr>[WORD w]</>
-	>: [items w] [ABBR] = <abbr>[items w]</>
+	: [WORDA w] [ABBR] = <abbr>[WORDA w]</>
+	: [WORDA w] "?" [ABBR] = <abbr cert="low">[WORDA w]</>
+	//>: "<:A" [items w] [ABBR] ":>" = <abbr>[items w]</>
+	>: [SP] [items w] [ABBR] = <abbr>[items w]</>
 	
 	//---test_expand low cert---
 	// (?)

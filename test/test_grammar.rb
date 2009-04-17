@@ -57,6 +57,10 @@ if(RUBY_PLATFORM == 'java')
     def test_abbreviation_unknown_resolution
       # Ancient abbreviation whose resolution is unknown
       assert_equal_fragment_transform 'ab(  )', '<abbr>ab</abbr>'
+	  assert_equal_fragment_transform 'ab?(  )', '<abbr cert="low">ab</abbr>'
+	  assert_equal_fragment_transform ' bạḅdec̣g(  )', '<abbr>b<unclear>ab</unclear>de<unclear>c</unclear>g</abbr>'
+	  assert_equal_fragment_transform ' bạ!ḅdec̣g(  )', '<abbr>b<unclear reason="undefined">a</unclear><unclear>b</unclear>de<unclear>c</unclear>g</abbr>'
+	  assert_equal_fragment_transform ' bạ!ḅdec̣?g(  )', '<abbr>b<unclear reason="undefined">a</unclear><unclear>b</unclear>de<unclear reason="undefined" cert="low">c</unclear>g</abbr>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html
@@ -307,8 +311,11 @@ if(RUBY_PLATFORM == 'java')
     
     def test_choice
       assert_equal_fragment_transform '<:a|orth|b:>', '<choice><corr>a</corr><sic>b</sic></choice>'
+	  assert_equal_fragment_transform '<:|orth|b:>', '<choice><corr/><sic>b</sic></choice>'
       assert_equal_fragment_transform '<:a|orth|<:b|orth|c:>:>', '<choice><corr>a</corr><sic><choice><corr>b</corr><sic>c</sic></choice></sic></choice>'
-    end
+	  assert_equal_fragment_transform '<:a?|orth|b:>', '<choice><corr cert="low">a</corr><sic>b</sic></choice>'
+	  assert_equal_fragment_transform '<:a?ạ?|orth|bạ:>', '<choice><corr cert="low">a<unclear reason="undefined" cert="low">a</unclear></corr><sic>b<unclear>a</unclear></sic></choice>'
+	end
     
     def test_subst
       assert_equal_fragment_transform '<:a|subst|b:>', '<subst><add place="inline">a</add><del rend="corrected">b</del></subst>'

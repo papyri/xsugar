@@ -389,8 +389,9 @@ if(RUBY_PLATFORM == 'java')
     end
   
     def test_xml_trailing_newline_stripped
-      assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test\n"
-      assert_equal_non_xml_to_xml_to_non_xml "1. test1\n2. test2", "1. test1\n2. test2\n"
+	# added \n at end to prove newline not stripped anymore
+      assert_equal_non_xml_to_xml_to_non_xml "1. test\n", "1. test\n"
+      assert_equal_non_xml_to_xml_to_non_xml "1. test1\n2. test2\n", "1. test1\n2. test2\n"
     end
   
     def test_unicode_greek_reversibility

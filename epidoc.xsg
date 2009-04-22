@@ -17,6 +17,7 @@ LEADCA = "ca."[ ]*
 
 // WORD breaks at space and WORDS allows space (therefore multiple words)
 WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
+//WORDA does not allow underdot (\u0323 at the end) - used to make abbr work
 WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^\u0323]+) (MAX)
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
 // wordsnum allow '/' for fractional numbers
@@ -25,11 +26,8 @@ WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿�
 // WORDOPT breaks at space but has * so allows for no word to exist also in that position
 WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]*) (MAX)
 
-//tempexpword will allow [ and ] to appear in words - see if this passes more tests
-TEMPEXPWORD = ([^ \/\\\n\r\t<>_#@~\*\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
-
 NUM = [0-9]+
-ANYLETTER = [^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]
+ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]
 
 DOT = "."
 QUESTION = [\?]?
@@ -50,25 +48,15 @@ LANGLIST = ((Demotic)|(Coptic)|(Arabic)|(Nabatean)|(Aramaic))
 Relost = "reason=lost"
 Certlow = "cert=low"
 
-file : [lines l] = <ab> [lines l]</>
-
-// save  lines : [line n] [lines more] = [line n] [lines more] 
-lines : [line n] [NL] [lines more] = [line n] [lines more] 
-        >: [line q] = [line q]  
-        : =
-
-line  //: [linenumber x] [items m] [NL] = [linenumber x] [items m]
-       : [linenumber x] [items m] = [linenumber x] [items m]
-       //: [linenumber x] [items m] [NL] = [linenumber x] [items m] "\u000A"
-
-     
-	  
-linenumber : [NUM n] "." " " = <lb n=[NUM n] />
+file : [items l] = <ab>[items l]</>
+     : =
 
 items 
  	: [item i] [items more] = [item i] [items more]  
 	>: [item p] = [item p]	
 
+linenumber : [NUM n] "." " " = <lb n=[NUM n]/>
+newline : [NL n] = [NL n]
 
 unclears_SP_non_terminal : [SP] [UNDERDOT] [unclears_SP_non_terminal mu] = "\u00A0" [unclears_SP_non_terminal mu]
 								 >: [SP] [UNDERDOT] = "\u00A0"
@@ -81,10 +69,19 @@ morenum : [BEGNUM] [WORD w] "=" [SYMBOLNUM x] [ENDNUM] [morenum y] = <num value=
 		 
 
 item 
+	: [linenumber l] = [linenumber l]
+	: [newline n] = [newline n]
+
+//---test_abbreviation_unknown_resolution---
+	// ab( )
+	: [WORDA w] [ABBR] = <abbr>[WORDA w]</>
+	: [WORDA w] "?" [ABBR] = <abbr cert="low">[WORDA w]</>
+	>: [SP] [items w] [ABBR] = <abbr>[items w]</>
 
 	: [expand e] = <expan>[expand e]</>
 	: [expand e] [WORD a] = <expan>[expand e] [WORD a]</>
-	>: [expandi e] = <expan>[expandi e]</>
+	>: [linenumber l] [expandi e] = [linenumber l] <expan>[expandi e]</>
+//	>: [expandi e] = <expan>[expandi e]</>
 	>: [expandi e] [WORD a] = <expan>[expandi e] [WORD a]</>
   	>: [SPO s] [expandi e] = [SPO s] <expan>[expandi e]</>
 	
@@ -257,14 +254,22 @@ item
 	>: [BEGOPT] [items a] "|BL:" [WORDS c] "|" [WORD b] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[items a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|BL:" [WORDS c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|BL:" [WORDS c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[items a]</><rdg>[items b]</></>
+//line below added for empty tag rdg on BL
+	>: [BEGOPT] [items a] "|BL:" [WORDS c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[items a]</><rdg></></>
 	: [BEGOPT] [WORD a] "|ed:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [items a] "|ed:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|ed:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|ed:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[items b]</></>
+//line below added for empty tag lem on editorial with resp
+	>: [BEGOPT] "|ed:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]></><rdg>[items b]</></>
+//line below added for empty tag rdg on editorial with resp
+	>: [BEGOPT] [items a] "|ed:" [WORDS e] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg></></>
 	: [BEGOPT] [WORDS a] "|ed:|" [WORDS b] [ENDOPT] = <app type="editorial"><lem>[WORDS a]</><rdg>[WORDS b]</></>
 	>: [BEGOPT] [items a] "|ed:|" [WORDS b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[WORDS b]</></>
 	>: [BEGOPT] [WORDS a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[WORDS a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]</></>
+//line below added for empty tag rdg on editorial without resp
+	>: [BEGOPT] [items a] "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg></></>
 	: [BEGOPT] [WORD a] "|alt:|" [WORD b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [items a] "|alt:|" [WORD b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
@@ -306,19 +311,19 @@ item
 	: "〚X" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a]</>
 	>: "〚X" [items a] "〛" = <del rend="cross-strokes">[items a]</>
 // repeat of above with NL at end - if fix XML may not need these 2 lines
-	>: "〚X" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a] [NL]</>
-	>: "〚X" [items a] "〛" = <del rend="cross-strokes">[items a] [NL]</>
+//	>: "〚X" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a] [NL]</>
+//	>: "〚X" [items a] "〛" = <del rend="cross-strokes">[items a] [NL]</>
 	: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a]</>
 	>: "〚\/" [items a] "〛" = <del rend="slashes">[items a]</>
 // repeat of above with NL at end - if fix XML may not need these 2 lines
-	>: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a] [NL]</>
-	>: "〚\/" [items a] "〛" = <del rend="slashes">[items a] [NL]</>
+//	>: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a] [NL]</>
+//	>: "〚\/" [items a] "〛" = <del rend="slashes">[items a] [NL]</>
 //this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
 	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
 	>: "〚" [items a] "〛" = <del rend="erasure">[items a]</>
 // repeat of above with NL at end - if fix XML may not need these 2 lines
-	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a] [NL]</>
-	>: "〚" [items a] "〛" = <del rend="erasure">[items a] [NL]</>
+//	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a] [NL]</>
+//	>: "〚" [items a] "〛" = <del rend="erasure">[items a] [NL]</>
 	
 	
 	>: [flat f] = [flat f]
@@ -326,13 +331,6 @@ item
 
 	
 flat 
-	//---test_abbreviation_unknown_resolution---
-	// ab( )
-	: [WORDA w] [ABBR] = <abbr>[WORDA w]</>
-	: [WORDA w] "?" [ABBR] = <abbr cert="low">[WORDA w]</>
-	//>: "<:A" [items w] [ABBR] ":>" = <abbr>[items w]</>
-	>: [SP] [items w] [ABBR] = <abbr>[items w]</>
-	
 	//---test_expand low cert---
 	// (?)
 	: "(" "  ?" ")" = <expan><ex cert="low"></></>
@@ -449,6 +447,7 @@ expandex : "(" [WORDS b] ")" [expandex more] = <ex>[WORDS b]</>[expandex more]
 			
 expandi : [items a] "(" [WORD b] ")" [expandi more] = [items a]<ex>[WORD b]</>[expandi more]
 			>: [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
+			>: [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
 				
 	
 inside_brackets 

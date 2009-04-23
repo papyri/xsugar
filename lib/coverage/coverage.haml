@@ -66,6 +66,8 @@
         - if !hidden
           = element.name
           = " (" + element.length.to_s + " instances)"
+          - if element.error_class == :parse
+            = " - (" + element.bracket_count.to_s + " containing brackets)"
         - if element.examples?
           .toggle_button
             %a{:onclick => "toggle_div('#{element.div_id}-examples');"}
@@ -93,6 +95,8 @@
               %a{:onclick => "toggle_div('#{child.div_id}');"}
                 = child.name
               = " (" + child.length.to_s + " instances)"
+              - if child.error_class == :parse
+                = " - (" + child.bracket_count.to_s + " containing brackets)"
             - block.call(child, true, block)
       - tab_down
     - for ddb_element in ddb_elements

@@ -17,7 +17,7 @@ LEADCA = "ca."[ ]*
 
 // WORD breaks at space and WORDS allows space (therefore multiple words)
 WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
-//WORDA does not allow underdot (\u0323 at the end) - used to make abbr work
+//WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
 WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^\u0323]+) (MAX)
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
 // wordsnum allow '/' for fractional numbers
@@ -45,15 +45,13 @@ HANDSHIFT = m{1}[0-9]+
 
 LANGLIST = ((Demotic)|(Coptic)|(Arabic)|(Nabatean)|(Aramaic))
 
-Relost = "reason=lost"
-Certlow = "cert=low"
+// actual grammar starts below at file.  regular expression used are above
 
 file : [items l] = <ab>[items l]</>
      : =
 
-items 
- 	: [item i] [items more] = [item i] [items more]  
-	>: [item p] = [item p]	
+items : [item i] [items more] = [item i] [items more]  
+		>: [item p] = [item p]	
 
 linenumber : [NUM n] "." " " = <lb n=[NUM n]/>
 newline : [NL n] = [NL n]
@@ -67,12 +65,21 @@ unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [A
 morenum : [BEGNUM] [WORD w] "=" [SYMBOLNUM x] [ENDNUM] [morenum y] = <num value=[SYMBOLNUM x]>[WORD w]</>  [morenum y]
 			   >: [BEGNUM] [WORD w] "=" [SYMBOLNUM x] [ENDNUM] = <num value=[SYMBOLNUM x]>[WORD w]</>
 		 
+expand 	: [WORD a] "(" [WORD b] ")" [expand more] = [WORD a]<ex>[WORD b]</>[expand more]
+			>: [WORD a] "(" [WORD b] ")" = [WORD a]<ex>[WORD b]</>
+			
+expandex : "(" [WORDS b] ")" [expandex more] = <ex>[WORDS b]</>[expandex more]
+			>: "(" [WORDS b] ")" = <ex>[WORDS b]</>
+			
+expandi : [items a] "(" [WORD b] ")" [expandi more] = [items a]<ex>[WORD b]</>[expandi more]
+			>: [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
+			>: [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
 
 item 
 	: [linenumber l] = [linenumber l]
 	: [newline n] = [newline n]
 
-//---test_abbreviation_unknown_resolution---
+	//---test_abbreviation_unknown_resolution---
 	// ab( )
 	: [WORDA w] [ABBR] = <abbr>[WORDA w]</>
 	: [WORDA w] "?" [ABBR] = <abbr cert="low">[WORDA w]</>
@@ -235,10 +242,6 @@ item
 	: [BEGNUM] [WORD o] [morenum m] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[WORD o] [morenum m]</>
 	>: [BEGNUM] [items o] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[items o]</>
 		
-	//---choice---
-	//  <:a|orth|b|:> 
-	//: [BEGOPT] [WORD a] "|orth|" [WORD b] [ENDOPT] = <choice><corr>[WORD a]</><sic>[WORD b]</></>
-	
 	//---subst---
 	//  <:a|subst|b|:> 
 	: [BEGOPT] [WORD a] "|subst|" [WORD b] "?" [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected" cert="low">[WORD b]</></>
@@ -350,16 +353,12 @@ flat
 	//---test_symbol_expansion---
 	// (abc)
 	: "(" [WORDSNUM a] ")" = <expan><ex>[WORDSNUM a]</></>
+//: "(" [WORD a] __ [WORD b] ")" = <expan><ex>[WORD a] __ [WORD b]</></> - old definition of WORDSNUM i think
 //	: "(" [WORD a] ")" = <expan><ex>[WORD a]</></> - commented out to remove vert ambig with wordsnum above
 	: "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
-//10
 	>: [expandex e] = <expan>[expandex e]</>
 	>: "(" [items a] ")" = <expan><ex>[items a]</></>
 
-	//---test_counting_symbol_expansion---????????????????????????
-	// (abc)
-	//: "(" [WORD a] __ [WORD b] ")" = <expan><ex>[WORD a] __ [WORD b]</></>
-	
 	//---test_vestige_lines---
 	// vestig.#{n}lin
 	: "vestig." [NUM v] "lin" = <gap reason="illegible" extent=[NUM v] unit="line" desc="vestiges"></>
@@ -380,15 +379,11 @@ flat
 	// vestig
 	: "vestig" = <gap reason="illegible" extent="unknown" unit="character" desc="vestiges"></>
 	
-	//---test_gap_breaks--- not sure where this came from - seems to not be needed and not defined otherwise
-	// BREAK
-	//: "BREAK" = <gap reason="lost" extent="unknown" unit="line"></>
-	
 	//---test_lost_lines---
 	// lost.#{n}lin
 	: "lost." [NUM v] "lin" = <gap reason="lost" extent=[NUM v] unit="line"></>
 	
-			//---test_lost_lines_unknown---
+	//---test_lost_lines_unknown---
 	// lost.#{n}lin
 	: "lost." "?" "lin" = <gap reason="lost" extent="unknown" unit="line"></>
 	
@@ -398,7 +393,6 @@ flat
 	
 	//---test_omitted---
 	//< >
-//20
 	>: "<" [WORDS w] ">" = <supplied reason="omitted">[WORDS w]</>
 	>: "<" [WORDS w] "?" ">" = <supplied reason="omitted" cert="low">[WORDS w]</>
 	>: "<" [items i] ">" = <supplied reason="omitted">[items i]</>
@@ -416,15 +410,12 @@ flat
 	: [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [items a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	: [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] "?" ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
-//	: [expand e] = <expan>[expand e]</>
-//	>: [expand e] [WORD a] = <expan>[expand e] [WORD a]</>
-//	>: [expandi e] = <expan>[expandi e]</>
-//	>: __ [expandi e] [WORD a] = __ <expan>[expandi e] [WORD a]</>
 	
-			
 	//---multiple tests see inside_brackets production---
 	// [ ], [[ ]], [ca.?] etc...
 	>: "[" [inside_brackets i] "]" =  [inside_brackets i] 	
+	
+	//test below are after inside_brackets to keep from getting the definitions confused
 	
 	//---test_illegible_gap_unknown---
 	// .?
@@ -437,18 +428,6 @@ flat
 	>: [ANYLETTER a] = [ANYLETTER a]
 		
 	
-	
-	
-expand 	: [WORD a] "(" [WORD b] ")" [expand more] = [WORD a]<ex>[WORD b]</>[expand more]
-			>: [WORD a] "(" [WORD b] ")" = [WORD a]<ex>[WORD b]</>
-			
-expandex : "(" [WORDS b] ")" [expandex more] = <ex>[WORDS b]</>[expandex more]
-			>: "(" [WORDS b] ")" = <ex>[WORDS b]</>
-			
-expandi : [items a] "(" [WORD b] ")" [expandi more] = [items a]<ex>[WORD b]</>[expandi more]
-			>: [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
-			>: [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
-				
 	
 inside_brackets 
 	

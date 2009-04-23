@@ -7,7 +7,7 @@ require 'haml'
 module RXSugar
   module Coverage
     class ElementNode
-      attr_accessor :children, :examples, :name, :error_class, :length, :depth
+      attr_accessor :children, :examples, :name, :error_class, :length, :depth, :bracket_count
       
       def initialize
         @children = Array.new
@@ -16,6 +16,7 @@ module RXSugar
         @error_class = ''
         @length = 0
         @depth = 0
+        @bracket_count = 0
       end
       
       def div_id
@@ -141,6 +142,18 @@ module RXSugar
         end
       end
       
+      def count_brackets(frag_array, error_type)
+        bracket_count = 0
+        if error_type == :parse
+          frag_array.each do |frag|
+            if frag.xml_content.to_s.match(/[\[\]]/)
+              bracket_count += 1
+            end
+          end
+        end
+        return bracket_count
+      end
+      
       def to_tree
         root_elements = Array.new
         
@@ -151,6 +164,7 @@ module RXSugar
             this_element.name = key
             this_element.error_class = error_type
             this_element.length = @frequencies[error_type][:element][key].length
+            this_element.bracket_count = count_brackets(@frequencies[error_type][:element][key], error_type)
             this_element.examples = slice_fragments(@frequencies[error_type][:element][key])
             @frequencies[error_type][:element_attr].each_key do |attr_key|
               frequency_type_keys =  frequency_type_keys_from_xml(@frequencies[error_type][:element_attr][attr_key].first.xml_content)
@@ -162,6 +176,7 @@ module RXSugar
                   child_element.depth = 1
                   child_element.error_class = error_type
                   child_element.length = @frequencies[error_type][:element_attr][attr_key].length
+                  child_element.bracket_count = count_brackets(@frequencies[error_type][:element_attr][attr_key], error_type)
                   child_element.examples = slice_fragments(@frequencies[error_type][:element_attr][attr_key])
                   @frequencies[error_type][:element_attr_val].each_key do |attr_val_key|
                     child_frequency_type_keys =  frequency_type_keys_from_xml(@frequencies[error_type][:element_attr_val][attr_val_key].first.xml_content)
@@ -172,6 +187,7 @@ module RXSugar
                         child_child_element.depth = 2
                         child_child_element.error_class = error_type
                         child_child_element.length = @frequencies[error_type][:element_attr_val][attr_val_key].length
+                        child_child_element.bracket_count = count_brackets(@frequencies[error_type][:element_attr_val][attr_val_key], error_type)
                         child_child_element.examples = slice_fragments(@frequencies[error_type][:element_attr_val][attr_val_key])
                         child_element.children << child_child_element
                       end

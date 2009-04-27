@@ -17,10 +17,11 @@ UNDERDOT = "\u0323"
 CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
 
-// WORD breaks at space and WORDS allows space (therefore multiple words)
-WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
+// WORD breaks at space and does not allow DOT
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
 WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^\u0323]+) (MAX)
+//WORDS allows space (therefore multiple words) and DOT
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
 //WORDSBL allows left and right paren - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
 WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
@@ -267,6 +268,7 @@ item
 	>: [BEGOPT] [items a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
+	>: [BEGOPT] "|subst|" [items b] [ENDOPT] = <subst><add place="inline"></><del rend="corrected">[items b]</></>
 	
 	//---app_lem---
 	//  <:|abc|def|:> 

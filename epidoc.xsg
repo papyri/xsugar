@@ -9,6 +9,8 @@ BEGNUM = "<#"
 ENDNUM = "#>"
 BEGSEG = "<\&"
 ENDSEG = "\&>"
+BEGEXP = "<+"
+ENDEXP = "+>"
 
 UNDERDOT = "\u0323"
 //ca. with 0 or more spaces followed by ? mark
@@ -22,6 +24,8 @@ WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿�
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
 //WORDSBL allows left and right paren - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
 WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
+//WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
+WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
 // wordsnum allow '/' for fractional numbers
 WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
 
@@ -73,9 +77,12 @@ expand 	: [WORD a] "(" [WORD b] ")" [expand more] = [WORD a]<ex>[WORD b]</>[expa
 expandex : "(" [WORDS b] ")" [expandex more] = <ex>[WORDS b]</>[expandex more]
 			>: "(" [WORDS b] ")" = <ex>[WORDS b]</>
 			
-expandi : [items a] "(" [WORD b] ")" [expandi more] = [items a]<ex>[WORD b]</>[expandi more]
+expando : [items a] "(" [WORD b] ")" [expando more] = [items a]<ex>[WORD b]</>[expando more]
 			>: [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
 			>: [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
+
+expandim : [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
+expandii : [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
 
 item 
 	: [linenumber l] = [linenumber l]
@@ -86,13 +93,18 @@ item
 	: [WORDA w] [ABBR] = <abbr>[WORDA w]</>
 	: [WORDA w] "?" [ABBR] = <abbr cert="low">[WORDA w]</>
 	>: [SP] [items w] [ABBR] = <abbr>[items w]</>
+	>: [WORDA w] "?" "[" [WORDA x] "]" [WORDA y] [ABBR] = <abbr cert="low">[WORDA w]<supplied reason="lost">[WORDA x]</>[WORDA y]</>
 
-	: [expand e] = <expan>[expand e]</>
-	: [expand e] [WORD a] = <expan>[expand e] [WORD a]</>
-	>: [linenumber l] [expandi e] = [linenumber l] <expan>[expandi e]</>
-//	>: [expandi e] = <expan>[expandi e]</>
-	>: [expandi e] [WORD a] = <expan>[expandi e] [WORD a]</>
-  	>: [SPO s] [expandi e] = [SPO s] <expan>[expandi e]</>
+	: [BEGEXP] "(" [WORDSNUM a] ")" [ENDEXP] = <expan><ex>[WORDSNUM a]</></>
+	>: [BEGEXP] "(" [items a] ")" [ENDEXP] = <expan><ex>[items a]</></>
+	: [BEGEXP] [expand e] [ENDEXP] = <expan>[expand e]</>
+	: [BEGEXP] [expand e] [WORD a] [ENDEXP] = <expan>[expand e] [WORD a]</>
+	>: [linenumber l] [BEGEXP] [expando e] [ENDEXP] = [linenumber l] <expan>[expando e]</>
+//	>: [expando e] = <expan>[expando e]</>
+	>: [BEGEXP] [expando e] [WORD a] [ENDEXP] = <expan>[expando e] [WORD a]</>
+	>: [SPO s] [BEGEXP] [expando e] [ENDEXP] = [SPO s] <expan>[expando e]</>
+	>: [BEGEXP] [expandim e] [ENDEXP] = <expan>[expandim e]</>
+	>: [BEGEXP] [expandii e] [ENDEXP]= <expan>[expandii e]</>
 	
 	//---test unclear characters = underdots
 	: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
@@ -174,6 +186,10 @@ item
 	// .1lin, .2lin, .3lin
 	: [DOT] [NUM n] "lin" = <gap unit="line" extent=[NUM n] reason="illegible"></>  
 	
+	//---test_illegible_dot_lin_extentmax---
+	// .1lin, .2lin, .3lin
+	: [DOT] [NUM n] "-" [NUM w] "lin" = <gap unit="line" extent=[NUM n] extentmax=[NUM w] reason="illegible"></>  
+	
 	//---test_illegible_gap_ca---
 	// ca.1, ca.2, ca.3
 	: [LEADCA] [NUM j] = <gap reason="illegible" extent=[NUM j] unit="character" precision="circa"></>
@@ -254,13 +270,13 @@ item
 	
 	//---app_lem---
 	//  <:|abc|def|:> 
-	: [BEGOPT] [WORD a] "|BL:" [WORDS c] "|" [WORD b] [QUESTION q] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
-	>: [BEGOPT] [WORDOPT a] "|BL:" [WORDS c] "|" [WORDOPT b] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[WORDOPT a]</><rdg>[WORDOPT b]</></>
-	>: [BEGOPT] [items a] "|BL:" [WORDS c] "|" [WORD b] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[items a]</><rdg>[WORD b]</></>
-	>: [BEGOPT] [WORD a] "|BL:" [WORDS c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[WORD a]</><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "|BL:" [WORDS c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[items a]</><rdg>[items b]</></>
+	: [BEGOPT] [WORD a] "|BL:" [WORDSLR c] "|" [WORD b] [QUESTION q] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
+	>: [BEGOPT] [WORDOPT a] "|BL:" [WORDSLR c] "|" [WORDOPT b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORDOPT a]</><rdg>[WORDOPT b]</></>
+	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [WORD b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[WORD b]</></>
+	>: [BEGOPT] [WORD a] "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORD a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[items b]</></>
 //line below added for empty tag rdg on BL
-	>: [BEGOPT] [items a] "|BL:" [WORDS c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDS c]>[items a]</><rdg></></>
+	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg></></>
 //this set of app editorial has 'lem resp=' attribute
 	: [BEGOPT] [WORD a] "|ed:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [items a] "|ed:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[WORD b]</></>
@@ -284,7 +300,7 @@ item
 	>: [BEGOPT] [WORD a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]</></>
 //line below added for empty tag rdg on alternative
-	>: [BEGOPT] [items a] "|alt:" [WORDS e] "|" [ENDOPT] = <app type="alternative"><lem resp=[WORDS e]>[items a]</><rdg></></>
+	>: [BEGOPT] [items a] "|alt:" "|" [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg></></>
 	
 	//---glyph---
 	//  '‼a', '‼a,b', '‼filler(a), ‼@a , ‼a b ' 
@@ -344,28 +360,28 @@ item
 flat 
 	//---test_expand low cert---
 	// (?)
-	: "(" "  ?" ")" = <expan><ex cert="low"></></>
+	: [BEGEXP] "(" "  ?" ")" [ENDEXP] = <expan><ex cert="low"></></>
 	
 	//---test_expand low cert---
 	// (abc?)
-	: "(" [WORD w] "?" ")" = <expan><ex cert="low">[WORD w]</></>
-	>: [WORD a] "(" [WORD b] "?" ")" = <expan>[WORD a]<ex cert="low">[WORD b]</></>
-	>: [items a] "(" [WORD b] "?" ")" = <expan>[items a]<ex cert="low">[WORD b]</></>
+	:  [BEGEXP] "(" [WORD w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORD w]</></>
+	>: [BEGEXP] [WORD a] "(" [WORD b] "?" ")" [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORD b]</></>
+	>: [BEGEXP] [items a] "(" [WORD b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORD b]</></>
 	
 	//---test_expansion---
 	// a(b)
 // comment the next line - causes 5 reversability and passing errors in EXPAN in BGU.1 - bgurakcov0414_v06
 //	>: [WORD a] "(" [WORD b] __")" = <expan>[WORD a]<ex>[WORD b] __</></>
-	>: [WORDS a] "(" [WORDS b] ")" = <expan>[WORDS a]<ex>[WORDS b]</></>
+	>: [BEGEXP] [WORDS a] "(" [WORDS b] ")" [ENDEXP] = <expan>[WORDS a]<ex>[WORDS b]</></>
 	
 	//---test_symbol_expansion---
 	// (abc)
-	: "(" [WORDSNUM a] ")" = <expan><ex>[WORDSNUM a]</></>
+//	: "(" [WORDSNUM a] ")" = <expan><ex>[WORDSNUM a]</></>
 //: "(" [WORD a] __ [WORD b] ")" = <expan><ex>[WORD a] __ [WORD b]</></> - old definition of WORDSNUM i think
 //	: "(" [WORD a] ")" = <expan><ex>[WORD a]</></> - commented out to remove vert ambig with wordsnum above
-	: "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
-	>: [expandex e] = <expan>[expandex e]</>
-	>: "(" [items a] ")" = <expan><ex>[items a]</></>
+	: [BEGEXP] "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
+	>: [BEGEXP] [expandex e] [ENDEXP] = <expan>[expandex e]</>
+//	>: "(" [items a] ")" = <expan><ex>[items a]</></>
 
 	//---test_vestige_lines---
 	// vestig.#{n}lin
@@ -415,9 +431,11 @@ flat
 	>: [BEGSEG] [items i] [ENDSEG] = <seg cert="low">[items i]</>	
 	
 	//---expand loop and items---
-	: [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
-	>: [items a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
-	: [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] "?" ")" [WORDOPT d] "]" [WORDOPT e] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
+	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
+	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
+	>: [BEGEXP] [WORDS a] "[" [WORDS b] "(" [WORDS c] ")" "]" [ENDEXP] = <expan>[WORDS a]<supplied reason="lost">[WORDS b]<ex>[WORDS c]</></></>
+	>: [BEGEXP] "[" "(" [WORDS c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDS c]</></></>
+	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	
 	//---multiple tests see inside_brackets production---
 	// [ ], [[ ]], [ca.?] etc...

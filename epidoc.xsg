@@ -304,11 +304,11 @@ item
 	
 	//---glyph---
 	//  '‼a', '‼a,b', '‼filler(a), ‼@a , ‼a b ' 
-	: "‼" [WORD a] " " = <g type=[WORD a]></>
-	: "‼" [WORD a] "," [WORD b] " " = <g type=[WORD a]>[WORD b]</>
-	: "‼filler(" [WORD a] ")" " " = <g type="filler" rend=[WORD a]></>
-	: "‼@" [WORD a] " " = <orig><g type=[WORD a]></></>
-	>: "‼" [WORDS a] " " = <g type=[WORDS a]></>
+	: "‼" [WORDS a] "‼" = <g type=[WORDS a]></>
+	: "‼" [WORD a] "," [WORD b] "‼" = <g type=[WORD a]>[WORD b]</>
+	: "‼filler(" [WORD a] ")" "‼" = <g type="filler" rend=[WORD a]></>
+	: "‼@" [WORD a] "‼" = <orig><g type=[WORD a]></></>
+//	>: "‼" [WORDS a] "‼" = <g type=[WORDS a]></>
 	
 	//---hand_shift---
 	//  $m# 

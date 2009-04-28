@@ -406,15 +406,14 @@ if(RUBY_PLATFORM == 'java')
     end
   
     def test_line_numbering_reversibility_exhaustive
-      #(1..100).each do |num_lines|
+      (1..100).each do |num_lines|
         str = ''
-        #(1..num_lines).each do |this_line|
-		(1..100).each do |this_line|
+        (1..num_lines).each do |this_line|
           str += "#{this_line}. test#{this_line}\n"
         end
         str.chomp!
         assert_equal_non_xml_to_xml_to_non_xml str, str
-      #end
+      end
     end
   
     def test_xml_trailing_newline_stripped

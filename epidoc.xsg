@@ -396,7 +396,7 @@ flat
 	
 	//---test_vestige_lines_unknown---
 	// vestig.?lin
-	: "vestig.?lin" = <gap reason="illegible" extent="unknown" unit="line"></>
+	: "vestig.?lin" = <gap unit="line" extent="unknown" reason="illegible"></>
 	
 	//---test_vestige_known_char---
 	// vestig.!.#{n}
@@ -408,7 +408,7 @@ flat
 	
 	//---test_lost_lines---
 	// lost.#{n}lin
-	: "lost." [NUM v] "lin" = <gap reason="lost" extent=[NUM v] unit="line"></>
+	: "lost." [NUM v] "lin" = <gap unit="line" extent=[NUM v] reason="lost"></>
 	
 	//---test_lost_lines_unknown---
 	// lost.#{n}lin

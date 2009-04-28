@@ -263,6 +263,8 @@ if(RUBY_PLATFORM == 'java')
       # quotation marks on papyrus
       assert_equal_fragment_transform '"abc"', '<q>abc</q>'
       assert_equal_fragment_transform '"abc def ghi"', '<q>abc def ghi</q>'
+	  assert_equal_fragment_transform '"<:ἔλα 3. βα|orth|αιλαβα:> αὐτὰ"', '<q><choice><corr>ἔλα <lb n="3"/>βα</corr><sic>αιλαβα</sic></choice> αὐτὰ</q>'
+	   #                                                  '<:a|orth|b:>',     '<choice><corr>a</corr><sic>b</sic></choice>'
     end
   
     def test_uncertain_diacritical_diaeresis
@@ -385,6 +387,7 @@ if(RUBY_PLATFORM == 'java')
     def test_milestone
       assert_equal_fragment_transform '----', '<milestone rend="paragraphos" unit="undefined"/>'
       assert_equal_fragment_transform '--------', '<milestone rend="horizontal-rule" unit="undefined"/>'
+	  assert_equal_fragment_transform '###', '<milestone rend="box"/>'
     end
     
     def test_figure
@@ -399,14 +402,15 @@ if(RUBY_PLATFORM == 'java')
     end
   
     def test_line_numbering_reversibility_exhaustive
-      (1..100).each do |num_lines|
+      #(1..100).each do |num_lines|
         str = ''
-        (1..num_lines).each do |this_line|
+        #(1..num_lines).each do |this_line|
+		(1..100).each do |this_line|
           str += "#{this_line}. test#{this_line}\n"
         end
         str.chomp!
         assert_equal_non_xml_to_xml_to_non_xml str, str
-      end
+      #end
     end
   
     def test_xml_trailing_newline_stripped

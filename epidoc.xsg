@@ -131,6 +131,7 @@ item
 	//  '----' or  '--------'
 	: "--------" = <milestone rend="horizontal-rule" unit="undefined"></>
 	: "----" = <milestone rend="paragraphos" unit="undefined"></>
+	: "###" = <milestone rend="box"></>
 
 	//---test_uncertain_diacritical_diaeresis---
 	// (¨)
@@ -416,6 +417,7 @@ flat
 	//---test_quotation_marks---
 	// " "
 	>: "\"" [WORDS w] "\"" = <q>[WORDS w]</>
+	>: "\"" [items i] "\"" = <q>[items i]</>
 	
 	//---test_omitted---
 	//< >

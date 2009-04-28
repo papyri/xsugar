@@ -29,6 +29,8 @@ WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\{\}\?\"¨΄`῾᾿῀�
 WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
 // wordsnum allow '/' for fractional numbers
 WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
+//WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap
+WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
 
 // WORDOPT breaks at space but has * so allows for no word to exist also in that position
 WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]*) (MAX)
@@ -427,7 +429,7 @@ flat
 	
 	//---test_sic---
 	//sic
-	>: "{" [WORDS w] "}" = <sic>[WORDS w]</>	
+	>: "{" [WORDSSIC w] "}" = <sic>[WORDSSIC w]</>	
 	>: "{" [items w] "}" = <sic>[items w]</>
 	
 	//---test_seg---

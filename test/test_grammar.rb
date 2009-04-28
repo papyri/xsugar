@@ -163,7 +163,7 @@ if(RUBY_PLATFORM == 'java')
     # should this have desc="vestiges"?
     def test_vestige_lines_unknown
       # vestiges of an unspecified number of lines, mere smudges, visible
-      assert_equal_fragment_transform 'vestig.?lin', '<gap reason="illegible" extent="unknown" unit="line"/>'
+      assert_equal_fragment_transform 'vestig.?lin', '<gap unit="line" extent="unknown" reason="illegible"/>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/vestiges.html
@@ -176,9 +176,9 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/lostline.html
     def test_lost_lines
       # Some number of lines is lost
-      assert_equal_fragment_transform 'lost.3lin', '<gap reason="lost" extent="3" unit="line"/>'
+      assert_equal_fragment_transform 'lost.3lin', '<gap unit="line" extent="3" reason="lost"/>'
       (1..100).each do |n|
-        assert_equal_fragment_transform "lost.#{n}lin", "<gap reason=\"lost\" extent=\"#{n}\" unit=\"line\"/>"
+        assert_equal_fragment_transform "lost.#{n}lin", "<gap unit=\"line\" extent=\"#{n}\" reason=\"lost\"/>"
       end
     end
   
@@ -214,6 +214,10 @@ if(RUBY_PLATFORM == 'java')
       # scribe wrote unnecessary characters and modern ed flagged them as such
       assert_equal_fragment_transform '{test}', '<sic>test</sic>'
       assert_equal_fragment_transform 'te{sting 1 2} 3', 'te<sic>sting 1 2</sic> 3'
+	  assert_equal_fragment_transform '{.1}', '<sic><gap reason="illegible" extent="1" unit="character"/></sic>'
+	  assert_equal_fragment_transform '{abc.4.2}', '<sic>abc<gap reason="illegible" extent="4" unit="character"/><gap reason="illegible" extent="2" unit="character"/></sic>'
+	  assert_equal_fragment_transform '{.1ab}', '<sic><gap reason="illegible" extent="1" unit="character"/>ab</sic>'
+	  assert_equal_fragment_transform '{ab.1}', '<sic>ab<gap reason="illegible" extent="1" unit="character"/></sic>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/supplementforlost.html

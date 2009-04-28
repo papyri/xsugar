@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 # zsh is used here because &>> is broken under bash
 
-jruby_path="~/source/jruby-1.1.5/bin/jruby"
-idp2_prefix="~/source/idp2"
+jruby_path="$HOME/source/jruby-1.1.5/bin/jruby"
+idp2_prefix="$HOME/source/idp2"
 today=`date +%Y.%m.%d`
 cd $idp2_prefix/svn/idp.data
 echo "idp.data svn:" >> $idp2_prefix/coverage/$today.txt

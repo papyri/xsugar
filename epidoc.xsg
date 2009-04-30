@@ -57,7 +57,10 @@ LANGLIST = ((Demotic)|(Coptic)|(Arabic)|(Nabatean)|(Aramaic))
 // actual grammar starts below at file.  regular expression used are above
 
 file : [items l] = <ab>[items l]</>
+	 : [emptyab e] = <ab>[emptyab e]</>
      : =
+	 
+emptyab : =
 
 items : [item i] [items more] = [item i] [items more]  
 		>: [item p] = [item p]	

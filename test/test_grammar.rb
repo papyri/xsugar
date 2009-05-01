@@ -401,29 +401,37 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_simple_reversibility
-      assert_equal_non_xml_to_xml_to_non_xml "1. test", "1. test"
-      assert_equal_non_xml_to_xml_to_non_xml "1. test1\n2. test2", "1. test1\n2. test2"
+      assert_equal_non_xml_to_xml_to_non_xml "<=1. test=>", "<=1. test=>"
+      assert_equal_non_xml_to_xml_to_non_xml "<=1. test1\n2. test2=>", "<=1. test1\n2. test2=>"
+    end
+  
+    def test_multiple_ab
+      #test multiple ab sections
+	  assert_equal_fragment_transform '{.1ab}=><=12. {ab.1}', '<sic><gap reason="illegible" extent="1" unit="character"/>ab</sic></ab><ab><lb n="12"/><sic>ab<gap reason="illegible" extent="1" unit="character"/></sic>'
     end
   
     def test_line_numbering_reversibility_exhaustive
-      (1..100).each do |num_lines|
+      #(1..100).each do |num_lines|
         str = ''
-        (1..num_lines).each do |this_line|
+        #(1..num_lines).each do |this_line|
+		(1..100).each do |this_line|
           str += "#{this_line}. test#{this_line}\n"
         end
         str.chomp!
+		# I think the line below doing Leiden+ wrapper will have to moved/rethougt if the the outter loop is reactivated
+		str = "<=" + str + "=>"
         assert_equal_non_xml_to_xml_to_non_xml str, str
-      end
+      #end
     end
   
     def test_xml_trailing_newline_stripped
 	# added \n at end to prove newline not stripped anymore
-      assert_equal_non_xml_to_xml_to_non_xml "1. test\n", "1. test\n"
-      assert_equal_non_xml_to_xml_to_non_xml "1. test1\n2. test2\n", "1. test1\n2. test2\n"
+      assert_equal_non_xml_to_xml_to_non_xml "<=1. test\n=>", "<=1. test\n=>"
+      assert_equal_non_xml_to_xml_to_non_xml "<=1. test1\n2. test2\n=>", "<=1. test1\n2. test2\n=>"
     end
   
     def test_unicode_greek_reversibility
-      assert_equal_non_xml_to_xml_to_non_xml '1. ςερτυθιοπασδφγηξκλζχψωβνμ', '1. ςερτυθιοπασδφγηξκλζχψωβνμ'
+      assert_equal_non_xml_to_xml_to_non_xml '<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>', '<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>'
     end
   
     def test_xsugar_reversibility_true

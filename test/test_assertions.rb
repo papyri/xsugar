@@ -8,7 +8,13 @@ module GrammarAssertions
   include Test::Unit::Assertions
   
   def ab(xml)
-    return "<ab>#{xml}</ab>"
+  # added wrapab tags to match new grammar for multiple ab sections
+    return "<wrapab><ab>#{xml}</ab></wrapab>"
+  end
+  
+  def lab(notxml)
+  # added to wrap in leiden syntax to match new grammar for multiple ab sections
+    return "<=#{notxml}=>"
   end
 
   def lb(xmlline)
@@ -18,6 +24,7 @@ module GrammarAssertions
 
   def assert_equal_fragment_transform(non_xml_fragment, xml_fragment)
     non_xml_fragment = "1. #{non_xml_fragment}"
+	non_xml_fragment = lab(non_xml_fragment)
     assert_equal ab(lb(xml_fragment)), @xsugar.non_xml_to_xml(non_xml_fragment)
     assert_equal non_xml_fragment, @xsugar.xml_to_non_xml(ab(lb(xml_fragment)))
     assert_equal_non_xml_to_xml_to_non_xml non_xml_fragment, non_xml_fragment

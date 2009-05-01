@@ -54,9 +54,11 @@ module RXSugar
 
           # try whole abs
           begin
-            collapsed = ddbcov.collapse_nodes_to_single_line(abs)
+            #xsugar parser is expecting a string not an array but did not want to lose line breaks so did not use special collapse method
+			# had to put in wrapab tags for xsugar grammar to work with multiple ab sections 
+			collapsed = "<wrapab>" + abs.to_s + "</wrapab>"
             ddbcov.xsugar.xml_to_non_xml(collapsed)
-            if collapsed.length > "<ab/>".length
+            if collapsed.length > "<wrapab><ab/></wrapab>".length
               xml_files_passing << xml_file
             end
           rescue NativeException => e

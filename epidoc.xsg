@@ -11,6 +11,8 @@ BEGSEG = "<\&"
 ENDSEG = "\&>"
 BEGEXP = "<+"
 ENDEXP = "+>"
+BEGAB = "<="
+ENDAB = "=>"
 
 UNDERDOT = "\u0323"
 //ca. with 0 or more spaces followed by ? mark
@@ -18,25 +20,25 @@ CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
 
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]+) (MAX)
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
-WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^\u0323]+) (MAX)
+WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+\u0323]+) (MAX)
 //WORDS allows space (therefore multiple words) and DOT
-WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
-//WORDSBL allows left and right paren - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
+WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]+) (MAX)
+//WORDSBL allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
 WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
-WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
+WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]+) (MAX)
 // wordsnum allow '/' for fractional numbers
-WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
+WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]+) (MAX)
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap
-WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
+WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]+) (MAX)
 
 // WORDOPT breaks at space but has * so allows for no word to exist also in that position
-WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]*) (MAX)
+WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]*) (MAX)
 
 NUM = [0-9]+
-ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]
+ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]
 
 DOT = "."
 QUESTION = [\?]?
@@ -56,11 +58,15 @@ LANGLIST = ((Demotic)|(Coptic)|(Arabic)|(Nabatean)|(Aramaic))
 
 // actual grammar starts below at file.  regular expression used are above
 
-file : [items l] = <ab>[items l]</>
-	 : [emptyab e] = <ab>[emptyab e]</>
+// had to wrap multiple ab sections in root tag to keep from getting XML not well formed error - decided to do whether multiple or not
+file : [abtag a] = <wrapab>[abtag a]</>
      : =
 	 
-emptyab : =
+// 1st line for 1 ab section, 2nd line for multiple ab sections, 3rd line for empty tab ab section
+abtag : [BEGAB] [items z] [ENDAB] = <ab>[items z]</>
+		>: [BEGAB] [items z] [ENDAB] [abtag more] = <ab>[items z]</> [abtag more]
+		>: [BEGAB] [items z] [ENDAB] [NL] [abtag more] = <ab>[items z]</> [NL] [abtag more]
+		>: [BEGAB] [ENDAB] = <ab></>
 
 items : [item i] [items more] = [item i] [items more]  
 		>: [item p] = [item p]	
@@ -439,7 +445,7 @@ flat
 	//seg
 	>: [BEGSEG] [items i] [ENDSEG] = <seg cert="low">[items i]</>	
 	
-	//---expand loop and items---
+	//---expand with supplied reason lost---
 	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [BEGEXP] [WORDS a] "[" [WORDS b] "(" [WORDS c] ")" "]" [ENDEXP] = <expan>[WORDS a]<supplied reason="lost">[WORDS b]<ex>[WORDS c]</></></>

@@ -51,7 +51,7 @@ module RXSugar
     end
     
     def get_abs_from_edition_div(xml)
-      REXML::XPath.match(REXML::Document.new(xml), '/TEI.2/text/body/div[@type = "edition"]/ab')
+      REXML::XPath.match(REXML::Document.new(xml), '/TEI.2/text/body/div[@type = "edition"]//ab')
     end
     
     def identifying_string_from_element(rexml)

@@ -1,6 +1,6 @@
 module RXSugar
   module JRubyHelper
-    DRB_SERVER_URI = 'druby://philodemus:9001'
+    DRB_SERVER_URI = 'druby://172.16.42.35:9001'
     RESULT_IDENTIFIER = 'result'
     
     def self.included(base)

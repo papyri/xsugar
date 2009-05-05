@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env jruby
 require 'drb/drb'
 require 'rinda/tuplespace'
 require File.join(File.dirname(__FILE__), *%w'.. lib jruby_helper')

@@ -18,6 +18,11 @@ module RXSugar
     end
     
     module InstanceMethods
+      def parse_exception_pretty_print(text, position)
+        carat = '^'.rjust(position)
+        text + "\n" + carat
+      end
+      
       def xml2nonxml(content)
         ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin xml2nonxml.rb')
         jruby_pipe(ruby_file, content)

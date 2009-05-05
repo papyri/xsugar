@@ -18,6 +18,10 @@ module RXSugar
     end
     
     module InstanceMethods
+      def get_abs_from_edition_div(xml)
+        REXML::XPath.match(REXML::Document.new(xml), '/TEI.2/text/body/div[@type = "edition"]//ab')
+      end
+      
       def parse_exception_pretty_print(text, position)
         carat = '^'.rjust(position)
         text + "\n" + carat

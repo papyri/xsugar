@@ -1,4 +1,6 @@
 require 'lib/rxsugar'
+require 'lib/jruby_helper'
+
 require 'test/test_assertions'
 
 require 'rubygems'
@@ -114,6 +116,7 @@ module RXSugar
     class DDbCoverage
       include GrammarAssertions
       include RXSugarHelper
+      include JRubyHelper::InstanceMethods
   
       attr_reader :xsugar
   

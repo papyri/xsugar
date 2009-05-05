@@ -1,5 +1,8 @@
 module RXSugar
   module JRubyHelper
+    DRB_SERVER_URI = 'druby://localhost:9001'
+    RESULT_IDENTIFIER = 'result'
+    
     def self.included(base)
       base.extend(ActMethods)
     end
@@ -18,6 +21,9 @@ module RXSugar
     end
     
     module InstanceMethods
+      require 'drb/drb'
+      require 'rinda/rinda'
+      
       def preprocess_abs(abs)
         return "<wrapab>" + abs.to_s + "</wrapab>"
       end
@@ -32,13 +38,15 @@ module RXSugar
       end
       
       def xml2nonxml(content)
-        ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin xml2nonxml.rb')
-        jruby_pipe(ruby_file, content)
+        # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin xml2nonxml.rb')
+        # jruby_pipe(ruby_file, content)
+        post_to_blackboard('xml', 'nonxml', content)
       end
       
       def nonxml2xml(content)
-        ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin nonxml2xml.rb')
-        jruby_pipe(ruby_file, content)
+        # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin nonxml2xml.rb')
+        # jruby_pipe(ruby_file, content)
+        post_to_blackboard('nonxml', 'xml', content)
       end
             
       def jruby_pipe(ruby_file, content)
@@ -47,6 +55,15 @@ module RXSugar
           pipe.close_write
           pipe.read
         end
+      end
+      
+      def post_to_blackboard(from, to, content)
+        DRb.start_service
+        tuplespace = Rinda::TupleSpaceProxy.new(DRbObject.new(nil, 
+                                      RXSugar::JRubyHelper::DRB_SERVER_URI))
+        tuplespace.write([from, to, content])
+        result, transformed = tuplespace.take([RESULT_IDENTIFIER, String])
+        return transformed
       end
     end
     

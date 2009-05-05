@@ -3,6 +3,7 @@ require 'test/test_assertions'
 
 require 'rubygems'
 require 'haml'
+require 'progressbar'
 
 module RXSugar
   module Coverage
@@ -47,6 +48,8 @@ module RXSugar
         xml_files_passing = Array.new()
         xml_files_failing = Array.new()
 
+        xml_files_bar = ProgressBar.new("files", xml_files.length)
+
         xml_files.each do |xml_file|
           xml_content = IO.readlines(xml_file).to_s
           xml_file = xml_file.sub(/#{data_path}\/?/,'')
@@ -85,7 +88,10 @@ module RXSugar
               error_frequencies.add_error(:parse, fragment_reference)
             end
           end
+          
+          xml_files_bar.inc
         end
+        xml_files_bar.finish
 
         puts "Failing:           #{xml_files_failing.length} / #{xml_files.length}"
         puts "Non-empty passing: #{xml_files_passing.length} / #{xml_files.length}"

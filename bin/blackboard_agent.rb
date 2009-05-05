@@ -26,5 +26,5 @@ loop do
     transformed = e.cause.to_s
   end
   
-  tuplespace.write([RESULT_IDENTIFIER, transformed])
+  tuplespace.write([RXSugar::JRubyHelper::RESULT_IDENTIFIER, transformed])
 end

@@ -35,7 +35,9 @@ module RXSugar
       end
     end
     
-    class Runner      
+    class Runner
+      include JRubyHelper::InstanceMethods
+      
       def run(data_path)
         ddbcov = DDbCoverage.new
 
@@ -55,13 +57,13 @@ module RXSugar
         xml_files.each do |xml_file|
           xml_content = IO.readlines(xml_file).to_s
           xml_file = xml_file.sub(/#{data_path}\/?/,'')
-          abs = ddbcov.get_abs_from_edition_div(xml_content)
+          abs = get_abs_from_edition_div(xml_content)
 
           # try whole abs
           begin
             #xsugar parser is expecting a string not an array but did not want to lose line breaks so did not use special collapse method
 			# had to put in wrapab tags for xsugar grammar to work with multiple ab sections 
-			collapsed = "<wrapab>" + abs.to_s + "</wrapab>"
+            collapsed = preprocess_abs(abs)
             ddbcov.xsugar.xml_to_non_xml(collapsed)
             if collapsed.length > "<wrapab><ab/></wrapab>".length
               xml_files_passing << xml_file

@@ -18,6 +18,10 @@ module RXSugar
     end
     
     module InstanceMethods
+      def preprocess_abs(abs)
+        return "<wrapab>" + abs.to_s + "</wrapab>"
+      end
+      
       def get_abs_from_edition_div(xml)
         REXML::XPath.match(REXML::Document.new(xml), '/TEI.2/text/body/div[@type = "edition"]//ab')
       end

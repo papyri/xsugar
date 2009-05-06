@@ -17,10 +17,6 @@ module RXSugar
     end
     
     module ClassMethods
-      
-    end
-    
-    module InstanceMethods
       require 'drb/drb'
       require 'rinda/rinda'
       
@@ -65,6 +61,10 @@ module RXSugar
         result, transformed = tuplespace.take([RESULT_IDENTIFIER, String])
         return transformed
       end
+    end
+    
+    module InstanceMethods
+
     end
     
   end

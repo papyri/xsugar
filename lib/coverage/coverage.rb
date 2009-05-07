@@ -36,7 +36,7 @@ module RXSugar
     end
     
     class Runner
-      include JRubyHelper::InstanceMethods
+      include JRubyHelper::ClassMethods
       
       def run(data_path)
         ddbcov = DDbCoverage.new

@@ -202,11 +202,11 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_evidence_parallel
-      assert_equal_fragment_transform '_ς ἐπιστολῆς Θεοδώρου_', '<supplied reason="undefined" evidence="parallel">ς ἐπιστολῆς Θεοδώρου</supplied>'
+      assert_equal_fragment_transform '_ς ἐπιστολῆς Θεοδώρου_', '<supplied reason="illegible" evidence="parallel">ς ἐπιστολῆς Θεοδώρου</supplied>'
     end
     
     def test_evidence_parallel_cert_low
-      assert_equal_fragment_transform '_ς ἐπιστολῆς Θεοδώρου?_', '<supplied reason="undefined" evidence="parallel" cert="low">ς ἐπιστολῆς Θεοδώρου</supplied>'
+      assert_equal_fragment_transform '_ς ἐπιστολῆς Θεοδώρου?_', '<supplied reason="illegible" evidence="parallel" cert="low">ς ἐπιστολῆς Θεοδώρου</supplied>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/erroneousinclusion.html

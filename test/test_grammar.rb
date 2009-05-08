@@ -249,6 +249,11 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform 'ạḅc̣!', '<unclear reason="undefined">abc</unclear>'
     end
   
+    def test_unicode_underdot_unclear_unspecified
+      # eds read dotted letter with less than full confidence
+      assert_equal_fragment_transform 'ạḅc̣*', '<unclear reason="unspecified">abc</unclear>'
+    end
+  
     # http://www.stoa.org/epidoc/gl/5/unclear.html
     # http://www.stoa.org/epidoc/gl/5/supplementforlost.html
     def test_unicode_underdot_unclear_combining_with_lost
@@ -336,6 +341,7 @@ if(RUBY_PLATFORM == 'java')
     
     def test_app_lem
       assert_equal_fragment_transform '<:a|BL:1.215|b:>', '<app type="BL"><lem resp="1.215">a</lem><rdg>b</rdg></app>'
+	  assert_equal_fragment_transform '<:a|BL:|b:>', '<app type="BL"><lem>a</lem><rdg>b</rdg></app>'
       assert_equal_fragment_transform '<:a|ed:bgu 3 p.4|b:>', '<app type="editorial"><lem resp="bgu 3 p.4">a</lem><rdg>b</rdg></app>'
       assert_equal_fragment_transform '<:a|alt:|b:>', '<app type="alternative"><lem>a</lem><rdg>b</rdg></app>'
     end

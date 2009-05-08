@@ -124,6 +124,8 @@ item
 	>: [unclears_non_terminal u] "!" = <unclear reason="undefined">[unclears_non_terminal u]</>
 	>: [unclears_SP_non_terminal u] "?" = <unclear reason="undefined" cert="low">[unclears_SP_non_terminal u]</>
 	>: [unclears_non_terminal u] "?" = <unclear reason="undefined" cert="low">[unclears_non_terminal u]</>
+	>: [unclears_SP_non_terminal u] "*" = <unclear reason="unspecified">[unclears_SP_non_terminal u]</>
+	>: [unclears_non_terminal u] "*" = <unclear reason="unspecified">[unclears_non_terminal u]</>
 	
 	//---choice---
 	//  <:a|orth|b|:> 
@@ -279,6 +281,8 @@ item
 	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[items b]</></>
 //line below added for empty tag rdg on BL
 	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg></></>
+//line below added for no resp= in lem tag on BL
+	>: [BEGOPT] [items a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[items b]</></>
 //this set of app editorial has 'lem resp=' attribute
 	: [BEGOPT] [WORD a] "|ed:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [items a] "|ed:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[WORD b]</></>

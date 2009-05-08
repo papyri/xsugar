@@ -149,25 +149,13 @@ item
 	: [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
 	>: [ANYLETTER a] [UNDERDOT] "(¨)" = <hi rend="diaeresis"><unclear reason="undefined">[ANYLETTER a]</></>
 	
-	//---test_uncertain_diacritical_varia---
-	// (`)
-	: [ANYLETTER a] "(`)" = <hi rend="varia">[ANYLETTER a]</>	
-	
-	//---test_uncertain_diacritical_dasia---
-    // (῾)
-	: [ANYLETTER a] "(῾)" = <hi rend="dasia">[ANYLETTER a]</>
-			
-	//---test_uncertain_diacritical_psili---
-	// (᾿)
-	: [ANYLETTER a] "(᾿)" = <hi rend="psili">[ANYLETTER a]</>
+	//---test_uncertain_diacritical_grave---
+	// (`) u+1fef
+	: [ANYLETTER a] "(`)" = <hi rend="grave">[ANYLETTER a]</>	
 	
 	//---test_uncertain_diacritical_oxia---
 	// (΄)
 	: [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
-	
-	//---test_uncertain_diacritical_perispomeni---
-	// (῀)
-	: [ANYLETTER a] "(῀)" = <hi rend="perispomeni">[ANYLETTER a]</>
 	
 	//---test_uncertain_diacritical_spiritus_asper--- can also be known as greek dasia when combined with space per wikipeidia
 	// (῾)
@@ -241,7 +229,7 @@ item
 	
 	//---grave---
 	//   \abc/
-    : "\|*" [WORD a] "*\|" = <hi rend="grave">[WORD a]</>
+//    : "\|*" [WORD a] "*\|" = <hi rend="grave">[WORD a]</>
 	
 	//---supraline---
 	//   ¯abc¯ - uses non-combining macron

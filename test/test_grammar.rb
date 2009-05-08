@@ -281,26 +281,14 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform 'ạ(¨)bc', '<hi rend="diaeresis"><unclear reason="undefined">a</unclear></hi>bc'
     end
   
-    def test_uncertain_diacritical_varia
-      assert_equal_fragment_transform 'abcde(`)f', 'abcd<hi rend="varia">e</hi>f'
+    def test_uncertain_diacritical_grave
+      assert_equal_fragment_transform 'abcde(`)f', 'abcd<hi rend="grave">e</hi>f'
     end
   
     def test_uncertain_diacritical_oxia
       assert_equal_fragment_transform 'abcde(΄)f', 'abcd<hi rend="oxia">e</hi>f'
     end
   
-    def test_uncertain_diacritical_dasia
-      assert_equal_fragment_transform 'a(῾)bcdef', '<hi rend="dasia">a</hi>bcdef'
-    end
-  
-    def test_uncertain_diacritical_psili
-      assert_equal_fragment_transform 'a(᾿)bcdef', '<hi rend="psili">a</hi>bcdef'
-    end
-  
-    def test_uncertain_diacritical_perispomeni
-      assert_equal_fragment_transform 'a(῀)bcdef', '<hi rend="perispomeni">a</hi>bcdef'
-    end
-	
 	def test_uncertain_diacritical_spiritus_asper 
 	#can also be known as greek dasia when combined with space per wikipeidia
       assert_equal_fragment_transform 'a( ῾)bc', '<hi rend="asper">a</hi>bc'

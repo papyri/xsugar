@@ -20,25 +20,25 @@ CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
 
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]+) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
-WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+\u0323]+) (MAX)
+WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+\u0323]+) (MAX)
 //WORDS allows space (therefore multiple words) and DOT
-WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]+) (MAX)
+WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
 //WORDSBL allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
-WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^]+) (MAX)
+WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^]+) (MAX)
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
-WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]+) (MAX)
+WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
 // wordsnum allow '/' for fractional numbers
-WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]+) (MAX)
+WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap
-WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]+) (MAX)
+WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
 
 // WORDOPT breaks at space but has * so allows for no word to exist also in that position
-WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]*) (MAX)
+WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]*) (MAX)
 
 NUM = [0-9]+
-ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡‼´῾᾿\^+]
+ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]
 
 DOT = "."
 QUESTION = [\?]?
@@ -275,14 +275,19 @@ item
 	//---app_lem---
 	//  <:|abc|def|:> 
 	: [BEGOPT] [WORD a] "|BL:" [WORDSLR c] "|" [WORD b] [QUESTION q] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
-	>: [BEGOPT] [WORDOPT a] "|BL:" [WORDSLR c] "|" [WORDOPT b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORDOPT a]</><rdg>[WORDOPT b]</></>
-	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [WORD b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[WORD b]</></>
-	>: [BEGOPT] [WORD a] "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORD a]</><rdg>[items b]</></>
+//this set of app BL has 'lem resp=' attribute
+//	>: [BEGOPT] [WORDOPT a] "|BL:" [WORDSLR c] "|" [WORDOPT b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORDOPT a]</><rdg>[WORDOPT b]</></>
+//	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [WORD b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[WORD b]</></>
+//	>: [BEGOPT] [WORD a] "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[items b]</></>
 //line below added for empty tag rdg on BL
 	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg></></>
-//line below added for no resp= in lem tag on BL
+//this set of app Bl does not have 'lem resp=' attribute
 	>: [BEGOPT] [items a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[items b]</></>
+//	>: [BEGOPT] [WORDOPT a] "|BL:|" [WORDOPT b] [ENDOPT] = <app type="BL"><lem>[WORDOPT a]</><rdg>[WORDOPT b]</></>
+//	>: [BEGOPT] [items a] "|BL:|" [WORD b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[WORD b]</></>
+//	>: [BEGOPT] [WORD a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[WORD a]</><rdg>[items b]</></>
+	
 //this set of app editorial has 'lem resp=' attribute
 	: [BEGOPT] [WORD a] "|ed:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [items a] "|ed:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[WORD b]</></>
@@ -310,10 +315,10 @@ item
 	
 	//---glyph---
 	//  '‼a', '‼a,b', '‼filler(a), ‼@a , ‼a b ' 
-	: "‼" [WORDS a] "‼" = <g type=[WORDS a]></>
-	: "‼" [WORD a] "," [WORD b] "‼" = <g type=[WORD a]>[WORD b]</>
-	: "‼filler(" [WORD a] ")" "‼" = <g type="filler" rend=[WORD a]></>
-	: "‼@" [WORD a] "‼" = <orig><g type=[WORD a]></></>
+	: "*" [WORDS a] "*" = <g type=[WORDS a]></>
+	: "*" [WORD a] "," [WORD b] "*" = <g type=[WORD a]>[WORD b]</>
+	: "*filler(" [WORD a] ")" "*" = <g type="filler" rend=[WORD a]></>
+	: "*@" [WORD a] "*" = <orig><g type=[WORD a]></></>
 //	>: "‼" [WORDS a] "‼" = <g type=[WORDS a]></>
 	
 	//---hand_shift---
@@ -341,18 +346,18 @@ item
 	
 	//---del_rend---
 	//  not brackets - already defined in inside-brackets
-	: "〚X" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a]</>
+//	: "〚X" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a]</>
 	>: "〚X" [items a] "〛" = <del rend="cross-strokes">[items a]</>
 // repeat of above with NL at end - if fix XML may not need these 2 lines
 //	>: "〚X" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a] [NL]</>
 //	>: "〚X" [items a] "〛" = <del rend="cross-strokes">[items a] [NL]</>
-	: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a]</>
+//	: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a]</>
 	>: "〚\/" [items a] "〛" = <del rend="slashes">[items a]</>
 // repeat of above with NL at end - if fix XML may not need these 2 lines
 //	>: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a] [NL]</>
 //	>: "〚\/" [items a] "〛" = <del rend="slashes">[items a] [NL]</>
 //this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
-	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
+//	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
 	>: "〚" [items a] "〛" = <del rend="erasure">[items a]</>
 // repeat of above with NL at end - if fix XML may not need these 2 lines
 //	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a] [NL]</>

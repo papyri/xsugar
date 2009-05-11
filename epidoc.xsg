@@ -20,25 +20,25 @@ CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
 
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
-WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+\u0323]+) (MAX)
+WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+\u0323]+) (MAX)
 //WORDS allows space (therefore multiple words) and DOT
-WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
+WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
 //WORDSBL allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
-WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^]+) (MAX)
+WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^]+) (MAX)
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
-WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
+WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
 // wordsnum allow '/' for fractional numbers
-WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
+WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap
-WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
+WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
 
 // WORDOPT breaks at space but has * so allows for no word to exist also in that position
-WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]*) (MAX)
+WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]*) (MAX)
 
 NUM = [0-9]+
-ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]
+ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]
 
 DOT = "."
 QUESTION = [\?]?
@@ -266,6 +266,7 @@ item
 	//---subst---
 	//  <:a|subst|b|:> 
 	: [BEGOPT] [WORD a] "|subst|" [WORD b] "?" [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected" cert="low">[WORD b]</></>
+	>: [BEGOPT] [items a] "|subst|" [items b] "?" [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected" cert="low">[items b]</></>
 	: [BEGOPT] [WORD a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[WORD b]</></>
 	>: [BEGOPT] [items a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[items b]</></>
@@ -284,6 +285,7 @@ item
 	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg></></>
 //this set of app Bl does not have 'lem resp=' attribute
 	>: [BEGOPT] [items a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|BL:|" [ENDOPT] = <app type="BL"><lem>[items a]</><rdg></></>
 //	>: [BEGOPT] [WORDOPT a] "|BL:|" [WORDOPT b] [ENDOPT] = <app type="BL"><lem>[WORDOPT a]</><rdg>[WORDOPT b]</></>
 //	>: [BEGOPT] [items a] "|BL:|" [WORD b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[WORD b]</></>
 //	>: [BEGOPT] [WORD a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[WORD a]</><rdg>[items b]</></>

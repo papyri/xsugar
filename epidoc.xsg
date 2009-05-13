@@ -18,27 +18,27 @@ UNDERDOT = "\u0323"
 //ca. with 0 or more spaces followed by ? mark
 CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
-
+//																								   ¨΄`῾᾿´\^῾᾿
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
-WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+\u0323]+) (MAX)
+WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+\u0323]+) (MAX)
 //WORDS allows space (therefore multiple words) and DOT
-WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
+WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
 //WORDSBL allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
-WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^]+) (MAX)
+WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿]+) (MAX)
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
-WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
+WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
 // wordsnum allow '/' for fractional numbers
-WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
+WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap
-WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
+WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
 
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
-WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]*) (MAX)
+WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]*) (MAX)
 
 NUM = [0-9]+
-ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]
+ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]
 
 DOT = "."
 QUESTION = [\?]?
@@ -107,6 +107,44 @@ item
 	>: [SP] [items w] [ABBR] = <abbr>[items w]</>
 	>: [WORDA w] "?" "[" [WORDA x] "]" [WORDA y] [ABBR] = <abbr cert="low">[WORDA w]<supplied reason="lost">[WORDA x]</>[WORDA y]</>
 
+
+
+//---test_uncertain_diacritical_diaeresis---
+	// (¨)
+	: [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
+	>: [ANYLETTER a] [UNDERDOT] "(¨)" = <hi rend="diaeresis"><unclear reason="undefined">[ANYLETTER a]</></>
+	
+	//---test_uncertain_diacritical_grave---
+	// (`) u+1fef
+	: [ANYLETTER a] "(`)" = <hi rend="grave">[ANYLETTER a]</>	
+	
+	//---test_uncertain_diacritical_oxia---
+	// (΄)
+	: [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
+	
+	//---test_uncertain_diacritical_spiritus_asper--- can also be known as greek dasia when combined with space per wikipeidia
+	// (῾)
+	: [ANYLETTER a] "( ῾)" = <hi rend="asper">[ANYLETTER a]</>
+	
+	//---test_uncertain_diacritical_acute---
+	// (´)
+	: [ANYLETTER a] "(´)" = <hi rend="acute">[ANYLETTER a]</>
+	
+	//---test_uncertain_diacritical_circumflex---
+	// (^)
+	: [ANYLETTER a] "(^)" = <hi rend="circumflex">[ANYLETTER a]</>
+	>: [ANYLETTER a] [UNDERDOT] "(^)" = <hi rend="circumflex"><unclear reason="undefined">[ANYLETTER a]</></>
+	
+	//---test_uncertain_diacritical_spiritus_lenis--- can also be known as greek psili when combined with space per wikipeidia
+	// (᾿)
+	: [ANYLETTER a] "( ᾿)" = <hi rend="lenis">[ANYLETTER a]</>
+	>: [ANYLETTER a] [UNDERDOT] "( ᾿)" = <hi rend="lenis"><unclear reason="undefined">[ANYLETTER a]</></>
+	
+
+
+
+
+
 	: [BEGEXP] "(" [WORDSNUM a] ")" [ENDEXP] = <expan><ex>[WORDSNUM a]</></>
 	>: [BEGEXP] "(" [items a] ")" [ENDEXP] = <expan><ex>[items a]</></>
 	: [BEGEXP] [expand e] [ENDEXP] = <expan>[expand e]</>
@@ -148,34 +186,34 @@ item
 
 	//---test_uncertain_diacritical_diaeresis---
 	// (¨)
-	: [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
-	>: [ANYLETTER a] [UNDERDOT] "(¨)" = <hi rend="diaeresis"><unclear reason="undefined">[ANYLETTER a]</></>
+//	: [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
+//	>: [ANYLETTER a] [UNDERDOT] "(¨)" = <hi rend="diaeresis"><unclear reason="undefined">[ANYLETTER a]</></>
 	
 	//---test_uncertain_diacritical_grave---
 	// (`) u+1fef
-	: [ANYLETTER a] "(`)" = <hi rend="grave">[ANYLETTER a]</>	
+//	: [ANYLETTER a] "(`)" = <hi rend="grave">[ANYLETTER a]</>	
 	
 	//---test_uncertain_diacritical_oxia---
 	// (΄)
-	: [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
+//	: [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
 	
 	//---test_uncertain_diacritical_spiritus_asper--- can also be known as greek dasia when combined with space per wikipeidia
 	// (῾)
-	: [ANYLETTER a] "( ῾)" = <hi rend="asper">[ANYLETTER a]</>
+//	: [ANYLETTER a] "( ῾)" = <hi rend="asper">[ANYLETTER a]</>
 	
 	//---test_uncertain_diacritical_acute---
 	// (´)
-	: [ANYLETTER a] "(´)" = <hi rend="acute">[ANYLETTER a]</>
+//	: [ANYLETTER a] "(´)" = <hi rend="acute">[ANYLETTER a]</>
 	
 	//---test_uncertain_diacritical_circumflex---
 	// (^)
-	: [ANYLETTER a] "(^)" = <hi rend="circumflex">[ANYLETTER a]</>
-	>: [ANYLETTER a] [UNDERDOT] "(^)" = <hi rend="circumflex"><unclear reason="undefined">[ANYLETTER a]</></>
+//	: [ANYLETTER a] "(^)" = <hi rend="circumflex">[ANYLETTER a]</>
+//	>: [ANYLETTER a] [UNDERDOT] "(^)" = <hi rend="circumflex"><unclear reason="undefined">[ANYLETTER a]</></>
 	
 	//---test_uncertain_diacritical_spiritus_lenis--- can also be known as greek psili when combined with space per wikipeidia
 	// (᾿)
-	: [ANYLETTER a] "( ᾿)" = <hi rend="lenis">[ANYLETTER a]</>
-	>: [ANYLETTER a] [UNDERDOT] "( ᾿)" = <hi rend="lenis"><unclear reason="undefined">[ANYLETTER a]</></>
+//	: [ANYLETTER a] "( ᾿)" = <hi rend="lenis">[ANYLETTER a]</>
+//	>: [ANYLETTER a] [UNDERDOT] "( ᾿)" = <hi rend="lenis"><unclear reason="undefined">[ANYLETTER a]</></>
 	
 	//---test_illegible_dot_gap---
 	// .1, .2, .3

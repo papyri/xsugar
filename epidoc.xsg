@@ -34,7 +34,7 @@ WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap
 WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]+) (MAX)
 
-// WORDOPT breaks at space but has * so allows for no word to exist also in that position
+// WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
 WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¨΄`῾᾿῀¯≡´῾᾿\^+]*) (MAX)
 
 NUM = [0-9]+
@@ -255,12 +255,12 @@ item
 	//  #a#1/2# a = character representation and then the fraction it equals between next #'s
     : "<#=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]/>
 	: "<#=" [SYMNUMMULTI m] "#>" = <num value=[SYMNUMMULTI m]/>
-	: [BEGNUM] [WORD o] "=#>" = <num>[WORD o]</>
+	: [BEGNUM] [WORDA o] "=#>" = <num>[WORDA o]</>
 	
 	//---fraction_number and whole_number symbol and multi_symbol---
 	//  <#a#1/2#> a = symbol representation and then the number/fraction it equals after '='
-    : [BEGNUM] [WORD o] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[WORD o]</>
-	: [BEGNUM] [WORD o] [morenum m] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[WORD o] [morenum m]</>
+    : [BEGNUM] [WORDA o] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[WORDA o]</>
+	: [BEGNUM] [WORDA o] [morenum m] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[WORDA o] [morenum m]</>
 	>: [BEGNUM] [items o] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[items o]</>
 		
 	//---subst---

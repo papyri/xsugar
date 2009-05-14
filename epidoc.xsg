@@ -14,6 +14,8 @@ ENDEXP = "+>"
 BEGAB = "<="
 ENDAB = "=>"
 
+FRACSYM = [𐅵𐅷𐅸]+
+
 UNDERDOT = "\u0323"
 //ca. with 0 or more spaces followed by ? mark
 CAUNKNOWN = "ca."[ ]*"\?"
@@ -165,6 +167,7 @@ item
 	
 	//---test unclear characters = underdots
 	: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
+	>: [FRACSYM f] [UNDERDOT] "!" = <unclear reason="undefined">[FRACSYM f]</>
 	>: [unclears_SP_non_terminal u] "!" = <unclear reason="undefined">[unclears_SP_non_terminal u]</>
 	>: [unclears_non_terminal u] "!" = <unclear reason="undefined">[unclears_non_terminal u]</>
 	>: [unclears_SP_non_terminal u] "?" = <unclear reason="undefined" cert="low">[unclears_SP_non_terminal u]</>

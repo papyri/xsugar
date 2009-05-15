@@ -63,7 +63,7 @@ module RXSugar
         DRb.stop_service
         
         if result_type == :exception
-          raise NativeException, transformed
+          raise transformed
         else
           return transformed
         end

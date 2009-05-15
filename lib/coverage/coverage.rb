@@ -69,7 +69,7 @@ module RXSugar
             if collapsed.length > "<wrapab><ab/></wrapab>".length
               xml_files_passing << xml_file
             end
-          rescue NativeException => e
+          rescue
             xml_files_failing << xml_file
           end
 

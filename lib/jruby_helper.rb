@@ -56,9 +56,9 @@ module RXSugar
         DRb.start_service
         tuplespace = Rinda::TupleSpaceProxy.new(DRbObject.new(nil, 
                                                 DRB_SERVER_URI))
-        tuplespace.write([from, to, content])
-        result, result_type, transformed = 
-          tuplespace.take([:result, Symbol, String])
+        tuplespace.write([from, to, content, content.object_id])
+        result, object_id, result_type, transformed = 
+          tuplespace.take([:result, content.object_id, Symbol, String])
         DRb.stop_service
         
         if result_type == :exception

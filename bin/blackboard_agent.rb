@@ -13,9 +13,9 @@ tuplespace = Rinda::TupleSpaceProxy.new(DRbObject.new(nil,
 # set up the constants we'll reuse inside the loop
 rxsugar = rxsugar_from_grammar(DEFAULT_GRAMMAR)
 loop do
-  from, to, content = tuplespace.take([%r{^(?:xml|nonxml)$},
-                                       %r{^(?:xml|nonxml)$},
-                                       String])
+  from, to, content, object_id = tuplespace.take([%r{^(?:xml|nonxml)$},
+                                                  %r{^(?:xml|nonxml)$},
+                                                  String, Fixnum])
   begin
     if from == 'xml' && to == 'nonxml'
       transformed = rxsugar.xml_to_non_xml(content).to_s
@@ -28,5 +28,5 @@ loop do
     transformed = e.cause.to_s
   end
   
-  tuplespace.write([:result, result_type, transformed])
+  tuplespace.write([:result, object_id, result_type, transformed])
 end

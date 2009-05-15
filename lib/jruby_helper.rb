@@ -58,9 +58,15 @@ module RXSugar
         tuplespace = Rinda::TupleSpaceProxy.new(DRbObject.new(nil, 
                                                 DRB_SERVER_URI))
         tuplespace.write([from, to, content])
-        result, transformed = tuplespace.take([RESULT_IDENTIFIER, nil])
+        result, result_type, transformed = 
+          tuplespace.take([RESULT_IDENTIFIER, nil])
         DRb.stop_service
-        return transformed
+        
+        if transformed.class == NativeException
+          raise transformed
+        else
+          return transformed
+        end
       end
     end
     

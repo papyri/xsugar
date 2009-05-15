@@ -65,10 +65,7 @@ module RXSugar
 			# had to put in wrapab tags for xsugar grammar to work with multiple ab sections 
             collapsed = preprocess_abs(abs)
             # ddbcov.xsugar.xml_to_non_xml(collapsed)
-            result = xml2nonxml(collapsed)
-            if result.class == NativeException
-              raise result
-            end
+            xml2nonxml(collapsed)
             if collapsed.length > "<wrapab><ab/></wrapab>".length
               xml_files_passing << xml_file
             end

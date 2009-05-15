@@ -1,7 +1,6 @@
 module RXSugar
   module JRubyHelper
     DRB_SERVER_URI = 'druby://172.16.42.35:9001'
-    RESULT_IDENTIFIER = 'result'
     
     def self.included(base)
       base.extend(ActMethods)
@@ -59,7 +58,7 @@ module RXSugar
                                                 DRB_SERVER_URI))
         tuplespace.write([from, to, content])
         result, result_type, transformed = 
-          tuplespace.take([RESULT_IDENTIFIER, Symbol, String])
+          tuplespace.take([:result, Symbol, String])
         DRb.stop_service
         
         if result_type == :exception

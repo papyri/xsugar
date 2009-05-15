@@ -22,27 +22,25 @@ CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
 //																								   ¨΄`῾᾿´\^῾᾿
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+]+) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
-WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+\u0323]+) (MAX)
 //WORDS allows space (therefore multiple words) and DOT
-WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+]+) (MAX)
+WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
 //WORDSBL allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
-WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¯≡]+) (MAX)
+WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿]+) (MAX)
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
-WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+]+) (MAX)
+WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
 // wordsnum allow '/' for fractional numbers
-WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+]+) (MAX)
+WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap
-WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+]+) (MAX)
+WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
 
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
-WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+]*) (MAX)
+WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]*) (MAX)
 
 NUM = [0-9]+
-ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+]
-
-//DIACRITICAL = [¨΄`῾᾿´\^῾᾿]
+ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]
 
 DOT = "."
 QUESTION = [\?]?
@@ -66,7 +64,7 @@ LANGLIST = ((Demotic)|(Coptic)|(Arabic)|(Nabatean)|(Aramaic))
 file : [abtag a] = <wrapab>[abtag a]</>
      : =
 	 
-// 1st line for 1 ab section, 2nd line for multiple ab sections, 3rd line for multiple ab sections with new line break, 4th line for empty tag ab section
+// 1st line for 1 ab section, 2nd line for multiple ab sections, 3rd line for empty tag ab section
 abtag : [BEGAB] [items z] [ENDAB] = <ab>[items z]</>
 		>: [BEGAB] [items z] [ENDAB] [abtag more] = <ab>[items z]</> [abtag more]
 		>: [BEGAB] [items z] [ENDAB] [NL] [abtag more] = <ab>[items z]</> [NL] [abtag more]
@@ -104,12 +102,18 @@ item
 	: [linenumber l] = [linenumber l]
 	: [newline n] = [newline n]
 
+	//---test_abbreviation_unknown_resolution---
+	// ab( )
+	: [WORDA w] [ABBR] = <abbr>[WORDA w]</>
+	: [WORDA w] "?" [ABBR] = <abbr cert="low">[WORDA w]</>
+	>: [SP] [items w] [ABBR] = <abbr>[items w]</>
+	>: [WORDA w] "?" "[" [WORDA x] "]" [WORDA y] [ABBR] = <abbr cert="low">[WORDA w]<supplied reason="lost">[WORDA x]</>[WORDA y]</>
+
 
 
 //---test_uncertain_diacritical_diaeresis---
 	// (¨)
 	: [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
-//	: [ANYLETTER a] [DIACRITICAL] "(¨)" = <hi rend="diaeresis">[ANYLETTER a] [DIACRITICAL]</>
 	>: [ANYLETTER a] [UNDERDOT] "(¨)" = <hi rend="diaeresis"><unclear reason="undefined">[ANYLETTER a]</></>
 	
 	//---test_uncertain_diacritical_grave---
@@ -143,21 +147,10 @@ item
 
 
 
-
-	//---test_abbreviation_unknown_resolution---
-	// ab( )
-	: [WORDA w] [ABBR] = <abbr>[WORDA w]</>
-	: [WORDA w] "?" [ABBR] = <abbr cert="low">[WORDA w]</>
-	>: [SP] [items w] [ABBR] = <abbr>[items w]</>
-	>: [WORDA w] "?" "[" [WORDA x] "]" [WORDA y] [ABBR] = <abbr cert="low">[WORDA w]<supplied reason="lost">[WORDA x]</>[WORDA y]</>
-
-
 	: [BEGEXP] "(" [WORDSNUM a] ")" [ENDEXP] = <expan><ex>[WORDSNUM a]</></>
 	>: [BEGEXP] "(" [items a] ")" [ENDEXP] = <expan><ex>[items a]</></>
-//the line below causes horizontal ambiguity but does not break anything that I can tell for our purposes - will push up and see
-	: [BEGEXP] [items i] [WORD a] "(" [WORD b] ")" [ENDEXP] = <expan>[items i] [WORD a]<ex>[WORD b]</></>
-	>: [BEGEXP] [expand e] [ENDEXP] = <expan>[expand e]</>
-	>: [BEGEXP] [expand e] [WORD a] [ENDEXP] = <expan>[expand e] [WORD a]</>
+	: [BEGEXP] [expand e] [ENDEXP] = <expan>[expand e]</>
+	: [BEGEXP] [expand e] [WORD a] [ENDEXP] = <expan>[expand e] [WORD a]</>
 	>: [linenumber l] [BEGEXP] [expando e] [ENDEXP] = [linenumber l] <expan>[expando e]</>
 //	>: [expando e] = <expan>[expando e]</>
 	>: [BEGEXP] [expando e] [WORD a] [ENDEXP] = <expan>[expando e] [WORD a]</>

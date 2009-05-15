@@ -56,7 +56,7 @@ module RXSugar
       def post_to_blackboard(from, to, content)
         DRb.start_service
         tuplespace = Rinda::TupleSpaceProxy.new(DRbObject.new(nil, 
-                                      RXSugar::JRubyHelper::DRB_SERVER_URI))
+                                                DRB_SERVER_URI))
         tuplespace.write([from, to, content])
         result, transformed = tuplespace.take([RESULT_IDENTIFIER, nil])
         DRb.stop_service

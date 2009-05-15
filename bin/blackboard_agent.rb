@@ -23,7 +23,7 @@ loop do
       transformed = rxsugar.non_xml_to_xml(content).to_s
     end
   rescue NativeException => e
-    transformed = e.cause.to_s
+    transformed = e
   end
   
   tuplespace.write([RXSugar::JRubyHelper::RESULT_IDENTIFIER, transformed])

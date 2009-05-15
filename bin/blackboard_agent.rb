@@ -22,9 +22,11 @@ loop do
     elsif from == 'nonxml' && to == 'xml'
       transformed = rxsugar.non_xml_to_xml(content).to_s
     end
+    result_type = :ok
   rescue NativeException => e
-    transformed = e
+    result_type = :exception
+    transformed = e.cause.to_s
   end
   
-  tuplespace.write([RXSugar::JRubyHelper::RESULT_IDENTIFIER, transformed])
+  tuplespace.write([RXSugar::JRubyHelper::RESULT_IDENTIFIER, result_type, transformed])
 end

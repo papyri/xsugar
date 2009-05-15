@@ -59,11 +59,11 @@ module RXSugar
                                                 DRB_SERVER_URI))
         tuplespace.write([from, to, content])
         result, result_type, transformed = 
-          tuplespace.take([RESULT_IDENTIFIER, nil])
+          tuplespace.take([RESULT_IDENTIFIER, Symbol, String])
         DRb.stop_service
         
-        if transformed.class == NativeException
-          raise transformed
+        if result_type == :exception
+          raise NativeException, transformed
         else
           return transformed
         end

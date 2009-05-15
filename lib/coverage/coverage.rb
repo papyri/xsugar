@@ -64,8 +64,8 @@ module RXSugar
             #xsugar parser is expecting a string not an array but did not want to lose line breaks so did not use special collapse method
 			# had to put in wrapab tags for xsugar grammar to work with multiple ab sections 
             collapsed = preprocess_abs(abs)
-            # ddbcov.xsugar.xml_to_non_xml(collapsed)
-            xml2nonxml(collapsed)
+            ddbcov.xsugar.xml_to_non_xml(collapsed)
+            # xml2nonxml(collapsed)
             if collapsed.length > "<wrapab><ab/></wrapab>".length
               xml_files_passing << xml_file
             end

@@ -14,7 +14,7 @@ ENDEXP = "+>"
 BEGAB = "<="
 ENDAB = "=>"
 
-FRACSYM = [𐅵𐅷𐅸]+
+FRACSYM = [ŵŷŸ]+
 
 UNDERDOT = "\u0323"
 //ca. with 0 or more spaces followed by ? mark
@@ -65,9 +65,9 @@ file : [abtag a] = <wrapab>[abtag a]</>
      : =
 	 
 // 1st line for 1 ab section, 2nd line for multiple ab sections, 3rd line for empty tag ab section
-abtag : [BEGAB] [items z] [ENDAB] = <ab>[items z]</>
-		>: [BEGAB] [items z] [ENDAB] [abtag more] = <ab>[items z]</> [abtag more]
-		>: [BEGAB] [items z] [ENDAB] [NL] [abtag more] = <ab>[items z]</> [NL] [abtag more]
+abtag : [BEGAB] [items z] [ENDAB] = <ab part="N">[items z]</>
+		>: [BEGAB] [items z] [ENDAB] [abtag more] = <ab part="N">[items z]</> [abtag more]
+		>: [BEGAB] [items z] [ENDAB] [NL] [abtag more] = <ab part="N">[items z]</> [NL] [abtag more]
 		>: [BEGAB] [ENDAB] = <ab></>
 
 items : [item i] [items more] = [item i] [items more]  

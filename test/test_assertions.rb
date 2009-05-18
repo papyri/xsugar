@@ -9,7 +9,7 @@ module GrammarAssertions
   
   def ab(xml)
   # added wrapab tags to match new grammar for multiple ab sections
-    return "<wrapab><ab>#{xml}</ab></wrapab>"
+    return "<wrapab><ab part=\"N\">#{xml}</ab></wrapab>"
   end
   
   def lab(notxml)

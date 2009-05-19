@@ -158,10 +158,12 @@ module RXSugar
       
       def count_brackets(frag_array, error_type)
         bracket_count = 0
-        if error_type == :parse
-          frag_array.each do |frag|
-            if frag.xml_content.to_s.match(/[\[\]]/)
-              bracket_count += 1
+        if COUNT_BRACKETS != 0
+          if error_type == :parse
+            frag_array.each do |frag|
+              if frag.xml_content.to_s.match(/[\[\]]/)
+                bracket_count += 1
+              end
             end
           end
         end
@@ -225,7 +227,15 @@ module RXSugar
         frequency_type_keys.each do |ftk|
           # ftk.first = :element etc
           # ftk.last = num etc
-          this_error[ftk.first][ftk.last] << fragment_reference
+          if (SAMPLE_FRAGMENTS > 0) && (COUNT_BRACKETS == 0)
+            if this_error[ftk.first][ftk.last].length < SAMPLE_FRAGMENTS
+              this_error[ftk.first][ftk.last] << fragment_reference
+            else
+              this_error[ftk.first][ftk.last] << nil
+            end
+          else
+            this_error[ftk.first][ftk.last] << fragment_reference
+          end
         end
       end
   

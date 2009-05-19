@@ -32,6 +32,13 @@ namespace :coverage do
       SAMPLE_FRAGMENTS = -1
     end
     
+    if ENV.include?('COUNT_BRACKETS')
+      COUNT_BRACKETS = ENV['COUNT_BRACKETS'].to_i
+    else
+      warn 'Use COUNT_BRACKETS=1 to output bracket counts in HTML'
+      COUNT_BRACKETS = 0
+    end
+    
     if ENV.include?('HTML_OUTPUT')
       HTML_OUTPUT = ENV['HTML_OUTPUT']
     else

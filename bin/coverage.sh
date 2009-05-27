@@ -6,7 +6,7 @@ idp2_prefix="$HOME/source/idp2"
 today=`date +%Y.%m.%d`
 cd $idp2_prefix/svn/idp.data
 echo "idp.data svn:" >> $idp2_prefix/coverage/$today.txt
-svn up -r 1770 >> $idp2_prefix/coverage/$today.txt
+svn up >> $idp2_prefix/coverage/$today.txt
 cd $idp2_prefix/xsugar
 echo "xsugar git:" >> $idp2_prefix/coverage/$today.txt
 git pull >> $idp2_prefix/coverage/$today.txt

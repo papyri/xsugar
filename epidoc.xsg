@@ -64,7 +64,7 @@ LANGLIST = ((Demotic)|(Coptic)|(Arabic)|(Nabatean)|(Aramaic))
 file : [abtag a] = <wrapab>[abtag a]</>
      : =
 	 
-// 1st line for 1 ab section, 2nd line for multiple ab sections, 3rd line for empty tag ab section
+// 1st line for 1 ab section, 2nd line for multiple ab sections, 3rd line for multiple ab sections with new line break, 4th line for empty tag ab section
 abtag : [BEGAB] [items z] [ENDAB] = <ab>[items z]</>
 		>: [BEGAB] [items z] [ENDAB] [abtag more] = <ab>[items z]</> [abtag more]
 		>: [BEGAB] [items z] [ENDAB] [NL] [abtag more] = <ab>[items z]</> [NL] [abtag more]
@@ -220,19 +220,19 @@ item
 	
 	//---test_illegible_dot_gap---
 	// .1, .2, .3
-	: [DOT] [NUM n] = <gap reason="illegible" extent=[NUM n] unit="character"></>  
+	: [DOT] [NUM n] = <gap extent=[NUM n] reason="illegible" unit="character"></>  
 	
 	//---test_illegible_dot_max---
 	// .#{n}-#{n}
-	: [DOT] [NUM v] "-" [NUM w] = <gap reason="illegible" extent=[NUM v] extentmax=[NUM w] unit="character"></>
+	: [DOT] [NUM v] "-" [NUM w] = <gap extent=[NUM v] extentmax=[NUM w] reason="illegible" unit="character"></>
 	
 	//---test_illegible_dot_lin---
 	// .1lin, .2lin, .3lin
-	: [DOT] [NUM n] "lin" = <gap unit="line" extent=[NUM n] reason="illegible"></>  
+	: [DOT] [NUM n] "lin" = <gap extent=[NUM n] reason="illegible" unit="line"></>  
 	
 	//---test_illegible_dot_lin_extentmax---
 	// .1lin, .2lin, .3lin
-	: [DOT] [NUM n] "-" [NUM w] "lin" = <gap unit="line" extent=[NUM n] extentmax=[NUM w] reason="illegible"></>  
+	: [DOT] [NUM n] "-" [NUM w] "lin" = <gap extent=[NUM n] extentmax=[NUM w] reason="illegible" unit="line"></>  
 	
 	//---test_illegible_gap_ca---
 	// ca.1, ca.2, ca.3
@@ -240,11 +240,11 @@ item
 	
 	//---test_lang_gap---
 	//(Lang: Demotic 2 lines)
-	: "(Lang: " [LANGLIST l] " " [NUM v] " lines)" = <gap reason="ellipsis" desc=[LANGLIST l] extent=[NUM v] unit="line"></>
+	: "(Lang: " [LANGLIST l] " " [NUM v] " lines)" = <gap desc=[LANGLIST l] extent=[NUM v] reason="ellipsis" unit="line"></>
 	
 	//---test_lines_not_transcribed---
 	//"lines not transcribed"
-	: "(Lines: " [NUM v] " not transcribed)" = <gap reason="ellipsis" extent=[NUM v] unit="line"></>
+	: "(Lines: " [NUM v] " not transcribed)" = <gap extent=[NUM v] reason="ellipsis" unit="line"></>
 	
 	//---perpendicular_lines---
 	//(23, perp)
@@ -439,7 +439,7 @@ flat
 
 	//---test_vestige_lines---
 	// vestig.#{n}lin
-	: "vestig." [NUM v] "lin" = <gap reason="illegible" extent=[NUM v] unit="line" desc="vestiges"></>
+	: "vestig." [NUM v] "lin" = <gap desc="vestiges" extent=[NUM v] reason="illegible" unit="line"></>
 	
 	//---test_vestige_lines_ca---
 	// vestig.ca.#{n}lin
@@ -447,23 +447,23 @@ flat
 	
 	//---test_vestige_lines_unknown---
 	// vestig.?lin
-	: "vestig.?lin" = <gap unit="line" extent="unknown" reason="illegible"></>
+	: "vestig.?lin" = <gap extent="unknown" reason="illegible" unit="line"></>
 	
 	//---test_vestige_known_char---
 	// vestig.!.#{n}
-	: "vestig." [NUM v] "char" = <gap reason="vestig" extent=[NUM v] unit="character"></>
+	: "vestig." [NUM v] "char" = <gap extent=[NUM v] reason="vestig" unit="character"></>
 	
 	//---test_vestige_characters---
 	// vestig
-	: "vestig" = <gap reason="illegible" extent="unknown" unit="character" desc="vestiges"></>
+	: "vestig" = <gap desc="vestiges" extent="unknown" reason="illegible" unit="character"></>
 	
 	//---test_lost_lines---
 	// lost.#{n}lin
-	: "lost." [NUM v] "lin" = <gap unit="line" extent=[NUM v] reason="lost"></>
+	: "lost." [NUM v] "lin" = <gap extent=[NUM v] reason="lost" unit="line"></>
 	
 	//---test_lost_lines_unknown---
 	// lost.#{n}lin
-	: "lost." "?" "lin" = <gap reason="lost" extent="unknown" unit="line"></>
+	: "lost." "?" "lin" = <gap extent="unknown" reason="lost" unit="line"></>
 	
 	//---test_quotation_marks---
 	// " "
@@ -500,7 +500,7 @@ flat
 	
 	//---test_illegible_gap_unknown---
 	// .?
-	: ".?" = <gap reason="illegible" extent="unknown" unit="character"></>
+	: ".?" = <gap extent="unknown" reason="illegible" unit="character"></>
 	
 	//---test_illegible_gap_unknown_ca---
 	// ca.?
@@ -514,15 +514,15 @@ inside_brackets
 	
 	//---test_lost_dot_gap---
 	// .1, .2, .3 inside brackets
-	: [DOT] [NUM n] = <gap reason="lost" extent=[NUM n] unit="character"></>
+	: [DOT] [NUM n] = <gap extent=[NUM n] reason="lost" unit="character"></>
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n}
-	: [DOT] [NUM v] "-" [NUM w] = <gap reason="lost" extent=[NUM v] extentmax=[NUM w] unit="character"></>
+	: [DOT] [NUM v] "-" [NUM w] = <gap extent=[NUM v] extentmax=[NUM w] reason="lost" unit="character"></>
 			
 	//---test_lost_gap_unknown---
 	// [ .? ]  	
-	>: ".?" = <gap reason="lost" extent="unknown" unit="character"></>
+	>: ".?" = <gap extent="unknown" reason="lost" unit="character"></>
 	
 	//---test_lost_gap_unknown_ca---
 	// [ ca.? ]  	

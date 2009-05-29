@@ -22,11 +22,11 @@ CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
 //																								   ¨΄`῾᾿´\^῾᾿
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+\u0323]+) (MAX)
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
 WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+\u0323]+) (MAX)
 //WORDS allows space (therefore multiple words) and DOT
-WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+]+) (MAX)
+WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿+\u0323]+) (MAX)
 //WORDSBL allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
 WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¯≡¨΄`῾᾿´\^῾᾿]+) (MAX)
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
@@ -114,7 +114,7 @@ item
 //---test_uncertain_diacritical_diaeresis---
 	// (¨)
 	: [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
-	>: [ANYLETTER a] [UNDERDOT] "(¨)" = <hi rend="diaeresis"><unclear reason="undefined">[ANYLETTER a]</></>
+	>: [ANYLETTER a] [UNDERDOT] "(¨)" = <hi rend="diaeresis"><unclear>[ANYLETTER a]</></>
 	
 	//---test_uncertain_diacritical_grave---
 	// (`) u+1fef
@@ -135,12 +135,12 @@ item
 	//---test_uncertain_diacritical_circumflex---
 	// (^)
 	: [ANYLETTER a] "(^)" = <hi rend="circumflex">[ANYLETTER a]</>
-	>: [ANYLETTER a] [UNDERDOT] "(^)" = <hi rend="circumflex"><unclear reason="undefined">[ANYLETTER a]</></>
+	>: [ANYLETTER a] [UNDERDOT] "(^)" = <hi rend="circumflex"><unclear>[ANYLETTER a]</></>
 	
 	//---test_uncertain_diacritical_spiritus_lenis--- can also be known as greek psili when combined with space per wikipeidia
 	// (᾿)
 	: [ANYLETTER a] "( ᾿)" = <hi rend="lenis">[ANYLETTER a]</>
-	>: [ANYLETTER a] [UNDERDOT] "( ᾿)" = <hi rend="lenis"><unclear reason="undefined">[ANYLETTER a]</></>
+	>: [ANYLETTER a] [UNDERDOT] "( ᾿)" = <hi rend="lenis"><unclear>[ANYLETTER a]</></>
 	
 
 
@@ -149,8 +149,10 @@ item
 
 	: [BEGEXP] "(" [WORDSNUM a] ")" [ENDEXP] = <expan><ex>[WORDSNUM a]</></>
 	>: [BEGEXP] "(" [items a] ")" [ENDEXP] = <expan><ex>[items a]</></>
-	: [BEGEXP] [expand e] [ENDEXP] = <expan>[expand e]</>
-	: [BEGEXP] [expand e] [WORD a] [ENDEXP] = <expan>[expand e] [WORD a]</>
+//the line below causes horizontal ambiguity but does not break anything that I can tell for our purposes - will push up and see
+	: [BEGEXP] [items i] [WORD a] "(" [WORD b] ")" [ENDEXP] = <expan>[items i] [WORD a]<ex>[WORD b]</></>
+	>: [BEGEXP] [expand e] [ENDEXP] = <expan>[expand e]</>
+	>: [BEGEXP] [expand e] [WORD a] [ENDEXP] = <expan>[expand e] [WORD a]</>
 	>: [linenumber l] [BEGEXP] [expando e] [ENDEXP] = [linenumber l] <expan>[expando e]</>
 //	>: [expando e] = <expan>[expando e]</>
 	>: [BEGEXP] [expando e] [WORD a] [ENDEXP] = <expan>[expando e] [WORD a]</>
@@ -159,26 +161,27 @@ item
 	>: [BEGEXP] [expandii e] [ENDEXP]= <expan>[expandii e]</>
 	
 	//---test unclear characters = underdots
+	: [FRACSYM f] [UNDERDOT] = <unclear>[FRACSYM f]</>
 	: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
-	>: [FRACSYM f] [UNDERDOT] "!" = <unclear reason="undefined">[FRACSYM f]</>
-	>: [unclears_SP_non_terminal u] "!" = <unclear reason="undefined">[unclears_SP_non_terminal u]</>
-	>: [unclears_non_terminal u] "!" = <unclear reason="undefined">[unclears_non_terminal u]</>
-	>: [unclears_SP_non_terminal u] "?" = <unclear reason="undefined" cert="low">[unclears_SP_non_terminal u]</>
-	>: [unclears_non_terminal u] "?" = <unclear reason="undefined" cert="low">[unclears_non_terminal u]</>
-	>: [unclears_SP_non_terminal u] "*" = <unclear reason="unspecified">[unclears_SP_non_terminal u]</>
-	>: [unclears_non_terminal u] "*" = <unclear reason="unspecified">[unclears_non_terminal u]</>
+	
+//	>: [unclears_SP_non_terminal u] "!" = <unclear reason="undefined">[unclears_SP_non_terminal u]</>
+//	>: [unclears_non_terminal u] "!" = <unclear reason="undefined">[unclears_non_terminal u]</>
+//	>: [unclears_SP_non_terminal u] "?" = <unclear reason="undefined" cert="low">[unclears_SP_non_terminal u]</>
+//	>: [unclears_non_terminal u] "?" = <unclear reason="undefined" cert="low">[unclears_non_terminal u]</>
+//	>: [unclears_SP_non_terminal u] "*" = <unclear reason="unspecified">[unclears_SP_non_terminal u]</>
+//	>: [unclears_non_terminal u] "*" = <unclear reason="unspecified">[unclears_non_terminal u]</>
 	
 	//---choice---
 	//  <:a|orth|b|:> 
-	: [BEGOPT] [WORD a] "?" "|orth|" [WORD b] [ENDOPT] = <choice><corr cert="low">[WORD a]</><sic>[WORD b]</></>
+	: [BEGOPT] [WORDA a] "?" "|orth|" [WORDA b] [ENDOPT] = <choice><corr cert="low">[WORDA a]</><sic>[WORDA b]</></>
 // the line below causes horizontal ambiguity but does what it needs to - set up for case such as   p.cair.zen/p.cair.zen.3/p.cair.zen.3.59403.xml
 // will see if it handles it tomorrow and what else it does
-	>: [BEGOPT] [WORD a] "?" [items c] "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[WORD a][items c]</><sic>[items d]</></>
-	: [BEGOPT] [WORD a] "|orth|" [WORD b] [ENDOPT] = <choice><corr>[WORD a]</><sic>[WORD b]</></>
-	>: [BEGOPT] [items a] "|orth|" [WORD b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORD b]</></>
-	>: [BEGOPT] [WORD a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORD a]</><sic>[items b]</></>
+	>: [BEGOPT] [WORDA a] "?" [items c] "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[WORDA a][items c]</><sic>[items d]</></>
+	: [BEGOPT] [WORDA a] "|orth|" [WORDA b] [ENDOPT] = <choice><corr>[WORDA a]</><sic>[WORDA b]</></>
+	>: [BEGOPT] [items a] "|orth|" [WORDA b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDA b]</></>
+	>: [BEGOPT] [WORDA a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORDA a]</><sic>[items b]</></>
 	>: [BEGOPT] [items a] "|orth|" [items b] [ENDOPT] = <choice><corr>[items a]</><sic>[items b]</></>
-	>: [BEGOPT] "|orth|" [WORD b] [ENDOPT] = <choice><corr></><sic>[WORD b]</></>
+	>: [BEGOPT] "|orth|" [WORDA b] [ENDOPT] = <choice><corr></><sic>[WORDA b]</></>
 	>: [BEGOPT] "|orth|" [items b] [ENDOPT] = <choice><corr></><sic>[items b]</></>
 
 	//---milestone---

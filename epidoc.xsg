@@ -363,7 +363,7 @@ item
 	//  '‼a', '‼a,b', '‼filler(a), ‼@a , ‼a b ' 
 	: "*" [WORDS a] "*" = <g type=[WORDS a]></>
 	: "*" [WORD a] "," [WORD b] "*" = <g type=[WORD a]>[WORD b]</>
-	: "*filler(" [WORD a] ")" "*" = <g type="filler" rend=[WORD a]></>
+	: "*filler(" [WORD a] ")" "*" = <g rend=[WORD a] type="filler"></>
 	: "*@" [WORD a] "*" = <orig><g type=[WORD a]></></>
 //	>: "‼" [WORDS a] "‼" = <g type=[WORDS a]></>
 	
@@ -537,7 +537,7 @@ inside_brackets
 	
 	//---test_lost_uncertain---
 	// [ abc? ] uncertain lost
-	>: [WORDS w] "\?" = <supplied reason="lost" cert="low">[WORDS w]</>
+	>: [WORDS w] "\?" = <supplied cert="low" reason="lost">[WORDS w]</>
 	
 	//---test_lost--- - placed at the end so all other possibilities of inside brackets are checked before looping through 'items' production
 	// [ ] lost

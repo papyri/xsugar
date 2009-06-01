@@ -233,7 +233,7 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/supplementforlost.html
     def test_lost_uncertain
       # modern ed restores lost text, with less than total confidence; this proved messy to handle in IDP1
-      assert_equal_fragment_transform 'a[bc?]', 'a<supplied reason="lost" cert="low">bc</supplied>'
+      assert_equal_fragment_transform 'a[bc?]', 'a<supplied cert="low" reason="lost">bc</supplied>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/unclear.html
@@ -360,7 +360,7 @@ if(RUBY_PLATFORM == 'java')
       #assert_equal_fragment_transform '‼stauros‼', '<g type="stauros"/>'
 	  assert_equal_fragment_transform '*stauros*', '<g type="stauros"/>'
       assert_equal_fragment_transform '*stauros,♱*', '<g type="stauros">♱</g>'
-      assert_equal_fragment_transform '*filler(extension)*', '<g type="filler" rend="extension"/>'
+      assert_equal_fragment_transform '*filler(extension)*', '<g rend="extension" type="filler"/>'
 	  assert_equal_fragment_transform '*@stauros*', '<orig><g type="stauros"/></orig>'
 	  assert_equal_fragment_transform '*mid punctus*', '<g type="mid punctus"/>'
     end

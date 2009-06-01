@@ -200,7 +200,7 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_omitted_cert_low
-      assert_equal_fragment_transform '<τοῦ?>', '<supplied reason="omitted" cert="low">τοῦ</supplied>'
+      assert_equal_fragment_transform '<τοῦ?>', '<supplied cert="low" reason="omitted">τοῦ</supplied>'
     end
     
     def test_evidence_parallel

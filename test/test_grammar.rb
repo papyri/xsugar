@@ -174,6 +174,11 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform 'vestig', '<gap desc="vestiges" extent="unknown" reason="illegible" unit="character"/>'
     end
   
+  def test_nontran_characters
+      # non transcripable characters
+      assert_equal_fragment_transform 'nontran', '<gap desc="non transcr" unit="character"/>'
+    end
+  
     # http://www.stoa.org/epidoc/gl/5/lostline.html
     def test_lost_lines
       # Some number of lines is lost
@@ -194,6 +199,7 @@ if(RUBY_PLATFORM == 'java')
       # Scribe omitted character(s) and modern ed inserted it
       assert_equal_fragment_transform 'a<b>c', 'a<supplied reason="omitted">b</supplied>c'
       assert_equal_fragment_transform '<abc>', '<supplied reason="omitted">abc</supplied>'
+	  assert_equal_fragment_transform '<>', '<supplied reason="omitted"/>'
       assert_equal_fragment_transform 'we will <we will> rock you', 'we will <supplied reason="omitted">we will</supplied> rock you'
       assert_equal_fragment_transform 'we ea<t the fi>sh', 'we ea<supplied reason="omitted">t the fi</supplied>sh'
     end

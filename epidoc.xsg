@@ -268,7 +268,7 @@ item
 	: "\/" [WORD a] "\\" = <hi rend="subscript">[WORD a]</>
 	>: "\/" [items i] "\\" = <hi rend="subscript">[items i]</>
 	
-	//---superscript---?????? commented out for supralinear
+	//---superscript---
 	//   \|abc|/
     : "\\\|" [WORD a] "\|\/" = <hi rend="superscript">[WORD a]</>
 	>: "\\\|" [items i] "\|\/" = <hi rend="superscript">[items i]</>
@@ -467,6 +467,10 @@ flat
 	// vestig
 	: "vestig" = <gap desc="vestiges" extent="unknown" reason="illegible" unit="character"></>
 	
+	//---test_nontran_characters---
+	// nontran
+	: "nontran" = <gap desc="non transcr" unit="character"></>
+	
 	//---test_lost_lines---
 	// lost.#{n}lin
 	: "lost." [GAPEXTNUM v] "lin" = <gap extent=[GAPEXTNUM v] reason="lost" unit="line"></>
@@ -485,6 +489,7 @@ flat
 	>: "<" [WORDS w] ">" = <supplied reason="omitted">[WORDS w]</>
 	>: "<" [WORDS w] "?" ">" = <supplied cert="low" reason="omitted">[WORDS w]</>
 	>: "<" [items i] ">" = <supplied reason="omitted">[items i]</>
+	>: "<" ">" = <supplied reason="omitted"/>
 	
 	//---test_sic---
 	//sic

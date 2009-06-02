@@ -368,9 +368,20 @@ if(RUBY_PLATFORM == 'java')
     
     def test_add_place_supralinear
       assert_equal_fragment_transform '\ε/', '<add place="supralinear">ε</add>'
-      assert_equal_fragment_transform '\Πωλίων ἀπάτωρ?/', '<add place="supralinear" cert="low">Πωλίων ἀπάτωρ</add>'
+      assert_equal_fragment_transform '\Πωλίων ἀπάτωρ?/', '<add cert="low" place="supralinear">Πωλίων ἀπάτωρ</add>'
+	  assert_equal_fragment_transform '\*stauros* τε?/', '<add cert="low" place="supralinear"><g type="stauros"/> τε</add>'
     end
     
+	def test_add_place_intralinear
+      assert_equal_fragment_transform '<\ε/>', '<add place="intralinear">ε</add>'
+      assert_equal_fragment_transform '<\Πωλίων ἀπάτωρ/>', '<add place="intralinear">Πωλίων ἀπάτωρ</add>'
+    end
+	
+	def test_add_place_infralinear
+      assert_equal_fragment_transform '</ε\>', '<add place="infralinear">ε</add>'
+      assert_equal_fragment_transform '</Πωλίων ἀπάτωρ\>', '<add place="infralinear">Πωλίων ἀπάτωρ</add>'
+    end
+	
     def test_space_unknown
       assert_equal_fragment_transform 'vac.?', '<space extent="unknown" unit="character"/>'
     end

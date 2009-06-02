@@ -276,8 +276,19 @@ item
 	//---add_place_supralinear---
 	//   \abc/
     : "\\" [WORDS a] "\/" = <add place="supralinear">[WORDS a]</>
-	: "\\" [WORDS a] "?" "\/" = <add place="supralinear" cert="low">[WORDS a]</>
+	: "\\" [WORDS a] "?" "\/" = <add cert="low" place="supralinear">[WORDS a]</>
 	>: "\\" [items a] "\/" = <add place="supralinear">[items a]</>
+	>: "\\" [items a] "?" "\/" = <add cert="low" place="supralinear">[items a]</>
+	
+	//---add_place_infralinear---
+	//   \abc/
+    : "<\/" [WORDS a] "\\>" = <add place="infralinear">[WORDS a]</>
+	>: "<\/" [items a] "\\>" = <add place="infralinear">[items a]</>
+	
+		//---add_place_intralinear---
+	//   \abc/
+    : "<\\" [WORDS a] "\/>" = <add place="intralinear">[WORDS a]</>
+	>: "<\\" [items a] "\/>" = <add place="intralinear">[items a]</>
 	
 	//---grave---
 	//   \abc/

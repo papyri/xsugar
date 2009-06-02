@@ -28,7 +28,7 @@ WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]
 //WORDS allows space (therefore multiple words) and DOT
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 //WORDSF allows space (therefore multiple words) and DOT - allow ?, \, , $ for foreign language
-WORDSF = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\"¯≡+\u0323]+) (MAX)
+WORDSF = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\"¯≡\u0323]+) (MAX)
 //WORDSBL allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
 WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¯≡\u0323]+) (MAX)
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
@@ -151,8 +151,7 @@ item
 
 	: [BEGEXP] "(" [WORDSNUM a] ")" [ENDEXP] = <expan><ex>[WORDSNUM a]</></>
 	>: [BEGEXP] "(" [items a] ")" [ENDEXP] = <expan><ex>[items a]</></>
-//the line below causes horizontal ambiguity but does not break anything that I can tell for our purposes - will push up and see
-	: [BEGEXP] [items i] [WORD a] "(" [WORD b] ")" [ENDEXP] = <expan>[items i] [WORD a]<ex>[WORD b]</></>
+
 	>: [BEGEXP] [expand e] [ENDEXP] = <expan>[expand e]</>
 	>: [BEGEXP] [expand e] [WORD a] [ENDEXP] = <expan>[expand e] [WORD a]</>
 	>: [linenumber l] [BEGEXP] [expando e] [ENDEXP] = [linenumber l] <expan>[expando e]</>
@@ -161,10 +160,14 @@ item
 	>: [SPO s] [BEGEXP] [expando e] [ENDEXP] = [SPO s] <expan>[expando e]</>
 	>: [BEGEXP] [expandim e] [ENDEXP] = <expan>[expandim e]</>
 	>: [BEGEXP] [expandii e] [ENDEXP]= <expan>[expandii e]</>
+//the line below causes horizontal ambiguity but does not break anything that I can tell for our purposes - will push up and see - makes run long
+//re-wrote to look for specific case in bgu.1 - makes run normal again - will push up and see how much breaks - also moved lower in group here
+	>: [BEGEXP] [ANYLETTER c] [UNDERDOT] "(¨)" [WORD a] "(" [WORD b] ")" [ENDEXP] = <expan><hi rend="diaeresis">[ANYLETTER c]</> [WORD a]<ex>[WORD b]</></>
+//	>: [BEGEXP] [items i] [WORD a] "(" [WORD b] ")" [ENDEXP] = <expan>[items i] [WORD a]<ex>[WORD b]</></>
 	
 	//---test unclear characters = underdots
 	: [FRACSYM f] [UNDERDOT] = <unclear>[FRACSYM f]</>
-	: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
+	>: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
 	
 //	>: [unclears_SP_non_terminal u] "!" = <unclear reason="undefined">[unclears_SP_non_terminal u]</>
 //	>: [unclears_non_terminal u] "!" = <unclear reason="undefined">[unclears_non_terminal u]</>
@@ -379,8 +382,9 @@ item
 	
 	//---note---
 	//  /*abcdefg*/ 
-	: "\/*" [WORDS a] [QUESTION b] "*\/" = <note lang="en">[WORDS a][QUESTION b]</>
-	: "\/*" [QUESTION b] "*\/" = <note lang="en">[QUESTION b]</>
+	: "\/*" [WORDSF a] "*\/" = <note lang="en">[WORDSF a]</>
+//	: "\/*" [WORDS a] [QUESTION b] "*\/" = <note lang="en">[WORDS a][QUESTION b]</>
+//	: "\/*" [QUESTION b] "*\/" = <note lang="en">[QUESTION b]</>
 	>: "\/*" [items b] "*\/" = <note lang="en">[items b]</>
 	
 	//---foreign_lang---

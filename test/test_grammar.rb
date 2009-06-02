@@ -62,10 +62,6 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform 'ab?(  )', '<abbr cert="low">ab</abbr>'
 	  assert_equal_fragment_transform 'ab?[c]d(  )', '<abbr cert="low">ab<supplied reason="lost">c</supplied>d</abbr>'
 	  assert_equal_fragment_transform ' bạḅdec̣g(  )', '<abbr>b<unclear>ab</unclear>de<unclear>c</unclear>g</abbr>'
-	  #same as above now assert_equal_fragment_transform ' bạḅdec̣g(  )', '<abbr>b<unclear>a</unclear><unclear>b</unclear>de<unclear>c</unclear>g</abbr>'
-	  #same as above now assert_equal_fragment_transform ' bạḅdec̣g(  )', '<abbr>b<unclear>a</unclear><unclear>b</unclear>de<unclear>c</unclear>g</abbr>'
-	  #assert_equal_fragment_transform ' bạ!ḅdec̣g(  )', '<abbr>b<unclear reason="undefined">a</unclear><unclear>b</unclear>de<unclear>c</unclear>g</abbr>'
-	  #assert_equal_fragment_transform ' bạ!ḅdec̣?g(  )', '<abbr>b<unclear reason="undefined">a</unclear><unclear>b</unclear>de<unclear reason="undefined" cert="low">c</unclear>g</abbr>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html
@@ -243,27 +239,23 @@ if(RUBY_PLATFORM == 'java')
       # In the current DDB_EpiDoc_XML, only 1809/270095 unclear tags have a cert attribute
       # Those that do all have cert="low"
       assert_equal_fragment_transform 'ạ', '<unclear>a</unclear>'
-	  #assert_equal_fragment_transform 'ạ!', '<unclear reason="undefined">a</unclear>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/unclear.html
     def test_unicode_underdot_unclear_combining
       # eds read dotted letter with less than full confidence
       assert_equal_fragment_transform 'ạḅc̣', '<unclear>abc</unclear>'
-	  #assert_equal_fragment_transform 'ạḅc̣!', '<unclear reason="undefined">abc</unclear>'
     end
   
     def test_unicode_underdot_unclear_unspecified
       # eds read dotted letter with less than full confidence
       assert_equal_fragment_transform 'ạḅc̣', '<unclear>abc</unclear>'
-	  #assert_equal_fragment_transform 'ạḅc̣*', '<unclear reason="unspecified">abc</unclear>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/unclear.html
     # http://www.stoa.org/epidoc/gl/5/supplementforlost.html
     def test_unicode_underdot_unclear_combining_with_lost
       assert_equal_fragment_transform 'ạḅ[c̣ de]f', '<unclear>ab</unclear><supplied reason="lost"><unclear>c</unclear> de</supplied>f'
-	  #assert_equal_fragment_transform 'ạḅ![c̣! de]f', '<unclear reason="undefined">ab</unclear><supplied reason="lost"><unclear reason="undefined">c</unclear> de</supplied>f'
     end
   
     # http://www.stoa.org/epidoc/gl/5/deletion.html
@@ -290,7 +282,6 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform 'Ἰ(¨)ουστινιανοῦ', '<hi rend="diaeresis">Ἰ</hi>ουστινιανοῦ'
 	  # test with unclears - ex. p.mert.3.125.xml
 	  assert_equal_fragment_transform 'ạ(¨)bc', '<hi rend="diaeresis"><unclear>a</unclear></hi>bc'
-	  #assert_equal_fragment_transform 'ạ(¨)bc', '<hi rend="diaeresis"><unclear reason="undefined">a</unclear></hi>bc'
     end
   
     def test_uncertain_diacritical_grave
@@ -313,14 +304,12 @@ if(RUBY_PLATFORM == 'java')
 		def test_uncertain_diacritical_circumflex
       assert_equal_fragment_transform 'a(^)bc', '<hi rend="circumflex">a</hi>bc'
 	  assert_equal_fragment_transform 'ạ(^)bc', '<hi rend="circumflex"><unclear>a</unclear></hi>bc'
-	  #assert_equal_fragment_transform 'ạ(^)bc', '<hi rend="circumflex"><unclear reason="undefined">a</unclear></hi>bc'
     end
 	
 	def test_uncertain_diacritical_spiritus_lenis 
 	#can also be known as greek psili when combined with space per wikipeidia
       assert_equal_fragment_transform 'a( ᾿)bc', '<hi rend="lenis">a</hi>bc'
 	  assert_equal_fragment_transform 'ạ( ᾿)bc', '<hi rend="lenis"><unclear>a</unclear></hi>bc'
-	  #assert_equal_fragment_transform 'ạ( ᾿)bc', '<hi rend="lenis"><unclear reason="undefined">a</unclear></hi>bc'
     end
         
     def test_num_simple
@@ -342,7 +331,6 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<:a|orth|<:b|orth|c:>:>', '<choice><corr>a</corr><sic><choice><corr>b</corr><sic>c</sic></choice></sic></choice>'
 	  assert_equal_fragment_transform '<:a?|orth|b:>', '<choice><corr cert="low">a</corr><sic>b</sic></choice>'
 	  assert_equal_fragment_transform '<:a?ạ|orth|bạ:>', '<choice><corr cert="low">a<unclear>a</unclear></corr><sic>b<unclear>a</unclear></sic></choice>'
-	  #assert_equal_fragment_transform '<:a?ạ?|orth|bạ:>', '<choice><corr cert="low">a<unclear reason="undefined" cert="low">a</unclear></corr><sic>b<unclear>a</unclear></sic></choice>'
 	end
     
     def test_subst
@@ -357,7 +345,6 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_glyph
-      #assert_equal_fragment_transform '‼stauros‼', '<g type="stauros"/>'
 	  assert_equal_fragment_transform '*stauros*', '<g type="stauros"/>'
       assert_equal_fragment_transform '*stauros,♱*', '<g type="stauros">♱</g>'
       assert_equal_fragment_transform '*filler(extension)*', '<g rend="extension" type="filler"/>'
@@ -387,6 +374,9 @@ if(RUBY_PLATFORM == 'java')
     
     def test_note
       assert_equal_fragment_transform '/*abcdefg*/', '<note lang="en">abcdefg</note>'
+	  assert_equal_fragment_transform '/*?*/', '<note lang="en">?</note>'
+	  assert_equal_fragment_transform '/*m2?*/', '<note lang="en">m2?</note>'
+	  assert_equal_fragment_transform '/*text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4*/', '<note lang="en">text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4</note>'
     end
     
     def test_foreign_lang

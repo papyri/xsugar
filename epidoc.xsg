@@ -42,6 +42,7 @@ WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0
 WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]*) (MAX)
 
 NUM = [0-9]+
+GAPEXTNUM = [c]?[.]?[0-9]+
 ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]
 
 DOT = "."
@@ -228,7 +229,7 @@ item
 	
 	//---test_illegible_dot_gap---
 	// .1, .2, .3
-	: [DOT] [NUM n] = <gap extent=[NUM n] reason="illegible" unit="character"></>  
+	: [DOT] [GAPEXTNUM n] = <gap extent=[GAPEXTNUM n] reason="illegible" unit="character"></>  
 	
 	//---test_illegible_dot_max---
 	// .#{n}-#{n}
@@ -236,7 +237,7 @@ item
 	
 	//---test_illegible_dot_lin---
 	// .1lin, .2lin, .3lin
-	: [DOT] [NUM n] "lin" = <gap extent=[NUM n] reason="illegible" unit="line"></>  
+	: [DOT] [GAPEXTNUM n] "lin" = <gap extent=[GAPEXTNUM n] reason="illegible" unit="line"></>  
 	
 	//---test_illegible_dot_lin_extentmax---
 	// .1lin, .2lin, .3lin
@@ -244,15 +245,15 @@ item
 	
 	//---test_illegible_gap_ca---
 	// ca.1, ca.2, ca.3
-	: [LEADCA] [NUM j] = <gap reason="illegible" extent=[NUM j] unit="character" precision="circa"></>
+	: [LEADCA] [GAPEXTNUM j] = <gap reason="illegible" extent=[GAPEXTNUM j] unit="character" precision="circa"></>
 	
 	//---test_lang_gap---
 	//(Lang: Demotic 2 lines)
-	: "(Lang: " [LANGLIST l] " " [NUM v] " lines)" = <gap desc=[LANGLIST l] extent=[NUM v] reason="ellipsis" unit="line"></>
+	: "(Lang: " [LANGLIST l] " " [GAPEXTNUM v] " lines)" = <gap desc=[LANGLIST l] extent=[GAPEXTNUM v] reason="ellipsis" unit="line"></>
 	
 	//---test_lines_not_transcribed---
 	//"lines not transcribed"
-	: "(Lines: " [NUM v] " not transcribed)" = <gap extent=[NUM v] reason="ellipsis" unit="line"></>
+	: "(Lines: " [GAPEXTNUM v] " not transcribed)" = <gap extent=[GAPEXTNUM v] reason="ellipsis" unit="line"></>
 	
 	//---perpendicular_lines---
 	//(23, perp)
@@ -448,11 +449,11 @@ flat
 
 	//---test_vestige_lines---
 	// vestig.#{n}lin
-	: "vestig." [NUM v] "lin" = <gap desc="vestiges" extent=[NUM v] reason="illegible" unit="line"></>
+	: "vestig." [GAPEXTNUM v] "lin" = <gap desc="vestiges" extent=[GAPEXTNUM v] reason="illegible" unit="line"></>
 	
 	//---test_vestige_lines_ca---
 	// vestig.ca.#{n}lin
-	: "vestig.ca." [NUM v] "lin" = <gap reason="illegible" extent=[NUM v] unit="line" precision="circa" desc="vestiges"></>
+	: "vestig.ca." [GAPEXTNUM v] "lin" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="line" precision="circa" desc="vestiges"></>
 	
 	//---test_vestige_lines_unknown---
 	// vestig.?lin
@@ -460,7 +461,7 @@ flat
 	
 	//---test_vestige_known_char---
 	// vestig.!.#{n}
-	: "vestig." [NUM v] "char" = <gap extent=[NUM v] reason="vestig" unit="character"></>
+	: "vestig." [GAPEXTNUM v] "char" = <gap extent=[GAPEXTNUM v] reason="vestig" unit="character"></>
 	
 	//---test_vestige_characters---
 	// vestig
@@ -468,7 +469,7 @@ flat
 	
 	//---test_lost_lines---
 	// lost.#{n}lin
-	: "lost." [NUM v] "lin" = <gap extent=[NUM v] reason="lost" unit="line"></>
+	: "lost." [GAPEXTNUM v] "lin" = <gap extent=[GAPEXTNUM v] reason="lost" unit="line"></>
 	
 	//---test_lost_lines_unknown---
 	// lost.#{n}lin
@@ -523,7 +524,7 @@ inside_brackets
 	
 	//---test_lost_dot_gap---
 	// .1, .2, .3 inside brackets
-	: [DOT] [NUM n] = <gap extent=[NUM n] reason="lost" unit="character"></>
+	: [DOT] [GAPEXTNUM n] = <gap extent=[GAPEXTNUM n] reason="lost" unit="character"></>
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n}

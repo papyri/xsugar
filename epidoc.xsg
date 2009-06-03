@@ -530,6 +530,8 @@ flat
 	>: [BEGEXP] "[" "(" [WORDS c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDS c]</></></>
 	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	
+	: "[]" = <supplied reason="lost"/>
+	
 	//---multiple tests see inside_brackets production---
 	// [ ], [[ ]], [ca.?] etc...
 	>: "[" [inside_brackets i] "]" =  [inside_brackets i] 	

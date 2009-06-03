@@ -232,7 +232,8 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/supplementforlost.html
     def test_lost
       # modern ed restores lost text
-      assert_equal_fragment_transform '[abc]', '<supplied reason="lost">abc</supplied>'
+      assert_equal_fragment_transform '[]', '<supplied reason="lost"/>'
+	  assert_equal_fragment_transform '[abc]', '<supplied reason="lost">abc</supplied>'
       assert_equal_fragment_transform 'a[b]c', 'a<supplied reason="lost">b</supplied>c'
       assert_equal_fragment_transform 'a[bc def g]hi', 'a<supplied reason="lost">bc def g</supplied>hi'
     end

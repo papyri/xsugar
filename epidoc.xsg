@@ -127,7 +127,7 @@ item
 	//---test_uncertain_diacritical_oxia---
 	// (΄)
 	: [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
-	
+//10	
 	//---test_uncertain_diacritical_spiritus_asper--- can also be known as greek dasia when combined with space per wikipeidia
 	// (῾)
 	: [ANYLETTER a] "( ῾)" = <hi rend="asper">[ANYLETTER a]</>
@@ -156,6 +156,7 @@ item
 
 	>: [BEGEXP] [expand e] [ENDEXP] = <expan>[expand e]</>
 	>: [BEGEXP] [expand e] [WORD a] [ENDEXP] = <expan>[expand e] [WORD a]</>
+//20
 	>: [linenumber l] [BEGEXP] [expando e] [ENDEXP] = [linenumber l] <expan>[expando e]</>
 //	>: [expando e] = <expan>[expando e]</>
 	>: [BEGEXP] [expando e] [WORD a] [ENDEXP] = <expan>[expando e] [WORD a]</>
@@ -184,6 +185,7 @@ item
 // the line below causes horizontal ambiguity but does what it needs to - set up for case such as   p.cair.zen/p.cair.zen.3/p.cair.zen.3.59403.xml
 // will see if it handles it tomorrow and what else it does
 	>: [BEGOPT] [WORDA a] "?" [items c] "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[WORDA a][items c]</><sic>[items d]</></>
+//30
 	: [BEGOPT] [WORDA a] "|orth|" [WORDA b] [ENDOPT] = <choice><corr>[WORDA a]</><sic>[WORDA b]</></>
 	>: [BEGOPT] [items a] "|orth|" [WORDA b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDA b]</></>
 	>: [BEGOPT] [WORDA a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORDA a]</><sic>[items b]</></>
@@ -231,7 +233,7 @@ item
 	//---test_illegible_dot_gap---
 	// .1, .2, .3
 	: [DOT] [GAPEXTNUM n] = <gap extent=[GAPEXTNUM n] reason="illegible" unit="character"></>  
-	
+//40
 	//---test_illegible_dot_max---
 	// .#{n}-#{n}
 	: [DOT] [NUM v] "-" [NUM w] = <gap extent=[NUM v] extentmax=[NUM w] reason="illegible" unit="character"></>
@@ -268,7 +270,7 @@ item
 	//   /abc\
 	: "\/" [WORD a] "\\" = <hi rend="subscript">[WORD a]</>
 	>: "\/" [items i] "\\" = <hi rend="subscript">[items i]</>
-	
+//50
 	//---superscript---
 	//   \|abc|/
     : "\\\|" [WORD a] "\|\/" = <hi rend="superscript">[WORD a]</>
@@ -290,7 +292,7 @@ item
 	//   \abc/
     : "<\\" [WORDS a] "\/>" = <add place="intralinear">[WORDS a]</>
 	>: "<\\" [items a] "\/>" = <add place="intralinear">[items a]</>
-	
+//60
 		//---add_place_marginal---
 	//   \abc/
     : "<|" [WORD a] "|>" = <add place="marginal" rend="sling">[WORD a]</>
@@ -311,13 +313,15 @@ item
 		
 	//---undefined_parallel---
 	//  _abc_  - underlines
-    : "_" [WORDS a] "_" = <supplied reason="illegible" evidence="parallel">[WORDS a]</>
-	: "_" [WORDS a] "?" "_" = <supplied reason="illegible" evidence="parallel" cert="low">[WORDS a]</>
+    : "_" [WORDS a] "_" = <supplied evidence="parallel" reason="illegible">[WORDS a]</>
+	: "_" [WORDS a] "?" "_" = <supplied cert="low" evidence="parallel" reason="illegible">[WORDS a]</>
+	>: "_" [items a] "_" = <supplied evidence="parallel" reason="illegible">[items a]</>
+	>: "_" [items a] "?" "_" = <supplied cert="low" evidence="parallel" reason="illegible">[items a]</>
 		
 	//---lost_parallel---
 	//  _[abc]_  - underlines
     : "_[" [WORD a] "]_" = <supplied reason="lost" evidence="parallel">[WORD a]</>
-	
+//70
 	//---number or fraction_no_symbol---
 	//  #a#1/2# a = character representation and then the fraction it equals between next #'s
     : "<#=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]/>

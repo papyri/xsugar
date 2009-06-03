@@ -328,6 +328,7 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<#=1#>', '<num value="1"/>'
       assert_equal_fragment_transform '<#δ=1/4#>', '<num value="1/4">δ</num>'
       assert_equal_fragment_transform '<#ιδ=14#>', '<num value="14">ιδ</num>'
+	  assert_equal_fragment_transform '<#frac#>', '<num type="fraction"/>'
     end
     
     def test_num_myriads
@@ -364,6 +365,7 @@ if(RUBY_PLATFORM == 'java')
     def test_hand_shift
       assert_equal_fragment_transform '$m1 ', '<handShift new="m1"/>'
       assert_equal_fragment_transform '$m20 ', '<handShift new="m20"/>' 
+	  assert_equal_fragment_transform '$m1a ', '<handShift new="m1a"/>' 
     end
     
     def test_add_place_supralinear

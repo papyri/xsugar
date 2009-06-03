@@ -286,10 +286,15 @@ item
     : "<\/" [WORDS a] "\\>" = <add place="infralinear">[WORDS a]</>
 	>: "<\/" [items a] "\\>" = <add place="infralinear">[items a]</>
 	
-		//---add_place_intralinear---
+	//---add_place_intralinear---
 	//   \abc/
     : "<\\" [WORDS a] "\/>" = <add place="intralinear">[WORDS a]</>
 	>: "<\\" [items a] "\/>" = <add place="intralinear">[items a]</>
+	
+		//---add_place_marginal---
+	//   \abc/
+    : "<|" [WORD a] "|>" = <add place="marginal" rend="sling">[WORD a]</>
+	>: "<|" [items a] "|>" = <add place="marginal" rend="sling">[items a]</>
 	
 	//---grave---
 	//   \abc/
@@ -333,6 +338,7 @@ item
 	: [BEGOPT] [WORD a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[WORD b]</></>
 	>: [BEGOPT] [items a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [WORD a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[WORD a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] "|subst|" [items b] [ENDOPT] = <subst><add place="inline"></><del rend="corrected">[items b]</></>
 	

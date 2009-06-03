@@ -345,6 +345,7 @@ if(RUBY_PLATFORM == 'java')
     
     def test_subst
       assert_equal_fragment_transform '<:a|subst|b:>', '<subst><add place="inline">a</add><del rend="corrected">b</del></subst>'
+	  assert_equal_fragment_transform '<:a?|subst|b.1c:>', '<subst><add cert="low" place="inline">a</add><del rend="corrected">b<gap extent="1" reason="illegible" unit="character"/>c</del></subst>'
     end
     
     def test_app_lem
@@ -382,6 +383,11 @@ if(RUBY_PLATFORM == 'java')
 	def test_add_place_infralinear
       assert_equal_fragment_transform '</ε\>', '<add place="infralinear">ε</add>'
       assert_equal_fragment_transform '</Πωλίων ἀπάτωρ\>', '<add place="infralinear">Πωλίων ἀπάτωρ</add>'
+    end
+	
+	def test_add_place_marginal
+      assert_equal_fragment_transform '<|ν|>', '<add place="marginal" rend="sling">ν</add>'
+      assert_equal_fragment_transform '<|.1|>', '<add place="marginal" rend="sling"><gap extent="1" reason="illegible" unit="character"/></add>'
     end
 	
     def test_space_unknown

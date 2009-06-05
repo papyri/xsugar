@@ -206,6 +206,8 @@ if(RUBY_PLATFORM == 'java')
     
     def test_omitted_cert_low
       assert_equal_fragment_transform '<τοῦ?>', '<supplied cert="low" reason="omitted">τοῦ</supplied>'
+	  assert_equal_fragment_transform '<ạḅ?>', '<supplied cert="low" reason="omitted"><unclear>ab</unclear></supplied>'
+	  assert_equal_fragment_transform '<?>', '<supplied cert="low" reason="omitted"/>'
     end
     
     def test_evidence_parallel
@@ -242,6 +244,7 @@ if(RUBY_PLATFORM == 'java')
     def test_lost_uncertain
       # modern ed restores lost text, with less than total confidence; this proved messy to handle in IDP1
       assert_equal_fragment_transform 'a[bc?]', 'a<supplied cert="low" reason="lost">bc</supplied>'
+  	  assert_equal_fragment_transform '[ạḅ?]', '<supplied cert="low" reason="lost"><unclear>ab</unclear></supplied>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/unclear.html

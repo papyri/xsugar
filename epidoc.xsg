@@ -320,7 +320,7 @@ item
 		
 	//---lost_parallel---
 	//  _[abc]_  - underlines
-    : "_[" [WORD a] "]_" = <supplied reason="lost" evidence="parallel">[WORD a]</>
+    : "_[" [WORD a] "]_" = <supplied evidence="parallel" reason="lost">[WORD a]</>
 //70
 	//---number or fraction_no_symbol---
 	//  #a#1/2# a = character representation and then the fraction it equals between next #'s
@@ -512,7 +512,9 @@ flat
 	>: "<" [WORDS w] ">" = <supplied reason="omitted">[WORDS w]</>
 	>: "<" [WORDS w] "?" ">" = <supplied cert="low" reason="omitted">[WORDS w]</>
 	>: "<" [items i] ">" = <supplied reason="omitted">[items i]</>
+	>: "<" [items w] "?" ">" = <supplied cert="low" reason="omitted">[items w]</>
 	>: "<" ">" = <supplied reason="omitted"/>
+	>: "<" "?" ">" = <supplied cert="low" reason="omitted"/>
 	
 	//---test_sic---
 	//sic
@@ -575,6 +577,7 @@ inside_brackets
 	//---test_lost_uncertain---
 	// [ abc? ] uncertain lost
 	>: [WORDS w] "\?" = <supplied cert="low" reason="lost">[WORDS w]</>
+	>: [items w] "\?" = <supplied cert="low" reason="lost">[items w]</>
 	
 	//---test_lost--- - placed at the end so all other possibilities of inside brackets are checked before looping through 'items' production
 	// [ ] lost
@@ -584,4 +587,4 @@ inside_brackets
 // solving grammar (within 1 on BGU.1 so going to leave that for now.  Not sure why WORD/WORDS causes ambiguity and ANYLETTER doesn't.
 	>: [ANYLETTER w] [items is] = <supplied reason="lost">[ANYLETTER w] [items is]</>
 	
-			
+

@@ -13,6 +13,8 @@ BEGEXP = "<+"
 ENDEXP = "+>"
 BEGAB = "<="
 ENDAB = "=>"
+BEGMIABBR = "<@"
+ENDMIABBR = "@>"
 
 FRACSYM = [𐅵𐅷𐅸]+
 
@@ -110,9 +112,8 @@ item
 	// ab( )
 	: [WORDA w] [ABBR] = <abbr>[WORDA w]</>
 	: [WORDA w] "?" [ABBR] = <abbr cert="low">[WORDA w]</>
-	>: [SP] [items w] [ABBR] = <abbr>[items w]</>
 	>: [WORDA w] "?" "[" [WORDA x] "]" [WORDA y] [ABBR] = <abbr cert="low">[WORDA w]<supplied reason="lost">[WORDA x]</>[WORDA y]</>
-
+	>: [BEGMIABBR] [items w] [ABBR] [ENDMIABBR] = <abbr>[items w]</>
 
 
 //---test_uncertain_diacritical_diaeresis---
@@ -484,7 +485,8 @@ flat
 	
 	//---test_vestige_known_char---
 	// vestig.!.#{n}
-	: "vestig." [GAPEXTNUM v] "char" = <gap extent=[GAPEXTNUM v] reason="vestig" unit="character"></>
+// changed per James conversation on 6/10 - desc="vestiges" and reason="illegible"
+	: "vestig." [GAPEXTNUM v] "char" = <gap desc="vestiges" extent=[GAPEXTNUM v] reason="illegible" unit="character"></>
 	
 	//---test_vestige_characters---
 	// vestig
@@ -492,7 +494,8 @@ flat
 	
 	//---test_nontran_characters---
 	// nontran
-	: "nontran" = <gap desc="non transcr" unit="character"></>
+//remove per James conversation on 6/10
+//	: "nontran" = <gap desc="non transcr" unit="character"></>
 	
 	//---test_lost_lines---
 	// lost.#{n}lin

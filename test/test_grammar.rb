@@ -61,7 +61,8 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform 'ab(  )', '<abbr>ab</abbr>'
 	  assert_equal_fragment_transform 'ab?(  )', '<abbr cert="low">ab</abbr>'
 	  assert_equal_fragment_transform 'ab?[c]d(  )', '<abbr cert="low">ab<supplied reason="lost">c</supplied>d</abbr>'
-	  assert_equal_fragment_transform ' bạḅdec̣g(  )', '<abbr>b<unclear>ab</unclear>de<unclear>c</unclear>g</abbr>'
+	  assert_equal_fragment_transform '<@bạḅdec̣g(  )@>', '<abbr>b<unclear>ab</unclear>de<unclear>c</unclear>g</abbr>'
+	  assert_equal_fragment_transform '[ <+(ἡμιωβέλιον)+> <#= 1/2 #> προ(  ) <+(δραχμὴν)+> <#α=1#> <+χ(αλκοῦς 2)+><#=2#>]', '<supplied reason="lost"> <expan><ex>ἡμιωβέλιον</ex></expan> <num value=" 1/2 "/> <abbr>προ</abbr> <expan><ex>δραχμὴν</ex></expan> <num value="1">α</num> <expan>χ<ex>αλκοῦς 2</ex></expan><num value="2"/></supplied>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html
@@ -174,10 +175,10 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform 'vestig', '<gap desc="vestiges" extent="unknown" reason="illegible" unit="character"/>'
     end
   
-  def test_nontran_characters
+   #def test_nontran_characters - removed grammar per Jame conversation 6/10
       # non transcripable characters
-      assert_equal_fragment_transform 'nontran', '<gap desc="non transcr" unit="character"/>'
-    end
+    #  assert_equal_fragment_transform 'nontran', '<gap desc="non transcr" unit="character"/>'
+    #end
   
     # http://www.stoa.org/epidoc/gl/5/lostline.html
     def test_lost_lines

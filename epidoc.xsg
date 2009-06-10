@@ -376,8 +376,8 @@ item
 //line below added for the '(BL 1.24)' at the end of the 'lem resp=' attribute value - parens cannot be a valid value in WORD or WORDS
 	>: [BEGOPT] [items a] "|ed:" [WORDSBL c] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL c]>[items a]</><rdg>[items b]</></>
 //this set of app editorial does not have 'lem resp=' attribute
-	: [BEGOPT] [WORDS a] "|ed:|" [WORDS b] [ENDOPT] = <app type="editorial"><lem>[WORDS a]</><rdg>[WORDS b]</></>
-	>: [BEGOPT] [items a] "|ed:|" [WORDS b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[WORDS b]</></>
+	: [BEGOPT] [WORDS a] "|ed:|" [WORD b] [ENDOPT] = <app type="editorial"><lem>[WORDS a]</><rdg>[WORD b]</></>
+	>: [BEGOPT] [items a] "|ed:|" [WORD b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [WORDS a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[WORDS a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]</></>
 //line below added for empty tag rdg on editorial without resp

@@ -44,6 +44,7 @@ WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0
 WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]*) (MAX)
 
 NUM = [0-9]+
+LINENUM = [0-9]+[/\,a-zA-Z]?[ms0-9]*
 GAPEXTNUM = [c]?[.]?[0-9]+
 ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]
 
@@ -79,7 +80,8 @@ abtag : [BEGAB] [items z] [ENDAB] = <ab>[items z]</>
 items : [item i] [items more] = [item i] [items more]  
 		>: [item p] = [item p]	
 
-linenumber : [NUM n] "." " " = <lb n=[NUM n]/>
+linenumber : [LINENUM n] "." " " = <lb n=[LINENUM n]/>
+				 >: [LINENUM n] "." [WORD w] " " = <lb n=[LINENUM n] rend=[WORD w]/>
 newline : [NL n] = [NL n]
 
 unclears_SP_non_terminal : [SP] [UNDERDOT] [unclears_SP_non_terminal mu] = "\u00A0" [unclears_SP_non_terminal mu]

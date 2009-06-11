@@ -439,6 +439,16 @@ if(RUBY_PLATFORM == 'java')
       #test multiple ab sections
 	  assert_equal_fragment_transform '{.1ab}=><=12. {ab.1}', '<sic><gap extent="1" reason="illegible" unit="character"/>ab</sic></ab><ab><lb n="12"/><sic>ab<gap extent="1" reason="illegible" unit="character"/></sic>'
     end
+	
+	def test_line_number_formats
+      assert_equal_non_xml_to_xml_to_non_xml "<=1. test=>", "<=1. test=>"
+      assert_equal_non_xml_to_xml_to_non_xml "<=1a. test1a=>", "<=1a. test1a=>"
+	  assert_equal_non_xml_to_xml_to_non_xml "<=4/5. test45=>", "<=4/5. test45=>"
+	  assert_equal_non_xml_to_xml_to_non_xml "<=14/15. test1415=>", "<=14/15. test1415=>"
+	  assert_equal_non_xml_to_xml_to_non_xml "<=1,ms. test1ms=>", "<=1,ms. test1ms=>"
+	  assert_equal_non_xml_to_xml_to_non_xml "<=17,ms. test17ms=>", "<=17,ms. test17ms=>"
+    end
+  
   
     def test_line_numbering_reversibility_exhaustive
       #(1..100).each do |num_lines|

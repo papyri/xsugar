@@ -44,7 +44,7 @@ WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0
 WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]*) (MAX)
 
 NUM = [0-9]+
-LINENUM = [0-9]+[/\,a-zA-Z]?[ms0-9]*
+LINENUM = [0-9]+[/\,a-zA-Z]*[ms0-9]*
 GAPEXTNUM = [c]?[.]?[0-9]+
 ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]
 
@@ -81,7 +81,7 @@ items : [item i] [items more] = [item i] [items more]
 		>: [item p] = [item p]	
 
 linenumber : [LINENUM n] "." " " = <lb n=[LINENUM n]/>
-				 >: [LINENUM n] "." [WORD w] " " = <lb n=[LINENUM n] rend=[WORD w]/>
+//				 >: [LINENUM n] "." [WORD w] " " = <lb n=[LINENUM n] rend=[WORD w]/>
 newline : [NL n] = [NL n]
 
 unclears_SP_non_terminal : [SP] [UNDERDOT] [unclears_SP_non_terminal mu] = "\u00A0" [unclears_SP_non_terminal mu]
@@ -109,6 +109,14 @@ expandii : [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
 item 
 	: [linenumber l] = [linenumber l]
 	: [newline n] = [newline n]
+	
+	//---special_lines---
+	//(23, perp)
+	: "(" [LINENUM v] ", " [WORD w] ")" = <lb n=[LINENUM v] rend=[WORD w]/>
+	
+	//---inverse_lines---
+	//(23, inv)
+//	: "(" [LINENUM v] ", inv)" = <lb n=[LINENUM v] rend="inverse"/>
 
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
@@ -188,6 +196,8 @@ item
 // the line below causes horizontal ambiguity but does what it needs to - set up for case such as   p.cair.zen/p.cair.zen.3/p.cair.zen.3.59403.xml
 // will see if it handles it tomorrow and what else it does
 	>: [BEGOPT] [WORDA a] "?" [items c] "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[WORDA a][items c]</><sic>[items d]</></>
+	>: [BEGOPT] [WORDA a] "?" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[WORDA a]</><sic cert="low">[items d]</></>
+	>: [BEGOPT] [WORDA a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[WORDA a]</><sic cert="low">[items d]</></>
 //30
 	: [BEGOPT] [WORDA a] "|orth|" [WORDA b] [ENDOPT] = <choice><corr>[WORDA a]</><sic>[WORDA b]</></>
 	>: [BEGOPT] [items a] "|orth|" [WORDA b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDA b]</></>
@@ -263,11 +273,11 @@ item
 	
 	//---perpendicular_lines---
 	//(23, perp)
-	: "(" [NUM v] ", perp)" = <lb rend="perpendicular" n=[NUM v]/>
+//	: "(" [NUM v] ", perp)" = <lb n=[NUM v] rend="perpendicular"/>
 	
 	//---inverse_lines---
 	//(23, inv)
-	: "(" [NUM v] ", inv)" = <lb rend="inverse" n=[NUM v]/>
+//	: "(" [NUM v] ", inv)" = <lb n=[NUM v] rend="inverse"/>
 	
 	//---subscript---
 	//   /abc\

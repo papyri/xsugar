@@ -287,6 +287,7 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '"abc"', '<q>abc</q>'
       assert_equal_fragment_transform '"abc def ghi"', '<q>abc def ghi</q>'
 	  assert_equal_fragment_transform '"<:ἔλα 3. βα|orth|αιλαβα:> αὐτὰ"', '<q><choice><corr>ἔλα <lb n="3"/>βα</corr><sic>αιλαβα</sic></choice> αὐτὰ</q>'
+	  assert_equal_fragment_transform '<:anaRboladium?|orth|[ana]boladum?:>', '<choice><corr cert="low">anaRboladium</corr><sic cert="low"><supplied reason="lost">ana</supplied>boladum</sic></choice>'
 	   #                                                  '<:a|orth|b:>',     '<choice><corr>a</corr><sic>b</sic></choice>'
     end
   
@@ -447,6 +448,8 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_non_xml_to_xml_to_non_xml "<=14/15. test1415=>", "<=14/15. test1415=>"
 	  assert_equal_non_xml_to_xml_to_non_xml "<=1,ms. test1ms=>", "<=1,ms. test1ms=>"
 	  assert_equal_non_xml_to_xml_to_non_xml "<=17,ms. test17ms=>", "<=17,ms. test17ms=>"
+	  assert_equal_non_xml_to_xml_to_non_xml "<=1quinquies. test1quinquies=>", "<=1quinquies. test1quinquies=>"
+	  assert_equal_non_xml_to_xml_to_non_xml "<=(1, inverse) test1inverse=>", "<=(1, inverse) test1inverse=>"
     end
   
   

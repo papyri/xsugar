@@ -29,8 +29,8 @@ WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323
 WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 //WORDS allows space (therefore multiple words) and DOT
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
-//WORDSF allows space (therefore multiple words) and DOT - allow ?, \, , $ for foreign language
-WORDSF = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\:\=\|\'\!\(\)\{\}\"¯≡\u0323]+) (MAX)
+//WORDSF allows space (therefore multiple words) and DOT - allow ?, \, , $, +, : for foreign language
+WORDSF = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯≡\u0323]+) (MAX)
 //WORDSBL allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
 WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¯≡\u0323]+) (MAX)
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
@@ -123,6 +123,7 @@ item
 	: [WORDA w] [ABBR] = <abbr>[WORDA w]</>
 	: [WORDA w] "?" [ABBR] = <abbr cert="low">[WORDA w]</>
 	>: [WORDA w] "?" "[" [WORDA x] "]" [WORDA y] [ABBR] = <abbr cert="low">[WORDA w]<supplied reason="lost">[WORDA x]</>[WORDA y]</>
+	>: "?" "[" [WORDA x] "]" [WORDA y] [ABBR] = <abbr cert="low"><supplied reason="lost">[WORDA x]</>[WORDA y]</>
 	>: [BEGMIABBR] [items w] [ABBR] [ENDMIABBR] = <abbr>[items w]</>
 
 
@@ -198,6 +199,8 @@ item
 	>: [BEGOPT] [WORDA a] "?" [items c] "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[WORDA a][items c]</><sic>[items d]</></>
 	>: [BEGOPT] [WORDA a] "?" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[WORDA a]</><sic cert="low">[items d]</></>
 	>: [BEGOPT] [WORDA a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[WORDA a]</><sic cert="low">[items d]</></>
+	>: [BEGOPT] [items a] "?" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[items a]</><sic cert="low">[items d]</></>
+	>: [BEGOPT] [items a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[items a]</><sic cert="low">[items d]</></>
 //30
 	: [BEGOPT] [WORDA a] "|orth|" [WORDA b] [ENDOPT] = <choice><corr>[WORDA a]</><sic>[WORDA b]</></>
 	>: [BEGOPT] [items a] "|orth|" [WORDA b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDA b]</></>
@@ -291,8 +294,8 @@ item
 	
 	//---add_place_supralinear---
 	//   \abc/
-    : "\\" [WORDS a] "\/" = <add place="supralinear">[WORDS a]</>
-	: "\\" [WORDS a] "?" "\/" = <add cert="low" place="supralinear">[WORDS a]</>
+    : "\\" [WORDSSIC a] "\/" = <add place="supralinear">[WORDSSIC a]</>
+	: "\\" [WORDSSIC a] "?" "\/" = <add cert="low" place="supralinear">[WORDSSIC a]</>
 	>: "\\" [items a] "\/" = <add place="supralinear">[items a]</>
 	>: "\\" [items a] "?" "\/" = <add cert="low" place="supralinear">[items a]</>
 	
@@ -350,12 +353,14 @@ item
 		
 	//---subst---
 	//  <:a|subst|b|:> 
-	: [BEGOPT] [WORD a] "|subst|" [WORD b] "?" [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected" cert="low">[WORD b]</></>
-	>: [BEGOPT] [items a] "|subst|" [items b] "?" [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected" cert="low">[items b]</></>
+	: [BEGOPT] [WORD a] "|subst|" [WORD b] "?" [ENDOPT] = <subst><add place="inline">[WORD a]</><del cert="low" rend="corrected">[WORD b]</></>
+	>: [BEGOPT] [items a] "|subst|" [items b] "?" [ENDOPT] = <subst><add place="inline">[items a]</><del cert="low" rend="corrected">[items b]</></>
 	: [BEGOPT] [WORD a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[WORD b]</></>
 	>: [BEGOPT] [items a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORD b]</></>
 	>: [BEGOPT] [WORD a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [WORD a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[WORD a]</><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [items a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [items a] "?" "|subst|" [items b] "?" [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del cert="low" rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] "|subst|" [items b] [ENDOPT] = <subst><add place="inline"></><del rend="corrected">[items b]</></>
 	

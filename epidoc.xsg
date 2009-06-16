@@ -183,6 +183,7 @@ item
 	//---test unclear characters = underdots
 	: [FRACSYM f] [UNDERDOT] = <unclear>[FRACSYM f]</>
 	>: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
+	>: [BEGNUM] "\u00A0" [WORDA o] "=" [SYMBOLNUM s] [ENDNUM] = <unclear><num value=[SYMBOLNUM s]>[WORDA o]</></>
 	
 //	>: [unclears_SP_non_terminal u] "!" = <unclear reason="undefined">[unclears_SP_non_terminal u]</>
 //	>: [unclears_non_terminal u] "!" = <unclear reason="undefined">[unclears_non_terminal u]</>
@@ -470,7 +471,7 @@ flat
 	//---test_expand low cert---
 	// (abc?)
 	:  [BEGEXP] "(" [WORD w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORD w]</></>
-	>: [BEGEXP] [WORD a] "(" [WORD b] "?" ")" [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORD b]</></>
+	>: [BEGEXP] [WORDS a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[WORDS a]<ex cert="low">[WORDS b]</></>
 	>: [BEGEXP] [items a] "(" [WORD b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORD b]</></>
 	
 	//---test_expansion---
@@ -486,6 +487,7 @@ flat
 //	: "(" [WORD a] ")" = <expan><ex>[WORD a]</></> - commented out to remove vert ambig with wordsnum above
 	: [BEGEXP] "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
 	>: [BEGEXP] [expandex e] [ENDEXP] = <expan>[expandex e]</>
+	>: [BEGEXP] [WORD a] [expandex e] [ENDEXP] = <expan>[WORD a] [expandex e]</>
 //	>: "(" [items a] ")" = <expan><ex>[items a]</></>
 
 	//---test_vestige_lines---

@@ -473,6 +473,9 @@ flat
 	:  [BEGEXP] "(" [WORD w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORD w]</></>
 	>: [BEGEXP] [WORDS a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[WORDS a]<ex cert="low">[WORDS b]</></>
 	>: [BEGEXP] [items a] "(" [WORD b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORD b]</></>
+//add 2 lines below 6/17 for p.kar.goodsp
+	>: [BEGEXP] [items a] "(" [WORDS b] "?" ")" [items c] "(" [WORDS d] ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS b]</>[items c]<ex>[WORDS d]</></>
+	>: [BEGEXP] [WORDS a] "(" [WORDS b] ")" [WORDS c] "[" [WORDS d] "(" [WORDS e] ")" "]" [ENDEXP] = <expan>[WORDS a]<ex>[WORDS b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDS e]</></></>
 	
 	//---test_expansion---
 	// a(b)
@@ -488,6 +491,7 @@ flat
 	: [BEGEXP] "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
 	>: [BEGEXP] [expandex e] [ENDEXP] = <expan>[expandex e]</>
 	>: [BEGEXP] [WORD a] [expandex e] [ENDEXP] = <expan>[WORD a] [expandex e]</>
+	>: [BEGEXP] [items d] "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan>[items d]<ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
 //	>: "(" [items a] ")" = <expan><ex>[items a]</></>
 
 	//---test_vestige_lines---

@@ -389,6 +389,8 @@ item
 	>: [BEGOPT] [items a] "|ed:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[items b]</></>
 //line below added for empty tag lem on editorial with resp
 	>: [BEGOPT] "|ed:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]></><rdg>[items b]</></>
+//line below added for empty tag lem on editorial without resp
+	>: [BEGOPT] "|ed:" "|" [items b] [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]</></>
 //line below added for empty tag rdg on editorial with resp
 	>: [BEGOPT] [items a] "|ed:" [WORDS e] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg></></>
 //line below added for the '(BL 1.24)' at the end of the 'lem resp=' attribute value - parens cannot be a valid value in WORD or WORDS
@@ -406,6 +408,8 @@ item
 	>: [BEGOPT] [items a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]</></>
 //line below added for empty tag rdg on alternative
 	>: [BEGOPT] [items a] "|alt:" "|" [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg></></>
+	//line below added for empty tag lem on alternative
+	>: [BEGOPT] "|alt:" "|" [items b] [ENDOPT] = <app type="alternative"><lem/><rdg>[items b]</></>
 	
 	//---glyph---
 	//  '‼a', '‼a,b', '‼filler(a), ‼@a , ‼a b ' 
@@ -470,12 +474,15 @@ flat
 	
 	//---test_expand low cert---
 	// (abc?)
-	:  [BEGEXP] "(" [WORD w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORD w]</></>
+	:  [BEGEXP] "(" [WORDS w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORDS w]</></>
 	>: [BEGEXP] [WORDS a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[WORDS a]<ex cert="low">[WORDS b]</></>
-	>: [BEGEXP] [items a] "(" [WORD b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORD b]</></>
+	>: [BEGEXP] [items a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS b]</></>
 //add 2 lines below 6/17 for p.kar.goodsp
 	>: [BEGEXP] [items a] "(" [WORDS b] "?" ")" [items c] "(" [WORDS d] ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS b]</>[items c]<ex>[WORDS d]</></>
 	>: [BEGEXP] [WORDS a] "(" [WORDS b] ")" [WORDS c] "[" [WORDS d] "(" [WORDS e] ")" "]" [ENDEXP] = <expan>[WORDS a]<ex>[WORDS b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDS e]</></></>
+//add 2 lines below 6/17 for p.oxy.17
+	>: [BEGEXP] "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
+	>: [BEGEXP] "(" "(" [WORD a]  "?" ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORD a]</>[WORD c]<ex>[WORD b]</></>
 	
 	//---test_expansion---
 	// a(b)

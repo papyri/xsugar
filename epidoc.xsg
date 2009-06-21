@@ -534,6 +534,7 @@ flat
 	//---test_lost_lines---
 	// lost.#{n}lin
 	: "lost." [GAPEXTNUM v] "lin" = <gap extent=[GAPEXTNUM v] reason="lost" unit="line"></>
+	>: "lost." [GAPEXTNUM v] "-" [GAPEXTNUM w] "lin" = <gap extent=[GAPEXTNUM v] extentmax=[GAPEXTNUM w] reason="lost" unit="line"></>
 	
 	//---test_lost_lines_unknown---
 	// lost.#{n}lin

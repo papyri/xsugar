@@ -121,9 +121,10 @@ item
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
 	: [WORDA w] [ABBR] = <abbr>[WORDA w]</>
-	: [WORDA w] "?" [ABBR] = <abbr cert="low">[WORDA w]</>
-	>: [WORDA w] "?" "[" [WORDA x] "]" [WORDA y] [ABBR] = <abbr cert="low">[WORDA w]<supplied reason="lost">[WORDA x]</>[WORDA y]</>
-	>: "?" "[" [WORDA x] "]" [WORDA y] [ABBR] = <abbr cert="low"><supplied reason="lost">[WORDA x]</>[WORDA y]</>
+// remove abbr cert per james and gabby 6/21
+//	: [WORDA w] "?" [ABBR] = <abbr cert="low">[WORDA w]</>
+//	>: [WORDA w] "?" "[" [WORDA x] "]" [WORDA y] [ABBR] = <abbr cert="low">[WORDA w]<supplied reason="lost">[WORDA x]</>[WORDA y]</>
+//	>: "?" "[" [WORDA x] "]" [WORDA y] [ABBR] = <abbr cert="low"><supplied reason="lost">[WORDA x]</>[WORDA y]</>
 	>: [BEGMIABBR] [items w] [ABBR] [ENDMIABBR] = <abbr>[items w]</>
 
 

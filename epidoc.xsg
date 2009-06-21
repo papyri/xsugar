@@ -183,7 +183,8 @@ item
 	//---test unclear characters = underdots
 	: [FRACSYM f] [UNDERDOT] = <unclear>[FRACSYM f]</>
 	>: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
-	>: [BEGNUM] "\u00A0" [WORDA o] "=" [SYMBOLNUM s] [ENDNUM] = <unclear><num value=[SYMBOLNUM s]>[WORDA o]</></>
+//james thinks this is invalid - need to check with gabby - comment out - allow unclear inside num, but not num inside unclear
+//.	>: [BEGNUM] "\u00A0" [WORDA o] "=" [SYMBOLNUM s] [ENDNUM] = <unclear><num value=[SYMBOLNUM s]>[WORDA o]</></>
 	
 //	>: [unclears_SP_non_terminal u] "!" = <unclear reason="undefined">[unclears_SP_non_terminal u]</>
 //	>: [unclears_non_terminal u] "!" = <unclear reason="undefined">[unclears_non_terminal u]</>
@@ -475,11 +476,13 @@ flat
 	//---test_expand low cert---
 	// (abc?)
 	:  [BEGEXP] "(" [WORDS w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORDS w]</></>
-	>: [BEGEXP] [WORDS a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[WORDS a]<ex cert="low">[WORDS b]</></>
+//changed line below from words to word for a white space test 
+	>: [BEGEXP] [WORD a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORDS b]</></>
 	>: [BEGEXP] [items a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS b]</></>
 //add 2 lines below 6/17 for p.kar.goodsp
 	>: [BEGEXP] [items a] "(" [WORDS b] "?" ")" [items c] "(" [WORDS d] ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS b]</>[items c]<ex>[WORDS d]</></>
-	>: [BEGEXP] [WORDS a] "(" [WORDS b] ")" [WORDS c] "[" [WORDS d] "(" [WORDS e] ")" "]" [ENDEXP] = <expan>[WORDS a]<ex>[WORDS b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDS e]</></></>
+//change words to word for a below for white space test	
+	>: [BEGEXP] [WORD a] "(" [WORDS b] ")" [WORDS c] "[" [WORDS d] "(" [WORDS e] ")" "]" [ENDEXP] = <expan>[WORD a]<ex>[WORDS b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDS e]</></></>
 //add 2 lines below 6/17 for p.oxy.17
 	>: [BEGEXP] "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
 	>: [BEGEXP] "(" "(" [WORD a]  "?" ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORD a]</>[WORD c]<ex>[WORD b]</></>
@@ -488,7 +491,8 @@ flat
 	// a(b)
 // comment the next line - causes 5 reversability and passing errors in EXPAN in BGU.1 - bgurakcov0414_v06
 //	>: [WORD a] "(" [WORD b] __")" = <expan>[WORD a]<ex>[WORD b] __</></>
-	>: [BEGEXP] [WORDS a] "(" [WORDS b] ")" [ENDEXP] = <expan>[WORDS a]<ex>[WORDS b]</></>
+//jfox change words to word for a white space test
+	>: [BEGEXP] [WORD a] "(" [WORDS b] ")" [ENDEXP] = <expan>[WORD a]<ex>[WORDS b]</></>
 	
 	//---test_symbol_expansion---
 	// (abc)
@@ -561,7 +565,8 @@ flat
 	//---expand with supplied reason lost---
 	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
-	>: [BEGEXP] [WORDS a] "[" [WORDS b] "(" [WORDS c] ")" "]" [ENDEXP] = <expan>[WORDS a]<supplied reason="lost">[WORDS b]<ex>[WORDS c]</></></>
+//jfox change words to word for a white space test
+	>: [BEGEXP] [WORD a] "[" [WORDS b] "(" [WORDS c] ")" "]" [ENDEXP] = <expan>[WORD a]<supplied reason="lost">[WORDS b]<ex>[WORDS c]</></></>
 	>: [BEGEXP] "[" "(" [WORDS c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDS c]</></></>
 	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	

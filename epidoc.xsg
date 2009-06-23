@@ -277,8 +277,8 @@ item
 		
 	//---undefined_parallel---
 	//  _abc_  - underlines
-    : "_" [WORDS a] "_" = <supplied evidence="parallel" reason="illegible">[WORDS a]</>
-	: "_" [WORDS a] "?" "_" = <supplied cert="low" evidence="parallel" reason="illegible">[WORDS a]</>
+    : "_" [WORDSSIC a] "_" = <supplied evidence="parallel" reason="illegible">[WORDSSIC a]</>
+	: "_" [WORDSSIC a] "?" "_" = <supplied cert="low" evidence="parallel" reason="illegible">[WORDSSIC a]</>
 	>: "_" [items a] "_" = <supplied evidence="parallel" reason="illegible">[items a]</>
 	>: "_" [items a] "?" "_" = <supplied cert="low" evidence="parallel" reason="illegible">[items a]</>
 		

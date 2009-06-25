@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # zsh is used here because &>> is broken under bash
 
-jruby_path="$HOME/source/jruby-1.1.5/bin/jruby"
+jruby_path="$HOME/source/jruby-1.3.1/bin/jruby"
 idp2_prefix="$HOME/source/idp2"
 today=`date +%Y.%m.%d`
 cd $idp2_prefix/svn/idp.data

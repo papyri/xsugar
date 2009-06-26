@@ -1,7 +1,5 @@
 module RXSugar
   module JRubyHelper
-    DRB_SERVER_URI = 'druby://172.16.42.35:9001'
-    
     def self.included(base)
       base.extend(ActMethods)
     end
@@ -18,6 +16,7 @@ module RXSugar
     module ClassMethods
       require 'drb/drb'
       require 'rinda/rinda'
+      require 'rinda/ring'
       
       def preprocess_abs(abs)
         return "<wrapab>" + abs.to_s + "</wrapab>"
@@ -54,8 +53,13 @@ module RXSugar
       
       def post_to_blackboard(from, to, content)
         DRb.start_service
-        tuplespace = Rinda::TupleSpaceProxy.new(DRbObject.new(nil, 
-                                                DRB_SERVER_URI))
+        # Just use the primary service, change this if we're going to register
+        # any more services on the Ring Server
+        ring_server = Rinda::RingFinger.primary
+        
+        tuplespace = ring_server.read([:name, :TupleSpace, nil, nil])[2]
+        tuplespace = Rinda::TupleSpaceProxy.new tuplespace
+        
         tuplespace.write([from, to, content, content.object_id])
         result, object_id, result_type, transformed = 
           tuplespace.take([:result, content.object_id, Symbol, String])

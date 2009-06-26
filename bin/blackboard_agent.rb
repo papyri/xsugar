@@ -1,14 +1,20 @@
 #!/usr/bin/env jruby
 require 'drb/drb'
 require 'rinda/rinda'
+require 'rinda/ring'
+
 require File.join(File.dirname(__FILE__), *%w'.. lib jruby_helper')
 require File.join(File.dirname(__FILE__), *%w'.. lib rxsugar')
 
 include RXSugar::RXSugarHelper
 
 DRb.start_service
-tuplespace = Rinda::TupleSpaceProxy.new(DRbObject.new(nil, 
-                                        RXSugar::JRubyHelper::DRB_SERVER_URI))
+# Just use the primary service, change this if we're going to register
+# any more services on the Ring Server
+ring_server = Rinda::RingFinger.primary
+
+tuplespace = ring_server.read([:name, :TupleSpace, nil, nil])[2]
+tuplespace = Rinda::TupleSpaceProxy.new tuplespace
 
 # set up the constants we'll reuse inside the loop
 rxsugar = rxsugar_from_grammar(DEFAULT_GRAMMAR)

@@ -116,7 +116,7 @@ item
 
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
-	: [WORDA w] [ABBR] = <abbr>[WORDA w]</>
+	: " " [WORDA w] [ABBR] = <abbr>[WORDA w]</>
 	>: [BEGMIABBR] [items w] [ABBR] [ENDMIABBR] = <abbr>[items w]</>
 
 //---test_uncertain_diacritical_diaeresis---

@@ -559,6 +559,14 @@ inside_brackets
 	// [ ca.? ]  	
 	>: [CAUNKNOWN] = <gap reason="lost" extent="unknown" unit="character" precision="circa"></>
 	
+	//---test_lost_space_unknown
+	//[vac.?]
+	:"vac.?" = <supplied reason="lost"><space extent="unknown" unit="character"/></>
+	
+	//---test_lost_paragraphos
+	//[----]
+	:"----" = <supplied reason="lost"><milestone rend="paragraphos" unit="undefined"/></>
+	
 	//---test_lost_words---
 	// [ abc def ] lost words
 	: [WORDS w] = <supplied reason="lost">[WORDS w]</>

@@ -24,7 +24,9 @@ CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
 //																								   ¨΄`῾᾿´\^῾᾿
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+)|(^(.*vestig.*)) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+// WORDVEST breaks at space and does not allow DOT or vestig
+WORDVEST = ([^ \/\\\n\r\t\[\]<>vestig_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
 WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 //WORDS allows space (therefore multiple words) and DOT
@@ -37,8 +39,8 @@ WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¯≡\u0323]+) (
 WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 // wordsnum allow '/' for fractional numbers
 WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
-//WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap
-WORDSSIC = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+//WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for suprelinear
+WORDSSIC = ([^\/\\\n\r\t\[\]<>vestig_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
 WORDOPT = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]*) (MAX)
@@ -174,6 +176,8 @@ item
 	//---test unclear characters = underdots
 	: [FRACSYM f] [UNDERDOT] = <unclear>[FRACSYM f]</>
 	>: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
+//below line breaks xml reversability in p.vind.worp/p.vind.worp.11.xml - had here to fix something, not sure what now
+//added the lne 6/22 12 noon
 	>: [unclears_non_terminal u] "*" [WORDS k] "*" [unclears_non_terminal w] = <unclear>[unclears_non_terminal u] <g type=[WORDS k]></> [unclears_non_terminal w]</>
 	>: "*" [UNDERDOT] [WORDS k]  [UNDERDOT] "*" = <unclear><g type=[WORDS k]></></>
 	
@@ -246,10 +250,10 @@ item
 	
 	//---add_place_supralinear---
 	//   \abc/
-    : "\\" [WORDSSIC a] "\/" = <add place="supralinear">[WORDSSIC a]</>
-	: "\\" [WORDSSIC a] "?" "\/" = <add cert="low" place="supralinear">[WORDSSIC a]</>
-	>: "\\" [items a] "\/" = <add place="supralinear">[items a]</>
-	>: "\\" [items a] "?" "\/" = <add cert="low" place="supralinear">[items a]</>
+    : "#\\" [WORDSSIC a] "\/#" = <add place="supralinear">[WORDSSIC a]</>
+	: "#\\" [WORDSSIC a] "?" "\/#" = <add cert="low" place="supralinear">[WORDSSIC a]</>
+	>: "#\\" [items a] "\/#" = <add place="supralinear">[items a]</>
+	>: "#\\" [items a] "?" "\/#" = <add cert="low" place="supralinear">[items a]</>
 	
 	//---add_place_infralinear---
 	//   \abc/
@@ -272,7 +276,7 @@ item
 	
 	//---supraline---
 	//   ¯abc¯ - uses non-combining macron
-	: "¯" [WORD a] "¯" = <hi rend="supraline">[WORD a]</>
+	: "¯" [WORDVEST a] "¯" = <hi rend="supraline">[WORDVEST a]</>
 	>: "¯" [items i] "¯" = <hi rend="supraline">[items i]</>
 		
 	//---supraline_underline---
@@ -305,12 +309,13 @@ item
 		
 	//---subst---
 	//  <:a|subst|b|:> 
-	: [BEGOPT] [WORD a] "|subst|" [WORD b] "?" [ENDOPT] = <subst><add place="inline">[WORD a]</><del cert="low" rend="corrected">[WORD b]</></>
+	: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] "?" [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del cert="low" rend="corrected">[WORDVEST b]</></>
 	>: [BEGOPT] [items a] "|subst|" [items b] "?" [ENDOPT] = <subst><add place="inline">[items a]</><del cert="low" rend="corrected">[items b]</></>
-	: [BEGOPT] [WORD a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[WORD b]</></>
-	>: [BEGOPT] [items a] "|subst|" [WORD b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORD b]</></>
-	>: [BEGOPT] [WORD a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORD a]</><del rend="corrected">[items b]</></>
-	>: [BEGOPT] [WORD a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[WORD a]</><del rend="corrected">[items b]</></>
+	: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[WORDVEST b]</></>
+//		>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [items a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORDVEST b]</></>
+	>: [BEGOPT] [WORDVEST a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [WORDVEST a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "?" "|subst|" [items b] "?" [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del cert="low" rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>

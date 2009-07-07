@@ -155,6 +155,8 @@ item
 
 //wrote for specific reversability case in p.cair.masp.3.67325 - will see if it fixes anything else
 	: [BEGEXP] [WORD d] " " [ANYLETTER c] "(¨)" [WORD a] "(" [WORD b] ")" [ENDEXP] = <expan>[WORD d]<hi rend="diaeresis">[ANYLETTER c]</>[WORD a]<ex>[WORD b]</></>
+//wrote for specific reversability case in p.ross.georg.3.49 - will see if it fixes anything else
+	: [BEGEXP] [ANYLETTER c] "(¨)" [WORD a] "(" [WORD b] ")" [WORD d] "(" [WORD e] ")" [ENDEXP] = <expan><hi rend="diaeresis">[ANYLETTER c]</>[WORD a]<ex>[WORD b]</>[WORD d]<ex>[WORD e]</></>
 
 	: [BEGEXP] "(" [WORDSNUM a] ")" [ENDEXP] = <expan><ex>[WORDSNUM a]</></>
 	>: [BEGEXP] "(" [items a] ")" [ENDEXP] = <expan><ex>[items a]</></>

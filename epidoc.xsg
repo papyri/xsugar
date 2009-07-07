@@ -37,8 +37,8 @@ WORDSF = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯≡\u0323]+) (MAX)
 WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¯≡\u0323]+) (MAX)
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
 WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
-// wordsnum allow '/' for fractional numbers
-WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+// wordsnum allow '/' for fractional numbers - added DOT to break .gap on 7/7 see if break other things
+WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for suprelinear
 WORDSSIC = ([^\/\\\n\r\t\[\]<>vestig_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
@@ -49,6 +49,7 @@ NUM = [0-9]+
 LINENUM = [0-9]+[/\,a-zA-Z]*[ms0-9]*
 GAPEXTNUM = [c]?[.]?[0-9]+
 ANYLETTER = [^\/\\\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]
+ANYMULT = [^\/\\\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+
 
 //the third part of HANDSHIFT reg exp is same as ANYLETTER except does not allow space
 HANDSHIFT = m{1}[0-9]+[^ \/\\\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]?
@@ -566,10 +567,12 @@ inside_brackets
 	
 	//---test_lost_space_unknown
 	//[vac.?]
+	:[ANYMULT w] "vac.?" = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/></>
 	:"vac.?" = <supplied reason="lost"><space extent="unknown" unit="character"/></>
 	
 	//---test_lost_paragraphos
 	//[----]
+	:[ANYMULT w] "----" = <supplied reason="lost">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/></>
 	:"----" = <supplied reason="lost"><milestone rend="paragraphos" unit="undefined"/></>
 	
 	//---test_lost_words---

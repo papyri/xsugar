@@ -530,6 +530,7 @@ flat
 	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
 	
 	: "[]" = <supplied reason="lost"/>
+	: "[ ?]" = <supplied cert="low" reason="lost"/>
 	
 	//---multiple tests see inside_brackets production---
 	// [ ], [[ ]], [ca.?] etc...
@@ -560,11 +561,11 @@ inside_brackets
 	: [DOT] [NUM v] "-" [NUM w] = <gap extent=[NUM v] extentmax=[NUM w] reason="lost" unit="character"></>
 			
 	//---test_lost_gap_unknown---
-	// [ .? ]  	
+	// [.?] - diff from empty tag low cert because DOT and no space
 	>: ".?" = <gap extent="unknown" reason="lost" unit="character"></>
 	
 	//---test_lost_gap_unknown_ca---
-	// [ ca.? ]  	
+	// [ ca.?]  	
 	>: [CAUNKNOWN] = <gap reason="lost" extent="unknown" unit="character" precision="circa"></>
 	
 	//---test_lost_space_unknown

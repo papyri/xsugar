@@ -531,11 +531,6 @@ flat
 	
 	: "[]" = <supplied reason="lost"/>
 	
-	//---test_lost_uncertain---
-	// [ abc? ] uncertain lost
-	>: "[" [WORDS w] "]\?" = <supplied cert="low" reason="lost">[WORDS w]</>
-	>: "[" [items w] "]\?" = <supplied cert="low" reason="lost">[items w]</>
-	
 	//---multiple tests see inside_brackets production---
 	// [ ], [[ ]], [ca.?] etc...
 	>: "[" [inside_brackets i] "]" =  [inside_brackets i] 	
@@ -588,8 +583,8 @@ inside_brackets
 	
 	//---test_lost_uncertain---
 	// [ abc? ] uncertain lost
-//	>: [WORDS w] "\?" = <supplied cert="low" reason="lost">[WORDS w]</>
-//	>: [items w] "\?" = <supplied cert="low" reason="lost">[items w]</>
+	>: [WORDS w] " ?" = <supplied cert="low" reason="lost">[WORDS w]</>
+	>: [items w] " ?" = <supplied cert="low" reason="lost">[items w]</>
 	
 	//---test_lost--- - placed at the end so all other possibilities of inside brackets are checked before looping through 'items' production
 	// [ ] lost

@@ -180,8 +180,8 @@ item
 	: [FRACSYM f] [UNDERDOT] = <unclear>[FRACSYM f]</>
 	>: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
 //below line breaks xml reversability in p.vind.worp/p.vind.worp.11.xml - had here to fix something, not sure what now
-//added the lne 6/22 12 noon
-	>: [unclears_non_terminal u] "*" [WORDS k] "*" [unclears_non_terminal w] = <unclear>[unclears_non_terminal u] <g type=[WORDS k]></> [unclears_non_terminal w]</>
+//added the lne 6/22 12 noon - commented out 7/9 to see how much fixes vs. how much it breaks
+//	>: [unclears_non_terminal u] "*" [WORDS k] "*" [unclears_non_terminal w] = <unclear>[unclears_non_terminal u] <g type=[WORDS k]></> [unclears_non_terminal w]</>
 	>: "*" [UNDERDOT] [WORDS k]  [UNDERDOT] "*" = <unclear><g type=[WORDS k]></></>
 	
 	//---choice---

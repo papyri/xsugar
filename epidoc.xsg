@@ -221,7 +221,7 @@ item
 	: [DOT] [GAPEXTNUM n] "lin" = <gap extent=[GAPEXTNUM n] reason="illegible" unit="line"></>  
 	
 	//---test_illegible_dot_lin_extentmax---
-	// .1lin, .2lin, .3lin
+	// .1-2lin
 	: [DOT] [NUM n] "-" [NUM w] "lin" = <gap extent=[NUM n] extentmax=[NUM w] reason="illegible" unit="line"></>  
 	
 	//---test_illegible_gap_ca---
@@ -486,8 +486,8 @@ flat
 	
 	//---test_nontran_characters---
 	// nontran
-//remove per James conversation on 6/10
-//	: "nontran" = <gap desc="non transcr" unit="character"></>
+	: "nontran" = <gap desc="non transcribed" extent="unknown" reason="ellipsis" unit="character"></>
+	: "nontran." [NUM v] "-" [NUM w] = <gap desc="non transcribed" extent=[NUM v] extentmax=[NUM w] reason="ellipsis" unit="character"></>
 	
 	//---test_lost_lines---
 	// lost.#{n}lin

@@ -428,6 +428,11 @@ if(RUBY_PLATFORM == 'java')
         assert_equal_fragment_transform "\##{figdesc} ", "<figure><figDesc>#{figdesc}</figDesc></figure>"
       end
     end
+	
+	def test_nontran
+      assert_equal_fragment_transform 'nontran', '<gap desc="non transcribed" extent="unknown" reason="ellipsis" unit="character"/>'
+      assert_equal_fragment_transform 'nontran.1-2', '<gap desc="non transcribed" extent="1" extentmax="2" reason="ellipsis" unit="character"/>'
+    end
     
     def test_simple_reversibility
       assert_equal_non_xml_to_xml_to_non_xml "<=1. test=>", "<=1. test=>"

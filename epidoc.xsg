@@ -288,10 +288,10 @@ item
 		
 	//---undefined_parallel---
 	//  _abc_  - underlines
-    : "_" [WORDSSIC a] "_" = <supplied evidence="parallel" reason="illegible">[WORDSSIC a]</>
-	: "_" [WORDSSIC a] "?" "_" = <supplied cert="low" evidence="parallel" reason="illegible">[WORDSSIC a]</>
-	>: "_" [items a] "_" = <supplied evidence="parallel" reason="illegible">[items a]</>
-	>: "_" [items a] "?" "_" = <supplied cert="low" evidence="parallel" reason="illegible">[items a]</>
+    : "_@" [WORDSSIC a] "@_" = <supplied evidence="parallel" reason="illegible">[WORDSSIC a]</>
+	: "_@" [WORDSSIC a] "?" "@_" = <supplied cert="low" evidence="parallel" reason="illegible">[WORDSSIC a]</>
+	>: "_@" [items a] "@_" = <supplied evidence="parallel" reason="illegible">[items a]</>
+	>: "_@" [items a] "?" "@_" = <supplied cert="low" evidence="parallel" reason="illegible">[items a]</>
 		
 	//---lost_parallel---
 	//  _[abc]_  - underlines

@@ -29,6 +29,8 @@ WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323
 WORDVEST = ([^ \/\\\n\r\t\[\]<>vestig_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
 WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+//WORDAVEST does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation - added 'v' to keep vestig out
+WORDAVEST = ([^ \/\\\n\r\t\[\]<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 //WORDS allows space (therefore multiple words) and DOT
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 //WORDSF allows space (therefore multiple words) and DOT - allow ?, \, , $, +, : for foreign language
@@ -186,20 +188,20 @@ item
 	
 	//---choice---
 	//  <:a|orth|b|:> 
-	: [BEGOPT] [WORDA a] "?" "|orth|" [WORDA b] [ENDOPT] = <choice><corr cert="low">[WORDA a]</><sic>[WORDA b]</></>
+	: [BEGOPT] [WORDAVEST a] "?" "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic>[WORDAVEST b]</></>
 // the line below causes horizontal ambiguity but does what it needs to - set up for case such as   p.cair.zen/p.cair.zen.3/p.cair.zen.3.59403.xml
 // will see if it handles it tomorrow and what else it does
-	>: [BEGOPT] [WORDA a] "?" [items c] "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[WORDA a][items c]</><sic>[items d]</></>
-	>: [BEGOPT] [WORDA a] "?" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[WORDA a]</><sic cert="low">[items d]</></>
-	>: [BEGOPT] [WORDA a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[WORDA a]</><sic cert="low">[items d]</></>
+	>: [BEGOPT] [WORDAVEST a] "?" [items c] "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[WORDAVEST a][items c]</><sic>[items d]</></>
+	>: [BEGOPT] [WORDAVEST a] "?" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic cert="low">[items d]</></>
+	>: [BEGOPT] [WORDAVEST a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic cert="low">[items d]</></>
 	>: [BEGOPT] [items a] "?" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[items a]</><sic cert="low">[items d]</></>
 	>: [BEGOPT] [items a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[items a]</><sic cert="low">[items d]</></>
 //30
-	: [BEGOPT] [WORDA a] "|orth|" [WORDA b] [ENDOPT] = <choice><corr>[WORDA a]</><sic>[WORDA b]</></>
-	>: [BEGOPT] [items a] "|orth|" [WORDA b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDA b]</></>
-	>: [BEGOPT] [WORDA a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORDA a]</><sic>[items b]</></>
+	: [BEGOPT] [WORDAVEST a] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[WORDAVEST b]</></>
+	>: [BEGOPT] [items a] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDAVEST b]</></>
+	>: [BEGOPT] [WORDAVEST a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[items b]</></>
 	>: [BEGOPT] [items a] "|orth|" [items b] [ENDOPT] = <choice><corr>[items a]</><sic>[items b]</></>
-	>: [BEGOPT] "|orth|" [WORDA b] [ENDOPT] = <choice><corr></><sic>[WORDA b]</></>
+	>: [BEGOPT] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr></><sic>[WORDAVEST b]</></>
 	>: [BEGOPT] "|orth|" [items b] [ENDOPT] = <choice><corr></><sic>[items b]</></>
 
 	//---milestone---
@@ -288,6 +290,7 @@ item
 		
 	//---undefined_parallel---
 	//  _abc_  - underlines
+	// added @ 7/16 to make difference between beginning and ending symbol or xsugar would not parse Leiden+ correctly
     : "_@" [WORDSSIC a] "@_" = <supplied evidence="parallel" reason="illegible">[WORDSSIC a]</>
 	: "_@" [WORDSSIC a] "?" "@_" = <supplied cert="low" evidence="parallel" reason="illegible">[WORDSSIC a]</>
 	>: "_@" [items a] "@_" = <supplied evidence="parallel" reason="illegible">[items a]</>

@@ -25,24 +25,34 @@ LEADCA = "ca."[ ]*
 //																								   ¨΄`῾᾿´\^῾᾿
 // WORD breaks at space and does not allow DOT
 WORD = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+
 // WORDVEST breaks at space and does not allow DOT or vestig
 WORDVEST = ([^ \/\\\n\r\t\[\]<>vestig_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
 WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+
 //WORDAVEST does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation - added 'v' to keep vestig out
 WORDAVEST = ([^ \/\\\n\r\t\[\]<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+
 //WORDS allows space (therefore multiple words) and DOT
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+
 //WORDSNONUM allows space (therefore multiple words) and DOT - not numbers 0-9
 WORDSNONUM = ([^\/\\\n\r\t\[\]<>0-9_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+
 //WORDSF allows space (therefore multiple words) and DOT - allow ?, \, , $, +, : for foreign language
 WORDSF = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯≡\u0323]+) (MAX)
+
 //WORDSBL allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
 WORDSBL = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¯≡\u0323]+) (MAX)
+
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
 WORDSLR = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+
 // wordsnum allow '/' for fractional numbers - added DOT to break .gap on 7/7 see if break other things
 WORDSNUM = ([^\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for suprelinear
 WORDSSIC = ([^\/\\\n\r\t\[\]<>vestig_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
@@ -588,11 +598,11 @@ inside_brackets
 	
 	//---test_lost_words---
 	// [ abc def ] lost words
-	: [WORDS w] = <supplied reason="lost">[WORDS w]</>
+	: [WORDSSIC w] = <supplied reason="lost">[WORDSSIC w]</>
 	
 	//---test_lost_uncertain---
 	// [ abc? ] uncertain lost
-	>: [WORDS w] " ?" = <supplied cert="low" reason="lost">[WORDS w]</>
+	>: [WORDSSIC w] " ?" = <supplied cert="low" reason="lost">[WORDSSIC w]</>
 	>: [items w] " ?" = <supplied cert="low" reason="lost">[items w]</>
 	
 	//---test_lost--- - placed at the end so all other possibilities of inside brackets are checked before looping through 'items' production

@@ -210,13 +210,13 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_evidence_parallel
-      assert_equal_fragment_transform '_@ς ἐπιστολῆς Θεοδώρου@_', '<supplied evidence="parallel" reason="illegible">ς ἐπιστολῆς Θεοδώρου</supplied>'
-	  assert_equal_fragment_transform '_@ωτερίου [τοῦ] λαμπροτά@_', '<supplied evidence="parallel" reason="illegible">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
+      assert_equal_fragment_transform '_@ς ἐπιστολῆς Θεοδώρου@_', '<supplied evidence="parallel" reason="undefined">ς ἐπιστολῆς Θεοδώρου</supplied>'
+	  assert_equal_fragment_transform '_@ωτερίου [τοῦ] λαμπροτά@_', '<supplied evidence="parallel" reason="undefined">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
     end
     
     def test_evidence_parallel_cert_low
-      assert_equal_fragment_transform '_@ς ἐπιστολῆς Θεοδώρου?@_', '<supplied cert="low" evidence="parallel" reason="illegible">ς ἐπιστολῆς Θεοδώρου</supplied>'
-	  assert_equal_fragment_transform '_@ωτερίου [τοῦ] λαμπροτά?@_', '<supplied cert="low" evidence="parallel" reason="illegible">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
+      assert_equal_fragment_transform '_@ς ἐπιστολῆς Θεοδώρου?@_', '<supplied cert="low" evidence="parallel" reason="undefined">ς ἐπιστολῆς Θεοδώρου</supplied>'
+	  assert_equal_fragment_transform '_@ωτερίου [τοῦ] λαμπροτά?@_', '<supplied cert="low" evidence="parallel" reason="undefined">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/erroneousinclusion.html

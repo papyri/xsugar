@@ -294,10 +294,11 @@ item
 	//---undefined_parallel---
 	//  _abc_  - underlines
 	// added @ 7/16 to make difference between beginning and ending symbol or xsugar would not parse Leiden+ correctly
-    : "_@" [WORDSSIC a] "@_" = <supplied evidence="parallel" reason="illegible">[WORDSSIC a]</>
-	: "_@" [WORDSSIC a] "?" "@_" = <supplied cert="low" evidence="parallel" reason="illegible">[WORDSSIC a]</>
-	>: "_@" [items a] "@_" = <supplied evidence="parallel" reason="illegible">[items a]</>
-	>: "_@" [items a] "?" "@_" = <supplied cert="low" evidence="parallel" reason="illegible">[items a]</>
+	// 7/20 changed illegible to undefined per gabby change to data
+    : "_@" [WORDSSIC a] "@_" = <supplied evidence="parallel" reason="undefined">[WORDSSIC a]</>
+	: "_@" [WORDSSIC a] "?" "@_" = <supplied cert="low" evidence="parallel" reason="undefined">[WORDSSIC a]</>
+	>: "_@" [items a] "@_" = <supplied evidence="parallel" reason="undefined">[items a]</>
+	>: "_@" [items a] "?" "@_" = <supplied cert="low" evidence="parallel" reason="undefined">[items a]</>
 		
 	//---lost_parallel---
 	//  _[abc]_  - underlines

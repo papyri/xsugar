@@ -33,6 +33,8 @@ WORDA = ([^ \/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u032
 WORDAVEST = ([^ \/\\\n\r\t\[\]<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 //WORDS allows space (therefore multiple words) and DOT
 WORDS = ([^\/\\\n\r\t\[\]<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+//WORDSNONUM allows space (therefore multiple words) and DOT - not numbers 0-9
+WORDSNONUM = ([^\/\\\n\r\t\[\]<>0-9_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 //WORDSF allows space (therefore multiple words) and DOT - allow ?, \, , $, +, : for foreign language
 WORDSF = ([^\/\\\n\r\t\[\]<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯≡\u0323]+) (MAX)
 //WORDSBL allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
@@ -86,6 +88,7 @@ items : [item i] [items more] = [item i] [items more]
 		>: [item p] = [item p]	
 
 linenumber : [LINENUM n] "." " " = <lb n=[LINENUM n]/>
+				 >: [LINENUM n] "." "div " = <lb n=[LINENUM n] type="worddiv"/>
 
 newline : [NL n] = [NL n]
 
@@ -358,9 +361,9 @@ item
 //line below added for the '(BL 1.24)' at the end of the 'lem resp=' attribute value - parens cannot be a valid value in WORD or WORDS
 	>: [BEGOPT] [items a] "|ed:" [WORDSBL c] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL c]>[items a]</><rdg>[items b]</></>
 //this set of app editorial does not have 'lem resp=' attribute
-	: [BEGOPT] [WORDS a] "|ed:|" [WORD b] [ENDOPT] = <app type="editorial"><lem>[WORDS a]</><rdg>[WORD b]</></>
+	: [BEGOPT] [WORDSNONUM a] "|ed:|" [WORD b] [ENDOPT] = <app type="editorial"><lem>[WORDSNONUM a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [items a] "|ed:|" [WORD b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[WORD b]</></>
-	>: [BEGOPT] [WORDS a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[WORDS a]</><rdg>[items b]</></>
+	>: [BEGOPT] [WORDSNONUM a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[WORDSNONUM a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]</></>
 //line below added for empty tag rdg on editorial without resp
 	>: [BEGOPT] [items a] "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg></></>

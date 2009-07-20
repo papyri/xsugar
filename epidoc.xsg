@@ -312,7 +312,8 @@ item
 		
 	//---lost_parallel---
 	//  _[abc]_  - underlines
-    : "_[" [WORDS a] "]_" = <supplied evidence="parallel" reason="lost">[WORDS a]</>
+    : "_[" [WORDSSIC a] "]_" = <supplied evidence="parallel" reason="lost">[WORDSSIC a]</>
+	>: "_[" [items a] "]_" = <supplied evidence="parallel" reason="lost">[items a]</>
 //70
 	//---number or fraction_no_symbol---
 	//  #a#1/2# a = character representation and then the fraction it equals between next #'s
@@ -588,7 +589,10 @@ inside_brackets
 	//---test_lost_space_unknown
 	//[vac.?]
 	:[ANYMULT w] "vac.?" = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/></>
+	:"vac.?" [ANYMULT w] = <supplied reason="lost"><space extent="unknown" unit="character"/>[ANYMULT w]</>
 	:"vac.?" = <supplied reason="lost"><space extent="unknown" unit="character"/></>
+	:[ANYMULT w] "vac.?" [ANYMULT w] = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
+	
 	
 	//---test_lost_paragraphos
 	//[----]

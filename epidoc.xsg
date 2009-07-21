@@ -168,6 +168,9 @@ item
 	: [ANYLETTER a] "( ᾿)" = <hi rend="lenis">[ANYLETTER a]</>
 	>: [ANYLETTER a] [UNDERDOT] "( ᾿)" = <hi rend="lenis"><unclear>[ANYLETTER a]</></>
 
+//wrote for specific reversability case in psi.6.703 7 /21 - will see if it fixes anything else                <expan>Ἠσ<unclear>α</unclear><hi rend='diaeresis'><unclear>ΐ</unclear></hi><unclear>ο</unclear><ex>υ</ex></expan>
+	: [BEGEXP] [ANYMULT b] [ANYLETTER e] [UNDERDOT] [ANYLETTER c] [UNDERDOT] "(¨)" [ANYLETTER a] [UNDERDOT]  "(" [ANYLETTER d] ")" [ENDEXP] = <expan>[ANYMULT b]<unclear>[ANYLETTER e]</><hi rend="diaeresis"><unclear>[ANYLETTER c]</></><unclear>[ANYLETTER a]</><ex>[ANYLETTER d]</></>
+
 //wrote for specific reversability case in p.cair.masp.3.67325 - will see if it fixes anything else
 	: [BEGEXP] [WORD d] " " [ANYLETTER c] "(¨)" [WORD a] "(" [WORD b] ")" [ENDEXP] = <expan>[WORD d]<hi rend="diaeresis">[ANYLETTER c]</>[WORD a]<ex>[WORD b]</></>
 //wrote for specific reversability case in p.ross.georg.3.49 - will see if it fixes anything else
@@ -178,6 +181,8 @@ item
 //re-wrote to look for specific case in bgu.1 - makes run normal again - will push up and see how much breaks - also moved lower in group here
 // removed [UNDERDOT] after ANYLETTER on 7/21 - not sure why it was there - making test case not work right and moved up here
 	: [BEGEXP] [ANYLETTER c] "(¨)" [WORD a] "(" [WORD b] ")" [ENDEXP] = <expan><hi rend="diaeresis">[ANYLETTER c]</> [WORD a]<ex>[WORD b]</></>
+//wrote for specific reversability case in p.ness.3.55 7 /21 - will see if it fixes anything else 
+	: [BEGEXP] [ANYLETTER c] [UNDERDOT] "(¨)" [items a] "(" [WORD d] ")" [ENDEXP] = <expan><hi rend="diaeresis"><unclear>[ANYLETTER c]</></>[items a]<ex>[WORD d]</></>
 
 	: [BEGEXP] "(" [WORDSNUM a] ")" [ENDEXP] = <expan><ex>[WORDSNUM a]</></>
 	>: [BEGEXP] "(" [items a] ")" [ENDEXP] = <expan><ex>[items a]</></>

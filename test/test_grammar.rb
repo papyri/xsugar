@@ -73,7 +73,7 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/lostcertain.html
     def test_lost_dot_gap
       # Some number of missing characters
-      assert_equal_fragment_transform '[.c.13]', '<gap extent="c.13" reason="lost" unit="character"/>'
+      assert_equal_fragment_transform '[c.13]', '<gap extent="c.13" reason="lost" unit="character"/>'
 	  assert_equal_fragment_transform '[.1]', '<gap extent="1" reason="lost" unit="character"/>'
       assert_equal_fragment_transform '[.2]', '<gap extent="2" reason="lost" unit="character"/>'
       assert_equal_fragment_transform '[.3]', '<gap extent="3" reason="lost" unit="character"/>'
@@ -100,6 +100,7 @@ if(RUBY_PLATFORM == 'java')
       (4..100).each do |n|
         assert_equal_fragment_transform ".#{n}", "<gap extent=\"#{n}\" reason=\"illegible\" unit=\"character\"/>"
       end
+	  assert_equal_fragment_transform '[.c.9]', '<supplied reason="lost"><gap extent="c.9" reason="illegible" unit="character"/></supplied>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/vestiges.html

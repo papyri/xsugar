@@ -63,7 +63,8 @@ NUM = [0-9]+
 LINENUM = [0-9]+[/\,a-zA-Z]*[ms0-9]*
 GAPEXTNUM = [c]?[.]?[0-9]+
 ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]
-ANYMULT = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+
+//added 0-9 to eliminate numbers 7/22 to fix reversability on some sup lost
+ANYMULT = [^\/\\\t\[\]\^<>0-9_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+
 
 //the third part of HANDSHIFT reg exp is same as ANYLETTER except does not allow space
 HANDSHIFT = m{1}[0-9]+[^ \/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]?

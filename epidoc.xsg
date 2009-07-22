@@ -1,7 +1,8 @@
 NL = [\r\n]+
 SP = [ ]
 SPO = [ ]+ (MAX)
-ABBR = "(  )"
+SPO2 = [ ]*
+ABBR = "(  )"+
 
 BEGOPT = "<:"
 ENDOPT = ":>"
@@ -456,11 +457,12 @@ item
 flat 
 	//---test_expand low cert---
 	// (?)
-	: [BEGEXP] "(" "  ?" ")" [ENDEXP] = <expan><ex cert="low"></></>
+//	: [BEGEXP] "(" "  ?" ")" [ENDEXP] = <expan><ex cert="low"></></>
+	:  [BEGEXP] "(" [SPO2 w] "?" ")" [ENDEXP]= <expan><ex cert="low">[SPO2 w]</></>
 	
 	//---test_expand low cert---
 	// (abc?)
-	:  [BEGEXP] "(" [WORDS w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORDS w]</></>
+	>:  [BEGEXP] "(" [WORDS w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORDS w]</></>
 //changed line below from words to word for a white space test 
 	>: [BEGEXP] [WORD a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORDS b]</></>
 	>: [BEGEXP] [items a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS b]</></>

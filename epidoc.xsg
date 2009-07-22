@@ -458,6 +458,7 @@ flat
 	//---test_expand low cert---
 	// (?)
 //	: [BEGEXP] "(" "  ?" ")" [ENDEXP] = <expan><ex cert="low"></></>
+	: [BEGEXP] "()" [ENDEXP] = <expan><ex></></>
 	:  [BEGEXP] "(" [SPO2 w] "?" ")" [ENDEXP]= <expan><ex cert="low">[SPO2 w]</></>
 	
 	//---test_expand low cert---

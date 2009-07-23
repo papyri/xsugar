@@ -293,39 +293,39 @@ if(RUBY_PLATFORM == 'java')
     def test_uncertain_diacritical_diaeresis
       # Google Doc has U+00AD = soft hyphen before U+00A8 = diaeresis
       # RB notes: I have dropped the soft hyphen
-      assert_equal_fragment_transform 'a(¨)bc', '<hi rend="diaeresis">a</hi>bc'
+      assert_equal_fragment_transform ' a(¨)bc', '<hi rend="diaeresis">a</hi>bc'
       # test with precombined unicode just to be sure
-      assert_equal_fragment_transform 'Ἰ(¨)ουστινιανοῦ', '<hi rend="diaeresis">Ἰ</hi>ουστινιανοῦ'
+      assert_equal_fragment_transform ' Ἰ(¨)ουστινιανοῦ', '<hi rend="diaeresis">Ἰ</hi>ουστινιανοῦ'
 	  # test with unclears - ex. p.mert.3.125.xml
-	  assert_equal_fragment_transform 'ạ(¨)bc', '<hi rend="diaeresis"><unclear>a</unclear></hi>bc'
+	  assert_equal_fragment_transform ' ạ(¨)bc', '<hi rend="diaeresis"><unclear>a</unclear></hi>bc'
     end
   
     def test_uncertain_diacritical_grave
-      assert_equal_fragment_transform 'abcde(`)f', 'abcd<hi rend="grave">e</hi>f'
+      assert_equal_fragment_transform 'abcd e(`)f', 'abcd<hi rend="grave">e</hi>f'
     end
   
     def test_uncertain_diacritical_oxia
-      assert_equal_fragment_transform 'abcde(΄)f', 'abcd<hi rend="oxia">e</hi>f'
+      assert_equal_fragment_transform 'abcd e(΄)f', 'abcd<hi rend="oxia">e</hi>f'
     end
   
 	def test_uncertain_diacritical_spiritus_asper 
 	#can also be known as greek dasia when combined with space per wikipeidia
-      assert_equal_fragment_transform 'a( ῾)bc', '<hi rend="asper">a</hi>bc'
+      assert_equal_fragment_transform ' a( ῾)bc', '<hi rend="asper">a</hi>bc'
     end
         
 	def test_uncertain_diacritical_acute
-      assert_equal_fragment_transform 'a(´)bc', '<hi rend="acute">a</hi>bc'
+      assert_equal_fragment_transform ' a(´)bc', '<hi rend="acute">a</hi>bc'
     end
         
 		def test_uncertain_diacritical_circumflex
-      assert_equal_fragment_transform 'a(^)bc', '<hi rend="circumflex">a</hi>bc'
-	  assert_equal_fragment_transform 'ạ(^)bc', '<hi rend="circumflex"><unclear>a</unclear></hi>bc'
+      assert_equal_fragment_transform ' a(^)bc', '<hi rend="circumflex">a</hi>bc'
+	  assert_equal_fragment_transform ' ạ(^)bc', '<hi rend="circumflex"><unclear>a</unclear></hi>bc'
     end
 	
 	def test_uncertain_diacritical_spiritus_lenis 
 	#can also be known as greek psili when combined with space per wikipeidia
-      assert_equal_fragment_transform 'a( ᾿)bc', '<hi rend="lenis">a</hi>bc'
-	  assert_equal_fragment_transform 'ạ( ᾿)bc', '<hi rend="lenis"><unclear>a</unclear></hi>bc'
+      assert_equal_fragment_transform ' a( ᾿)bc', '<hi rend="lenis">a</hi>bc'
+	  assert_equal_fragment_transform ' ạ( ᾿)bc', '<hi rend="lenis"><unclear>a</unclear></hi>bc'
     end
         
     def test_num_simple

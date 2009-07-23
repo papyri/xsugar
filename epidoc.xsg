@@ -141,34 +141,34 @@ item
 
 //---test_uncertain_diacritical_diaeresis---
 	// (¨)
-	: [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
-	>: [ANYLETTER a] [UNDERDOT] "(¨)" = <hi rend="diaeresis"><unclear>[ANYLETTER a]</></>
+	: " " [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
+	>: " " [ANYLETTER a] [UNDERDOT] "(¨)" = <hi rend="diaeresis"><unclear>[ANYLETTER a]</></>
 	
 	//---test_uncertain_diacritical_grave---
 	// (`) u+1fef
-	: [ANYLETTER a] "(`)" = <hi rend="grave">[ANYLETTER a]</>	
+	: " " [ANYLETTER a] "(`)" = <hi rend="grave">[ANYLETTER a]</>	
 	
 	//---test_uncertain_diacritical_oxia---
 	// (΄)
-	: [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
+	: " " [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
 //10	
 	//---test_uncertain_diacritical_spiritus_asper--- can also be known as greek dasia when combined with space per wikipeidia
 	// (῾)
-	: [ANYLETTER a] "( ῾)" = <hi rend="asper">[ANYLETTER a]</>
+	: " " [ANYLETTER a] "( ῾)" = <hi rend="asper">[ANYLETTER a]</>
 	
 	//---test_uncertain_diacritical_acute---
 	// (´)
-	: [ANYLETTER a] "(´)" = <hi rend="acute">[ANYLETTER a]</>
+	: " " [ANYLETTER a] "(´)" = <hi rend="acute">[ANYLETTER a]</>
 	
 	//---test_uncertain_diacritical_circumflex---
 	// (^)
-	: [ANYLETTER a] "(^)" = <hi rend="circumflex">[ANYLETTER a]</>
-	>: [ANYLETTER a] [UNDERDOT] "(^)" = <hi rend="circumflex"><unclear>[ANYLETTER a]</></>
+	: " " [ANYLETTER a] "(^)" = <hi rend="circumflex">[ANYLETTER a]</>
+	>: " " [ANYLETTER a] [UNDERDOT] "(^)" = <hi rend="circumflex"><unclear>[ANYLETTER a]</></>
 	
 	//---test_uncertain_diacritical_spiritus_lenis--- can also be known as greek psili when combined with space per wikipeidia
 	// (᾿)
-	: [ANYLETTER a] "( ᾿)" = <hi rend="lenis">[ANYLETTER a]</>
-	>: [ANYLETTER a] [UNDERDOT] "( ᾿)" = <hi rend="lenis"><unclear>[ANYLETTER a]</></>
+	: " " [ANYLETTER a] "( ᾿)" = <hi rend="lenis">[ANYLETTER a]</>
+	>: " " [ANYLETTER a] [UNDERDOT] "( ᾿)" = <hi rend="lenis"><unclear>[ANYLETTER a]</></>
 
 //wrote for specific reversability case in psi.6.703 7 /21 - will see if it fixes anything else                <expan>Ἠσ<unclear>α</unclear><hi rend='diaeresis'><unclear>ΐ</unclear></hi><unclear>ο</unclear><ex>υ</ex></expan>
 	: [BEGEXP] [ANYMULT b] [ANYLETTER e] [UNDERDOT] [ANYLETTER c] [UNDERDOT] "(¨)" [ANYLETTER a] [UNDERDOT]  "(" [ANYLETTER d] ")" [ENDEXP] = <expan>[ANYMULT b]<unclear>[ANYLETTER e]</><hi rend="diaeresis"><unclear>[ANYLETTER c]</></><unclear>[ANYLETTER a]</><ex>[ANYLETTER d]</></>

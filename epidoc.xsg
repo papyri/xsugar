@@ -256,6 +256,7 @@ item
 	//---test_lang_gap---
 	//(Lang: Demotic 2 lines)
 	: "(Lang: " [LANGLIST l] " " [GAPEXTNUM v] " lines)" = <gap desc=[LANGLIST l] extent=[GAPEXTNUM v] reason="ellipsis" unit="line"></>
+	>: "(Lang: " [LANGLIST l] " ? lines)" = <gap desc=[LANGLIST l] extent="unknown" reason="ellipsis" unit="line"></>
 	
 	//---test_lines_not_transcribed---
 	//"lines not transcribed"

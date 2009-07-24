@@ -231,7 +231,7 @@ item
 	//  '----' or  '--------'
 	: "--------" = <milestone rend="horizontal-rule" unit="undefined"></>
 	: "----" = <milestone rend="paragraphos" unit="undefined"></>
-	: "###" = <milestone rend="box"></>
+	: "###" = <milestone rend="box" unit="undefined"></>
 	
 	//---test_illegible_dot_gap---
 	// .1, .2, .3

@@ -421,7 +421,7 @@ if(RUBY_PLATFORM == 'java')
     def test_milestone
       assert_equal_fragment_transform '----', '<milestone rend="paragraphos" unit="undefined"/>'
       assert_equal_fragment_transform '--------', '<milestone rend="horizontal-rule" unit="undefined"/>'
-	  assert_equal_fragment_transform '###', '<milestone rend="box"/>'
+	  assert_equal_fragment_transform '###', '<milestone rend="box" unit="undefined"/>'
     end
     
     def test_figure

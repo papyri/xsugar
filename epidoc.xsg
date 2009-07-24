@@ -337,6 +337,7 @@ item
     : [BEGNUM] [WORDA o] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[WORDA o]</>
 	: [BEGNUM] [WORDA o] [morenum m] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[WORDA o] [morenum m]</>
 	>: [BEGNUM] [items o] "=" [SYMBOLNUM s] [ENDNUM] = <num value=[SYMBOLNUM s]>[items o]</>
+	>: [BEGNUM] [items o] "=" [ENDNUM] = <num>[items o]</>
 		
 	//---subst---
 	//  <:a|subst|b|:> 

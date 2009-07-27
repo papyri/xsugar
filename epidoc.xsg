@@ -296,8 +296,8 @@ item
 //60
 		//---add_place_marginal---
 	//   \abc/
-    : "<|" [WORD a] "|>" = <add place="marginal" rend="sling">[WORD a]</>
-	>: "<|" [items a] "|>" = <add place="marginal" rend="sling">[items a]</>
+    : "<|" [WORD a] "|>" = <add place="margin" rend="sling">[WORD a]</>
+	>: "<|" [items a] "|>" = <add place="margin" rend="sling">[items a]</>
 	
 	//---grave---
 	//   \abc/

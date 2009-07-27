@@ -393,8 +393,8 @@ if(RUBY_PLATFORM == 'java')
     end
 	
 	def test_add_place_marginal
-      assert_equal_fragment_transform '<|ν|>', '<add place="marginal" rend="sling">ν</add>'
-      assert_equal_fragment_transform '<|.1|>', '<add place="marginal" rend="sling"><gap extent="1" reason="illegible" unit="character"/></add>'
+      assert_equal_fragment_transform '<|ν|>', '<add place="margin" rend="sling">ν</add>'
+      assert_equal_fragment_transform '<|.1|>', '<add place="margin" rend="sling"><gap extent="1" reason="illegible" unit="character"/></add>'
     end
 	
     def test_space_unknown

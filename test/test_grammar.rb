@@ -392,9 +392,14 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '</Πωλίων ἀπάτωρ\>', '<add place="infralinear">Πωλίων ἀπάτωρ</add>'
     end
 	
-	def test_add_place_marginal
+	def test_add_place_margin_sling
       assert_equal_fragment_transform '<|ν|>', '<add place="margin" rend="sling">ν</add>'
       assert_equal_fragment_transform '<|.1|>', '<add place="margin" rend="sling"><gap extent="1" reason="illegible" unit="character"/></add>'
+    end
+	
+	def test_add_place_margin_underline
+      assert_equal_fragment_transform '<_ν_>', '<add place="margin" rend="underline">ν</add>'
+      assert_equal_fragment_transform '<_.1_>', '<add place="margin" rend="underline"><gap extent="1" reason="illegible" unit="character"/></add>'
     end
 	
     def test_space_unknown

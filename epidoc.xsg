@@ -294,10 +294,15 @@ item
     : "<\\" [WORDS a] "\/>" = <add place="intralinear">[WORDS a]</>
 	>: "<\\" [items a] "\/>" = <add place="intralinear">[items a]</>
 //60
-		//---add_place_marginal---
+		//---add_place_margin_sling---
 	//   \abc/
     : "<|" [WORD a] "|>" = <add place="margin" rend="sling">[WORD a]</>
 	>: "<|" [items a] "|>" = <add place="margin" rend="sling">[items a]</>
+	
+			//---add_place_margin_underline---
+	//   \abc/
+    : "<_" [WORD a] "_>" = <add place="margin" rend="underline">[WORD a]</>
+	>: "<_" [items a] "_>" = <add place="margin" rend="underline">[items a]</>
 	
 	//---grave---
 	//   \abc/

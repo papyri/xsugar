@@ -293,6 +293,11 @@ item
 	//   \abc/
     : "<\\" [WORDS a] "\/>" = <add place="intralinear">[WORDS a]</>
 	>: "<\\" [items a] "\/>" = <add place="intralinear">[items a]</>
+	
+		//---add_place_interlinear---
+	//   \abc/
+    : "<^" [WORDSSIC a] "^>" = <add place="interlinear">[WORDSSIC a]</>
+	>: "<^" [items a] "^>" = <add place="interlinear">[items a]</>
 //60
 		//---add_place_margin_sling---
 	//   \abc/

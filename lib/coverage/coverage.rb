@@ -54,6 +54,7 @@ module RXSugar
 
         xml_files_bar = ProgressBar.new("files", xml_files.length)
 
+
         xml_files.each do |xml_file|
           xml_content = IO.readlines(xml_file).to_s
           xml_file = xml_file.sub(/#{data_path}\/?/,'')
@@ -72,9 +73,11 @@ module RXSugar
           rescue
             xml_files_failing << xml_file
           end
-
+          # pull xml again into new variable including div edition to get the pulling of children tags to work in get_non_lb_element_children
+          divedition = get_div_edition(xml_content)
           # do each fragment individually
-          ddbcov.get_non_lb_element_children(abs).each do |child|
+          #use new divedition variable rather than abs used previously
+          ddbcov.get_non_lb_element_children(divedition).each do |child|
             xml_fragment_content = child.to_s.tr("'",'"')
             fragment_reference = XMLFragmentReference.new(xml_file, child)
             begin
@@ -99,11 +102,13 @@ module RXSugar
         xml_files_bar.finish
 
         puts "Failing:           #{xml_files_failing.length} / #{xml_files.length}"
+
         puts "Non-empty passing: #{xml_files_passing.length} / #{xml_files.length}"
         error_frequencies.pretty_print
 
         puts "\nPassing XML files with content:\n" + 
           xml_files_passing.join("\n")
+
         
         if HTML_OUTPUT != ''
           ddb_elements = error_frequencies.to_tree

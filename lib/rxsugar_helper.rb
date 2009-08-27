@@ -63,7 +63,8 @@ module RXSugar
     end
     
     def get_non_lb_element_children(rexml)
-      REXML::XPath.match(rexml, '*[not(self::lb)]')
+      #REXML::XPath.match(rexml, '*[not(self::lb)]')
+      REXML::XPath.match(rexml, './div/ab/*[not(self::lb)]|./ab/*[not(self::lb)]')
     end
   end
 end

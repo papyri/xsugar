@@ -9,12 +9,16 @@ module GrammarAssertions
   
   def ab(xml)
   # added wrapab tags to match new grammar for multiple ab sections
-    return "<wrapab><ab>#{xml}</ab></wrapab>"
+  # changed wrapab to div edition tags with div textpart for new requirements of processing tags outside ab section
+    #return "<wrapab><ab>#{xml}</ab></wrapab>"
+	#return "<div lang=\"grc\" type=\"edition\"><div n=\"Fr1\" type=\"textpart\"><ab>#{xml}</ab></div></div>" worked
+	return "<wrapab><div n=\"Fr1\" type=\"textpart\"><ab>#{xml}</ab></div></wrapab>"
   end
   
   def lab(notxml)
   # added to wrap in leiden syntax to match new grammar for multiple ab sections
-    return "<=#{notxml}=>"
+  # added <D=.Fr1 .... =D> for new div textpart
+    return "<D=.Fr1 <=#{notxml}=>=D>"
   end
 
   def lb(xmlline)

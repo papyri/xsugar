@@ -23,7 +23,13 @@ module RXSugar
       end
       
       def get_abs_from_edition_div(xml)
-        REXML::XPath.match(REXML::Document.new(xml), '/TEI.2/text/body/div[@type = "edition"]//ab')
+        #REXML::XPath.match(REXML::Document.new(xml), '/TEI.2/text/body/div[@type = "edition"]//ab')
+        REXML::XPath.match(REXML::Document.new(xml), '/TEI.2/text/body/div[@type = "edition"]/*')
+      end
+      
+      def get_div_edition(xml)
+        # new to pull from div edition on to get the get_non_lb_element_children xpath to work
+        REXML::XPath.match(REXML::Document.new(xml), '/TEI.2/text/body/div[@type = "edition"]')
       end
       
       def parse_exception_pretty_print(text, position)

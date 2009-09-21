@@ -13,7 +13,7 @@ module GrammarAssertions
   # kept wrapab div textpart for new requirements of processing tags outside ab section to get xpath stuff to work
     #return "<wrapab><ab>#{xml}</ab></wrapab>"
 	#return "<div lang=\"grc\" type=\"edition\"><div n=\"Fr1\" type=\"textpart\"><ab>#{xml}</ab></div></div>" worked
-	return "<wrapab><div n=\"Fr1\" type=\"textpart\"><ab>#{xml}</ab></div></wrapab>"
+	return "<wrapab xmlns:xml=\"http://www.w3.org/XML/1998/namespace\"><div n=\"Fr1\" type=\"textpart\"><ab>#{xml}</ab></div></wrapab>"
   end
   
   def lab(notxml)

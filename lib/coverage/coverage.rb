@@ -101,11 +101,6 @@ module RXSugar
         xml_files_bar.finish
 
         puts "Failing:           #{xml_files_failing.length} / #{xml_files.length}"
-		
-		  puts "\nFailing XML files with content:\n" + 
-          xml_files_failing.join("\n")
-
-
         puts "Non-empty passing: #{xml_files_passing.length} / #{xml_files.length}"
         error_frequencies.pretty_print
 

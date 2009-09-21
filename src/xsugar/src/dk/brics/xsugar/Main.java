@@ -1,6 +1,7 @@
 package dk.brics.xsugar;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 
@@ -27,49 +28,55 @@ import dk.brics.xsugar.xml.*;
  * Command-line interface.
  */
 public class Main {
-	
-	private static final String VERSION = "1.2-1"; // should match build.xml
-	
+
+	private static final String VERSION = "1.2-2"; // should match build.xml
+
 	private static PrintWriter out = new PrintWriter(System.out, true);
-	
+	private static PrintWriter err_out = out;
+	private static PrintWriter warn_out = out;
+	private static PrintStream warn_out_stream = System.out;
+
 	private Main() {}
-	
+
 	private static void optionError(String msg) {
-		out.println("xsugar v" + VERSION + "\n" +
-					"\n" +
-					"*** " + msg + "\n" +
-					"\n" +
-					"Usage:\n" +
-					"  Translate from non-XML to XML:\n" +
-					"    xsugar [Options...] <stylesheet file> <input file>\n" +
-					"  Translate from XML to non-XML:\n" +
-					"    xsugar -r [Options...] <stylesheet file> <input file>\n" +
-					"  Analyze XML validity:\n" +
-					"    xsugar -a [Options...] <stylesheet file> <XML Schema (.xsd), DTD (.dtd), or Restricted RELAX NG (.rng) file>\n" +
-					"  Analyze reversibility:\n" +
-					"    xsugar -b [Options...] <stylesheet file>\n" +
-					"\n" +
-					"Options:\n" +
-					" -v                               verbose, print progress information\n" +
-					" -es <encoding>                   character encoding of stylesheet file\n" +
-					" -ei <encoding>                   character encoding of input file\n" +
-					" -sr {<namespaceURI>}<localname>  name of root element in schema\n" +
-					" -bu <unfold level>               grammar unfolding level (for reversibility analysis)\n" +
-					" -bl <left parentheses>           left parentheses symbols for grammar unfolding\n" +
-					" -br <right parentheses>          right parentheses symbols for grammar unfolding\n" +
-					" -bz                              tokenize grammar (for reversibility analysis)\n" +
-					"\n" +
-					"Files may be given as directory paths or as URLs.\n" +
-					"\n" +
-					"More info: http://www.brics.dk/xsugar/\n" +
-					"Copyright (C) 2004-2008 Anders Moeller and Claus Brabrand");
+		err_out.println("xsugar v" + VERSION + "\n" +
+				"\n" +
+				"*** " + msg + "\n" +
+				"\n" +
+				"Usage:\n" +
+				"  Translate from non-XML to XML:\n" +
+				"    xsugar [Options...] <stylesheet file> <input file>\n" +
+				"  Translate from XML to non-XML:\n" +
+				"    xsugar -r [Options...] <stylesheet file> <input file>\n" +
+				"  Analyze XML validity:\n" +
+				"    xsugar -a [Options...] <stylesheet file> <XML Schema (.xsd), DTD (.dtd), or Restricted RELAX NG (.rng) file>\n" +
+				"  Analyze reversibility:\n" +
+				"    xsugar -b [Options...] <stylesheet file>\n" +
+				"\n" +
+				"Options:\n" +
+				" -v                               verbose, print progress information\n" +
+				" -q                               quiet, do not print warnings\n" +
+				" -mo                              print error and warning messages to stdout (default)\n" +
+				" -me                              print error and warning messages to stderr\n" +
+				" -es <encoding>                   character encoding of stylesheet file\n" +
+				" -ei <encoding>                   character encoding of input file\n" +
+				" -sr {<namespaceURI>}<localname>  name of root element in schema\n" +
+				" -bu <unfold level>               grammar unfolding level (for reversibility analysis)\n" +
+				" -bl <left parentheses>           left parentheses symbols for grammar unfolding\n" +
+				" -br <right parentheses>          right parentheses symbols for grammar unfolding\n" +
+				" -bz                              tokenize grammar (for reversibility analysis)\n" +
+				"\n" +
+				"Files may be given as directory paths or as URLs.\n" +
+				"\n" +
+				"More info: http://www.brics.dk/xsugar/\n" +
+		"Copyright (C) 2004-2008 Anders Moeller and Claus Brabrand");
 		System.exit(1);
 	}
-	
+
 	private static void error(String err_msg) {
-		out.println("*** " + err_msg);
+		err_out.println("*** " + err_msg);
 	}
-	
+
 	private static String xsugar(String xsg_file, String xsg_encoding, String input, String input_file, String schema_file, String schema_root, 
 			boolean verbose, boolean reverse, boolean validity_analysis, boolean reversibility_analysis, boolean debug,
 			int left_unfold_level, String left_unfold_left, String left_unfold_right, boolean tokenize) 
@@ -84,7 +91,7 @@ public class Main {
 		Stylesheet stylesheet = parser.parse(xsg, xsg_file, xsg_encoding);
 		if (debug) {
 			out.println("Stylesheet:");
-			new StylesheetPrinter(null).print(stylesheet);
+			new StylesheetPrinter(out).print(stylesheet);
 		}
 		if (verbose)
 			out.println("- Checking stylesheet");
@@ -97,20 +104,20 @@ public class Main {
 		Grammar x_grammar = grammar_builder.getXMLGrammar();
 		GrammarChecker checker = new GrammarChecker();
 		int w;
-		w = checker.check(l_grammar, out);
+		w = checker.check(l_grammar, warn_out);
 		if (w > 0) 
-			out.println(w + " warning" + (w > 1 ? "s" : "") + " produced by checking left-hand-side grammar");
-		w = checker.check(x_grammar, out);
+			warn_out.println(w + " warning" + (w > 1 ? "s" : "") + " produced by checking left-hand-side grammar");
+		w = checker.check(x_grammar, warn_out);
 		if (w > 0) 
-			out.println(w + " warning" + (w > 1 ? "s" : "") + " produced by checking right-hand-side grammar");
+			warn_out.println(w + " warning" + (w > 1 ? "s" : "") + " produced by checking right-hand-side grammar");
 		XMLGraph xg = null;
 		if (validity_analysis) { // construct XML graph (must be done before stylesheet normalization)
 			if (verbose)
 				out.println("- Constructing XML graph");
 			xg = new XMLGraphConstructor().construct(stylesheet);
 			xg.simplify();
-			if (!xg.check(System.out))
-				out.println("Malformed XML graph?!?");
+			if (!xg.check(warn_out_stream))
+				warn_out.println("Malformed XML graph?!?");
 			//new dk.brics.xmlgraph.converter.XMLGraph2Dot(new java.io.PrintStream(new java.io.FileOutputStream("/tmp/t.dot"))).print(xg, false);
 		}
 		GrammarBuilder normalizing_grammar_builder = new GrammarBuilder(true);
@@ -131,19 +138,19 @@ public class Main {
 		if (validity_analysis) {
 			if (verbose)
 				out.println("- Analyzing validity");
-			if (new XMLValidator(schema_file, schema_root, out).validate(xg) == 0)
-				out.println("XML output is guaranteed to be valid!");
+			if (new XMLValidator(schema_file, schema_root, warn_out).validate(xg) == 0)
+				warn_out.println("XML output is guaranteed to be valid!");
 		} else if (reversibility_analysis) {
 			if (verbose)
 				out.println("- Analyzing reversibility");
-			if (new ReversibilityChecker(out, verbose).check(normalized_l_grammar, normalized_x_grammar,
+			if (new ReversibilityChecker(warn_out, verbose).check(normalized_l_grammar, normalized_x_grammar,
 					left_unfold_level, left_unfold_left, left_unfold_right, tokenize))
-				out.println("Transformation is guaranteed to be reversible!");
+				warn_out.println("Transformation is guaranteed to be reversible!");
 		} else {
 			if (!reverse) { // transform non-XML to XML
 				if (verbose)
 					out.println("- XMLifying input file");
-				AST ast = new Parser(l_grammar, out).parse(input, input_file);
+				AST ast = new Parser(l_grammar, warn_out).parse(input, input_file);
 				new ASTEscaper().escape(ast);
 				if (debug) {
 					out.println("AST (after escaping):");
@@ -162,7 +169,7 @@ public class Main {
 						out.println("Normalized input:");
 						out.println(input);
 					}				
-					AST ast = new Parser(normalized_x_grammar, out).parse(input, input_file);
+					AST ast = new Parser(normalized_x_grammar, warn_out).parse(input, input_file);
 					new ASTUnescaper().unescape(ast);
 					if (debug) {
 						out.println("AST (after unescaping):");
@@ -178,6 +185,7 @@ public class Main {
 			}
 		}
 		out.flush();
+		warn_out.flush();
 		return output;
 	}
 
@@ -189,7 +197,7 @@ public class Main {
 	public static void setOut(PrintWriter out) {
 		Main.out = out;
 	}
-	
+
 	/**
 	 * Transforms from non-XML to XML.
 	 * @param xsg_file name of XSugar stylesheet
@@ -206,20 +214,20 @@ public class Main {
 		try {
 			return xsugar(xsg_file, xsg_encoding, txt, null, null, null, verbose, false, false, false, false, 0, null, null, false);
 		} catch (InstantiationException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 			return null;
 		} catch (IllegalAccessException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 			return null;
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 			return null;
 		} catch (dk.brics.relaxng.converter.ParseException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Transforms from XML to non-XML.
 	 * @param xsg_file name of XSugar stylesheet
@@ -236,20 +244,20 @@ public class Main {
 		try {
 			return xsugar(xsg_file, xsg_encoding, xml, null, null, null, verbose, true, false, false, false, 0, null, null, false);
 		} catch (InstantiationException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 			return null;
 		} catch (IllegalAccessException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 			return null;
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 			return null;
 		} catch (dk.brics.relaxng.converter.ParseException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Analyzes validity.
 	 * @param xsg_file name of XSugar stylesheet
@@ -267,16 +275,16 @@ public class Main {
 		try {
 			xsugar(xsg_file, xsg_encoding, null, null, schema, schema_root, verbose, false, true, false, false, 0, null, null, false);
 		} catch (InstantiationException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 		} catch (IllegalAccessException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 		} catch (ParseException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 		}
 	}
-	
+
 	/**
 	 * Analyzes reversibility.
 	 * @param xsg_file name of XSugar stylesheet
@@ -298,14 +306,14 @@ public class Main {
 			int left_unfold_level, String left_unfold_left, String left_unfold_right, boolean tokenize) throws IOException, XSugarException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 		try {
 			xsugar(xsg_file, xsg_encoding, null, null, null, null, verbose, false, false, true, false, 
-				left_unfold_level, left_unfold_left, left_unfold_right, tokenize);
+					left_unfold_level, left_unfold_left, left_unfold_right, tokenize);
 		} catch (ParseException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 		} catch (dk.brics.relaxng.converter.ParseException e) {
-			e.printStackTrace(); // should not happen...
+			e.printStackTrace(err_out); // should not happen...
 		}
 	}
-	
+
 	/**
 	 * Main method.
 	 * Run without arguments to see usage.
@@ -331,7 +339,27 @@ public class Main {
 			if (a.startsWith("-")) {
 				if (a.equals("-v"))
 					verbose = true;
-				else if (a.equals("-r"))
+				else if (a.equals("-q")) {
+					java.io.OutputStream o = new java.io.OutputStream () { 
+						@Override public void write(int b) {} 
+					};
+					warn_out = new PrintWriter(o);
+					warn_out_stream = new java.io.PrintStream(o);
+				} else if (a.equals("-mo")) {
+					if (err_out == warn_out) {
+						err_out = out;
+						warn_out = out;
+						warn_out_stream = System.out;
+					} else 
+						err_out = out;
+				} else if (a.equals("-me")) {
+					if (err_out == warn_out) {
+						err_out = new PrintWriter(System.err, true);
+						warn_out = err_out;
+						warn_out_stream = System.err;
+					} else 
+						err_out = new PrintWriter(System.err, true);
+				} else if (a.equals("-r"))
 					reverse = true;
 				else if (a.equals("-a"))
 					validity_analysis = true;

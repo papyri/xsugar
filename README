@@ -4,3 +4,13 @@ The Ruby testing uses JRuby, so you should invoke rake with:
   
 Since the XSugar jar requires Java 1.6, make sure your JAVA_HOME is set to a
 Java 1.6 install when running JRuby.
+
+The Java XSugar source is tracked in xsugar-vendor. Customizations for this
+project are in xsugar-customizations, merged into master. To e.g. update
+to a new upstream version of XSugar, you would unpack it to src/xsugar
+on the xsugar-vendor branch and commit the changes. Then you would rebase
+the changes in xsugar-customizations onto the new xsugar-vendor. Then merge
+xsugar-customizations into master and rebuild lib/xsugar-all.jar (using the 
+rake task java:xsugar:build) and commit. Do not make changes/customizations to
+the Java XSugar source on master, make them on xsugar-customizations so that
+the merge upstream/rebase/merge workflow is more straightforward.

@@ -13,6 +13,18 @@ else
   warn "Not run from JRuby, RXSugar unit tests not running"
 end
 
+namespace :java do
+  namespace :xsugar do
+    desc "Rebuild lib/xsugar-all.jar"
+    task :build do
+      system "cd src/xsugar && ant jar-all"
+      cp "src/xsugar/dist/xsugar-all.jar", "lib/xsugar-all.jar"
+      rm_r "src/xsugar/dist"
+      rm_r "src/xsugar/build"
+    end
+  end
+end
+
 namespace :coverage do
   desc "Test DDb EpiDoc XML transcription elements for coverage in XSugar grammar"
   task :ddb do

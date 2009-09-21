@@ -38,7 +38,7 @@ WORDVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
 WORDA = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
-//WORDAVEST does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation - added 'v' to keep vestig out
+//WORDAVEST does not allow underdot (\u0323 at the end) - used to make choice work - A = abbreviation - added 'v' to keep vestig out
 WORDAVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 //WORDS allows space (therefore multiple words) and DOT

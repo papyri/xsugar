@@ -54,7 +54,6 @@ module RXSugar
 
         xml_files_bar = ProgressBar.new("files", xml_files.length)
 
-
         xml_files.each do |xml_file|
           xml_content = IO.readlines(xml_file).to_s
           xml_file = xml_file.sub(/#{data_path}\/?/,'')
@@ -102,6 +101,10 @@ module RXSugar
         xml_files_bar.finish
 
         puts "Failing:           #{xml_files_failing.length} / #{xml_files.length}"
+		
+		  puts "\nFailing XML files with content:\n" + 
+          xml_files_failing.join("\n")
+
 
         puts "Non-empty passing: #{xml_files_passing.length} / #{xml_files.length}"
         error_frequencies.pretty_print

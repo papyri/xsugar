@@ -5,6 +5,9 @@ import java.io.StringReader;
 import java.util.*;
 
 import org.jdom.*;
+import org.jdom.input.*;
+import org.jdom.input.SAXHandler;
+import java.lang.reflect.*;
 
 import dk.brics.misc.ExtendedSAXBuilder;
 import dk.brics.misc.Origin;
@@ -63,10 +66,10 @@ public class InputNormalizer {
 				out.append(' ').append(normalizeQName(a.getName(), a.getNamespacePrefix(), a.getNamespaceURI(), true) + "=\"" + Escaping.escape(a.getValue()) + "\"");
 			out.append('>');
 			loc.put(out.length(), e.getOrigin().getLine(), e.getOrigin().getColumn()); // TODO: get more precise location info from ExtendedSAXBuilder
-			if (e.getTextTrim().equals(""))
+			/*if (e.getTextTrim().equals(""))
 				for (Content d : (Collection<Content>)e.getChildren())
 					normalize(d, out);
-			else
+			else*/
 				for (Content d : (Collection<Content>)e.getContent())
 					normalize(d, out);
 			out.append("</>");

@@ -257,7 +257,8 @@ item
 	
 	//---test_illegible_dot_gap---
 	// .1, .2, .3 **P5**
-	: [DOT] [GAPEXTNUM n] = <gap reason="illegible" quantity=[GAPEXTNUM n] unit="character"></>  
+	: [DOT] [NUM n] = <gap reason="illegible" quantity=[NUM n] unit="character"></>  
+	>: [DOT] [GAPEXTNUM n] = <gap reason="illegible" extent=[GAPEXTNUM n] unit="character"></>  
 //40
 	//---test_illegible_dot_max---
 	// .#{n}-#{n} **P5**
@@ -265,7 +266,8 @@ item
 	
 	//---test_illegible_dot_lin---
 	// .1lin, .2lin, .3lin **P5**
-	: [DOT] [GAPEXTNUM n] "lin" = <gap reason="illegible" quantity=[GAPEXTNUM n] unit="line"></>  
+	: [DOT] [NUM n] "lin" = <gap reason="illegible" quantity=[NUM n] unit="line"></>  
+	>: [DOT] [GAPEXTNUM n] "lin" = <gap reason="illegible" extent=[GAPEXTNUM n] unit="line"></>  
 	
 	//---test_illegible_dot_lin_extentmax---
 	// .1-2lin **P5**
@@ -563,7 +565,8 @@ flat
 	
 	//---test_lost_lines---
 	// lost.#{n}lin **P5**
-	: "lost." [GAPEXTNUM v] "lin" = <gap reason="lost" quantity=[GAPEXTNUM v] unit="line"></>
+	: "lost." [NUM v] "lin" = <gap reason="lost" quantity=[NUM v] unit="line"></>
+	>: "lost." [GAPEXTNUM v] "lin" = <gap reason="lost" extent=[GAPEXTNUM v] unit="line"></>
 	>: "lost." [GAPEXTNUM v] "-" [GAPEXTNUM w] "lin" = <gap reason="lost" atLeast=[GAPEXTNUM v] atMost=[GAPEXTNUM w] unit="line"></>
 	
 	//---test_lost_lines_unknown---
@@ -630,7 +633,7 @@ inside_brackets
 	// [ abc def ] lost digit
 	: [NUM n] = <supplied reason="lost">[NUM n]</>
 	// does not have [DOT] in front to be different from gap illegible which has the [DOT] up front
-	>: [GAPEXTNUM n] = <gap reason="lost" quantity=[GAPEXTNUM n] unit="character"></>
+	>: [GAPEXTNUM n] = <gap reason="lost" extent=[GAPEXTNUM n] unit="character"></>
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n} **P5**

@@ -327,9 +327,9 @@ item
 	>: "<|" [items a] "|>" = <add rend="sling" place="margin">[items a]</>
 	
 	//---add_place_margin_underline---
-	//   \abc/
-    : "<_" [WORD a] "_>" = <add place="margin" rend="underline">[WORD a]</>
-	>: "<_" [items a] "_>" = <add place="margin" rend="underline">[items a]</>
+	//   \abc/ **P5**
+    : "<_" [WORD a] "_>" = <add rend="underline" place="margin">[WORD a]</>
+	>: "<_" [items a] "_>" = <add rend="underline" place="margin">[items a]</>
 	
 	//---add_place_above--- - special character is u+26a0
 	//   \abc/ **P5** - not sure - added because of testing - need to verify with James
@@ -350,17 +350,13 @@ item
     : "≡" [WORD a] "≡" = <hi rend="supraline-underline">[WORD a]</>
 		
 	//---undefined_parallel---
-	//  _abc_  - underlines **P5** not sure about so copied over and left original commented out
+	//  _abc_  - underlines **P5**
 	// added @ 7/16 to make difference between beginning and ending symbol or xsugar would not parse Leiden+ correctly
 	// 7/20 changed illegible to undefined per gabby change to data
-//	: "_@" [WORDSSIC a] "@_" = <supplied evidence="parallel" reason="undefined">[WORDSSIC a]</>
-//	: "_@" [WORDSSIC a] "?" "@_" = <supplied cert="low" evidence="parallel" reason="undefined">[WORDSSIC a]</>
-//	>: "_@" [items a] "@_" = <supplied evidence="parallel" reason="undefined">[items a]</>
-//	>: "_@" [items a] "?" "@_" = <supplied cert="low" evidence="parallel" reason="undefined">[items a]</>
-	: "_@" [WORDSSIC a] "@_" = <supplied evidence="parallel" reason="illegible">[WORDSSIC a]</>
-	: "_@" [WORDSSIC a] "?" "@_" = <supplied evidence="parallel" reason="illegible" cert="low">[WORDSSIC a]</>
-	>: "_@" [items a] "@_" = <supplied evidence="parallel" reason="illegible">[items a]</>
-	>: "_@" [items a] "?" "@_" = <supplied evidence="parallel" reason="illegible" cert="low">[items a]</>
+	: "_@" [WORDSSIC a] "@_" = <supplied evidence="parallel" reason="undefined">[WORDSSIC a]</>
+	: "_@" [WORDSSIC a] "?" "@_" = <supplied evidence="parallel" reason="undefined" cert="low">[WORDSSIC a]</>
+	>: "_@" [items a] "@_" = <supplied evidence="parallel" reason="undefined">[items a]</>
+	>: "_@" [items a] "?" "@_" = <supplied evidence="parallel" reason="undefined" cert="low">[items a]</>
 		
 	//---lost_parallel---
 	//  _[abc]_  - underlines
@@ -604,9 +600,9 @@ flat
 	>: [BEGEXP] [WORD a] "[" [WORDS b] "(" [WORDS c] ")" "]" [ENDEXP] = <expan>[WORD a]<supplied reason="lost">[WORDS b]<ex>[WORDS c]</></></>
 	>: [BEGEXP] "[" "(" [WORDS c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDS c]</></></>
 	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
-	
+//  **P5**
 	: "[]" = <supplied reason="lost"/>
-	: "[ ?]" = <supplied cert="low" reason="lost"/>
+	: "[ ?]" = <supplied reason="lost" cert="low"/>
 	
 	//---multiple tests see inside_brackets production---
 	// [ ], [[ ]], [ca.?] etc...
@@ -631,8 +627,10 @@ inside_brackets
 	//---test_lost_dot_gap---
 	// .1, .2, .3 inside brackets **P5**
 	: [DOT] [NUM n] = <gap reason="lost" quantity=[NUM n] unit="character"></>
+	// [ abc def ] lost digit
+	: [NUM n] = <supplied reason="lost">[NUM n]</>
 	// does not have [DOT] in front to be different from gap illegible which has the [DOT] up front
-	: [GAPEXTNUM n] = <gap reason="lost" quantity=[GAPEXTNUM n] unit="character"></>
+	>: [GAPEXTNUM n] = <gap reason="lost" quantity=[GAPEXTNUM n] unit="character"></>
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n} **P5**

@@ -61,7 +61,7 @@ WORDSLR = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323
 // wordsnum allow '/' for fractional numbers - added DOT to break .gap on 7/7 see if break other things
 WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
-//WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for suprelinear
+//WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for supralinear
 WORDSSIC = ([^\/\\\n\r\t\[\]\^<>vestig_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
@@ -275,7 +275,8 @@ item
 	
 	//---test_illegible_gap_ca---
 	// ca.1, ca.2, ca.3 **P5**
-	: [LEADCA] [GAPEXTNUM j] = <gap reason="illegible" quantity=[GAPEXTNUM j] unit="character" precision="low"></>
+	: [LEADCA] [NUM n] = <gap reason="illegible" quantity=[NUM n] unit="character" precision="low"></>
+	>: [LEADCA] [GAPEXTNUM j] = <gap reason="illegible" extent=[GAPEXTNUM j] unit="character" precision="low"></>
 	
 	//---test_lang_gap---
 	//(Lang: Demotic 2 lines) **P5**  **guess** at second line
@@ -302,41 +303,48 @@ item
 	>: "\\\|" [items i] "\|\/" = <hi rend="superscript">[items i]</>
 	
 	//---add_place_supralinear---
-	//   \abc/ **P5**
+	//  #\abc/# **P5**
     : "#\\" [WORDSSIC a] "\/#" = <add place="supralinear">[WORDSSIC a]</>
 	: "#\\" [WORDSSIC a] "?" "\/#" = <add place="supralinear" cert="low">[WORDSSIC a]</>
 	>: "#\\" [items a] "\/#" = <add place="supralinear">[items a]</>
 	>: "#\\" [items a] "?" "\/#" = <add place="supralinear" cert="low">[items a]</>
 	
 	//---add_place_infralinear---
-	//   \abc/
+	//  </abc\>
     : "<\/" [WORDS a] "\\>" = <add place="infralinear">[WORDS a]</>
 	>: "<\/" [items a] "\\>" = <add place="infralinear">[items a]</>
 	
 	//---add_place_intralinear---
-	//   \abc/
+	//  <\abc/>
     : "<\\" [WORDS a] "\/>" = <add place="intralinear">[WORDS a]</>
 	>: "<\\" [items a] "\/>" = <add place="intralinear">[items a]</>
 	
 	//---add_place_interlinear---
-	//   \abc/
+	//  <^abc^>
     : "<^" [WORDSSIC a] "^>" = <add place="interlinear">[WORDSSIC a]</>
 	>: "<^" [items a] "^>" = <add place="interlinear">[items a]</>
 //60
 	//---add_place_margin_sling---
-	//   \abc/ **P5**
+	//  <|abc|> **P5**
     : "<|" [WORD a] "|>" = <add rend="sling" place="margin">[WORD a]</>
 	>: "<|" [items a] "|>" = <add rend="sling" place="margin">[items a]</>
 	
 	//---add_place_margin_underline---
-	//   \abc/ **P5**
+	//  <_abc_> **P5**
     : "<_" [WORD a] "_>" = <add rend="underline" place="margin">[WORD a]</>
 	>: "<_" [items a] "_>" = <add rend="underline" place="margin">[items a]</>
 	
 	//---add_place_above--- - special character is u+26a0
-	//   \abc/ **P5** - not sure - added because of testing - need to verify with James
-    : "<⚠" [WORD a] "⚠>" = <add place="above">[WORD a]</>
+	//  <⚠abc⚠> **P5** - not sure - added because of testing - need to verify with James
+	: "<⚠" [WORD a] "⚠>" = <add place="above">[WORD a]</>
+	: "<⚠" [WORD a] "?" "⚠>" = <add cert="low" place="above">[WORD a]</>
 	>: "<⚠" [items a] "⚠>" = <add place="above">[items a]</>
+	>: "<⚠" [items a] "?" "⚠>" = <add cert="low" place="above">[items a]</>
+	
+	//---add_place_below--- - special character is u+2692
+	//   \abc/ **P5** - not sure - added because of testing - need to verify with James
+	: "<⚒" [WORD a] "⚒>" = <add place="below">[WORD a]</>
+	>: "<⚒" [items a] "⚒>" = <add place="below">[items a]</>
 	
 	//---grave---
 	//   \abc/
@@ -350,6 +358,7 @@ item
 	//---supraline_underline---
 	//   |_abc_|
     : "≡" [WORD a] "≡" = <hi rend="supraline-underline">[WORD a]</>
+	>: "≡" [items i] "≡" = <hi rend="supraline-underline">[items i]</>
 		
 	//---undefined_parallel---
 	//  _abc_  - underlines **P5**
@@ -458,10 +467,10 @@ item
 	
 	//---note---
 	//  /*abcdefg*/ **P5**
-	: "\/*" [WORDSF a] "*\/" = <note place="not specified" xml:lang="en">[WORDSF a]</>
+	: "\/*" [WORDSF a] "*\/" = <note xml:lang="en">[WORDSF a]</>
 //	: "\/*" [WORDS a] [QUESTION b] "*\/" = <note place="not specified" xml:lang="en">[WORDS a][QUESTION b]</>
 //	: "\/*" [QUESTION b] "*\/" = <note place="not specified" xml:lang="en">[QUESTION b]</>
-	>: "\/*" [items b] "*\/" = <note place="not specified" xml:lang="en">[items b]</>
+	>: "\/*" [items b] "*\/" = <note xml:lang="en">[items b]</>
 	
 	//---foreign_lang---
 	//  ~veni vedi vici~la **P5** 
@@ -537,11 +546,13 @@ flat
 
 	//---test_vestige_lines---
 	// vestig.#{n}lin **P5**
-	: "vestig." [GAPEXTNUM v] "lin" = <gap reason="illegible" quantity=[GAPEXTNUM v] unit="line"><desc>"vestiges"</></>
+	: "vestig." [NUM n] "lin" = <gap reason="illegible" quantity=[NUM n] unit="line"><desc>"vestiges"</></>
+	>: "vestig." [GAPEXTNUM v] "lin" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="line"><desc>"vestiges"</></>
 	
 	//---test_vestige_lines_ca---
 	// vestig.ca.#{n}lin **P5**
-	: "vestig.ca." [GAPEXTNUM v] "lin" = <gap reason="illegible" quantity=[GAPEXTNUM v] unit="line" precision="low"><desc>"vestiges"</></>
+	: "vestig.ca." [NUM n] "lin" = <gap reason="illegible" quantity=[NUM n] unit="line" precision="low"><desc>"vestiges"</></>
+	>: "vestig.ca." [GAPEXTNUM v] "lin" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="line" precision="low"><desc>"vestiges"</></>
 	
 	//---test_vestige_lines_unknown---
 	// vestig.?lin **P5**
@@ -550,7 +561,8 @@ flat
 	//---test_vestige_known_char---
 	// vestig.!.#{n} **P5**
 // changed per James conversation on 6/10 - desc="vestiges" and reason="illegible"
-	: "vestig." [GAPEXTNUM v] "char" = <gap reason="illegible" quantity=[GAPEXTNUM v] unit="character"><desc>"vestiges"</></>
+	: "vestig." [NUM n] "char" = <gap reason="illegible" quantity=[NUM n] unit="character"><desc>"vestiges"</></>
+	>: "vestig." [GAPEXTNUM v] "char" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="character"><desc>"vestiges"</></>
 	
 	//---test_vestige_characters---
 	// vestig **P5**
@@ -653,7 +665,6 @@ inside_brackets
 	:"vac.?" [ANYMULT w] = <supplied reason="lost"><space extent="unknown" unit="character"/>[ANYMULT w]</>
 	:"vac.?" = <supplied reason="lost"><space extent="unknown" unit="character"/></>
 	:[ANYMULT w] "vac.?" [ANYMULT w] = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
-	
 	
 	//---test_lost_paragraphos
 	//[----]

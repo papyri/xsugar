@@ -73,7 +73,7 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/lostcertain.html
     def test_lost_dot_gap
       # Some number of missing characters
-      assert_equal_fragment_transform '[c.13]', '<gap reason="lost" quantity="c.13" unit="character"/>'
+      assert_equal_fragment_transform '[c.13]', '<gap reason="lost" extent="c.13" unit="character"/>'
 	  assert_equal_fragment_transform '[.1]', '<gap reason="lost" quantity="1" unit="character"/>'
       assert_equal_fragment_transform '[.2]', '<gap reason="lost" quantity="2" unit="character"/>'
       assert_equal_fragment_transform '[.3]', '<gap reason="lost" quantity="3" unit="character"/>'
@@ -92,8 +92,8 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/vestiges.html
     def test_illegible_dot_gap
       # Some number of illegible characters not greater than 3
-      assert_equal_fragment_transform '.c.13', '<gap reason="illegible" quantity="c.13" unit="character"/>'
-	  assert_equal_fragment_transform '.c20', '<gap reason="illegible" quantity="c20" unit="character"/>'
+      assert_equal_fragment_transform '.c.13', '<gap reason="illegible" extent="c.13" unit="character"/>'
+	  assert_equal_fragment_transform '.c20', '<gap reason="illegible" extent="c20" unit="character"/>'
 	  assert_equal_fragment_transform '.1', '<gap reason="illegible" quantity="1" unit="character"/>'
       assert_equal_fragment_transform '.2', '<gap reason="illegible" quantity="2" unit="character"/>'
       assert_equal_fragment_transform '.3', '<gap reason="illegible" quantity="3" unit="character"/>'
@@ -129,6 +129,7 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '.1lin', '<gap reason="illegible" quantity="1" unit="line"/>'
 	  assert_equal_fragment_transform '.77lin', '<gap reason="illegible" quantity="77" unit="line"/>'
 	  assert_equal_fragment_transform '.100lin', '<gap reason="illegible" quantity="100" unit="line"/>'
+	  assert_equal_fragment_transform '.c.7lin', '<gap reason="illegible" extent="c.7" unit="line"/>'
     end
 	
   def test_illegible_dot_lin_extentmax
@@ -143,6 +144,7 @@ if(RUBY_PLATFORM == 'java')
     # but no desc="vestiges"
     def test_vestige_lines
       # vestiges of N lines, mere smudges really, visible
+	  assert_equal_fragment_transform 'vestig.c.7lin', '<gap reason="illegible" extent="c.7" unit="line"><desc>vestiges</desc></gap>'
       assert_equal_fragment_transform 'vestig.3lin', '<gap reason="illegible" quantity="3" unit="line"><desc>vestiges</desc></gap>'
       (1..100).each do |n|
         assert_equal_fragment_transform "vestig.#{n}lin", "<gap reason=\"illegible\" quantity=\"#{n}\" unit=\"line\"><desc>vestiges</desc></gap>"
@@ -153,6 +155,7 @@ if(RUBY_PLATFORM == 'java')
     # but no desc="vestiges"
     def test_vestige_lines_ca
       # vestiges of rough number of lines, mere smudges really, visible
+	  assert_equal_fragment_transform 'vestig.ca.c.7lin', '<gap reason="illegible" extent="c.7" unit="line" precision="low"><desc>vestiges</desc></gap>'
       assert_equal_fragment_transform 'vestig.ca.3lin', '<gap reason="illegible" quantity="3" unit="line" precision="low"><desc>vestiges</desc></gap>'
       (1..100).each do |n|
         assert_equal_fragment_transform "vestig.ca.#{n}lin", "<gap reason=\"illegible\" quantity=\"#{n}\" unit=\"line\" precision=\"low\"><desc>vestiges</desc></gap>"
@@ -171,6 +174,8 @@ if(RUBY_PLATFORM == 'java')
     def test_vestige_characters
       # vestiges of an unspecified number of characters, mere smudges, visible
       assert_equal_fragment_transform 'vestig', '<gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap>'
+	  assert_equal_fragment_transform 'vestig.7char', '<gap reason="illegible" quantity="7" unit="character"><desc>vestiges</desc></gap>'
+	  assert_equal_fragment_transform 'vestig.c.7char', '<gap reason="illegible" extent="c.7" unit="character"><desc>vestiges</desc></gap>'
     end
   
    #def test_nontran_characters - removed grammar per Jame conversation 6/10
@@ -181,6 +186,7 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/lostline.html
     def test_lost_lines
       # Some number of lines is lost
+	  assert_equal_fragment_transform 'lost.c7lin', '<gap reason="lost" extent="c7" unit="line"/>'
       assert_equal_fragment_transform 'lost.3lin', '<gap reason="lost" quantity="3" unit="line"/>'
       (1..100).each do |n|
         assert_equal_fragment_transform "lost.#{n}lin", "<gap reason=\"lost\" quantity=\"#{n}\" unit=\"line\"/>"
@@ -210,13 +216,13 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_evidence_parallel
-      assert_equal_fragment_transform '_@ς ἐπιστολῆς Θεοδώρου@_', '<supplied evidence="parallel" reason="illegible">ς ἐπιστολῆς Θεοδώρου</supplied>'
-	  assert_equal_fragment_transform '_@ωτερίου [τοῦ] λαμπροτά@_', '<supplied evidence="parallel" reason="illegible">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
+      assert_equal_fragment_transform '_@ς ἐπιστολῆς Θεοδώρου@_', '<supplied evidence="parallel" reason="undefined">ς ἐπιστολῆς Θεοδώρου</supplied>'
+	  assert_equal_fragment_transform '_@ωτερίου [τοῦ] λαμπροτά@_', '<supplied evidence="parallel" reason="undefined">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
     end
     
     def test_evidence_parallel_cert_low
-      assert_equal_fragment_transform '_@ς ἐπιστολῆς Θεοδώρου?@_', '<supplied evidence="parallel" reason="illegible" cert="low">ς ἐπιστολῆς Θεοδώρου</supplied>'
-	  assert_equal_fragment_transform '_@ωτερίου [τοῦ] λαμπροτά?@_', '<supplied evidence="parallel" reason="illegible" cert="low">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
+      assert_equal_fragment_transform '_@ς ἐπιστολῆς Θεοδώρου?@_', '<supplied evidence="parallel" reason="undefined" cert="low">ς ἐπιστολῆς Θεοδώρου</supplied>'
+	  assert_equal_fragment_transform '_@ωτερίου [τοῦ] λαμπροτά?@_', '<supplied evidence="parallel" reason="undefined" cert="low">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/erroneousinclusion.html
@@ -233,9 +239,10 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/supplementforlost.html
     def test_lost
       # modern ed restores lost text
+	  assert_equal_fragment_transform '[καὶ ?]', '<supplied reason="lost" cert="low">καὶ</supplied>'
+	  assert_equal_fragment_transform '[παρὰ]', '<supplied reason="lost">παρὰ</supplied>'
       assert_equal_fragment_transform '[]', '<supplied reason="lost"/>'
 	  assert_equal_fragment_transform '[ ?]', '<supplied reason="lost" cert="low"/>'
-	  assert_equal_fragment_transform '[abc]', '<supplied reason="lost">abc</supplied>'
 	  assert_equal_fragment_transform '[7]', '<supplied reason="lost">7</supplied>'
       assert_equal_fragment_transform 'a[b]c', 'a<supplied reason="lost">b</supplied>c'
       assert_equal_fragment_transform 'a[bc def g]hi', 'a<supplied reason="lost">bc def g</supplied>hi'
@@ -408,10 +415,26 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_note
-      assert_equal_fragment_transform '/*abcdefg*/', '<note place="not specified" xml:lang="en">abcdefg</note>'
-	  assert_equal_fragment_transform '/*?*/', '<note place="not specified" xml:lang="en">?</note>'
-	  assert_equal_fragment_transform '/*m2?*/', '<note place="not specified" xml:lang="en">m2?</note>'
-	  assert_equal_fragment_transform '/*text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4*/', '<note place="not specified" xml:lang="en">text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4</note>'
+      assert_equal_fragment_transform '/*abcdefg*/', '<note xml:lang="en">abcdefg</note>'
+	  assert_equal_fragment_transform '/*?*/', '<note xml:lang="en">?</note>'
+	  assert_equal_fragment_transform '/*m2?*/', '<note xml:lang="en">m2?</note>'
+	  assert_equal_fragment_transform '/*text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4*/', '<note xml:lang="en">text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4</note>'
+    end
+	
+	def test_P5_supraline_underline
+	  assert_equal_fragment_transform '≡ [.?] .1ηρου≡', '<hi rend="supraline-underline"> <gap reason="lost" extent="unknown" unit="character"/> <gap reason="illegible" quantity="1" unit="character"/>ηρου</hi>'
+	end
+	
+    def test_P5_above
+	  assert_equal_fragment_transform '<⚠ς⚠>', '<add place="above">ς</add>'
+	  assert_equal_fragment_transform '<⚠ς?⚠>', '<add cert="low" place="above">ς</add>'
+	  assert_equal_fragment_transform '<⚠καὶ̣ Κ̣ε̣ρ̣κεσήφεως⚠>', '<add place="above">κα<unclear>ὶ</unclear> <unclear>Κερ</unclear>κεσήφεως</add>'
+	  assert_equal_fragment_transform '<⚠καὶ̣ Κ̣ε̣ρ̣κεσήφεως?⚠>', '<add cert="low" place="above">κα<unclear>ὶ</unclear> <unclear>Κερ</unclear>κεσήφεως</add>'
+	end
+	
+    def test_P5_below
+	  assert_equal_fragment_transform '<⚒ς⚒>', '<add place="below">ς</add>'
+	  assert_equal_fragment_transform '<⚒<#δ=4#>⚒>', '<add place="below"><num value="4">δ</num></add>'
     end
     
     def test_foreign_lang

@@ -305,10 +305,15 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform ' Ἰ(¨)ουστινιανοῦ', '<hi rend="diaeresis">Ἰ</hi>ουστινιανοῦ'
 	  # test with unclears - ex. p.mert.3.125.xml
 	  assert_equal_fragment_transform ' ạ(¨)bc', '<hi rend="diaeresis"><unclear>a</unclear></hi>bc'
+	  assert_equal_fragment_transform ' [.1](¨)', '<hi rend="diaeresis"><gap reason="lost" quantity="1" unit="character"/></hi>'
+	  assert_equal_fragment_transform ' .1(¨)', '<hi rend="diaeresis"><gap reason="illegible" quantity="1" unit="character"/></hi>'
     end
   
     def test_uncertain_diacritical_grave
       assert_equal_fragment_transform 'abcd e(`)f', 'abcd<hi rend="grave">e</hi>f'
+	  assert_equal_fragment_transform ' [.1](`)', '<hi rend="grave"><gap reason="lost" quantity="1" unit="character"/></hi>'
+	  assert_equal_fragment_transform ' .1(`)', '<hi rend="grave"><gap reason="illegible" quantity="1" unit="character"/></hi>'
+	  assert_equal_fragment_transform ' ἃ̣(`)', '<hi rend="grave"><unclear>ἃ</unclear></hi>'
     end
   
     def test_uncertain_diacritical_oxia
@@ -430,6 +435,7 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '<⚠ς?⚠>', '<add cert="low" place="above">ς</add>'
 	  assert_equal_fragment_transform '<⚠καὶ̣ Κ̣ε̣ρ̣κεσήφεως⚠>', '<add place="above">κα<unclear>ὶ</unclear> <unclear>Κερ</unclear>κεσήφεως</add>'
 	  assert_equal_fragment_transform '<⚠καὶ̣ Κ̣ε̣ρ̣κεσήφεως?⚠>', '<add cert="low" place="above">κα<unclear>ὶ</unclear> <unclear>Κερ</unclear>κεσήφεως</add>'
+	  assert_equal_fragment_transform '<⚠κα̣ὶ̣ μὴ ὁμολογη〚.1?〛⚠>', '<add place="above">κ<unclear>αὶ</unclear> μὴ ὁμολογη<del rend="erasure" cert="low"><gap reason="illegible" quantity="1" unit="character"/></del></add>'
 	end
 	
     def test_P5_below

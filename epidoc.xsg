@@ -409,15 +409,17 @@ item
 		
 	//---subst---
 	//  <:a|subst|b|:> 
-	: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] "?" [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del cert="low" rend="corrected">[WORDVEST b]</></>
-	>: [BEGOPT] [items a] "|subst|" [items b] "?" [ENDOPT] = <subst><add place="inline">[items a]</><del cert="low" rend="corrected">[items b]</></>
+//comment 10/07 because not allow certlow on del rend
+//	: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] "?" [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del cert="low" rend="corrected">[WORDVEST b]</></>
+//	>: [BEGOPT] [items a] "|subst|" [items b] "?" [ENDOPT] = <subst><add place="inline">[items a]</><del cert="low" rend="corrected">[items b]</></>
 	: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[WORDVEST b]</></>
 //		>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORDVEST b]</></>
 	>: [BEGOPT] [WORDVEST a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [WORDVEST a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del rend="corrected">[items b]</></>
-	>: [BEGOPT] [items a] "?" "|subst|" [items b] "?" [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del cert="low" rend="corrected">[items b]</></>
+//comment 10/07 because not allow certlow on del rend
+//	>: [BEGOPT] [items a] "?" "|subst|" [items b] "?" [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del cert="low" rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] "|subst|" [items b] [ENDOPT] = <subst><add place="inline"></><del rend="corrected">[items b]</></>
 	
@@ -516,7 +518,8 @@ item
 //this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
 //	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
 	>: "〚" [items a] "〛" = <del rend="erasure">[items a]</>
-	>: "〚" [items a] "?〛" = <del rend="erasure" cert="low">[items a]</>
+//comment out 10/07 because supposed to remove certlow from del rend
+//	>: "〚" [items a] "?〛" = <del rend="erasure" cert="low">[items a]</>
 // repeat of above with NL at end - if fix XML may not need these 2 lines
 //	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a] [NL]</>
 //	>: "〚" [items a] "〛" = <del rend="erasure">[items a] [NL]</>

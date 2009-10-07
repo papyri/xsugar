@@ -435,7 +435,7 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '<⚠ς?⚠>', '<add cert="low" place="above">ς</add>'
 	  assert_equal_fragment_transform '<⚠καὶ̣ Κ̣ε̣ρ̣κεσήφεως⚠>', '<add place="above">κα<unclear>ὶ</unclear> <unclear>Κερ</unclear>κεσήφεως</add>'
 	  assert_equal_fragment_transform '<⚠καὶ̣ Κ̣ε̣ρ̣κεσήφεως?⚠>', '<add cert="low" place="above">κα<unclear>ὶ</unclear> <unclear>Κερ</unclear>κεσήφεως</add>'
-	  assert_equal_fragment_transform '<⚠κα̣ὶ̣ μὴ ὁμολογη〚.1?〛⚠>', '<add place="above">κ<unclear>αὶ</unclear> μὴ ὁμολογη<del rend="erasure" cert="low"><gap reason="illegible" quantity="1" unit="character"/></del></add>'
+	  assert_equal_fragment_transform '<⚠κα̣ὶ̣ μὴ ὁμολογη〚.1〛⚠>', '<add place="above">κ<unclear>αὶ</unclear> μὴ ὁμολογη<del rend="erasure"><gap reason="illegible" quantity="1" unit="character"/></del></add>'
 	end
 	
     def test_P5_below

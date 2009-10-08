@@ -497,7 +497,8 @@ item
 	//  ~veni vedi vici~la **P5** 
 	: "~" [WORDSF a] "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a]</>
 	>: "~" [items a] "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]</>
-	>: "~" [items a][FORPUNCT f][SP s] "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a][FORPUNCT f][SP s]</>
+//comment 10/08 to see if this is what broke the nightly run
+//	>: "~" [items a][FORPUNCT f][SP s] "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a][FORPUNCT f][SP s]</>
 	
 	//---figure---
 	//  fig.seal 

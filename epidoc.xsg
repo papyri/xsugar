@@ -135,17 +135,17 @@ unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [A
 morenum : [BEGNUM] [WORD w] "=" [SYMBOLNUM x] [ENDNUM] [morenum y] = <num value=[SYMBOLNUM x]>[WORD w]</>  [morenum y]
 			   >: [BEGNUM] [WORD w] "=" [SYMBOLNUM x] [ENDNUM] = <num value=[SYMBOLNUM x]>[WORD w]</>
 		 
-expand 	: [WORD a] "(" [WORD b] ")" [expand more] = [WORD a]<ex>[WORD b]</>[expand more]
-			>: [WORD a] "(" [WORD b] ")" = [WORD a]<ex>[WORD b]</>
+expand 	: [WORD a] "(" [WORDS b] ")" [expand more] = [WORD a]<ex>[WORDS b]</>[expand more]
+			>: [WORD a] "(" [WORDS b] ")" = [WORD a]<ex>[WORDS b]</>
 			
 expandex : "(" [WORDS b] ")" [expandex more] = <ex>[WORDS b]</>[expandex more]
 			>: "(" [WORDS b] ")" = <ex>[WORDS b]</>
 			
-expando : [items a] "(" [WORD b] ")" [expando more] = [items a]<ex>[WORD b]</>[expando more]
-			>: [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
+expando : [items a] "(" [WORDS b] ")" [expando more] = [items a]<ex>[WORDS b]</>[expando more]
+			>: [items a] "(" [WORDS b] ")" = [items a]<ex>[WORDS b]</>
 			>: [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
 
-expandim : [items a] "(" [WORD b] ")" = [items a]<ex>[WORD b]</>
+expandim : [items a] "(" [WORDS b] ")" = [items a]<ex>[WORDS b]</>
 expandii : [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
 
 item
@@ -223,7 +223,7 @@ item
 //the line below causes horizontal ambiguity but does not break anything that I can tell for our purposes - will push up and see - makes run long
 //re-wrote to look for specific case in bgu.1 - makes run normal again - will push up and see how much breaks - also moved lower in group here
 // removed [UNDERDOT] after ANYLETTER on 7/21 - not sure why it was there - making test case not work right and moved up here
-	: [BEGEXP] [ANYLETTER c] "(¨)" [WORD a] "(" [WORD b] ")" [ENDEXP] = <expan><hi rend="diaeresis">[ANYLETTER c]</> [WORD a]<ex>[WORD b]</></>
+	: [BEGEXP] [ANYLETTER c] "(¨)" [WORD a] "(" [WORDS b] ")" [ENDEXP] = <expan><hi rend="diaeresis">[ANYLETTER c]</> [WORD a]<ex>[WORDS b]</></>
 //wrote for specific reversability case in p.ness.3.55 7 /21 - will see if it fixes anything else 
 	: [BEGEXP] [ANYLETTER c] [UNDERDOT] "(¨)" [items a] "(" [WORD d] ")" [ENDEXP] = <expan><hi rend="diaeresis"><unclear>[ANYLETTER c]</></>[items a]<ex>[WORD d]</></>
 
@@ -240,7 +240,7 @@ item
 	>: [BEGEXP] [expandim e] [ENDEXP] = <expan>[expandim e]</>
 	>: [BEGEXP] [expandii e] [ENDEXP]= <expan>[expandii e]</>
 
-//	>: [BEGEXP] [items i] [WORD a] "(" [WORD b] ")" [ENDEXP] = <expan>[items i] [WORD a]<ex>[WORD b]</></>
+//	>: [BEGEXP] [items i] [WORD a] "(" [WORDS b] ")" [ENDEXP] = <expan>[items i] [WORD a]<ex>[WORDS b]</></>
 	
 	//---test unclear characters = underdots
 	: [FRACSYM f] [UNDERDOT] = <unclear>[FRACSYM f]</>
@@ -548,13 +548,13 @@ flat
 //change words to word for a below for white space test	
 	>: [BEGEXP] [WORD a] "(" [WORDS b] ")" [WORDS c] "[" [WORDS d] "(" [WORDS e] ")" "]" [ENDEXP] = <expan>[WORD a]<ex>[WORDS b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDS e]</></></>
 //add 2 lines below 6/17 for p.oxy.17
-	>: [BEGEXP] "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
-	>: [BEGEXP] "(" "(" [WORD a]  "?" ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORD a]</>[WORD c]<ex>[WORD b]</></>
+	>: [BEGEXP] "(" "(" [WORDS a] ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan><ex>[WORDS a]</>[WORD c]<ex>[WORDS b]</></>
+	>: [BEGEXP] "(" "(" [WORDS a]  "?" ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORDS a]</>[WORD c]<ex>[WORDS b]</></>
 	
 	//---test_expansion---
 	// a(b)
 // comment the next line - causes 5 reversability and passing errors in EXPAN in BGU.1 - bgurakcov0414_v06
-//	>: [WORD a] "(" [WORD b] __")" = <expan>[WORD a]<ex>[WORD b] __</></>
+//	>: [WORD a] "(" [WORDS b] __")" = <expan>[WORD a]<ex>[WORDS b] __</></>
 //jfox change words to word for a white space test
 	>: [BEGEXP] [WORD a] "(" [WORDS b] ")" [ENDEXP] = <expan>[WORD a]<ex>[WORDS b]</></>
 	
@@ -563,10 +563,10 @@ flat
 //	: "(" [WORDSNUM a] ")" = <expan><ex>[WORDSNUM a]</></>
 //: "(" [WORD a] __ [WORD b] ")" = <expan><ex>[WORD a] __ [WORD b]</></> - old definition of WORDSNUM i think
 //	: "(" [WORD a] ")" = <expan><ex>[WORD a]</></> - commented out to remove vert ambig with wordsnum above
-	: [BEGEXP] "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan><ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
+	: [BEGEXP] "(" "(" [WORD a] ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan><ex>[WORD a]</>[WORD c]<ex>[WORDS b]</></>
 	>: [BEGEXP] [expandex e] [ENDEXP] = <expan>[expandex e]</>
 	>: [BEGEXP] [WORD a] [expandex e] [ENDEXP] = <expan>[WORD a] [expandex e]</>
-	>: [BEGEXP] [items d] "(" "(" [WORD a] ")" [WORD c] "(" [WORD b] ")" ")" [ENDEXP] = <expan>[items d]<ex>[WORD a]</>[WORD c]<ex>[WORD b]</></>
+	>: [BEGEXP] [items d] "(" "(" [WORDS a] ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan>[items d]<ex>[WORDS a]</>[WORD c]<ex>[WORDS b]</></>
 //	>: "(" [items a] ")" = <expan><ex>[items a]</></>
 
 	//---test_vestige_lines---
@@ -634,12 +634,12 @@ flat
 	>: [BEGSEG] [items i] [ENDSEG] = <seg cert="low">[items i]</>	
 	
 	//---expand with supplied reason lost---
-	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
-	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORD c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
+	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS c]</>[WORDOPT d]</>[WORDOPT e]</>
+	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDS c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS c]</>[WORDOPT d]</>[WORDOPT e]</>
 //jfox change words to word for a white space test
 	>: [BEGEXP] [WORD a] "[" [WORDS b] "(" [WORDS c] ")" "]" [ENDEXP] = <expan>[WORD a]<supplied reason="lost">[WORDS b]<ex>[WORDS c]</></></>
 	>: [BEGEXP] "[" "(" [WORDS c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDS c]</></></>
-	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORD c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORD c]</>[WORDOPT d]</>[WORDOPT e]</>
+	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDS c]</>[WORDOPT d]</>[WORDOPT e]</>
 //  **P5**
 	: "[]" = <supplied reason="lost"/>
 	: "[ ?]" = <supplied reason="lost" cert="low"/>

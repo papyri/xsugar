@@ -9,7 +9,7 @@ module RXSugar
         unless included_modules.include? InstanceMethods
           if(RUBY_PLATFORM == 'java')
             require File.join(File.dirname(__FILE__), *%w'.. lib rxsugar')
-            include RXSugarHelper
+            extend RXSugarHelper
           end
           
           extend ClassMethods

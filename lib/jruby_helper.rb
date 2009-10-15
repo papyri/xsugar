@@ -46,7 +46,7 @@ module RXSugar
         # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin xml2nonxml.rb')
         # jruby_pipe(ruby_file, content)
         if(RUBY_PLATFORM == 'java')
-          @rxsugar ||= rxsugar_from_grammar(DEFAULT_GRAMMAR)
+          @rxsugar ||= rxsugar_from_grammar(RXSugarHelper::DEFAULT_GRAMMAR)
           return @rxsugar.xml_to_non_xml(content).to_s
         else
           return post_to_blackboard('xml', 'nonxml', content)
@@ -57,7 +57,7 @@ module RXSugar
         # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin nonxml2xml.rb')
         # jruby_pipe(ruby_file, content)
         if(RUBY_PLATFORM == 'java')
-          @rxsugar ||= rxsugar_from_grammar(DEFAULT_GRAMMAR)
+          @rxsugar ||= rxsugar_from_grammar(RXSugarHelper::DEFAULT_GRAMMAR)
           return @rxsugar.non_xml_to_xml(content).to_s
         else
           return post_to_blackboard('nonxml', 'xml', content)

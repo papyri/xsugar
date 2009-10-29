@@ -147,7 +147,13 @@ expando : [items a] "(" [WORDS b] ")" [expando more] = [items a]<ex>[WORDS b]</>
 
 expandim : [items a] "(" [WORDS b] ")" = [items a]<ex>[WORDS b]</>
 expandii : [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
-
+nestanc : " ῾" = "asper"
+			: "´" = "acute"
+			: "¨" = "diaeresis"
+			: "`" = "grave"
+			: "΄" = "oxia"
+			: "^" = "circumflex"
+			: " ᾿" = "lenis"
 item
 
 	: [linenumber l] = [linenumber l]
@@ -162,54 +168,13 @@ item
 	: " " [WORDA w] [ABBR] = <abbr>[WORDA w]</>
 	>: [BEGMIABBR] [items w] [ABBR] [ENDMIABBR] = <abbr>[items w]</>
 
-//---test_uncertain_diacritical_diaeresis---
+//---test_uncertain_diacritical_diaeresis---generic
 	// (¨)
-	: " " [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
-	>: " " [ANYLETTER a] [UNDERDOT] "(¨)" = <hi rend="diaeresis"><unclear>[ANYLETTER a]</></>
-	>: " " "[." [NUM n] "]" "(¨)" = <hi rend="diaeresis"><gap reason="lost" quantity=[NUM n] unit="character"/></>
-	>: " " "." [NUM n] "(¨)" = <hi rend="diaeresis"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
-	
-	//---test_uncertain_diacritical_grave---
-	// (`) u+1fef
-	: " " [ANYLETTER a] "(`)" = <hi rend="grave">[ANYLETTER a]</>
-	>: " " [ANYLETTER a] [UNDERDOT] "(`)" = <hi rend="grave"><unclear>[ANYLETTER a]</></>
-	>: " " "[." [NUM n] "]" "(`)" = <hi rend="grave"><gap reason="lost" quantity=[NUM n] unit="character"/></>
-	>: " " "." [NUM n] "(`)" = <hi rend="grave"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
-	
-	//---test_uncertain_diacritical_oxia---
-	// (΄)
-	: " " [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
-	>: " " [ANYLETTER a] [UNDERDOT] "(΄)" = <hi rend="oxia"><unclear>[ANYLETTER a]</></>
-	>: " " "[." [NUM n] "]" "(΄)" = <hi rend="oxia"><gap reason="lost" quantity=[NUM n] unit="character"/></>
-	>: " " "." [NUM n] "(΄)" = <hi rend="oxia"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
-//10	
-	//---test_uncertain_diacritical_spiritus_asper--- can also be known as greek dasia when combined with space per wikipeidia
-	// (῾)
-	: " " [ANYLETTER a] "( ῾)" = <hi rend="asper">[ANYLETTER a]</>
-	>: " " [ANYLETTER a] [UNDERDOT] "( ῾)" = <hi rend="asper"><unclear>[ANYLETTER a]</></>
-	>: " " "[." [NUM n] "]" "( ῾)" = <hi rend="asper"><gap reason="lost" quantity=[NUM n] unit="character"/></>
-	>: " " "." [NUM n] "( ῾)" = <hi rend="asper"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
-	
-	//---test_uncertain_diacritical_acute---
-	// (´)
-	: " " [ANYLETTER a] "(´)" = <hi rend="acute">[ANYLETTER a]</>
-	>: " " [ANYLETTER a] [UNDERDOT] "(´)" = <hi rend="acute"><unclear>[ANYLETTER a]</></>
-	>: " " "[." [NUM n] "]" "(´)" = <hi rend="acute"><gap reason="lost" quantity=[NUM n] unit="character"/></>
-	>: " " "." [NUM n] "(´)" = <hi rend="acute"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
-	
-	//---test_uncertain_diacritical_circumflex---
-	// (^)
-	: " " [ANYLETTER a] "(^)" = <hi rend="circumflex">[ANYLETTER a]</>
-	>: " " [ANYLETTER a] [UNDERDOT] "(^)" = <hi rend="circumflex"><unclear>[ANYLETTER a]</></>
-	>: " " "[." [NUM n] "]" "(^)" = <hi rend="circumflex"><gap reason="lost" quantity=[NUM n] unit="character"/></>
-	>: " " "." [NUM n] "(^)" = <hi rend="circumflex"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
-	
-	//---test_uncertain_diacritical_spiritus_lenis--- can also be known as greek psili when combined with space per wikipeidia
-	// (᾿)
-	: " " [ANYLETTER a] "( ᾿)" = <hi rend="lenis">[ANYLETTER a]</>
-	>: " " [ANYLETTER a] [UNDERDOT] "( ᾿)" = <hi rend="lenis"><unclear>[ANYLETTER a]</></>
-	>: " " "[." [NUM n] "]" "( ᾿)" = <hi rend="lenis"><gap reason="lost" quantity=[NUM n] unit="character"/></>
-	>: " " "." [NUM n] "( ᾿)" = <hi rend="lenis"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
+	: " " [ANYLETTER a] "(" [nestanc d] ")" = <hi rend=[nestanc d]>[ANYLETTER a]</>
+	>: " " [ANYLETTER a] [UNDERDOT] "(" [nestanc o] ")" = <hi rend=[nestanc o]><unclear>[ANYLETTER a]</></>
+	>: " " "[." [NUM n] "]" "(" [nestanc p] ")" = <hi rend=[nestanc p]><gap reason="lost" quantity=[NUM n] unit="character"/></>
+	>: " " "." [NUM n] "(" [nestanc q] ")" = <hi rend=[nestanc q]><gap reason="illegible" quantity=[NUM n] unit="character"/></>
+	>: " " [ANYLETTER a] "(" [nestanc t] [nestanc s] ")" = <hi rend=[nestanc t]><hi rend=[nestanc s]>[ANYLETTER a]</></>
 
 //wrote for specific reversability case in psi.6.703 7 /21 - will see if it fixes anything else                <expan>Ἠσ<unclear>α</unclear><hi rend='diaeresis'><unclear>ΐ</unclear></hi><unclear>ο</unclear><ex>υ</ex></expan>
 	: [BEGEXP] [ANYMULT b] [ANYLETTER e] [UNDERDOT] [ANYLETTER c] [UNDERDOT] "(¨)" [ANYLETTER a] [UNDERDOT]  "(" [ANYLETTER d] ")" [ENDEXP] = <expan>[ANYMULT b]<unclear>[ANYLETTER e]</><hi rend="diaeresis"><unclear>[ANYLETTER c]</></><unclear>[ANYLETTER a]</><ex>[ANYLETTER d]</></>
@@ -604,7 +569,7 @@ flat
 	// lost.#{n}lin **P5**
 	: "lost." [NUM v] "lin" = <gap reason="lost" quantity=[NUM v] unit="line"></>
 	>: "lost." [GAPEXTNUM v] "lin" = <gap reason="lost" extent=[GAPEXTNUM v] unit="line"></>
-	>: "lost." [GAPEXTNUM v] "-" [GAPEXTNUM w] "lin" = <gap reason="lost" atLeast=[GAPEXTNUM v] atMost=[GAPEXTNUM w] unit="line"></>
+	>: "lost." [NUM v] "-" [NUM w] "lin" = <gap reason="lost" atLeast=[NUM v] atMost=[NUM w] unit="line"></>
 	
 	//---test_lost_lines_unknown---
 	// lost.#{n}lin **P5**

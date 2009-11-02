@@ -1,5 +1,23 @@
 module RXSugar
   module JRubyHelper
+    if(RUBY_PLATFORM == 'java')
+      require File.join(File.dirname(__FILE__), *%w'.. lib rxsugar')
+      
+      class RXSugarSingleton
+        include Singleton
+        include RXSugarHelper
+
+        attr_reader :rxsugar
+
+        def initialize
+          @rxsugar = rxsugar_from_grammar(RXSugarHelper::DEFAULT_GRAMMAR)
+        end
+      end
+    end
+    
+    def self.included(base)
+      base.extend(ActMethods)
+    end
     def self.included(base)
       base.extend(ActMethods)
     end
@@ -46,8 +64,7 @@ module RXSugar
         # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin xml2nonxml.rb')
         # jruby_pipe(ruby_file, content)
         if(RUBY_PLATFORM == 'java')
-          rxsugar ||= rxsugar_from_grammar(RXSugarHelper::DEFAULT_GRAMMAR)
-          return rxsugar.xml_to_non_xml(content).to_s
+          return RXSugarSingleton.instance.rxsugar.xml_to_non_xml(content).to_s
         else
           return post_to_blackboard('xml', 'nonxml', content)
         end
@@ -57,8 +74,7 @@ module RXSugar
         # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin nonxml2xml.rb')
         # jruby_pipe(ruby_file, content)
         if(RUBY_PLATFORM == 'java')
-          rxsugar ||= rxsugar_from_grammar(RXSugarHelper::DEFAULT_GRAMMAR)
-          return rxsugar.non_xml_to_xml(content).to_s
+          return RXSugarSingleton.instance.rxsugar.non_xml_to_xml(content).to_s
         else
           return post_to_blackboard('nonxml', 'xml', content)
         end

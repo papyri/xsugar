@@ -62,7 +62,7 @@ WORDSLR = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323
 WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for supralinear
-WORDSSIC = ([^\/\\\n\r\t\[\]\^<>vestig_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
 WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]*) (MAX)
@@ -135,18 +135,18 @@ unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [A
 morenum : [BEGNUM] [WORD w] "=" [SYMBOLNUM x] [ENDNUM] [morenum y] = <num value=[SYMBOLNUM x]>[WORD w]</>  [morenum y]
 			   >: [BEGNUM] [WORD w] "=" [SYMBOLNUM x] [ENDNUM] = <num value=[SYMBOLNUM x]>[WORD w]</>
 		 
-expand 	: [WORD a] "(" [WORDS b] ")" [expand more] = [WORD a]<ex>[WORDS b]</>[expand more]
-			>: [WORD a] "(" [WORDS b] ")" = [WORD a]<ex>[WORDS b]</>
+expand 	: [WORD a] "(" [WORDSSIC b] ")" [expand more] = [WORD a]<ex>[WORDSSIC b]</>[expand more]
+			>: [WORD a] "(" [WORDSSIC b] ")" = [WORD a]<ex>[WORDSSIC b]</>
 			
-expandex : "(" [WORDS b] ")" [expandex more] = <ex>[WORDS b]</>[expandex more]
-			>: "(" [WORDS b] ")" = <ex>[WORDS b]</>
+expandex : "(" [WORDSSIC b] ")" [expandex more] = <ex>[WORDSSIC b]</>[expandex more]
+			>: "(" [WORDSSIC b] ")" = <ex>[WORDSSIC b]</>
 			
-expando : [items a] "(" [WORDS b] ")" [expando more] = [items a]<ex>[WORDS b]</>[expando more]
-			>: [items a] "(" [WORDS b] ")" = [items a]<ex>[WORDS b]</>
+expando : [items a] "(" [WORDSSIC b] ")" [expando more] = [items a]<ex>[WORDSSIC b]</>[expando more]
+			>: [items a] "(" [WORDSSIC b] ")" = [items a]<ex>[WORDSSIC b]</>
 			>: [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
 
-expandim : [items a] "(" [WORDS b] ")" = [items a]<ex>[WORDS b]</>
-expandii : [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
+//expandim : [items a] "(" [WORDS b] ")" = [items a]<ex>[WORDS b]</>
+//expandii : [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
 nestanc : " ῾" = "asper"
 			: "´" = "acute"
 			: "¨" = "diaeresis"
@@ -258,8 +258,9 @@ item
 //	>: [expando e] = <expan>[expando e]</>
 	>: [BEGEXP] [expando e] [WORD a] [ENDEXP] = <expan>[expando e] [WORD a]</>
 	>: [SPO s] [BEGEXP] [expando e] [ENDEXP] = [SPO s] <expan>[expando e]</>
-	>: [BEGEXP] [expandim e] [ENDEXP] = <expan>[expandim e]</>
-	>: [BEGEXP] [expandii e] [ENDEXP]= <expan>[expandii e]</>
+	>: [BEGEXP] [expando e] [ENDEXP] = <expan>[expando e]</>
+//	>: [BEGEXP] [expandim e] [ENDEXP] = <expan>[expandim e]</>
+//	>: [BEGEXP] [expandii e] [ENDEXP]= <expan>[expandii e]</>
 
 //	>: [BEGEXP] [items i] [WORD a] "(" [WORDS b] ")" [ENDEXP] = <expan>[items i] [WORD a]<ex>[WORDS b]</></>
 	
@@ -577,7 +578,7 @@ flat
 // comment the next line - causes 5 reversability and passing errors in EXPAN in BGU.1 - bgurakcov0414_v06
 //	>: [WORD a] "(" [WORDS b] __")" = <expan>[WORD a]<ex>[WORDS b] __</></>
 //jfox change words to word for a white space test
-	>: [BEGEXP] [WORD a] "(" [WORDS b] ")" [ENDEXP] = <expan>[WORD a]<ex>[WORDS b]</></>
+	>: [BEGEXP] [WORD a] "(" [WORDSSIC b] ")" [ENDEXP] = <expan>[WORD a]<ex>[WORDSSIC b]</></>
 	
 	//---test_symbol_expansion---
 	// (abc)
@@ -660,6 +661,11 @@ flat
 //jfox change words to word for a white space test
 	>: [BEGEXP] [WORD a] "[" [WORDS b] "(" [WORDS c] ")" "]" [ENDEXP] = <expan>[WORD a]<supplied reason="lost">[WORDS b]<ex>[WORDS c]</></></>
 	>: [BEGEXP] "[" "(" [WORDS c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDS c]</></></>
+	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] "(" [WORDSSIC f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]<ex>[WORDSSIC f]</></>
+	>: [BEGEXP] [items a] "(" [WORDSSIC f] ")" [WORDOPT g] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<ex>[WORDSSIC f]</>[WORDOPT g]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
+	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [items e] "(" [WORDSSIC f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[items e]<ex>[WORDSSIC f]</></>
+	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [items e] "[" "(" [WORDSSIC f] ")" "]" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[items e]<supplied reason="lost"><ex>[WORDSSIC f]</></></>
+	>: [BEGEXP] "(" [WORDSSIC a] ")" [items b] "(" [WORDSSIC c] ")" [ENDEXP] = <expan><ex>[WORDSSIC a]</>[items b]<ex>[WORDSSIC c]</></>
 	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDS c]</>[WORDOPT d]</>[WORDOPT e]</>
 //  **P5**
 	: "[]" = <supplied reason="lost"/>

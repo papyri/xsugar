@@ -327,6 +327,7 @@ item
 	//---test_lines_not_transcribed---
 	//"lines not transcribed" **P5**
 	: "(Lines: " [GAPEXTNUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[GAPEXTNUM v] unit="line"></>
+	>: "(Lines: unknown not transcribed)" = <gap reason="ellipsis" extent="unknown" unit="line"><desc>"non transcribed"</></>
 	
 	//---subscript---
 	//   /abc\
@@ -665,6 +666,10 @@ flat
 	>: [BEGEXP] [items a] "(" [WORDSSIC f] ")" [WORDOPT g] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<ex>[WORDSSIC f]</>[WORDOPT g]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [items e] "(" [WORDSSIC f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[items e]<ex>[WORDSSIC f]</></>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [items e] "[" "(" [WORDSSIC f] ")" "]" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[items e]<supplied reason="lost"><ex>[WORDSSIC f]</></></>
+	>: [BEGEXP] "(" [items f] ")" [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan><ex>[items f]</>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
+	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "(" [WORDSSIC e] ")" [WORDOPT f] "]" [WORDOPT g] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]<ex>[WORDSSIC e]</>[WORDOPT f]</>[WORDOPT g]</>
+	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] "?" ")" [WORDOPT d] "]" [WORDOPT e] "(" [WORDSSIC f] ")" [WORDOPT g] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]<ex>[WORDSSIC f]</>[WORDOPT g]</>
+	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDSSIC c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [BEGEXP] "(" [WORDSSIC a] ")" [items b] "(" [WORDSSIC c] ")" [ENDEXP] = <expan><ex>[WORDSSIC a]</>[items b]<ex>[WORDSSIC c]</></>
 	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDS c]</>[WORDOPT d]</>[WORDOPT e]</>
 //  **P5**

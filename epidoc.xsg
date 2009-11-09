@@ -53,7 +53,8 @@ WORDSNONUM = ([^\/\\\n\r\t\[\]\^<>0-9_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯�
 WORDSF = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯≡\u0323]+) (MAX)
 
 //WORDSBL allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
-WORDSBL = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\{\}\?\"¯≡\u0323]+) (MAX)
+//allowed comma on 11/09 because of p.hombert.1.32.xml parse error - change all editorial lem resp= from WORDS to WORDSBL
+WORDSBL = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯≡\u0323]+) (MAX)
 
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
 WORDSLR = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
@@ -282,6 +283,7 @@ item
 	>: [BEGOPT] [WORDAVEST a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic cert="low">[items d]</></>
 	>: [BEGOPT] [items a] "?" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[items a]</><sic cert="low">[items d]</></>
 	>: [BEGOPT] [items a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[items a]</><sic cert="low">[items d]</></>
+	>: [BEGOPT] [items a] "?" "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[items a]</><sic>[items d]</></>
 //30
 	: [BEGOPT] [WORDAVEST a] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[WORDAVEST b]</></>
 	>: [BEGOPT] [items a] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDAVEST b]</></>
@@ -464,16 +466,16 @@ item
 //	>: [BEGOPT] [WORD a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[WORD a]</><rdg>[items b]</></>
 	
 //this set of app editorial has 'lem resp=' attribute
-	: [BEGOPT] [WORD a] "|ed:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[WORD b]</></>
-	>: [BEGOPT] [items a] "|ed:" [WORDS e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[WORD b]</></>
-	>: [BEGOPT] [WORD a] "|ed:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[WORD a]</><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "|ed:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg>[items b]</></>
+	: [BEGOPT] [WORD a] "|ed:" [WORDSBL e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[WORD a]</><rdg>[WORD b]</></>
+	>: [BEGOPT] [items a] "|ed:" [WORDSBL e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[items a]</><rdg>[WORD b]</></>
+	>: [BEGOPT] [WORD a] "|ed:" [WORDSBL e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[WORD a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|ed:" [WORDSBL e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[items a]</><rdg>[items b]</></>
 //line below added for empty tag lem on editorial with resp
-	>: [BEGOPT] "|ed:" [WORDS e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]></><rdg>[items b]</></>
+	>: [BEGOPT] "|ed:" [WORDSBL e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]></><rdg>[items b]</></>
 //line below added for empty tag lem on editorial without resp
 	>: [BEGOPT] "|ed:" "|" [items b] [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]</></>
 //line below added for empty tag rdg on editorial with resp
-	>: [BEGOPT] [items a] "|ed:" [WORDS e] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDS e]>[items a]</><rdg></></>
+	>: [BEGOPT] [items a] "|ed:" [WORDSBL e] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[items a]</><rdg></></>
 //line below added for the '(BL 1.24)' at the end of the 'lem resp=' attribute value - parens cannot be a valid value in WORD or WORDS
 	>: [BEGOPT] [items a] "|ed:" [WORDSBL c] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL c]>[items a]</><rdg>[items b]</></>
 //this set of app editorial does not have 'lem resp=' attribute

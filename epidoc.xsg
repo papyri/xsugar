@@ -274,17 +274,17 @@ item
 	
 	//---test_expand low cert---
 	// (abc?)
-	>:  [BEGEXP] "(" [WORDS w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORDS w]</></>
+	>:  [BEGEXP] "(" [WORDSSIC w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORDSSIC w]</></>
 //changed line below from words to word for a white space test 
-	>: [BEGEXP] [WORD a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORDS b]</></>
-	>: [BEGEXP] [items a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS b]</></>
+	>: [BEGEXP] [WORD a] "(" [WORDSSIC b] "?" ")" [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORDSSIC b]</></>
+	>: [BEGEXP] [items a] "(" [WORDSSIC b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDSSIC b]</></>
 //add 2 lines below 6/17 for p.kar.goodsp
-	>: [BEGEXP] [items a] "(" [WORDS b] "?" ")" [items c] "(" [WORDS d] ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS b]</>[items c]<ex>[WORDS d]</></>
+	>: [BEGEXP] [items a] "(" [WORDSSIC b] "?" ")" [items c] "(" [WORDSSIC d] ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDSSIC b]</>[items c]<ex>[WORDSSIC d]</></>
 //change words to word for a below for white space test	
-	>: [BEGEXP] [WORD a] "(" [WORDS b] ")" [WORDS c] "[" [WORDS d] "(" [WORDS e] ")" "]" [ENDEXP] = <expan>[WORD a]<ex>[WORDS b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDS e]</></></>
+	>: [BEGEXP] [WORD a] "(" [WORDSSIC b] ")" [WORDS c] "[" [WORDS d] "(" [WORDSSIC e] ")" "]" [ENDEXP] = <expan>[WORD a]<ex>[WORDSSIC b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDSSIC e]</></></>
 //add 2 lines below 6/17 for p.oxy.17
-	>: [BEGEXP] "(" "(" [WORDS a] ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan><ex>[WORDS a]</>[WORD c]<ex>[WORDS b]</></>
-	>: [BEGEXP] "(" "(" [WORDS a]  "?" ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORDS a]</>[WORD c]<ex>[WORDS b]</></>
+	>: [BEGEXP] "(" "(" [WORDSSIC a] ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan><ex>[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
+	>: [BEGEXP] "(" "(" [WORDSSIC a]  "?" ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
 	
 	//---test_expansion---
 	// a(b)
@@ -293,18 +293,18 @@ item
 	
 	//---test_symbol_expansion---
 	// (abc)
-	: [BEGEXP] "(" "(" [WORD a] ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan><ex>[WORD a]</>[WORD c]<ex>[WORDS b]</></>
+	: [BEGEXP] "(" "(" [WORDSSIC a] ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan><ex>[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
 	>: [BEGEXP] [expandex e] [ENDEXP] = <expan>[expandex e]</>
 	>: [BEGEXP] [WORD a] [expandex e] [ENDEXP] = <expan>[WORD a] [expandex e]</>
-	>: [BEGEXP] [items d] "(" "(" [WORDS a] ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan>[items d]<ex>[WORDS a]</>[WORD c]<ex>[WORDS b]</></>
+	>: [BEGEXP] [items d] "(" "(" [WORDSSIC a] ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan>[items d]<ex>[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
 //	>: "(" [items a] ")" = <expan><ex>[items a]</></>
 	
 //---expand with supplied reason lost---
-	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS c]</>[WORDOPT d]</>[WORDOPT e]</>
-	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDS c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS c]</>[WORDOPT d]</>[WORDOPT e]</>
+	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
+	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
 //jfox change words to word for a white space test
-	>: [BEGEXP] [WORD a] "[" [WORDS b] "(" [WORDS c] ")" "]" [ENDEXP] = <expan>[WORD a]<supplied reason="lost">[WORDS b]<ex>[WORDS c]</></></>
-	>: [BEGEXP] "[" "(" [WORDS c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDS c]</></></>
+	>: [BEGEXP] [WORD a] "[" [WORDS b] "(" [WORDSSIC c] ")" "]" [ENDEXP] = <expan>[WORD a]<supplied reason="lost">[WORDS b]<ex>[WORDSSIC c]</></></>
+	>: [BEGEXP] "[" "(" [WORDSSIC c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDSSIC c]</></></>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] "(" [WORDSSIC f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]<ex>[WORDSSIC f]</></>
 	>: [BEGEXP] [items a] "(" [WORDSSIC f] ")" [WORDOPT g] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<ex>[WORDSSIC f]</>[WORDOPT g]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [items e] "(" [WORDSSIC f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[items e]<ex>[WORDSSIC f]</></>
@@ -470,24 +470,20 @@ item
 	>: "_[" [items a] "]_" = <supplied evidence="parallel" reason="lost">[items a]</>
 
 	//---number or fraction_no_symbol---
-	//  #a#1/2# a = character representation and then the fraction it equals between next #'s
-    : "<#=" [NUM s] [ENDNUM] = <num value=[NUM s]/>
-	: "<#nr=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]/>
-	: "<#=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction"/>
-//	: "<#=" [SYMNUMMULTI m] "#>" = <num value=[SYMNUMMULTI m]/>
+    : "<#=frac" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction"/>
+	: "<#=" [NUM s] [ENDNUM] = <num value=[NUM s]/>
+	: "<#=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]/>
 	: [BEGNUM] [WORDA o] "=#>" = <num>[WORDA o]</>
 	: [BEGNUM] "frac" [ENDNUM] = <num type="fraction"/>
-	
+
 	//---fraction_number and whole_number symbol and multi_symbol---
-	//  <#a#1/2#> a = symbol representation and then the number/fraction it equals after '='
-//	: [BEGNUM] [WORDA o] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[WORDA o]</>
-	: [BEGNUMNR] [WORDA o] "=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]>[WORDA o]</>
-	: [BEGNUM] [WORDA o] "=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[WORDA o]</>
+	: [BEGNUM] [WORDA o] "=frac" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[WORDA o]</>
+	: [BEGNUM] [WORDA o] "=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]>[WORDA o]</>
 	: [BEGNUM] [WORDA o] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[WORDA o]</>
 	: [BEGNUM] [WORDA o] [morenum m] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[WORDA o] [morenum m]</>
-//	: [BEGNUM] [items o] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[items o]</>
-	>: [BEGNUMNR] [items o] "=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]>[items o]</>
-	>: [BEGNUM] [items o] "=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[items o]</>
+	>: [BEGNUM] [items o] "=frac" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[items o]</>
+	>: [BEGNUM] [items o] "=frac" [ENDNUM] = <num rend="fraction">[items o]</>
+	>: [BEGNUM] [items o] "=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]>[items o]</>
 	>: [BEGNUM] [items o] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[items o]</>
 	>: [BEGNUM] [items o] "=" [ENDNUM] = <num>[items o]</>
 		

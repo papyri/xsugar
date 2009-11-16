@@ -281,8 +281,9 @@ item
 //change words to word for a below for white space test	
 	>: [BEGEXP] [WORD a] "(" [WORDSSIC b] ")" [WORDS c] "[" [WORDS d] "(" [WORDSSIC e] ")" "]" [ENDEXP] = <expan>[WORD a]<ex>[WORDSSIC b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDSSIC e]</></></>
 //add 2 lines below 6/17 for p.oxy.17
-	>: [BEGEXP] "(" "(" [WORDSSIC a] ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan><ex>[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
-	>: [BEGEXP] "(" "(" [WORDSSIC a]  "?" ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
+//	>: [BEGEXP] "(" "(" [WORDSSIC a] ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan><ex>[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
+//	>: [BEGEXP] "(" "(" [WORDSSIC a]  "?" ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
+	>: [BEGEXP] "(" [WORDSSIC a]  "?" ")" [WORD c] [expand b] [ENDEXP] = <expan><ex cert="low">[WORDSSIC a]</>[WORD c][expand b]</>
 	
 	//---test_expansion---
 	// a(b)

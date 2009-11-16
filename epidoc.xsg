@@ -8,7 +8,6 @@ ABBR = "(  )"+
 
 BEGOPT = "<:"
 ENDOPT = ":>"
-BEGNUMNR = "<#nr"
 BEGNUM = "<#"
 ENDNUM = "#>"
 BEGSEG = "<\&"
@@ -81,7 +80,6 @@ HANDSHIFT = m{1}[0-9]+[^ \/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯�
 
 DOT = "."
 QUESTION = [\?]?
-FORPUNCT = [:?]*
 
 // symbolnum is for recognizing either a fraction or whole number with multiple digits
 //SYMBOLNUM = [0-9]+\/{1}[0-9]+|[0-9]+
@@ -577,8 +575,10 @@ item
 	//  ~veni vedi vici~la **P5** 
 	: "~" [WORDSF a] "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a]</>
 	>: "~" [items a] "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]</>
-//comment 10/08 to see if this is what broke the nightly run
-//	>: "~" [items a][FORPUNCT f][SP s] "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a][FORPUNCT f][SP s]</>
+	>: "~" [items a] ": " "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "</>
+	>: "~" [items a] ":" "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]":"</>
+	>: "~" [items a]": "[WORDSF c][items d] "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "[WORDSF c][items d]</>
+	>: "~" [items a]": "[WORDSF c][items d]": " "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "[WORDSF c][items d]": "</>
 	
 	//---figure---
 	//  fig.seal 
@@ -611,44 +611,6 @@ item
 
 	
 flat 
-//	//---test_expand low cert---
-//	// (?)
-////	: [BEGEXP] "(" "  ?" ")" [ENDEXP] = <expan><ex cert="low"></></>
-//	: [BEGEXP] "()" [ENDEXP] = <expan><ex></></>
-//	:  [BEGEXP] "(" [SPO2 w] "?" ")" [ENDEXP]= <expan><ex cert="low">[SPO2 w]</></>
-//	
-//	//---test_expand low cert---
-//	// (abc?)
-//	>:  [BEGEXP] "(" [WORDS w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORDS w]</></>
-////changed line below from words to word for a white space test 
-//	>: [BEGEXP] [WORD a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORDS b]</></>
-//	>: [BEGEXP] [items a] "(" [WORDS b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS b]</></>
-////add 2 lines below 6/17 for p.kar.goodsp
-//	>: [BEGEXP] [items a] "(" [WORDS b] "?" ")" [items c] "(" [WORDS d] ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS b]</>[items c]<ex>[WORDS d]</></>
-////change words to word for a below for white space test	
-//	>: [BEGEXP] [WORD a] "(" [WORDS b] ")" [WORDS c] "[" [WORDS d] "(" [WORDS e] ")" "]" [ENDEXP] = <expan>[WORD a]<ex>[WORDS b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDS e]</></></>
-////add 2 lines below 6/17 for p.oxy.17
-//	>: [BEGEXP] "(" "(" [WORDS a] ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan><ex>[WORDS a]</>[WORD c]<ex>[WORDS b]</></>
-//	>: [BEGEXP] "(" "(" [WORDS a]  "?" ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORDS a]</>[WORD c]<ex>[WORDS b]</></>
-//	
-//	//---test_expansion---
-//	// a(b)
-//// comment the next line - causes 5 reversability and passing errors in EXPAN in BGU.1 - bgurakcov0414_v06
-////	>: [WORD a] "(" [WORDS b] __")" = <expan>[WORD a]<ex>[WORDS b] __</></>
-////jfox change words to word for a white space test
-//	>: [BEGEXP] [WORD a] "(" [WORDSSIC b] ")" [ENDEXP] = <expan>[WORD a]<ex>[WORDSSIC b]</></>
-//	
-//	//---test_symbol_expansion---
-//	// (abc)
-////	: "(" [WORDSNUM a] ")" = <expan><ex>[WORDSNUM a]</></>
-////: "(" [WORD a] __ [WORD b] ")" = <expan><ex>[WORD a] __ [WORD b]</></> - old definition of WORDSNUM i think
-////	: "(" [WORD a] ")" = <expan><ex>[WORD a]</></> - commented out to remove vert ambig with wordsnum above
-////	: [BEGEXP] "(" "(" [WORD a] ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan><ex>[WORD a]</>[WORD c]<ex>[WORDS b]</></>
-//	>: [BEGEXP] [expandex e] [ENDEXP] = <expan>[expandex e]</>
-//	>: [BEGEXP] [WORD a] [expandex e] [ENDEXP] = <expan>[WORD a] [expandex e]</>
-//	>: [BEGEXP] [items d] "(" "(" [WORDS a] ")" [WORD c] "(" [WORDS b] ")" ")" [ENDEXP] = <expan>[items d]<ex>[WORDS a]</>[WORD c]<ex>[WORDS b]</></>
-////	>: "(" [items a] ")" = <expan><ex>[items a]</></>
-
 	//---test_vestige_lines---
 	// vestig.#{n}lin **P5**
 	: "vestig." [NUM n] "lin" = <gap reason="illegible" quantity=[NUM n] unit="line"><desc>"vestiges"</></>
@@ -713,22 +675,6 @@ flat
 	//seg
 	>: [BEGSEG] [items i] [ENDSEG] = <seg cert="low">[items i]</>	
 	
-//	//---expand with supplied reason lost---
-//	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS c]</>[WORDOPT d]</>[WORDOPT e]</>
-//	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDS c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS c]</>[WORDOPT d]</>[WORDOPT e]</>
-////jfox change words to word for a white space test
-//	>: [BEGEXP] [WORD a] "[" [WORDS b] "(" [WORDS c] ")" "]" [ENDEXP] = <expan>[WORD a]<supplied reason="lost">[WORDS b]<ex>[WORDS c]</></></>
-//	>: [BEGEXP] "[" "(" [WORDS c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDS c]</></></>
-//	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] "(" [WORDSSIC f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]<ex>[WORDSSIC f]</></>
-//	>: [BEGEXP] [items a] "(" [WORDSSIC f] ")" [WORDOPT g] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<ex>[WORDSSIC f]</>[WORDOPT g]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
-//	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [items e] "(" [WORDSSIC f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[items e]<ex>[WORDSSIC f]</></>
-//	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [items e] "[" "(" [WORDSSIC f] ")" "]" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[items e]<supplied reason="lost"><ex>[WORDSSIC f]</></></>
-//	>: [BEGEXP] "(" [items f] ")" [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan><ex>[items f]</>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
-//	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "(" [WORDSSIC e] ")" [WORDOPT f] "]" [WORDOPT g] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]<ex>[WORDSSIC e]</>[WORDOPT f]</>[WORDOPT g]</>
-//	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] "?" ")" [WORDOPT d] "]" [WORDOPT e] "(" [WORDSSIC f] ")" [WORDOPT g] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]<ex>[WORDSSIC f]</>[WORDOPT g]</>
-//	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDSSIC c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
-//	>: [BEGEXP] "(" [WORDSSIC a] ")" [items b] "(" [WORDSSIC c] ")" [ENDEXP] = <expan><ex>[WORDSSIC a]</>[items b]<ex>[WORDSSIC c]</></>
-//	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDS c]</>[WORDOPT d]</>[WORDOPT e]</>
 //  **P5**
 	: "[]" = <supplied reason="lost"/>
 	: "[ ?]" = <supplied reason="lost" cert="low"/>

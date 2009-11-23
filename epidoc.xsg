@@ -65,6 +65,9 @@ WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for supralinear
 WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
+//WORDS4EX created 11/23 from WORDSSIC to use in expan <ex> tags to allow fraction numbers to appear within tag - removed / in not allowed
+WORDS4EX = ([^\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
 WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]*) (MAX)
 
@@ -140,15 +143,16 @@ morenum : [BEGNUM] [WORD w] "=" [NUM x] [ENDNUM] [morenum y] = <num value=[NUM x
 //expand 	: [WORD a] "(" [WORDSSIC b] ")" [expand more] = [WORD a]<ex>[WORDSSIC b]</>[expand more]
 //			>: [WORD a] "(" [WORDSSIC b] ")" = [WORD a]<ex>[WORDSSIC b]</>
 			
-expand : "(" [WORDSSIC b] ")" [WORD a] [expand more] = <ex>[WORDSSIC b]</>[WORD a][expand more]
-			>: "(" [WORDSSIC b] ")" = <ex>[WORDSSIC b]</>
+expand : "(" [WORDS4EX b] ")" [WORD a] [expand more] = <ex>[WORDS4EX b]</>[WORD a][expand more]
+			>: "(" [WORDS4EX b] ")" = <ex>[WORDS4EX b]</>
 			
-expandex : "(" [WORDSSIC b] ")" [expandex more] = <ex>[WORDSSIC b]</>[expandex more]
-			>: "(" [WORDSSIC b] ")" = <ex>[WORDSSIC b]</>
+expandex : "(" [WORDS4EX b] ")" [expandex more] = <ex>[WORDS4EX b]</>[expandex more]
+			>: "(" [WORDS4EX b] ")" = <ex>[WORDS4EX b]</>
 			
-expando : [items a] "(" [WORDSSIC b] ")" [expando more] = [items a]<ex>[WORDSSIC b]</>[expando more]
-			>: [items a] "(" [WORDSSIC b] ")" = [items a]<ex>[WORDSSIC b]</>
-			>: [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
+expando : [items a] "(" [WORDS4EX b] ")" [expando more] = [items a]<ex>[WORDS4EX b]</>[expando more]
+			>: [items a] "(" [WORDS4EX b] ")" = [items a]<ex>[WORDS4EX b]</>
+//commented out 11/23 per conversation 11/19 that no markup allowed inside <ex> tag
+//			>: [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
 
 //expandim : [items a] "(" [WORDS b] ")" = [items a]<ex>[WORDS b]</>
 //expandii : [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
@@ -253,7 +257,7 @@ item
 //wrote for specific reversability case in p.ness.3.55 7 /21 - will see if it fixes anything else 
 	: [BEGEXP] [ANYLETTER c] [UNDERDOT] "(¨)" [items a] "(" [WORD d] ")" [ENDEXP] = <expan><hi rend="diaeresis"><unclear>[ANYLETTER c]</></>[items a]<ex>[WORD d]</></>
 
-	: [BEGEXP] "(" [WORDSNUM a] ")" [ENDEXP] = <expan><ex>[WORDSNUM a]</></>
+	: [BEGEXP] "(" [WORDS4EX a] ")" [ENDEXP] = <expan><ex>[WORDS4EX a]</></>
 	>: [BEGEXP] "(" [items a] ")" [ENDEXP] = <expan><ex>[items a]</></>
 
 	>: [BEGEXP] [expand e] [ENDEXP] = <expan>[expand e]</>
@@ -272,47 +276,47 @@ item
 	
 	//---test_expand low cert---
 	// (abc?)
-	>:  [BEGEXP] "(" [WORDSSIC w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORDSSIC w]</></>
+	>:  [BEGEXP] "(" [WORDS4EX w] "?" ")" [ENDEXP]= <expan><ex cert="low">[WORDS4EX w]</></>
 //changed line below from words to word for a white space test 
-	>: [BEGEXP] [WORD a] "(" [WORDSSIC b] "?" ")" [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORDSSIC b]</></>
-	>: [BEGEXP] [items a] "(" [WORDSSIC b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDSSIC b]</></>
+	>: [BEGEXP] [WORD a] "(" [WORDS4EX b] "?" ")" [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORDS4EX b]</></>
+	>: [BEGEXP] [items a] "(" [WORDS4EX b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS4EX b]</></>
 //add 2 lines below 6/17 for p.kar.goodsp
-	>: [BEGEXP] [items a] "(" [WORDSSIC b] "?" ")" [items c] "(" [WORDSSIC d] ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDSSIC b]</>[items c]<ex>[WORDSSIC d]</></>
+	>: [BEGEXP] [items a] "(" [WORDS4EX b] "?" ")" [items c] "(" [WORDS4EX d] ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS4EX b]</>[items c]<ex>[WORDS4EX d]</></>
 //change words to word for a below for white space test	
-	>: [BEGEXP] [WORD a] "(" [WORDSSIC b] ")" [WORDS c] "[" [WORDS d] "(" [WORDSSIC e] ")" "]" [ENDEXP] = <expan>[WORD a]<ex>[WORDSSIC b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDSSIC e]</></></>
+	>: [BEGEXP] [WORD a] "(" [WORDS4EX b] ")" [WORDS c] "[" [WORDS d] "(" [WORDS4EX e] ")" "]" [ENDEXP] = <expan>[WORD a]<ex>[WORDS4EX b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDS4EX e]</></></>
 //add 2 lines below 6/17 for p.oxy.17
-//	>: [BEGEXP] "(" "(" [WORDSSIC a] ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan><ex>[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
-//	>: [BEGEXP] "(" "(" [WORDSSIC a]  "?" ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
-	>: [BEGEXP] "(" [WORDSSIC a]  "?" ")" [WORD c] [expand b] [ENDEXP] = <expan><ex cert="low">[WORDSSIC a]</>[WORD c][expand b]</>
+//	>: [BEGEXP] "(" "(" [WORDS4EX a] ")" [WORD c] "(" [WORDS4EX b] ")" ")" [ENDEXP] = <expan><ex>[WORDS4EX a]</>[WORD c]<ex>[WORDS4EX b]</></>
+//	>: [BEGEXP] "(" "(" [WORDS4EX a]  "?" ")" [WORD c] "(" [WORDS4EX b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORDS4EX a]</>[WORD c]<ex>[WORDS4EX b]</></>
+	>: [BEGEXP] "(" [WORDS4EX a]  "?" ")" [WORD c] [expand b] [ENDEXP] = <expan><ex cert="low">[WORDS4EX a]</>[WORD c][expand b]</>
 	
 	//---test_expansion---
 	// a(b)
 //jfox change words to word for a white space test
-	>: [BEGEXP] [WORD a] "(" [WORDSSIC b] ")" [ENDEXP] = <expan>[WORD a]<ex>[WORDSSIC b]</></>
+	>: [BEGEXP] [WORD a] "(" [WORDS4EX b] ")" [ENDEXP] = <expan>[WORD a]<ex>[WORDS4EX b]</></>
 	
 	//---test_symbol_expansion---
 	// (abc)
-	: [BEGEXP] "(" "(" [WORDSSIC a] ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan><ex>[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
+	: [BEGEXP] "(" "(" [WORDS4EX a] ")" [WORD c] "(" [WORDS4EX b] ")" ")" [ENDEXP] = <expan><ex>[WORDS4EX a]</>[WORD c]<ex>[WORDS4EX b]</></>
 	>: [BEGEXP] [expandex e] [ENDEXP] = <expan>[expandex e]</>
 	>: [BEGEXP] [WORD a] [expandex e] [ENDEXP] = <expan>[WORD a] [expandex e]</>
-	>: [BEGEXP] [items d] "(" "(" [WORDSSIC a] ")" [WORD c] "(" [WORDSSIC b] ")" ")" [ENDEXP] = <expan>[items d]<ex>[WORDSSIC a]</>[WORD c]<ex>[WORDSSIC b]</></>
+	>: [BEGEXP] [items d] "(" "(" [WORDS4EX a] ")" [WORD c] "(" [WORDS4EX b] ")" ")" [ENDEXP] = <expan>[items d]<ex>[WORDS4EX a]</>[WORD c]<ex>[WORDS4EX b]</></>
 //	>: "(" [items a] ")" = <expan><ex>[items a]</></>
 	
 //---expand with supplied reason lost---
-	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
-	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
+	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
+	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
 //jfox change words to word for a white space test
-	>: [BEGEXP] [WORD a] "[" [WORDS b] "(" [WORDSSIC c] ")" "]" [ENDEXP] = <expan>[WORD a]<supplied reason="lost">[WORDS b]<ex>[WORDSSIC c]</></></>
-	>: [BEGEXP] "[" "(" [WORDSSIC c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDSSIC c]</></></>
-	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] "(" [WORDSSIC f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]<ex>[WORDSSIC f]</></>
-	>: [BEGEXP] [items a] "(" [WORDSSIC f] ")" [WORDOPT g] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<ex>[WORDSSIC f]</>[WORDOPT g]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
-	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [items e] "(" [WORDSSIC f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[items e]<ex>[WORDSSIC f]</></>
-	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [items e] "[" "(" [WORDSSIC f] ")" "]" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[items e]<supplied reason="lost"><ex>[WORDSSIC f]</></></>
-	>: [BEGEXP] "(" [items f] ")" [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan><ex>[items f]</>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
-	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDSSIC c] ")" [WORDOPT d] "(" [WORDSSIC e] ")" [WORDOPT f] "]" [WORDOPT g] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDSSIC c]</>[WORDOPT d]<ex>[WORDSSIC e]</>[WORDOPT f]</>[WORDOPT g]</>
-	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDSSIC c] "?" ")" [WORDOPT d] "]" [WORDOPT e] "(" [WORDSSIC f] ")" [WORDOPT g] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]<ex>[WORDSSIC f]</>[WORDOPT g]</>
-	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDSSIC c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDSSIC c]</>[WORDOPT d]</>[WORDOPT e]</>
-	>: [BEGEXP] "(" [WORDSSIC a] ")" [items b] "(" [WORDSSIC c] ")" [ENDEXP] = <expan><ex>[WORDSSIC a]</>[items b]<ex>[WORDSSIC c]</></>
+	>: [BEGEXP] [WORD a] "[" [WORDS b] "(" [WORDS4EX c] ")" "]" [ENDEXP] = <expan>[WORD a]<supplied reason="lost">[WORDS b]<ex>[WORDS4EX c]</></></>
+	>: [BEGEXP] "[" "(" [WORDS4EX c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDS4EX c]</></></>
+	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] "(" [WORDS4EX f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]<ex>[WORDS4EX f]</></>
+	>: [BEGEXP] [items a] "(" [WORDS4EX f] ")" [WORDOPT g] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<ex>[WORDS4EX f]</>[WORDOPT g]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
+	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [items e] "(" [WORDS4EX f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[items e]<ex>[WORDS4EX f]</></>
+	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [items e] "[" "(" [WORDS4EX f] ")" "]" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[items e]<supplied reason="lost"><ex>[WORDS4EX f]</></></>
+	>: [BEGEXP] "(" [items f] ")" [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan><ex>[items f]</>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
+	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "(" [WORDS4EX e] ")" [WORDOPT f] "]" [WORDOPT g] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]<ex>[WORDS4EX e]</>[WORDOPT f]</>[WORDOPT g]</>
+	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] "?" ")" [WORDOPT d] "]" [WORDOPT e] "(" [WORDS4EX f] ")" [WORDOPT g] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]<ex>[WORDS4EX f]</>[WORDOPT g]</>
+	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDS4EX c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
+	>: [BEGEXP] "(" [WORDS4EX a] ")" [items b] "(" [WORDS4EX c] ")" [ENDEXP] = <expan><ex>[WORDS4EX a]</>[items b]<ex>[WORDS4EX c]</></>
 	: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDS c]</>[WORDOPT d]</>[WORDOPT e]</>
 	
 	//---test unclear characters = underdots

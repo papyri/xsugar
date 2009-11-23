@@ -371,14 +371,18 @@ item
 	: [LEADCA] [NUM n] = <gap reason="illegible" quantity=[NUM n] unit="character" precision="low"></>
 	>: [LEADCA] [GAPEXTNUM j] = <gap reason="illegible" extent=[GAPEXTNUM j] unit="character" precision="low"></>
 	
-	//---test_lang_gap---
+	//---test_lang_gap_line---
 	//(Lang: Demotic 2 lines) **P5**  **guess** at second line
-	: "(Lang: " [LANGLIST l] " " [GAPEXTNUM v] " lines)" = <gap reason="ellipsis" quantity=[GAPEXTNUM v] unit="line"><desc>[LANGLIST l]</></>
+	: "(Lang: " [LANGLIST l] " " [NUM v] " lines)" = <gap reason="ellipsis" quantity=[NUM v] unit="line"><desc>[LANGLIST l]</></>
 	>: "(Lang: " [LANGLIST l] " ? lines)" = <gap reason="ellipsis" extent="unknown" unit="line"><desc>[LANGLIST l]</></>
+	
+	//---test_lang_gap_char---
+	: "(Lang: " [LANGLIST l] " " [NUM v] " char)" = <gap reason="ellipsis" quantity=[NUM v] unit="character"><desc>[LANGLIST l]</></>
+	>: "(Lang: " [LANGLIST l] " ? char)" = <gap reason="ellipsis" extent="unknown" unit="character"><desc>[LANGLIST l]</></>
 	
 	//---test_lines_not_transcribed---
 	//"lines not transcribed" **P5**
-	: "(Lines: " [GAPEXTNUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[GAPEXTNUM v] unit="line"></>
+	: "(Lines: " [NUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="line"><desc>"non transcribed"</></>
 	>: "(Lines: unknown not transcribed)" = <gap reason="ellipsis" extent="unknown" unit="line"><desc>"non transcribed"</></>
 	
 	//---subscript---
@@ -616,6 +620,7 @@ flat
 	// vestig.#{n}lin **P5**
 	: "vestig." [NUM n] "lin" = <gap reason="illegible" quantity=[NUM n] unit="line"><desc>"vestiges"</></>
 	>: "vestig." [GAPEXTNUM v] "lin" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="line"><desc>"vestiges"</></>
+	>: "vestig." [NUM v] "-" [NUM w] "lin" = <gap reason="illegible" atLeast=[NUM v] atMost=[NUM w] unit="line"><desc>"vestiges"</></>
 	
 	//---test_vestige_lines_ca---
 	// vestig.ca.#{n}lin **P5**
@@ -631,6 +636,7 @@ flat
 // changed per James conversation on 6/10 - desc="vestiges" and reason="illegible"
 	: "vestig." [NUM n] "char" = <gap reason="illegible" quantity=[NUM n] unit="character"><desc>"vestiges"</></>
 	>: "vestig." [GAPEXTNUM v] "char" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="character"><desc>"vestiges"</></>
+	>: "vestig." [NUM v] "-" [NUM w] "char" = <gap reason="illegible" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"vestiges"</></>
 	
 	//---test_vestige_characters---
 	// vestig **P5**

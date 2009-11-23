@@ -258,7 +258,8 @@ item
 	: [BEGEXP] [ANYLETTER c] [UNDERDOT] "(¨)" [items a] "(" [WORD d] ")" [ENDEXP] = <expan><hi rend="diaeresis"><unclear>[ANYLETTER c]</></>[items a]<ex>[WORD d]</></>
 
 	: [BEGEXP] "(" [WORDS4EX a] ")" [ENDEXP] = <expan><ex>[WORDS4EX a]</></>
-	>: [BEGEXP] "(" [items a] ")" [ENDEXP] = <expan><ex>[items a]</></>
+//commented 11/23 due to 11/19 conversation with gabby stating no mark up inside <ex> tag
+//	>: [BEGEXP] "(" [items a] ")" [ENDEXP] = <expan><ex>[items a]</></>
 
 	>: [BEGEXP] [expand e] [ENDEXP] = <expan>[expand e]</>
 	>: [BEGEXP] [WORD a] [expand e] [ENDEXP] = <expan>[WORD a][expand e]</>
@@ -284,10 +285,12 @@ item
 	>: [BEGEXP] [items a] "(" [WORDS4EX b] "?" ")" [items c] "(" [WORDS4EX d] ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS4EX b]</>[items c]<ex>[WORDS4EX d]</></>
 //change words to word for a below for white space test	
 	>: [BEGEXP] [WORD a] "(" [WORDS4EX b] ")" [WORDS c] "[" [WORDS d] "(" [WORDS4EX e] ")" "]" [ENDEXP] = <expan>[WORD a]<ex>[WORDS4EX b]</>[WORDS c]<supplied reason="lost">[WORDS d]<ex>[WORDS4EX e]</></></>
+	>: [BEGEXP] "(" [WORDS4EX b] ")" [items c] "[" [WORDS d] "(" [WORDS4EX e] ")" "]" [ENDEXP] = <expan><ex>[WORDS4EX b]</>[items c]<supplied reason="lost">[WORDS d]<ex>[WORDS4EX e]</></></>
 //add 2 lines below 6/17 for p.oxy.17
 //	>: [BEGEXP] "(" "(" [WORDS4EX a] ")" [WORD c] "(" [WORDS4EX b] ")" ")" [ENDEXP] = <expan><ex>[WORDS4EX a]</>[WORD c]<ex>[WORDS4EX b]</></>
 //	>: [BEGEXP] "(" "(" [WORDS4EX a]  "?" ")" [WORD c] "(" [WORDS4EX b] ")" ")" [ENDEXP] = <expan><ex cert="low">[WORDS4EX a]</>[WORD c]<ex>[WORDS4EX b]</></>
 	>: [BEGEXP] "(" [WORDS4EX a]  "?" ")" [WORD c] [expand b] [ENDEXP] = <expan><ex cert="low">[WORDS4EX a]</>[WORD c][expand b]</>
+	>: [BEGEXP] "(" [WORDS4EX a]  "?" ")" [WORD b] "(" [WORDS4EX c] ")" [items d] "(" [WORDS4EX e] ")" [ENDEXP] = <expan><ex cert="low">[WORDS4EX a]</>[WORD b]<ex>[WORDS4EX c]</>[items d]<ex>[WORDS4EX e]</></>
 	
 	//---test_expansion---
 	// a(b)
@@ -312,7 +315,8 @@ item
 	>: [BEGEXP] [items a] "(" [WORDS4EX f] ")" [WORDOPT g] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<ex>[WORDS4EX f]</>[WORDOPT g]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [items e] "(" [WORDS4EX f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[items e]<ex>[WORDS4EX f]</></>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [items e] "[" "(" [WORDS4EX f] ")" "]" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[items e]<supplied reason="lost"><ex>[WORDS4EX f]</></></>
-	>: [BEGEXP] "(" [items f] ")" [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan><ex>[items f]</>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
+//commented 11/23 due to 11/19 conversation with gabby stating no mark up inside <ex> tag
+//	>: [BEGEXP] "(" [items f] ")" [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan><ex>[items f]</>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "(" [WORDS4EX e] ")" [WORDOPT f] "]" [WORDOPT g] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]<ex>[WORDS4EX e]</>[WORDOPT f]</>[WORDOPT g]</>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] "?" ")" [WORDOPT d] "]" [WORDOPT e] "(" [WORDS4EX f] ")" [WORDOPT g] [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]<ex>[WORDS4EX f]</>[WORDOPT g]</>
 	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDS4EX c] "?" ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex cert="low">[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>

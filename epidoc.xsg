@@ -66,7 +66,7 @@ WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0
 WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 //WORDS4EX created 11/23 from WORDSSIC to use in expan <ex> tags to allow fraction numbers to appear within tag - removed / in not allowed
-WORDS4EX = ([^\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDS4EX = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
 WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]*) (MAX)
@@ -392,6 +392,7 @@ item
 	//"lines not transcribed" **P5**
 	: "(Lines: " [NUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="line"><desc>"non transcribed"</></>
 	>: "(Lines: unknown not transcribed)" = <gap reason="ellipsis" extent="unknown" unit="line"><desc>"non transcribed"</></>
+	>: "(Lines: " [NUM v] "-" [NUM w] " not transcribed)" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="line"><desc>"non transcribed"</></>
 	
 	//---subscript---
 	//   /abc\
@@ -586,12 +587,16 @@ item
 	
 	//---foreign_lang---
 	//  ~veni vedi vici~la **P5** 
-	: "~" [WORDSF a] "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a]</>
-	>: "~" [items a] "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]</>
-	>: "~" [items a] ": " "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "</>
-	>: "~" [items a] ":" "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]":"</>
-	>: "~" [items a]": "[WORDSF c][items d] "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "[WORDSF c][items d]</>
-	>: "~" [items a]": "[WORDSF c][items d]": " "~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "[WORDSF c][items d]": "</>
+	: "~|" [WORDSF a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a]</>
+	>: "~|" [items a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]</>
+	>: "~|" [items a] ": " "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "</>
+	>: "~|" [items a] ":" "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]":"</>
+	>: "~|" [items a]": "[WORDSF c][items d] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "[WORDSF c][items d]</>
+	>: "~|" [items a]": "[WORDSF c][items d]": " "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "[WORDSF c][items d]": "</>
+	>: "~|" [items a] ". " "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]". "</>
+	>: "~|" [items a] "." "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]"."</>
+	>: "~|" [items a]". "[WORDSF c][items d] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]". "[WORDSF c][items d]</>
+	>: "~|" [items a]". "[WORDSF c][items d]". " "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]". "[WORDSF c][items d]". "</>
 	
 	//---figure---
 	//  fig.seal 
@@ -653,7 +658,8 @@ flat
 	//---test_nontran_characters---
 	// nontran **P5** **guess** not done first time - kept original commented out
 	: "nontran" = <gap reason="ellipsis" extent="unknown" unit="character"><desc>"non transcribed"</></>
-	: "nontran." [NUM v] "-" [NUM w] = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"non transcribed"</></>
+	: "nontran." [NUM v] = <gap reason="ellipsis" quantity=[NUM v] unit="character"><desc>"non transcribed"</></>
+	>: "nontran." [NUM v] "-" [NUM w] = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"non transcribed"</></>
 //	: "nontran" = <gap desc="non transcribed" extent="unknown" reason="ellipsis" unit="character"></>
 //	: "nontran." [NUM v] "-" [NUM w] = <gap desc="non transcribed" extent=[NUM v] extentmax=[NUM w] reason="ellipsis" unit="character"></>
 	

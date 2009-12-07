@@ -66,7 +66,7 @@ WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0
 WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 //WORDS4EX created 11/23 from WORDSSIC to use in expan <ex> tags to allow fraction numbers to appear within tag - removed / in not allowed
-WORDS4EX = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDS4EX = ([^\\\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
 WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]*) (MAX)

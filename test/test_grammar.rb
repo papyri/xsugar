@@ -60,7 +60,7 @@ if(RUBY_PLATFORM == 'java')
       # Ancient abbreviation whose resolution is unknown
       assert_equal_fragment_transform ' ab(  )', '<abbr>ab</abbr>'
 	  assert_equal_fragment_transform '<@bạḅdec̣g(  )@>', '<abbr>b<unclear>ab</unclear>de<unclear>c</unclear>g</abbr>'
-	  assert_equal_fragment_transform '[ <+(ἡμιωβέλιον)+> <#= 1/2 #> προ(  ) <+(δραχμὴν)+> <#α=1#> <+χ(αλκοῦς 2)+><#=2#>]', '<supplied reason="lost"> <expan><ex>ἡμιωβέλιον</ex></expan> <num value=" 1/2 "/><abbr>προ</abbr> <expan><ex>δραχμὴν</ex></expan> <num value="1">α</num> <expan>χ<ex>αλκοῦς 2</ex></expan><num value="2"/></supplied>'
+	  assert_equal_fragment_transform '[ <+(ἡμιωβέλιον)+> <#=1/2#> προ(  ) <+(δραχμὴν)+> <#α=1#> <+χ(αλκοῦς 2)+><#=2#>]', '<supplied reason="lost"> <expan><ex>ἡμιωβέλιον</ex></expan> <num value="1/2"/><abbr>προ</abbr> <expan><ex>δραχμὴν</ex></expan> <num value="1">α</num> <expan>χ<ex>αλκοῦς 2</ex></expan><num value="2"/></supplied>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html
@@ -444,7 +444,7 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_foreign_lang
-      assert_equal_fragment_transform '~veni vedi vici~la ', '<foreign xml:lang="la">veni vedi vici</foreign>'
+      assert_equal_fragment_transform '~|veni vedi vici|~la ', '<foreign xml:lang="la">veni vedi vici</foreign>'
     end
     
     def test_milestone

@@ -331,6 +331,8 @@ item
 //	>: [unclears_non_terminal u] "*" [WORDS k] "*" [unclears_non_terminal w] = <unclear>[unclears_non_terminal u] <g type=[WORDS k]></> [unclears_non_terminal w]</>
 	>: "*" [UNDERDOT] [WORDS k]  [UNDERDOT] "*" = <unclear><g type=[WORDS k]></></>
 	
+	: "<CERTAINTY>" = <certainty match=".." locus="value"/>
+	
 	//---choice---
 	//  <:a|orth|b|:> 
 	: [BEGOPT] [WORDAVEST a] "?" "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic>[WORDAVEST b]</></>

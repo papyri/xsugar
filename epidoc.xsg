@@ -535,8 +535,8 @@ item
 //	>: [BEGOPT] [WORD a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[WORD a]</><rdg>[items b]</></>
 	
 //this set of app editorial has 'lem resp=' attribute
-	: [BEGOPT] [WORD a] "|ed:" [WORDSBL e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[WORD a]</><rdg>[WORD b]</></>
-	>: [BEGOPT] [items a] "|ed:" [WORDSBL e] "|" [WORD b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[items a]</><rdg>[WORD b]</></>
+	: [BEGOPT] [WORD a] "|ed:" [WORDSBL e] "|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[WORD a]</><rdg>[WORDVEST b]</></>
+	>: [BEGOPT] [items a] "|ed:" [WORDSBL e] "|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[items a]</><rdg>[WORDVEST b]</></>
 	>: [BEGOPT] [WORD a] "|ed:" [WORDSBL e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|ed:" [WORDSBL e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[items a]</><rdg>[items b]</></>
 //line below added for empty tag lem on editorial with resp

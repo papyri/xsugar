@@ -64,7 +64,18 @@ module RXSugar
         # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin xml2nonxml.rb')
         # jruby_pipe(ruby_file, content)
         if(RUBY_PLATFORM == 'java')
-          return RXSugarSingleton.instance.rxsugar.xml_to_non_xml(content).to_s
+          begin
+            xformed = RXSugarSingleton.instance.rxsugar.xml_to_non_xml(content)
+            return xformed.to_s
+          rescue NativeException => e
+            parse_exception = e.cause()
+            if parse_exception.class == Java::DkBricsGrammarParser::ParseException
+              location = parse_exception.getLocation()
+              raise RXSugar::XMLParseError.new(
+                location.getLine(), location.getColumn()),
+                parse_exception.getMessage()
+            end
+          end
         else
           return post_to_blackboard('xml', 'nonxml', content)
         end
@@ -74,7 +85,18 @@ module RXSugar
         # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin nonxml2xml.rb')
         # jruby_pipe(ruby_file, content)
         if(RUBY_PLATFORM == 'java')
-          return RXSugarSingleton.instance.rxsugar.non_xml_to_xml(content).to_s
+          begin
+            xformed = RXSugarSingleton.instance.rxsugar.non_xml_to_xml(content)
+            return xformed.to_s
+          rescue NativeException => e
+            parse_exception = e.cause()
+            if parse_exception.class == Java::DkBricsGrammarParser::ParseException
+              location = parse_exception.getLocation()
+              raise RXSugar::NonXMLParseError.new(
+                location.getLine(), location.getColumn()),
+                parse_exception.getMessage()
+            end
+          end
         else
           return post_to_blackboard('nonxml', 'xml', content)
         end

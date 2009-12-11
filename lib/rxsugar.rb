@@ -1,7 +1,13 @@
 require File.join(File.dirname(__FILE__), 'rxsugar_helper')
 
 module RXSugar
-  class ParseError < ::StandardError; end
+  class ParseError < ::StandardError
+    attr :line, :column
+    def initialize(line = 0, column = 0)
+      @line = line
+      @column = column
+    end
+  end
   class XMLParseError < ParseError; end
   class NonXMLParseError < ParseError; end
   

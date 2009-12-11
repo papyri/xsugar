@@ -1,10 +1,6 @@
 require 'test/unit'
 
 module GrammarAssertions
-  class ParseError < ::StandardError; end
-  class XMLParseError < ParseError; end
-  class NonXMLParseError < ParseError; end
-  
   include Test::Unit::Assertions
   
   def ab(xml)
@@ -44,14 +40,14 @@ module GrammarAssertions
     begin
       xml_to_non_xml = @xsugar.xml_to_non_xml(ab(lb(input)))
     rescue NativeException => e
-      raise XMLParseError
+      raise RXSugar::XMLParseError
     end
     
     begin
     non_xml_to_xml_from_xml_to_non_xml =
       @xsugar.non_xml_to_xml(xml_to_non_xml)
     rescue NativeException => e
-      raise NonXMLParseError
+      raise RXSugar::NonXMLParseError
     end
     
     assert_equal ab(lb(expected)), non_xml_to_xml_from_xml_to_non_xml

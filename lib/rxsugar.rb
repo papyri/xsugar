@@ -1,6 +1,10 @@
 require File.join(File.dirname(__FILE__), 'rxsugar_helper')
 
 module RXSugar
+  class ParseError < ::StandardError; end
+  class XMLParseError < ParseError; end
+  class NonXMLParseError < ParseError; end
+  
   if(RUBY_PLATFORM == 'java')
     require 'java'
     require RXSugarHelper::XSUGAR_JAR_PATH

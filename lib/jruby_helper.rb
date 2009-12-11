@@ -26,7 +26,7 @@ module RXSugar
       def acts_as_leiden_plus
         unless included_modules.include? InstanceMethods
           if(RUBY_PLATFORM == 'java')
-            require File.join(File.dirname(__FILE__), *%w'.. lib rxsugar')
+            # require File.join(File.dirname(__FILE__), *%w'.. lib rxsugar')
             extend RXSugarHelper
           end
           
@@ -71,8 +71,8 @@ module RXSugar
             parse_exception = e.cause()
             if parse_exception.class == Java::DkBricsGrammarParser::ParseException
               location = parse_exception.getLocation()
-              raise RXSugar::XMLParseError.new(
-                location.getLine(), location.getColumn()),
+              raise XMLParseError.new(
+                location.getLine(), location.getColumn(), content),
                 parse_exception.getMessage()
             end
           end
@@ -92,8 +92,8 @@ module RXSugar
             parse_exception = e.cause()
             if parse_exception.class == Java::DkBricsGrammarParser::ParseException
               location = parse_exception.getLocation()
-              raise RXSugar::NonXMLParseError.new(
-                location.getLine(), location.getColumn()),
+              raise NonXMLParseError.new(
+                location.getLine(), location.getColumn(), content),
                 parse_exception.getMessage()
             end
           end

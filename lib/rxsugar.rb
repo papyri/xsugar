@@ -2,10 +2,11 @@ require File.join(File.dirname(__FILE__), 'rxsugar_helper')
 
 module RXSugar
   class ParseError < ::StandardError
-    attr :line, :column
-    def initialize(line = 0, column = 0)
+    attr_reader :line, :column, :content
+    def initialize(line = 0, column = 0, content = "")
       @line = line
       @column = column
+      @content = content
     end
   end
   class XMLParseError < ParseError; end

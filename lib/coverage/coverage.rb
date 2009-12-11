@@ -106,6 +106,7 @@ module RXSugar
 
         puts "\nPassing XML files with content:\n" + 
           xml_files_passing.join("\n")
+        puts "\nFailing XML files:\n" + xml_files_failing.join("\n")
 
         
         if HTML_OUTPUT != ''

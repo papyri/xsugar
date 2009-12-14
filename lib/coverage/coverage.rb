@@ -85,12 +85,12 @@ module RXSugar
                 xml_fragment_content, xml_fragment_content)
               passing_fragments += 1
               error_frequencies.add_error(:pass, fragment_reference)
-            rescue RXSugar::NonXMLParseError,
+            rescue NonXMLParseError,
                    Test::Unit::AssertionFailedError => e
               reversibility_errors += 1
               fragment_reference.text = ddbcov.transform_xml_fragment_to_non_xml(xml_fragment_content)
               error_frequencies.add_error(:reversibility, fragment_reference)
-            rescue RXSugar::XMLParseError => e
+            rescue XMLParseError => e
               parse_errors += 1
               error_frequencies.add_error(:parse, fragment_reference)
             end

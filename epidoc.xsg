@@ -75,7 +75,8 @@ WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0
 
 NUM = [0-9]+
 LINENUM = [0-9]+[/\,a-zA-Z]*[ms0-9]*
-GAPEXTNUM = [c]?[.]?[0-9]+
+//removed all uses of below per 12/16 review
+//GAPEXTNUM = [c]?[.]?[0-9]+
 ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]
 //added 0-9 to eliminate numbers 7/22 to fix reversability on some sup lost
 ANYMULT = [^\/\\\t\[\]\^<>0-9_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+
@@ -162,9 +163,10 @@ nestanc : " ῾" = "asper"
 			: "´" = "acute"
 			: "¨" = "diaeresis"
 			: "`" = "grave"
-			: "΄" = "oxia"
 			: "^" = "circumflex"
 			: " ᾿" = "lenis"
+//oxia removed per 12/16 review
+//			: "΄" = "oxia"
 item
 
 	: [linenumber l] = [linenumber l]
@@ -205,11 +207,12 @@ item
 	
 	//---test_uncertain_diacritical_oxia---
 	// (΄)
-	: " " [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
-	>: " " [ANYLETTER a] [UNDERDOT] "(΄)" = <hi rend="oxia"><unclear>[ANYLETTER a]</></>
-	>: " " "[." [NUM n] "]" "(΄)" = <hi rend="oxia"><gap reason="lost" quantity=[NUM n] unit="character"/></>
-	>: " " "." [NUM n] "(΄)" = <hi rend="oxia"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
-	>: " " [ANYLETTER a] "(΄" [nestanc n] ")" = <hi rend="oxia"><hi rend=[nestanc n]>[ANYLETTER a]</></>
+//oxia removed per 12/16 review
+//	: " " [ANYLETTER a] "(΄)" = <hi rend="oxia">[ANYLETTER a]</>
+//	>: " " [ANYLETTER a] [UNDERDOT] "(΄)" = <hi rend="oxia"><unclear>[ANYLETTER a]</></>
+//	>: " " "[." [NUM n] "]" "(΄)" = <hi rend="oxia"><gap reason="lost" quantity=[NUM n] unit="character"/></>
+//	>: " " "." [NUM n] "(΄)" = <hi rend="oxia"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
+//	>: " " [ANYLETTER a] "(΄" [nestanc n] ")" = <hi rend="oxia"><hi rend=[nestanc n]>[ANYLETTER a]</></>
 	
 	//---test_uncertain_diacritical_spiritus_asper--- can also be known as greek dasia when combined with space per wikipeidia
 	// (῾)
@@ -351,8 +354,9 @@ item
 	>: [BEGOPT] [items a] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDAVEST b]</></>
 	>: [BEGOPT] [WORDAVEST a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[items b]</></>
 	>: [BEGOPT] [items a] "|orth|" [items b] [ENDOPT] = <choice><corr>[items a]</><sic>[items b]</></>
-	>: [BEGOPT] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr></><sic>[WORDAVEST b]</></>
-	>: [BEGOPT] "|orth|" [items b] [ENDOPT] = <choice><corr></><sic>[items b]</></>
+// comment 2 lines below because empty corr not valid per 12/16 review
+//	>: [BEGOPT] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr></><sic>[WORDAVEST b]</></>
+//	>: [BEGOPT] "|orth|" [items b] [ENDOPT] = <choice><corr></><sic>[items b]</></>
 
 	//---milestone---
 	//  '----' or  '--------'
@@ -363,7 +367,8 @@ item
 	//---test_illegible_dot_gap---
 	// .1, .2, .3 **P5**
 	: [DOT] [NUM n] = <gap reason="illegible" quantity=[NUM n] unit="character"></>  
-	>: [DOT] [GAPEXTNUM n] = <gap reason="illegible" extent=[GAPEXTNUM n] unit="character"></>  
+// removed per 12/16 review
+//	>: [DOT] [GAPEXTNUM n] = <gap reason="illegible" extent=[GAPEXTNUM n] unit="character"></>  
 //40
 	//---test_illegible_dot_max---
 	// .#{n}-#{n} **P5**
@@ -372,7 +377,9 @@ item
 	//---test_illegible_dot_lin---
 	// .1lin, .2lin, .3lin **P5**
 	: [DOT] [NUM n] "lin" = <gap reason="illegible" quantity=[NUM n] unit="line"></>  
-	>: [DOT] [GAPEXTNUM n] "lin" = <gap reason="illegible" extent=[GAPEXTNUM n] unit="line"></>  
+	>: [LEADCA] [NUM n] "lin" = <gap reason="illegible" quantity=[NUM n] unit="line" precision="low"></>  
+// changed to line above per 12/16 review
+//	>: [DOT] [GAPEXTNUM n] "lin" = <gap reason="illegible" extent=[GAPEXTNUM n] unit="line"></>  
 	
 	//---test_illegible_dot_lin_extentmax---
 	// .1-2lin **P5**
@@ -381,7 +388,8 @@ item
 	//---test_illegible_gap_ca---
 	// ca.1, ca.2, ca.3 **P5**
 	: [LEADCA] [NUM n] = <gap reason="illegible" quantity=[NUM n] unit="character" precision="low"></>
-	>: [LEADCA] [GAPEXTNUM j] = <gap reason="illegible" extent=[GAPEXTNUM j] unit="character" precision="low"></>
+// removed per 12/16 review
+//	>: [LEADCA] [GAPEXTNUM j] = <gap reason="illegible" extent=[GAPEXTNUM j] unit="character" precision="low"></>
 	
 	//---test_lang_gap_line---
 	//(Lang: Demotic 2 lines) **P5**  **guess** at second line
@@ -395,7 +403,7 @@ item
 	//---test_lines_not_transcribed---
 	//"lines not transcribed" **P5**
 	: "(Lines: " [NUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="line"><desc>"non transcribed"</></>
-	>: "(Lines: unknown not transcribed)" = <gap reason="ellipsis" extent="unknown" unit="line"><desc>"non transcribed"</></>
+	>: "(Lines: ? not transcribed)" = <gap reason="ellipsis" extent="unknown" unit="line"><desc>"non transcribed"</></>
 	>: "(Lines: " [NUM v] "-" [NUM w] " not transcribed)" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="line"><desc>"non transcribed"</></>
 	
 	//---subscript---
@@ -641,13 +649,15 @@ flat
 	//---test_vestige_lines---
 	// vestig.#{n}lin **P5**
 	: "vestig." [NUM n] "lin" = <gap reason="illegible" quantity=[NUM n] unit="line"><desc>"vestiges"</></>
-	>: "vestig." [GAPEXTNUM v] "lin" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="line"><desc>"vestiges"</></>
+//removed per 12/16 review
+//	>: "vestig." [GAPEXTNUM v] "lin" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="line"><desc>"vestiges"</></>
 	>: "vestig." [NUM v] "-" [NUM w] "lin" = <gap reason="illegible" atLeast=[NUM v] atMost=[NUM w] unit="line"><desc>"vestiges"</></>
 	
 	//---test_vestige_lines_ca---
 	// vestig.ca.#{n}lin **P5**
 	: "vestig.ca." [NUM n] "lin" = <gap reason="illegible" quantity=[NUM n] unit="line" precision="low"><desc>"vestiges"</></>
-	>: "vestig.ca." [GAPEXTNUM v] "lin" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="line" precision="low"><desc>"vestiges"</></>
+//removed per 12/16 review
+//	>: "vestig.ca." [GAPEXTNUM v] "lin" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="line" precision="low"><desc>"vestiges"</></>
 	
 	//---test_vestige_lines_unknown---
 	// vestig.?lin **P5**
@@ -657,7 +667,9 @@ flat
 	// vestig.!.#{n} **P5**
 // changed per James conversation on 6/10 - desc="vestiges" and reason="illegible"
 	: "vestig." [NUM n] "char" = <gap reason="illegible" quantity=[NUM n] unit="character"><desc>"vestiges"</></>
-	>: "vestig." [GAPEXTNUM v] "char" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="character"><desc>"vestiges"</></>
+	>: "vestig.ca." [NUM v] "char" = <gap reason="illegible" quantity=[NUM v] unit="character" precision="low"><desc>"vestiges"</></>
+//changed to above per 12/16 review
+//	>: "vestig." [GAPEXTNUM v] "char" = <gap reason="illegible" extent=[GAPEXTNUM v] unit="character"><desc>"vestiges"</></>
 	>: "vestig." [NUM v] "-" [NUM w] "char" = <gap reason="illegible" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"vestiges"</></>
 	
 	//---test_vestige_characters---
@@ -675,7 +687,9 @@ flat
 	//---test_lost_lines---
 	// lost.#{n}lin **P5**
 	: "lost." [NUM v] "lin" = <gap reason="lost" quantity=[NUM v] unit="line"></>
-	>: "lost." [GAPEXTNUM v] "lin" = <gap reason="lost" extent=[GAPEXTNUM v] unit="line"></>
+	>: "lost.ca." [NUM v] "lin" = <gap reason="lost" quantity=[NUM v] unit="line" precision="low"></>
+//changed to above per 12/16 review
+//	>: "lost." [GAPEXTNUM v] "lin" = <gap reason="lost" extent=[GAPEXTNUM v] unit="line"></>
 	>: "lost." [NUM v] "-" [NUM w] "lin" = <gap reason="lost" atLeast=[NUM v] atMost=[NUM w] unit="line"></>
 	
 	//---test_lost_lines_unknown---
@@ -721,7 +735,8 @@ flat
 	
 	//---test_illegible_gap_unknown_ca---
 	// ca.? **P5**
-	: [CAUNKNOWN] = <gap reason="illegible" extent="unknown" unit="character" precision="low"></>
+//removed per 12/16 review
+//	: [CAUNKNOWN] = <gap reason="illegible" extent="unknown" unit="character" precision="low"></>
 	
 	>: [foritem f] = [foritem f]
 	
@@ -737,7 +752,9 @@ inside_brackets
 	// [ abc def ] lost digit
 	: [NUM n] = <supplied reason="lost">[NUM n]</>
 	// does not have [DOT] in front to be different from gap illegible which has the [DOT] up front
-	>: [GAPEXTNUM n] = <gap reason="lost" extent=[GAPEXTNUM n] unit="character"></>
+	>: [LEADCA] [NUM n] = <gap reason="lost" quantity=[NUM n] unit="character" precision="low"></>
+//changed to abover per 12/16 review
+//	>: [GAPEXTNUM n] = <gap reason="lost" extent=[GAPEXTNUM n] unit="character"></>
 	
 	//---test_lost_dot_max---
 	// .#{n}-#{n} **P5**
@@ -749,7 +766,8 @@ inside_brackets
 	
 	//---test_lost_gap_unknown_ca---
 	// [ ca.?] **P5**
-	>: [CAUNKNOWN] = <gap reason="lost" extent="unknown" unit="character" precision="low"></>
+//removed per 12/16 review
+//	>: [CAUNKNOWN] = <gap reason="lost" extent="unknown" unit="character" precision="low"></>
 	
 	//---test_lost_space_unknown
 	//[vac.?]

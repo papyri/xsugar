@@ -100,6 +100,8 @@ APPNUM = [0-9]+\.{1}[0-9]+
 
 LANGLIST = ((Demotic)|(Coptic)|(Arabic)|(Nabatean)|(Aramaic))
 
+ADDLIST = ((bottom)|(left)|(right)|(top)|(margin))
+
 // actual grammar starts below at file.  regular expression used are above
 
 // had to wrap multiple ab sections in root tag to keep from getting XML not well formed error - decided to do whether multiple or not
@@ -408,40 +410,61 @@ item
 	
 	//---subscript---
 	//   /abc\
-	: "\/" [WORD a] "\\" = <hi rend="subscript">[WORD a]</>
-	>: "\/" [items i] "\\" = <hi rend="subscript">[items i]</>
+	//   \|abc|/
+	: "\\\|" [WORD a] "\|\/" = <hi rend="subscript">[WORD a]</>
+	>: "\\\|" [items i] "\|\/" = <hi rend="subscript">[items i]</>
+//	: "\/" [WORD a] "\\" = <hi rend="subscript">[WORD a]</>
+//	>: "\/" [items i] "\\" = <hi rend="subscript">[items i]</>
 	
 	//---tall---
 	//   ^abc^
-	: "\^" [WORD a] "\^" = <hi rend="tall">[WORD a]</>
-	>: "\^" [items i] "\^" = <hi rend="tall">[items i]</>
+	//   |abc|
+	: "\|" [WORD a] "\|" = <hi rend="tall">[WORD a]</>
+	>: "\|" [items i] "\|" = <hi rend="tall">[items i]</>
+//	: "\^" [WORD a] "\^" = <hi rend="tall">[WORD a]</>
+//	>: "\^" [items i] "\^" = <hi rend="tall">[items i]</>
 //50
 	//---superscript---
 	//   \|abc|/
-    : "\\\|" [WORD a] "\|\/" = <hi rend="superscript">[WORD a]</>
-	>: "\\\|" [items i] "\|\/" = <hi rend="superscript">[items i]</>
+	//   ^abc^
+    : "\^" [WORD a] "\^" = <hi rend="superscript">[WORD a]</>
+	>: "\^" [items i] "\^" = <hi rend="superscript">[items i]</>
+//	 : "\\\|" [WORD a] "\|\/" = <hi rend="superscript">[WORD a]</>
+//	>: "\\\|" [items i] "\|\/" = <hi rend="superscript">[items i]</>
 	
 	//---add_place_supralinear---
 	//  #\abc/# **P5**
-    : "#\\" [WORDSSIC a] "\/#" = <add place="supralinear">[WORDSSIC a]</>
-	: "#\\" [WORDSSIC a] "?" "\/#" = <add place="supralinear" cert="low">[WORDSSIC a]</>
-	>: "#\\" [items a] "\/#" = <add place="supralinear">[items a]</>
-	>: "#\\" [items a] "?" "\/#" = <add place="supralinear" cert="low">[items a]</>
+//remove per 12/16 review - replaced by above
+//    : "#\\" [WORDSSIC a] "\/#" = <add place="supralinear">[WORDSSIC a]</>
+//	: "#\\" [WORDSSIC a] "?" "\/#" = <add place="supralinear" cert="low">[WORDSSIC a]</>
+//	>: "#\\" [items a] "\/#" = <add place="supralinear">[items a]</>
+//	>: "#\\" [items a] "?" "\/#" = <add place="supralinear" cert="low">[items a]</>
 	
 	//---add_place_infralinear---
 	//  </abc\>
-    : "<\/" [WORDS a] "\\>" = <add place="infralinear">[WORDS a]</>
-	>: "<\/" [items a] "\\>" = <add place="infralinear">[items a]</>
+//remove per 12/16 review - replaced by below
+//    : "<\/" [WORDS a] "\\>" = <add place="infralinear">[WORDS a]</>
+//	>: "<\/" [items a] "\\>" = <add place="infralinear">[items a]</>
 	
 	//---add_place_intralinear---
 	//  <\abc/>
-    : "<\\" [WORDS a] "\/>" = <add place="intralinear">[WORDS a]</>
-	>: "<\\" [items a] "\/>" = <add place="intralinear">[items a]</>
+//remove per 12/16 review - replaced by interlinear
+//    : "<\\" [WORDS a] "\/>" = <add place="intralinear">[WORDS a]</>
+//	>: "<\\" [items a] "\/>" = <add place="intralinear">[items a]</>
 	
 	//---add_place_interlinear---
-	//  <^abc^>
-    : "<^" [WORDSSIC a] "^>" = <add place="interlinear">[WORDSSIC a]</>
-	>: "<^" [items a] "^>" = <add place="interlinear">[items a]</>
+	//  <^abc^> - changed to below syntax per 12/16 review
+	//  >abc<
+    : ">" [WORDSSIC a] "<" = <add place="interlinear">[WORDSSIC a]</>
+	>: ">" [items a] "<" = <add place="interlinear">[items a]</>
+//    : "<^" [WORDSSIC a] "^>" = <add place="interlinear">[WORDSSIC a]</>
+//	>: "<^" [items a] "^>" = <add place="interlinear">[items a]</>
+
+	//---add_place_general---
+	//  |!|abc|!| - changed to below syntax per 12/16 review
+	//  >abc<
+    : "|!|" [ADDLIST a] ":" [WORDSSIC b] "|!|" = <add place=[ADDLIST a]>[WORDSSIC b]</>
+	
 //60
 	//---add_place_margin_sling---
 	//  <|abc|> **P5**
@@ -455,15 +478,23 @@ item
 	
 	//---add_place_above--- - special character is u+26a0
 	//  <⚠abc⚠> **P5** - not sure - added because of testing - need to verify with James
-	: "<⚠" [WORD a] "⚠>" = <add place="above">[WORD a]</>
-	: "<⚠" [WORD a] "?" "⚠>" = <add cert="low" place="above">[WORD a]</>
-	>: "<⚠" [items a] "⚠>" = <add place="above">[items a]</>
-	>: "<⚠" [items a] "?" "⚠>" = <add cert="low" place="above">[items a]</>
+	//  \abc/
+	: "\\" [WORD a] "\/" = <add place="above">[WORD a]</>
+	: "\\" [WORD a] "?" "\/" = <add cert="low" place="above">[WORD a]</>
+	>: "\\" [items a] "\/" = <add place="above">[items a]</>
+	>: "\\" [items a] "?" "\/" = <add cert="low" place="above">[items a]</>
+//	: "<⚠" [WORD a] "⚠>" = <add place="above">[WORD a]</>
+//	: "<⚠" [WORD a] "?" "⚠>" = <add cert="low" place="above">[WORD a]</>
+//	>: "<⚠" [items a] "⚠>" = <add place="above">[items a]</>
+//	>: "<⚠" [items a] "?" "⚠>" = <add cert="low" place="above">[items a]</>
 	
 	//---add_place_below--- - special character is u+2692
-	//   \abc/ **P5** - not sure - added because of testing - need to verify with James
-	: "<⚒" [WORD a] "⚒>" = <add place="below">[WORD a]</>
-	>: "<⚒" [items a] "⚒>" = <add place="below">[items a]</>
+	//   <⚒abc⚒> **P5** - not sure - added because of testing - need to verify with James
+	//   /abc\
+	: "\/" [WORD a] "\\" = <add place="below">[WORD a]</>
+	>: "\/" [items a] "\\" = <add place="below">[items a]</>
+//	: "<⚒" [WORD a] "⚒>" = <add place="below">[WORD a]</>
+//	>: "<⚒" [items a] "⚒>" = <add place="below">[items a]</>
 	
 	//---grave---
 	//   \abc/
@@ -475,9 +506,12 @@ item
 	>: "¯" [items i] "¯" = <hi rend="supraline">[items i]</>
 		
 	//---supraline_underline---
-	//   |_abc_|
-    : "≡" [WORD a] "≡" = <hi rend="supraline-underline">[WORD a]</>
-	>: "≡" [items i] "≡" = <hi rend="supraline-underline">[items i]</>
+	//   ≡abc≡
+	//   =abc=
+    : "=" [WORD a] "=" = <hi rend="supraline-underline">[WORD a]</>
+	>: "=" [items i] "=" = <hi rend="supraline-underline">[items i]</>
+//    : "≡" [WORD a] "≡" = <hi rend="supraline-underline">[WORD a]</>
+//	>: "≡" [items i] "≡" = <hi rend="supraline-underline">[items i]</>
 		
 	//---undefined_parallel---
 	//  _abc_  - underlines **P5**

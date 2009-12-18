@@ -64,7 +64,8 @@ WORDSLR = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323
 // wordsnum allow '/' for fractional numbers - added DOT to break .gap on 7/7 see if break other things
 WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
-//WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for supralinear
+//WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for supralinear - same as WORDAVEST except
+//for allowing space therefore mulitple words
 WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 //WORDS4EX created 11/23 from WORDSSIC to use in expan <ex> tags to allow fraction numbers to appear within tag - removed / in not allowed
@@ -411,7 +412,7 @@ item
 	//---subscript---
 	//   /abc\
 	//   \|abc|/
-	: "\\\|" [WORD a] "\|\/" = <hi rend="subscript">[WORD a]</>
+	: "\\\|" [WORDSSIC a] "\|\/" = <hi rend="subscript">[WORDSSIC a]</>
 	>: "\\\|" [items i] "\|\/" = <hi rend="subscript">[items i]</>
 //	: "\/" [WORD a] "\\" = <hi rend="subscript">[WORD a]</>
 //	>: "\/" [items i] "\\" = <hi rend="subscript">[items i]</>
@@ -419,7 +420,7 @@ item
 	//---tall---
 	//   ^abc^
 	//   |abc|
-	: "\|" [WORD a] "\|" = <hi rend="tall">[WORD a]</>
+	: "\|" [WORDSSIC a] "\|" = <hi rend="tall">[WORDSSIC a]</>
 	>: "\|" [items i] "\|" = <hi rend="tall">[items i]</>
 //	: "\^" [WORD a] "\^" = <hi rend="tall">[WORD a]</>
 //	>: "\^" [items i] "\^" = <hi rend="tall">[items i]</>
@@ -427,7 +428,7 @@ item
 	//---superscript---
 	//   \|abc|/
 	//   ^abc^
-    : "\^" [WORD a] "\^" = <hi rend="superscript">[WORD a]</>
+    : "\^" [WORDSSIC a] "\^" = <hi rend="superscript">[WORDSSIC a]</>
 	>: "\^" [items i] "\^" = <hi rend="superscript">[items i]</>
 //	 : "\\\|" [WORD a] "\|\/" = <hi rend="superscript">[WORD a]</>
 //	>: "\\\|" [items i] "\|\/" = <hi rend="superscript">[items i]</>
@@ -454,9 +455,9 @@ item
 	
 	//---add_place_interlinear---
 	//  <^abc^> - changed to below syntax per 12/16 review
-	//  >abc<
-    : ">" [WORDSSIC a] "<" = <add place="interlinear">[WORDSSIC a]</>
-	>: ">" [items a] "<" = <add place="interlinear">[items a]</>
+	//  >>abc<<
+    : ">>" [WORDSSIC a] "<<" = <add place="interlinear">[WORDSSIC a]</>
+	>: ">>" [items a] "<<" = <add place="interlinear">[items a]</>
 //    : "<^" [WORDSSIC a] "^>" = <add place="interlinear">[WORDSSIC a]</>
 //	>: "<^" [items a] "^>" = <add place="interlinear">[items a]</>
 
@@ -468,19 +469,19 @@ item
 //60
 	//---add_place_margin_sling---
 	//  <|abc|> **P5**
-    : "<|" [WORD a] "|>" = <add rend="sling" place="margin">[WORD a]</>
+    : "<|" [WORDSSIC a] "|>" = <add rend="sling" place="margin">[WORDSSIC a]</>
 	>: "<|" [items a] "|>" = <add rend="sling" place="margin">[items a]</>
 	
 	//---add_place_margin_underline---
 	//  <_abc_> **P5**
-    : "<_" [WORD a] "_>" = <add rend="underline" place="margin">[WORD a]</>
+    : "<_" [WORDSSIC a] "_>" = <add rend="underline" place="margin">[WORDSSIC a]</>
 	>: "<_" [items a] "_>" = <add rend="underline" place="margin">[items a]</>
 	
 	//---add_place_above--- - special character is u+26a0
 	//  <⚠abc⚠> **P5** - not sure - added because of testing - need to verify with James
 	//  \abc/
-	: "\\" [WORD a] "\/" = <add place="above">[WORD a]</>
-	: "\\" [WORD a] "?" "\/" = <add cert="low" place="above">[WORD a]</>
+	: "\\" [WORDSSIC a] "\/" = <add place="above">[WORDSSIC a]</>
+	: "\\" [WORDSSIC a] "?" "\/" = <add cert="low" place="above">[WORDSSIC a]</>
 	>: "\\" [items a] "\/" = <add place="above">[items a]</>
 	>: "\\" [items a] "?" "\/" = <add cert="low" place="above">[items a]</>
 //	: "<⚠" [WORD a] "⚠>" = <add place="above">[WORD a]</>
@@ -490,9 +491,9 @@ item
 	
 	//---add_place_below--- - special character is u+2692
 	//   <⚒abc⚒> **P5** - not sure - added because of testing - need to verify with James
-	//   /abc\
-	: "\/" [WORD a] "\\" = <add place="below">[WORD a]</>
-	>: "\/" [items a] "\\" = <add place="below">[items a]</>
+	//   //abc\\
+	: "\/\/" [WORDSSIC a] "\\\\" = <add place="below">[WORDSSIC a]</>
+	>: "\/\/" [items a] "\\\\" = <add place="below">[items a]</>
 //	: "<⚒" [WORD a] "⚒>" = <add place="below">[WORD a]</>
 //	>: "<⚒" [items a] "⚒>" = <add place="below">[items a]</>
 	
@@ -502,13 +503,13 @@ item
 	
 	//---supraline---
 	//   ¯abc¯ - uses non-combining macron
-	: "¯" [WORDVEST a] "¯" = <hi rend="supraline">[WORDVEST a]</>
+	: "¯" [WORDSSIC a] "¯" = <hi rend="supraline">[WORDSSIC a]</>
 	>: "¯" [items i] "¯" = <hi rend="supraline">[items i]</>
 		
 	//---supraline_underline---
 	//   ≡abc≡
 	//   =abc=
-    : "=" [WORD a] "=" = <hi rend="supraline-underline">[WORD a]</>
+    : "=" [WORDSSIC a] "=" = <hi rend="supraline-underline">[WORDSSIC a]</>
 	>: "=" [items i] "=" = <hi rend="supraline-underline">[items i]</>
 //    : "≡" [WORD a] "≡" = <hi rend="supraline-underline">[WORD a]</>
 //	>: "≡" [items i] "≡" = <hi rend="supraline-underline">[items i]</>
@@ -708,7 +709,7 @@ flat
 	
 	//---test_vestige_characters---
 	// vestig **P5**
-	: "vestig" = <gap reason="illegible" extent="unknown" unit="character"><desc>"vestiges"</></>
+	: "vestig " = <gap reason="illegible" extent="unknown" unit="character"><desc>"vestiges"</></>
 	
 	//---test_nontran_characters---
 	// nontran **P5** **guess** not done first time - kept original commented out

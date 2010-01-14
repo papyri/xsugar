@@ -66,5 +66,9 @@ module RXSugar
       #REXML::XPath.match(rexml, '*[not(self::lb)]')
       REXML::XPath.match(rexml, './div/ab/*[not(self::lb)]|./ab/*[not(self::lb)]')
     end
+	
+    def get_all_element_children(rexml)
+      REXML::XPath.match(rexml, './div/ab/*|./ab/*')
+    end
   end
 end

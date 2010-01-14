@@ -76,7 +76,8 @@ module RXSugar
           divedition = get_div_edition(xml_content)
           # do each fragment individually
           #use new divedition variable rather than abs used previously
-          ddbcov.get_non_lb_element_children(divedition).each do |child|
+          #ddbcov.get_non_lb_element_children(divedition).each do |child|
+            ddbcov.get_all_element_children(divedition).each do |child|
             xml_fragment_content = child.to_s.tr("'",'"')
             fragment_reference = XMLFragmentReference.new(xml_file, child)
             begin

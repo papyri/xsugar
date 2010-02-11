@@ -578,6 +578,19 @@ item
 //	>: [BEGOPT] [WORDOPT a] "|BL:|" [WORDOPT b] [ENDOPT] = <app type="BL"><lem>[WORDOPT a]</><rdg>[WORDOPT b]</></>
 //	>: [BEGOPT] [items a] "|BL:|" [WORD b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[WORD b]</></>
 //	>: [BEGOPT] [WORD a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[WORD a]</><rdg>[items b]</></>
+
+//  <:abc|SoSOL|def:> - repeated BL stuff above and changed to SoSOL for type - removed all lem resp= - will see if works that way
+//orig	: [BEGOPT] [WORD a] "|BL:" [WORDSLR c] "|" [WORD b] [QUESTION q] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
+	: [BEGOPT] [WORD a] "|SoSOL|" [WORD b] [QUESTION q] [ENDOPT] = <app type="SoSOL"><lem>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
+//this set of app SoSOL has 'lem resp=' attribute
+//orig	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[items b]</></>
+// becomes repet of 592	>: [BEGOPT] [items a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[items b]</></>
+//line below added for empty tag rdg on BL
+//orig	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg></></>
+// becomes repet of 593	>: [BEGOPT] [items a] "|BL:|" [ENDOPT] = <app type="BL"><lem>[items a]</><rdg></></>
+//this set of app Bl does not have 'lem resp=' attribute
+	>: [BEGOPT] [items a] "|SoSOL|" [items b] [ENDOPT] = <app type="SoSOL"><lem>[items a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|SoSOL|" [ENDOPT] = <app type="SoSOL"><lem>[items a]</><rdg></></>
 	
 //this set of app editorial has 'lem resp=' attribute
 	: [BEGOPT] [WORD a] "|ed:" [WORDSBL e] "|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[WORD a]</><rdg>[WORDVEST b]</></>

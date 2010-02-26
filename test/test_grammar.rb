@@ -510,6 +510,43 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '\<:.3 ομ(  )|SoSOL:Sosin|ε.1ε.2:>/', '<add place="above"><app type="SoSOL"><lem resp="Sosin"><gap reason="illegible" quantity="3" unit="character"/><abbr>ομ</abbr></lem><rdg>ε<gap reason="illegible" quantity="1" unit="character"/>ε<gap reason="illegible" quantity="2" unit="character"/></rdg></app></add>'
     end
 	
+	def test_langlist_exhaustive
+      ['Arabic', 'Aramaic', 'Coptic', 'Demotic', 'Hieratic', 'Nabatean'].each do |lang|
+      #  assert_equal_fragment_transform "\##{figdesc} ", "<figure><figDesc>#{figdesc}</figDesc></figure>"
+      assert_equal_fragment_transform "(Lang: #{lang} 2 char)", "<gap reason=\"ellipsis\" quantity=\"2\" unit=\"character\"><desc>#{lang}</desc></gap>"
+	  assert_equal_fragment_transform "(Lang: #{lang} ? char)", "<gap reason=\"ellipsis\" extent=\"unknown\" unit=\"character\"><desc>#{lang}</desc></gap>"
+	  assert_equal_fragment_transform "(Lang: #{lang} 2 lines)", "<gap reason=\"ellipsis\" quantity=\"2\" unit=\"line\"><desc>#{lang}</desc></gap>"
+	  assert_equal_fragment_transform "(Lang: #{lang} ? lines)", "<gap reason=\"ellipsis\" extent=\"unknown\" unit=\"line\"><desc>#{lang}</desc></gap>"
+	 end
+    end
+	
+	def test_nontrans
+	  assert_equal_fragment_transform '(Lines: 19 not transcribed)', '<gap reason="ellipsis" quantity="19" unit="line"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: 4-5 not transcribed)', '<gap reason="ellipsis" atLeast="4" atMost="5" unit="line"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: ? not transcribed)', '<gap reason="ellipsis" extent="unknown" unit="line"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: ? not transcribed)', '<gap reason="ellipsis" extent="unknown" unit="character"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: 3 not transcribed)', '<gap reason="ellipsis" quantity="3" unit="character"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: 4-5 not transcribed)', '<gap reason="ellipsis" atLeast="4" atMost="5" unit="character"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: ca.18 not transcribed)', '<gap reason="ellipsis" quantity="18" unit="line" precision="low"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: ca.18 not transcribed)', '<gap reason="ellipsis" quantity="18" unit="character" precision="low"><desc>non transcribed</desc></gap>'
+    end
+	
+	def test_linenumber_specials
+	  assert_equal_fragment_transform '18. ', '<lb n="18"/>'
+	  assert_equal_fragment_transform '18,ms7. ', '<lb n="18,ms7"/>'
+	  assert_equal_fragment_transform '8,ms. ', '<lb n="8,ms"/>'
+	  assert_equal_fragment_transform '8ms. ', '<lb n="8ms"/>'
+	  assert_equal_fragment_transform '8/ms. ', '<lb n="8/ms"/>'
+	  assert_equal_fragment_transform '1/2. ', '<lb n="1/2"/>'
+	  assert_equal_fragment_transform '3,4. ', '<lb n="3,4"/>'
+	  assert_equal_fragment_transform '(1,ms, perpendicular)', '<lb n="1,ms" rend="perpendicular"/>'
+	  assert_equal_fragment_transform '(1/side, perpendicular)', '<lb n="1/side" rend="perpendicular"/>'
+	  assert_equal_fragment_transform '(1.div, perpendicular)', '<lb n="1" rend="perpendicular" type="inWord"/>'
+	  assert_equal_fragment_transform '(2.div, inverse)', '<lb n="2" rend="inverse" type="inWord"/>'
+	  assert_equal_fragment_transform '3.div ', '<lb n="3" type="inWord"/>'
+	  assert_equal_fragment_transform '4. ', '<lb n="4"/>'
+	end
+	
     def test_simple_reversibility
       assert_equal_non_xml_to_xml_to_non_xml "<=1. test=>", "<=1. test=>"
       assert_equal_non_xml_to_xml_to_non_xml "<=1. test1\n2. test2=>", "<=1. test1\n2. test2=>"
@@ -565,8 +602,8 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_non_xml_to_xml_to_non_xml '<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>', '<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>'
     end
   
-    #def test_xsugar_reversibility_true
-      #assert @xsugar.reversible?
-    #end
+    def test_xsugar_reversibility_true
+      assert @xsugar.reversible?
+    end
   end
 end

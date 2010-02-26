@@ -99,11 +99,11 @@ FRACNUM = [0-9]+\/{1}[0-9]+
 // appnum is for recognizing app_lem number
 APPNUM = [0-9]+\.{1}[0-9]+
 
-LANGLIST = ((Demotic)|(Coptic)|(Arabic)|(Nabatean)|(Aramaic))
+LANGLIST = ((Arabic)|(Aramaic)|(Coptic)|(Demotic)|(Hieratic)|(Nabatean))
 
 ADDLIST = ((bottom)|(left)|(right)|(top)|(margin))
 
-// actual grammar starts below at file.  regular expression used are above
+// actual grammar starts below at file.  regular expressions used are above
 
 // had to wrap multiple ab sections in root tag to keep from getting XML not well formed error - decided to do whether multiple or not
 // allows for ab to be inside a div textpart or not - occurs both ways
@@ -178,6 +178,7 @@ item
 	//---special_lines---
 	//(23, perp)
 	: "(" [LINENUM v] ", " [WORD w] ")" = <lb n=[LINENUM v] rend=[WORD w]/>
+	>: "(" [LINENUM v] "." "div" ", " [WORD w] ")" = <lb n=[LINENUM v] rend=[WORD w] type="inWord"/>
 
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
@@ -406,6 +407,7 @@ item
 	//---test_lines_not_transcribed---
 	//"lines not transcribed" **P5**
 	: "(Lines: " [NUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="line"><desc>"non transcribed"</></>
+	>: "(Lines: ca." [NUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="line" precision="low"><desc>"non transcribed"</></>
 	>: "(Lines: ? not transcribed)" = <gap reason="ellipsis" extent="unknown" unit="line"><desc>"non transcribed"</></>
 	>: "(Lines: " [NUM v] "-" [NUM w] " not transcribed)" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="line"><desc>"non transcribed"</></>
 	
@@ -724,9 +726,13 @@ flat
 	
 	//---test_nontran_characters---
 	// nontran **P5** **guess** not done first time - kept original commented out
-	: "nontran" = <gap reason="ellipsis" extent="unknown" unit="character"><desc>"non transcribed"</></>
-	: "nontran." [NUM v] = <gap reason="ellipsis" quantity=[NUM v] unit="character"><desc>"non transcribed"</></>
-	>: "nontran." [NUM v] "-" [NUM w] = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"non transcribed"</></>
+	//: "nontran" = <gap reason="ellipsis" extent="unknown" unit="character"><desc>"non transcribed"</></>
+	//: "nontran." [NUM v] = <gap reason="ellipsis" quantity=[NUM v] unit="character"><desc>"non transcribed"</></>
+	//>: "nontran." [NUM v] "-" [NUM w] = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"non transcribed"</></>
+	: "(Chars: " [NUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="character"><desc>"non transcribed"</></>
+	>: "(Chars: ca." [NUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="character" precision="low"><desc>"non transcribed"</></>
+	>: "(Chars: ? not transcribed)" = <gap reason="ellipsis" extent="unknown" unit="character"><desc>"non transcribed"</></>
+	>: "(Chars: " [NUM v] "-" [NUM w] " not transcribed)" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"non transcribed"</></>
 //	: "nontran" = <gap desc="non transcribed" extent="unknown" reason="ellipsis" unit="character"></>
 //	: "nontran." [NUM v] "-" [NUM w] = <gap desc="non transcribed" extent=[NUM v] extentmax=[NUM w] reason="ellipsis" unit="character"></>
 	

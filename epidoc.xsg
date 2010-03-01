@@ -324,6 +324,8 @@ item
 	>: [BEGEXP] [items a] "(" [WORDS4EX f] ")" [WORDOPT g] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<ex>[WORDS4EX f]</>[WORDOPT g]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [items e] "(" [WORDS4EX f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[items e]<ex>[WORDS4EX f]</></>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [items e] "[" "(" [WORDS4EX f] ")" "]" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[items e]<supplied reason="lost"><ex>[WORDS4EX f]</></></>
+//added 3/1 per Email reply from Gabby on XML valid question
+	>: [BEGEXP] [WORDOPT a] "(" [WORDS4EX c] ")" "[" [WORDS4EX b] "]" [WORDOPT d] "[" "(" [WORDS4EX f] ")" "]" [ENDEXP] = <expan>[WORDOPT a]<ex>[WORDS4EX c]</><supplied reason="lost">[WORDS4EX b]</>[WORDOPT d]<supplied reason="lost"><ex>[WORDS4EX f]</></></>
 //commented 11/23 due to 11/19 conversation with gabby stating no mark up inside <ex> tag
 //	>: [BEGEXP] "(" [items f] ")" [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan><ex>[items f]</>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [BEGEXP] [items a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "(" [WORDS4EX e] ")" [WORDOPT f] "]" [WORDOPT g] [ENDEXP] = <expan>[items a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]<ex>[WORDS4EX e]</>[WORDOPT f]</>[WORDOPT g]</>
@@ -802,7 +804,8 @@ inside_brackets
 	// .1, .2, .3 inside brackets **P5**
 	: [DOT] [NUM n] = <gap reason="lost" quantity=[NUM n] unit="character"></>
 	// [ abc def ] lost digit
-	: [NUM n] = <supplied reason="lost">[NUM n]</>
+	// commented 3/1 per Josh review
+	//: [NUM n] = <supplied reason="lost">[NUM n]</>
 	// does not have [DOT] in front to be different from gap illegible which has the [DOT] up front
 	>: [LEADCA] [NUM n] = <gap reason="lost" quantity=[NUM n] unit="character" precision="low"></>
 //changed to abover per 12/16 review

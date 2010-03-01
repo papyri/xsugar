@@ -252,7 +252,8 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '[παρὰ]', '<supplied reason="lost">παρὰ</supplied>'
       assert_equal_fragment_transform '[]', '<supplied reason="lost"/>'
 	  assert_equal_fragment_transform '[ ?]', '<supplied reason="lost" cert="low"/>'
-	  assert_equal_fragment_transform '[7]', '<supplied reason="lost">7</supplied>'
+	  #below not valid 3/1 per Josh during review
+	  #assert_equal_fragment_transform '[7]', '<supplied reason="lost">7</supplied>'
       assert_equal_fragment_transform 'a[b]c', 'a<supplied reason="lost">b</supplied>c'
       assert_equal_fragment_transform 'a[bc def g]hi', 'a<supplied reason="lost">bc def g</supplied>hi'
     end

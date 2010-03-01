@@ -468,7 +468,8 @@ item
 	//---add_place_general---
 	//  |!|abc|!| - changed to below syntax per 12/16 review
 	//  >abc<
-    : "|!|" [ADDLIST a] ":" [WORDSSIC b] "|!|" = <add place=[ADDLIST a]>[WORDSSIC b]</>
+    //: "|!|" [ADDLIST a] ":" [WORDSSIC b] "|!|" = <add place=[ADDLIST a]>[WORDSSIC b]</>
+	: "||" [ADDLIST a] ":" [WORDSSIC b] "||" = <add place=[ADDLIST a]>[WORDSSIC b]</>
 	
 //60
 	//---add_place_margin_sling---
@@ -522,10 +523,14 @@ item
 	//  _abc_  - underlines **P5**
 	// added @ 7/16 to make difference between beginning and ending symbol or xsugar would not parse Leiden+ correctly
 	// 7/20 changed illegible to undefined per gabby change to data
-	: "_@" [WORDSSIC a] "@_" = <supplied evidence="parallel" reason="undefined">[WORDSSIC a]</>
-	: "_@" [WORDSSIC a] "?" "@_" = <supplied evidence="parallel" reason="undefined" cert="low">[WORDSSIC a]</>
-	>: "_@" [items a] "@_" = <supplied evidence="parallel" reason="undefined">[items a]</>
-	>: "_@" [items a] "?" "@_" = <supplied evidence="parallel" reason="undefined" cert="low">[items a]</>
+	//: "_@" [WORDSSIC a] "@_" = <supplied evidence="parallel" reason="undefined">[WORDSSIC a]</>
+	//: "_@" [WORDSSIC a] "?" "@_" = <supplied evidence="parallel" reason="undefined" cert="low">[WORDSSIC a]</>
+	//>: "_@" [items a] "@_" = <supplied evidence="parallel" reason="undefined">[items a]</>
+	//>: "_@" [items a] "?" "@_" = <supplied evidence="parallel" reason="undefined" cert="low">[items a]</>
+	: "|_" [WORDSSIC a] "_|" = <supplied evidence="parallel" reason="undefined">[WORDSSIC a]</>
+	: "|_" [WORDSSIC a] "?" "_|" = <supplied evidence="parallel" reason="undefined" cert="low">[WORDSSIC a]</>
+	>: "|_" [items a] "_|" = <supplied evidence="parallel" reason="undefined">[items a]</>
+	>: "|_" [items a] "?" "_|" = <supplied evidence="parallel" reason="undefined" cert="low">[items a]</>
 		
 	//---lost_parallel---
 	//  _[abc]_  - underlines

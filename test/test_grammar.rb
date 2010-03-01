@@ -225,13 +225,18 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_evidence_parallel
-      assert_equal_fragment_transform '_@ς ἐπιστολῆς Θεοδώρου@_', '<supplied evidence="parallel" reason="undefined">ς ἐπιστολῆς Θεοδώρου</supplied>'
-	  assert_equal_fragment_transform '_@ωτερίου [τοῦ] λαμπροτά@_', '<supplied evidence="parallel" reason="undefined">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
+      assert_equal_fragment_transform '|_ς ἐπιστολῆς Θεοδώρου_|', '<supplied evidence="parallel" reason="undefined">ς ἐπιστολῆς Θεοδώρου</supplied>'
+	  assert_equal_fragment_transform '|_ωτερίου [τοῦ] λαμπροτά_|', '<supplied evidence="parallel" reason="undefined">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
+	  assert_equal_fragment_transform '[|_.3ς_|]', '<supplied reason="lost"><supplied evidence="parallel" reason="undefined"><gap reason="illegible" quantity="3" unit="character"/>ς</supplied></supplied>'
+	  assert_equal_fragment_transform '[|_ἐν̣_|]', '<supplied reason="lost"><supplied evidence="parallel" reason="undefined">ἐ<unclear>ν</unclear></supplied></supplied>'
+	  assert_equal_fragment_transform '[εστῶτος μ|_η̣ν̣ὸ̣ς̣_|]', '<supplied reason="lost">εστῶτος μ<supplied evidence="parallel" reason="undefined"><unclear>ηνὸς</unclear></supplied></supplied>'
+	  assert_equal_fragment_transform '|_ρῳ Φ[ιλά]_|', '<supplied evidence="parallel" reason="undefined">ρῳ Φ<supplied reason="lost">ιλά</supplied></supplied>'
     end
     
     def test_evidence_parallel_cert_low
-      assert_equal_fragment_transform '_@ς ἐπιστολῆς Θεοδώρου?@_', '<supplied evidence="parallel" reason="undefined" cert="low">ς ἐπιστολῆς Θεοδώρου</supplied>'
-	  assert_equal_fragment_transform '_@ωτερίου [τοῦ] λαμπροτά?@_', '<supplied evidence="parallel" reason="undefined" cert="low">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
+      assert_equal_fragment_transform '|_ς ἐπιστολῆς Θεοδώρου?_|', '<supplied evidence="parallel" reason="undefined" cert="low">ς ἐπιστολῆς Θεοδώρου</supplied>'
+	  assert_equal_fragment_transform '|_ωτερίου [τοῦ] λαμπροτά?_|', '<supplied evidence="parallel" reason="undefined" cert="low">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
+	  assert_equal_fragment_transform '|_ρῳ Φ[ιλά]?_|', '<supplied evidence="parallel" reason="undefined" cert="low">ρῳ Φ<supplied reason="lost">ιλά</supplied></supplied>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/erroneousinclusion.html

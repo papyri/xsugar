@@ -407,11 +407,11 @@ item
 	>: "(Lang: " [LANGLIST l] " ? char)" = <gap reason="ellipsis" extent="unknown" unit="character"><desc>[LANGLIST l]</></>
 	
 	//---test_lines_not_transcribed---
-	//"lines not transcribed" **P5**
-	: "(Lines: " [NUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="line"><desc>"non transcribed"</></>
-	>: "(Lines: ca." [NUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="line" precision="low"><desc>"non transcribed"</></>
-	>: "(Lines: ? not transcribed)" = <gap reason="ellipsis" extent="unknown" unit="line"><desc>"non transcribed"</></>
-	>: "(Lines: " [NUM v] "-" [NUM w] " not transcribed)" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="line"><desc>"non transcribed"</></>
+	//"lines non transcribed" **P5**
+	: "(Lines: " [NUM v] " non transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="line"><desc>"non transcribed"</></>
+	>: "(Lines: ca." [NUM v] " non transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="line" precision="low"><desc>"non transcribed"</></>
+	>: "(Lines: ? non transcribed)" = <gap reason="ellipsis" extent="unknown" unit="line"><desc>"non transcribed"</></>
+	>: "(Lines: " [NUM v] "-" [NUM w] " non transcribed)" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="line"><desc>"non transcribed"</></>
 	
 	//---subscript---
 	//   /abc\
@@ -736,10 +736,10 @@ flat
 	//: "nontran" = <gap reason="ellipsis" extent="unknown" unit="character"><desc>"non transcribed"</></>
 	//: "nontran." [NUM v] = <gap reason="ellipsis" quantity=[NUM v] unit="character"><desc>"non transcribed"</></>
 	//>: "nontran." [NUM v] "-" [NUM w] = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"non transcribed"</></>
-	: "(Chars: " [NUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="character"><desc>"non transcribed"</></>
-	>: "(Chars: ca." [NUM v] " not transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="character" precision="low"><desc>"non transcribed"</></>
-	>: "(Chars: ? not transcribed)" = <gap reason="ellipsis" extent="unknown" unit="character"><desc>"non transcribed"</></>
-	>: "(Chars: " [NUM v] "-" [NUM w] " not transcribed)" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"non transcribed"</></>
+	: "(Chars: " [NUM v] " non transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="character"><desc>"non transcribed"</></>
+	>: "(Chars: ca." [NUM v] " non transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="character" precision="low"><desc>"non transcribed"</></>
+	>: "(Chars: ? non transcribed)" = <gap reason="ellipsis" extent="unknown" unit="character"><desc>"non transcribed"</></>
+	>: "(Chars: " [NUM v] "-" [NUM w] " non transcribed)" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"non transcribed"</></>
 //	: "nontran" = <gap desc="non transcribed" extent="unknown" reason="ellipsis" unit="character"></>
 //	: "nontran." [NUM v] "-" [NUM w] = <gap desc="non transcribed" extent=[NUM v] extentmax=[NUM w] reason="ellipsis" unit="character"></>
 	

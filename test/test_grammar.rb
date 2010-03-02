@@ -527,14 +527,14 @@ if(RUBY_PLATFORM == 'java')
     end
 	
 	def test_nontrans
-	  assert_equal_fragment_transform '(Lines: 19 not transcribed)', '<gap reason="ellipsis" quantity="19" unit="line"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Lines: 4-5 not transcribed)', '<gap reason="ellipsis" atLeast="4" atMost="5" unit="line"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Lines: ? not transcribed)', '<gap reason="ellipsis" extent="unknown" unit="line"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Chars: ? not transcribed)', '<gap reason="ellipsis" extent="unknown" unit="character"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Chars: 3 not transcribed)', '<gap reason="ellipsis" quantity="3" unit="character"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Chars: 4-5 not transcribed)', '<gap reason="ellipsis" atLeast="4" atMost="5" unit="character"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Lines: ca.18 not transcribed)', '<gap reason="ellipsis" quantity="18" unit="line" precision="low"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Chars: ca.18 not transcribed)', '<gap reason="ellipsis" quantity="18" unit="character" precision="low"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: 19 non transcribed)', '<gap reason="ellipsis" quantity="19" unit="line"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: 4-5 non transcribed)', '<gap reason="ellipsis" atLeast="4" atMost="5" unit="line"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: ? non transcribed)', '<gap reason="ellipsis" extent="unknown" unit="line"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: ? non transcribed)', '<gap reason="ellipsis" extent="unknown" unit="character"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: 3 non transcribed)', '<gap reason="ellipsis" quantity="3" unit="character"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: 4-5 non transcribed)', '<gap reason="ellipsis" atLeast="4" atMost="5" unit="character"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: ca.18 non transcribed)', '<gap reason="ellipsis" quantity="18" unit="line" precision="low"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: ca.18 non transcribed)', '<gap reason="ellipsis" quantity="18" unit="character" precision="low"><desc>non transcribed</desc></gap>'
     end
 	
 	def test_linenumber_specials

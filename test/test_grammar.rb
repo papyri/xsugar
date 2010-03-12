@@ -5,11 +5,11 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html
     
 	def test_place_generic
-	  assert_equal_fragment_transform '|!|bottom:ς ἐπιστολῆς Θεοδώρου|!|', '<add place="bottom">ς ἐπιστολῆς Θεοδώρου</add>'
-	  assert_equal_fragment_transform '|!|top:ς ἐπιστολῆς Θεοδώρου|!|', '<add place="top">ς ἐπιστολῆς Θεοδώρου</add>'
-	  assert_equal_fragment_transform '|!|left:ς ἐπιστολῆς Θεοδώρου|!|', '<add place="left">ς ἐπιστολῆς Θεοδώρου</add>'
-	  assert_equal_fragment_transform '|!|margin:ς ἐπιστολῆς Θεοδώρου|!|', '<add place="margin">ς ἐπιστολῆς Θεοδώρου</add>'
-	  assert_equal_fragment_transform '|!|right:ς ἐπιστολῆς Θεοδώρου|!|', '<add place="right">ς ἐπιστολῆς Θεοδώρου</add>'
+	  assert_equal_fragment_transform '||bottom:ς ἐπιστολῆς Θεοδώρου||', '<add place="bottom">ς ἐπιστολῆς Θεοδώρου</add>'
+	  assert_equal_fragment_transform '||top:ς ἐπιστολῆς Θεοδώρου||', '<add place="top">ς ἐπιστολῆς Θεοδώρου</add>'
+	  assert_equal_fragment_transform '||left:ς ἐπιστολῆς Θεοδώρου||', '<add place="left">ς ἐπιστολῆς Θεοδώρου</add>'
+	  assert_equal_fragment_transform '||margin:ς ἐπιστολῆς Θεοδώρου||', '<add place="margin">ς ἐπιστολῆς Θεοδώρου</add>'
+	  assert_equal_fragment_transform '||right:ς ἐπιστολῆς Θεοδώρου||', '<add place="right">ς ἐπιστολῆς Θεοδώρου</add>'
     end
 	
 	def test_expansion
@@ -33,6 +33,7 @@ if(RUBY_PLATFORM == 'java')
     def test_symbol_expansion
       # Single symbol for an entire word
       assert_equal_fragment_transform '((abc))', '<expan><ex>abc</ex></expan>'
+      assert_equal_fragment_transform '((ἑπτα)κωμίας)', '<expan><ex>ἑπτα</ex>κωμίας</expan>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html

@@ -66,11 +66,21 @@ if(RUBY_PLATFORM == 'java')
     end
   
     # http://www.stoa.org/epidoc/gl/5/abbreviationsnotunderstood.html
+    #def test_abbreviation_unknown_resolution
+      ## Ancient abbreviation whose resolution is unknown
+      #assert_equal_fragment_transform ' ab(  )', '<abbr>ab</abbr>'
+	  #assert_equal_fragment_transform '<@bạḅdec̣g(  )@>', '<abbr>b<unclear>ab</unclear>de<unclear>c</unclear>g</abbr>'
+	  #assert_equal_fragment_transform '[ ((ἡμιωβέλιον)) <#=1/2#> προ(  ) ((δραχμὴν)) <#α=1#> (χ(αλκοῦς 2))<#=2#>]', '<supplied reason="lost"> <expan><ex>ἡμιωβέλιον</ex></expan> <num value="1/2"/><abbr>προ</abbr> <expan><ex>δραχμὴν</ex></expan> <num value="1">α</num> <expan>χ<ex>αλκοῦς 2</ex></expan><num value="2"/></supplied>'
+    #end
+	#comment above until 3/17 discussion to know if below is the new abbr syntax for sure
     def test_abbreviation_unknown_resolution
       # Ancient abbreviation whose resolution is unknown
-      assert_equal_fragment_transform ' ab(  )', '<abbr>ab</abbr>'
-	  assert_equal_fragment_transform '<@bạḅdec̣g(  )@>', '<abbr>b<unclear>ab</unclear>de<unclear>c</unclear>g</abbr>'
-	  assert_equal_fragment_transform '[ ((ἡμιωβέλιον)) <#=1/2#> προ(  ) ((δραχμὴν)) <#α=1#> (χ(αλκοῦς 2))<#=2#>]', '<supplied reason="lost"> <expan><ex>ἡμιωβέλιον</ex></expan> <num value="1/2"/><abbr>προ</abbr> <expan><ex>δραχμὴν</ex></expan> <num value="1">α</num> <expan>χ<ex>αλκοῦς 2</ex></expan><num value="2"/></supplied>'
+      assert_equal_fragment_transform '(|ab|)', '<abbr>ab</abbr>'
+	  assert_equal_fragment_transform '(|bạḅdec̣g|)', '<abbr>b<unclear>ab</unclear>de<unclear>c</unclear>g</abbr>'
+	  assert_equal_fragment_transform '[ ((ἡμιωβέλιον)) <#=1/2#>(|προ|) ((δραχμὴν)) <#α=1#> (χ(αλκοῦς 2))<#=2#>]', '<supplied reason="lost"> <expan><ex>ἡμιωβέλιον</ex></expan> <num value="1/2"/><abbr>προ</abbr> <expan><ex>δραχμὴν</ex></expan> <num value="1">α</num> <expan>χ<ex>αλκοῦς 2</ex></expan><num value="2"/></supplied>'
+	  assert_equal_fragment_transform '(|υιω?|)', '<abbr>υιω<certainty locus="name" match=".."/></abbr>'
+	  assert_equal_fragment_transform '<:(|πριμο̣σκ|)|alt:|(|πριμ(())σκ|):>', '<app type="alternative"><lem><abbr>πριμ<unclear>ο</unclear>σκ</abbr></lem><rdg><abbr>πριμ<expan><ex/></expan>σκ</abbr></rdg></app>'
+	  assert_equal_fragment_transform '<:.5(( ))|alt:|(|κουδ?|) :>', '<app type="alternative"><lem><gap reason="illegible" quantity="5" unit="character"/><expan><ex> </ex></expan></lem><rdg><abbr>κουδ<certainty locus="name" match=".."/></abbr> </rdg></app>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html
@@ -400,9 +410,14 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_hand_shift
-      assert_equal_fragment_transform '$m1 ', '<handShift new="m1"/>'
+      assert_equal_fragment_transform '$m2? ', '<handShift new="m2" cert="low"/>'
+	  assert_equal_fragment_transform '$m22? ', '<handShift new="m22" cert="low"/>'
+	  assert_equal_fragment_transform '$m2b? ', '<handShift new="m2b" cert="low"/>'
+	  assert_equal_fragment_transform '[$m5?  ]', '<supplied reason="lost"><handShift new="m5" cert="low"/> </supplied>'
+	  assert_equal_fragment_transform '$m1 ', '<handShift new="m1"/>'
       assert_equal_fragment_transform '$m20 ', '<handShift new="m20"/>' 
 	  assert_equal_fragment_transform '$m1a ', '<handShift new="m1a"/>' 
+	  assert_equal_fragment_transform '[$m5  ]', '<supplied reason="lost"><handShift new="m5"/> </supplied>'
     end
     
     #def test_add_place_supralinear - removed per 12/16 review
@@ -514,7 +529,7 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '<:καὶ <:<καν?>ονικῶν?|orth|ονι̣κ̣ων:>|SoSOL:Elliott|καιονι̣κ̣ων:>', '<app type="SoSOL"><lem resp="Elliott">καὶ <choice><corr cert="low"><supplied reason="omitted" cert="low">καν</supplied>ονικῶν</corr><sic>ον<unclear>ικ</unclear>ων</sic></choice></lem><rdg>καιον<unclear>ικ</unclear>ων</rdg></app>'
 	  assert_equal_fragment_transform '<:[καὶ ὧν δε]κάτη [27]<#β=2#>|SoSOL:Gabby|[.6]ων.2[.2]<#β=2#>:>', '<app type="SoSOL"><lem resp="Gabby"><supplied reason="lost">καὶ ὧν δε</supplied>κάτη <supplied reason="lost">27</supplied><num value="2">β</num></lem><rdg><gap reason="lost" quantity="6" unit="character"/>ων<gap reason="illegible" quantity="2" unit="character"/><gap reason="lost" quantity="2" unit="character"/><num value="2">β</num></rdg></app>'
 	  assert_equal_fragment_transform '<:(Κών̣ων̣(ος))|SoSOL:Fox|Κω.2ω <:vestig |orth|*monogram*:>:>', '<app type="SoSOL"><lem resp="Fox"><expan>Κώ<unclear>ν</unclear>ω<unclear>ν</unclear><ex>ος</ex></expan></lem><rdg>Κω<gap reason="illegible" quantity="2" unit="character"/>ω <choice><corr><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></corr><sic><g type="monogram"/></sic></choice></rdg></app>'
-	  assert_equal_fragment_transform '\<:.3 ομ(  )|SoSOL:Sosin|ε.1ε.2:>/', '<add place="above"><app type="SoSOL"><lem resp="Sosin"><gap reason="illegible" quantity="3" unit="character"/><abbr>ομ</abbr></lem><rdg>ε<gap reason="illegible" quantity="1" unit="character"/>ε<gap reason="illegible" quantity="2" unit="character"/></rdg></app></add>'
+	  assert_equal_fragment_transform '\<:.3(|ομ|)|SoSOL:Sosin|ε.1ε.2:>/', '<add place="above"><app type="SoSOL"><lem resp="Sosin"><gap reason="illegible" quantity="3" unit="character"/><abbr>ομ</abbr></lem><rdg>ε<gap reason="illegible" quantity="1" unit="character"/>ε<gap reason="illegible" quantity="2" unit="character"/></rdg></app></add>'
     end
 	
 	def test_langlist_exhaustive

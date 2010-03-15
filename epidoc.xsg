@@ -20,8 +20,10 @@ BEGAB = "<="
 ENDAB = "=>"
 BEGDIV = "<D="
 ENDDIV = "=D>"
-BEGMIABBR = "<@"
-ENDMIABBR = "@>"
+//BEGMIABBR = "<@"
+//ENDMIABBR = "@>"
+BEGMIABBR = "(|"
+ENDMIABBR = "|)"
 
 FRACSYM = [𐅵𐅷𐅸]+
 
@@ -182,8 +184,11 @@ item
 
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
-	: " " [WORDA w] [ABBR] = <abbr>[WORDA w]</>
-	>: [BEGMIABBR] [items w] [ABBR] [ENDMIABBR] = <abbr>[items w]</>
+//	: " " [WORDA w] [ABBR] = <abbr>[WORDA w]</>
+	>: [BEGMIABBR] [WORDA w] [ENDMIABBR] = <abbr>[WORDA w]</>
+	>: [BEGMIABBR] [WORDA w] "?" [ENDMIABBR] = <abbr>[WORDA w]<certainty locus="name" match=".."/></>
+	>: [BEGMIABBR] [items w] [ENDMIABBR] = <abbr>[items w]</>
+//	>: [BEGMIABBR] [items w] [ABBR] [ENDMIABBR] = <abbr>[items w]</>
 
 //---test_uncertain_diacritical_diaeresis---generic
 //	// (¨)
@@ -640,6 +645,8 @@ item
 	//---hand_shift---
 	//  $m# 
 	: "$" [HANDSHIFT h] " " = <handShift new=[HANDSHIFT h]></>
+	>: "$" [HANDSHIFT h] "? " = <handShift new=[HANDSHIFT h] cert="low"></>
+
 	
 	//---space_unknown---
 	//  vac.? **P5** 

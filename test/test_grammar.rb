@@ -407,6 +407,8 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '*filler(extension)*', '<g rend="extension" type="filler"/>'
 	  assert_equal_fragment_transform '*@stauros*', '<orig><g type="stauros"/></orig>'
 	  assert_equal_fragment_transform '*mid punctus*', '<g type="mid punctus"/>'
+	  assert_equal_fragment_transform '*mid punctus?*', '<unclear><g type="mid punctus"/></unclear>'
+	  assert_equal_fragment_transform '*filler(extension)?*', '<unclear><g rend="extension" type="filler"/></unclear>'
     end
     
     def test_hand_shift

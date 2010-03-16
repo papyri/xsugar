@@ -505,12 +505,15 @@ if(RUBY_PLATFORM == 'java')
 	
     def test_foreign_lang
       assert_equal_fragment_transform '~|veni vedi vici|~la ', '<foreign xml:lang="la">veni vedi vici</foreign>'
+      assert_equal_fragment_transform '~|di\' emu Foibạmṃ[onis]|~la ', '<foreign xml:lang="la">di\' emu Foib<unclear>a</unclear>m<unclear>m</unclear><supplied reason="lost">onis</supplied></foreign>'
     end
     
     def test_milestone
       assert_equal_fragment_transform '----', '<milestone rend="paragraphos" unit="undefined"/>'
+      assert_equal_fragment_transform '<---->', '<supplied reason="omitted"><milestone rend="paragraphos" unit="undefined"/></supplied>'
+      assert_equal_fragment_transform '[----]', '<supplied reason="lost"><milestone rend="paragraphos" unit="undefined"/></supplied>'
       assert_equal_fragment_transform '--------', '<milestone rend="horizontal-rule" unit="undefined"/>'
-	  assert_equal_fragment_transform '###', '<milestone rend="box" unit="undefined"/>'
+      assert_equal_fragment_transform '###', '<milestone rend="box" unit="undefined"/>'
     end
     
     def test_figure

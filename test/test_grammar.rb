@@ -10,6 +10,7 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '||left:ς ἐπιστολῆς Θεοδώρου||', '<add place="left">ς ἐπιστολῆς Θεοδώρου</add>'
 	  assert_equal_fragment_transform '||margin:ς ἐπιστολῆς Θεοδώρου||', '<add place="margin">ς ἐπιστολῆς Θεοδώρου</add>'
 	  assert_equal_fragment_transform '||right:ς ἐπιστολῆς Θεοδώρου||', '<add place="right">ς ἐπιστολῆς Θεοδώρου</add>'
+	  assert_equal_fragment_transform '||margin:ς ἐπ̣ιστολῆς Θ[εοδ]ώρου||', '<add place="margin">ς ἐ<unclear>π</unclear>ιστολῆς Θ<supplied reason="lost">εοδ</supplied>ώρου</add>'
     end
 	
 	def test_expansion

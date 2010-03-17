@@ -472,6 +472,7 @@ item
 	//  >abc<
     //: "|!|" [ADDLIST a] ":" [WORDSSIC b] "|!|" = <add place=[ADDLIST a]>[WORDSSIC b]</>
 	: "||" [ADDLIST a] ":" [WORDSSIC b] "||" = <add place=[ADDLIST a]>[WORDSSIC b]</>
+	>: "||" [ADDLIST a] ":" [items b] "||" = <add place=[ADDLIST a]>[items b]</>
 	
 //60
 	//---add_place_margin_sling---

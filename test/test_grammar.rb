@@ -77,9 +77,11 @@ if(RUBY_PLATFORM == 'java')
       # Ancient abbreviation whose resolution is unknown
       assert_equal_fragment_transform '(|ab|)', '<abbr>ab</abbr>'
 	  assert_equal_fragment_transform '(|bạḅdec̣g|)', '<abbr>b<unclear>ab</unclear>de<unclear>c</unclear>g</abbr>'
+	  assert_equal_fragment_transform '(|bạḅdec̣g?|)', '<abbr>b<unclear>ab</unclear>de<unclear>c</unclear>g<certainty locus="name" match=".."/></abbr>'
 	  assert_equal_fragment_transform '[ ((ἡμιωβέλιον)) <#=1/2#>(|προ|) ((δραχμὴν)) <#α=1#> (χ(αλκοῦς 2))<#=2#>]', '<supplied reason="lost"> <expan><ex>ἡμιωβέλιον</ex></expan> <num value="1/2"/><abbr>προ</abbr> <expan><ex>δραχμὴν</ex></expan> <num value="1">α</num> <expan>χ<ex>αλκοῦς 2</ex></expan><num value="2"/></supplied>'
 	  assert_equal_fragment_transform '(|υιω?|)', '<abbr>υιω<certainty locus="name" match=".."/></abbr>'
 	  assert_equal_fragment_transform '<:(|πριμο̣σκ|)|alt:|(|πριμ(())σκ|):>', '<app type="alternative"><lem><abbr>πριμ<unclear>ο</unclear>σκ</abbr></lem><rdg><abbr>πριμ<expan><ex/></expan>σκ</abbr></rdg></app>'
+	  assert_equal_fragment_transform '<:(|πριμο̣σκ|)|alt:|(|πριμ(())σκ?|):>', '<app type="alternative"><lem><abbr>πριμ<unclear>ο</unclear>σκ</abbr></lem><rdg><abbr>πριμ<expan><ex/></expan>σκ<certainty locus="name" match=".."/></abbr></rdg></app>'
 	  assert_equal_fragment_transform '<:.5(( ))|alt:|(|κουδ?|) :>', '<app type="alternative"><lem><gap reason="illegible" quantity="5" unit="character"/><expan><ex> </ex></expan></lem><rdg><abbr>κουδ<certainty locus="name" match=".."/></abbr> </rdg></app>'
     end
   
@@ -224,7 +226,7 @@ if(RUBY_PLATFORM == 'java')
       # Scribe omitted character(s) and modern ed inserted it
       assert_equal_fragment_transform 'a<b>c', 'a<supplied reason="omitted">b</supplied>c'
       assert_equal_fragment_transform '<abc>', '<supplied reason="omitted">abc</supplied>'
-	  assert_equal_fragment_transform '<>', '<supplied reason="omitted"/>'
+	  #assert_equal_fragment_transform '<>', '<supplied reason="omitted"/>'
       assert_equal_fragment_transform 'we will <we will> rock you', 'we will <supplied reason="omitted">we will</supplied> rock you'
       assert_equal_fragment_transform 'we ea<t the fi>sh', 'we ea<supplied reason="omitted">t the fi</supplied>sh'
     end
@@ -232,7 +234,7 @@ if(RUBY_PLATFORM == 'java')
     def test_omitted_cert_low
       assert_equal_fragment_transform '<τοῦ?>', '<supplied reason="omitted" cert="low">τοῦ</supplied>'
 	  assert_equal_fragment_transform '<ạḅ?>', '<supplied reason="omitted" cert="low"><unclear>ab</unclear></supplied>'
-	  assert_equal_fragment_transform '<?>', '<supplied reason="omitted" cert="low"/>'
+	  #assert_equal_fragment_transform '<?>', '<supplied reason="omitted" cert="low"/>'
     end
     
     def test_evidence_parallel
@@ -266,8 +268,8 @@ if(RUBY_PLATFORM == 'java')
       # modern ed restores lost text
 	  assert_equal_fragment_transform '[καὶ ?]', '<supplied reason="lost" cert="low">καὶ</supplied>'
 	  assert_equal_fragment_transform '[παρὰ]', '<supplied reason="lost">παρὰ</supplied>'
-      assert_equal_fragment_transform '[]', '<supplied reason="lost"/>'
-	  assert_equal_fragment_transform '[ ?]', '<supplied reason="lost" cert="low"/>'
+      #assert_equal_fragment_transform '[]', '<supplied reason="lost"/>'
+	  #assert_equal_fragment_transform '[ ?]', '<supplied reason="lost" cert="low"/>'
 	  #below not valid 3/1 per Josh during review
 	  #assert_equal_fragment_transform '[7]', '<supplied reason="lost">7</supplied>'
       assert_equal_fragment_transform 'a[b]c', 'a<supplied reason="lost">b</supplied>c'
@@ -404,10 +406,13 @@ if(RUBY_PLATFORM == 'java')
     def test_glyph
 	  assert_equal_fragment_transform '*stauros*', '<g type="stauros"/>'
       assert_equal_fragment_transform '*stauros,♱*', '<g type="stauros">♱</g>'
+	  assert_equal_fragment_transform '*stauros?,♱*', '<unclear><g type="stauros">♱</g></unclear>'
+	  assert_equal_fragment_transform '*stauros?,♱̣*', '<unclear><g type="stauros"><unclear>♱</unclear></g></unclear>'
+	  assert_equal_fragment_transform '*stauros,♱̣*', '<g type="stauros"><unclear>♱</unclear></g>'
       assert_equal_fragment_transform '*filler(extension)*', '<g rend="extension" type="filler"/>'
 	  assert_equal_fragment_transform '*@stauros*', '<orig><g type="stauros"/></orig>'
-	  assert_equal_fragment_transform '*mid punctus*', '<g type="mid punctus"/>'
-	  assert_equal_fragment_transform '*mid punctus?*', '<unclear><g type="mid punctus"/></unclear>'
+	  assert_equal_fragment_transform '*mid-punctus*', '<g type="mid-punctus"/>'
+	  assert_equal_fragment_transform '*mid-punctus?*', '<unclear><g type="mid-punctus"/></unclear>'
 	  assert_equal_fragment_transform '*filler(extension)?*', '<unclear><g rend="extension" type="filler"/></unclear>'
     end
     

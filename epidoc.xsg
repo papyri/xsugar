@@ -4,26 +4,22 @@ NL = [\r\n]+
 SP = [ ]
 SPO = [ ]+ (MAX)
 SPO2 = [ ]*
-ABBR = "(  )"+
 
 BEGOPT = "<:"
 ENDOPT = ":>"
 BEGNUM = "<#"
 ENDNUM = "#>"
-BEGSEG = "<\&"
-ENDSEG = "\&>"
-//BEGEXP = "<+"
-//ENDEXP = "+>"
+//removed per Josh/Rodney review 3/17
+//BEGSEG = "<\&"
+//ENDSEG = "\&>"
 BEGEXP = "("
 ENDEXP = ")"
 BEGAB = "<="
 ENDAB = "=>"
 BEGDIV = "<D="
 ENDDIV = "=D>"
-//BEGMIABBR = "<@"
-//ENDMIABBR = "@>"
-BEGMIABBR = "(|"
-ENDMIABBR = "|)"
+BEGABBR = "(|"
+ENDABBR = "|)"
 
 FRACSYM = [𐅵𐅷𐅸]+
 
@@ -184,11 +180,10 @@ item
 
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
-//	: " " [WORDA w] [ABBR] = <abbr>[WORDA w]</>
-	>: [BEGMIABBR] [WORDA w] [ENDMIABBR] = <abbr>[WORDA w]</>
-	>: [BEGMIABBR] [WORDA w] "?" [ENDMIABBR] = <abbr>[WORDA w]<certainty locus="name" match=".."/></>
-	>: [BEGMIABBR] [items w] [ENDMIABBR] = <abbr>[items w]</>
-//	>: [BEGMIABBR] [items w] [ABBR] [ENDMIABBR] = <abbr>[items w]</>
+	>: [BEGABBR] [WORDA w] [ENDABBR] = <abbr>[WORDA w]</>
+	>: [BEGABBR] [WORDA w] "?" [ENDABBR] = <abbr>[WORDA w]<certainty locus="name" match=".."/></>
+	>: [BEGABBR] [items w] [ENDABBR] = <abbr>[items w]</>
+	>: [BEGABBR] [items w] "?" [ENDABBR] = <abbr>[items w]<certainty locus="name" match=".."/></>
 
 //---test_uncertain_diacritical_diaeresis---generic
 //	// (¨)
@@ -636,15 +631,16 @@ item
 	>: [BEGOPT] "|alt:" "|" [items b] [ENDOPT] = <app type="alternative"><lem/><rdg>[items b]</></>
 	
 	//---glyph---
-	//  '‼a', '‼a,b', '‼filler(a), ‼@a , ‼a b ' 
-//	: "*" [UNDERDOT] [WORDS k]  [UNDERDOT] "*" = <unclear><g type=[WORDS k]></></>
-	: "*" [WORDS k] "?*" = <unclear><g type=[WORDS k]></></>
+	//  *a*, *a,b*, *filler(a)*, *@a*  
+	: "*" [WORD k] "?*" = <unclear><g type=[WORD k]></></>
 	: "*filler(" [WORD a] ")?*" = <unclear><g rend=[WORD a] type="filler"></></>
-	: "*" [WORDS a] "*" = <g type=[WORDS a]></>
+	: "*" [WORD a] "*" = <g type=[WORD a]></>
 	: "*" [WORD a] "," [WORD b] "*" = <g type=[WORD a]>[WORD b]</>
+	>: "*" [WORD a] "," [items b] "*" = <g type=[WORD a]>[items b]</>
+	: "*" [WORD a] "?," [WORD b] "*" = <unclear><g type=[WORD a]>[WORD b]</></>
+	>: "*" [WORD a] "?," [items b] "*" = <unclear><g type=[WORD a]>[items b]</></>
 	: "*filler(" [WORD a] ")" "*" = <g rend=[WORD a] type="filler"></>
 	: "*@" [WORD a] "*" = <orig><g type=[WORD a]></></>
-//	>: "‼" [WORDS a] "‼" = <g type=[WORDS a]></>
 	
 	//---hand_shift---
 	//  $m# 
@@ -778,8 +774,9 @@ flat
 	>: "<" [WORDS w] "?" ">" = <supplied reason="omitted" cert="low">[WORDS w]</>
 	>: "<" [items i] ">" = <supplied reason="omitted">[items i]</>
 	>: "<" [items w] "?" ">" = <supplied reason="omitted" cert="low">[items w]</>
-	>: "<" ">" = <supplied reason="omitted"/>
-	>: "<" "?" ">" = <supplied reason="omitted" cert="low"/>
+//removed per Josh/Rodney review 3/17
+//	>: "<" ">" = <supplied reason="omitted"/>
+//	>: "<" "?" ">" = <supplied reason="omitted" cert="low"/>
 	
 	//---test_sic---
 	//sic
@@ -788,11 +785,13 @@ flat
 	
 	//---test_seg---
 	//seg
-	>: [BEGSEG] [items i] [ENDSEG] = <seg cert="low">[items i]</>	
+//remove per Josh/Rodney review 3/17
+//	>: [BEGSEG] [items i] [ENDSEG] = <seg cert="low">[items i]</>	
 	
 //  **P5**
-	: "[]" = <supplied reason="lost"/>
-	: "[ ?]" = <supplied reason="lost" cert="low"/>
+//removed per Josh/Rodney review 3/17
+//	: "[]" = <supplied reason="lost"/>
+//	: "[ ?]" = <supplied reason="lost" cert="low"/>
 	
 	//---multiple tests see inside_brackets production---
 	// [ ], [[ ]], [ca.?] etc...

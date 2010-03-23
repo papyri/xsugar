@@ -109,17 +109,31 @@ ADDLIST = ((bottom)|(left)|(right)|(top)|(margin))
      : [abtag a] = <wrapab>[abtag a]</>
      : =
 
-// 3rd and 4th line to go to an ab section without the div textpart wrapping it
-divtag : [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] = <div n=[WORDDIV d] type="textpart">[abtag a]</>
-		>: [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] [divtag more] = <div n=[WORDDIV d] type="textpart">[abtag a]</> [divtag more]
-		>: [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] [NL] [divtag more] = <div n=[WORDDIV d] type="textpart">[abtag a]</> [NL] [divtag more]
-		>: [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] [abtag more] = <div n=[WORDDIV d] type="textpart">[abtag a]</> [abtag more]
-		>: [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] [NL] [abtag more] = <div n=[WORDDIV d] type="textpart">[abtag a]</> [NL] [abtag more]
+// cannot have a standalone ab section after a div - must be wrapped in a div (but can have a div after a standalone ab)
+// need different formats for where the new line may appear
+divtag 
+     : [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] = <div n=[WORDDIV d] type="textpart">[abtag a]</>
+    >: [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] [NL] = <div n=[WORDDIV d] type="textpart">[abtag a]</> [NL]
+    >: [BEGDIV] "." [WORDDIV d] " " [NL] [abtag a] [ENDDIV]  = <div n=[WORDDIV d] type="textpart"> [NL] [abtag a]</> 
+    >: [BEGDIV] "." [WORDDIV d] " " [NL] [abtag a] [ENDDIV] [NL] = <div n=[WORDDIV d] type="textpart"> [NL] [abtag a]</> [NL]
+    >: [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] [divtag more] = <div n=[WORDDIV d] type="textpart">[abtag a]</> [divtag more]
+    >: [BEGDIV] "." [WORDDIV d] " " [NL] [abtag a] [ENDDIV] [divtag more] = <div n=[WORDDIV d] type="textpart"> [NL] [abtag a]</> [divtag more]
+    >: [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] [NL] [divtag more] = <div n=[WORDDIV d] type="textpart">[abtag a]</> [NL] [divtag more]
+    >: [BEGDIV] "." [WORDDIV d] " " [NL] [abtag a] [ENDDIV] [NL] [divtag more] = <div n=[WORDDIV d] type="textpart"> [NL] [abtag a]</> [NL] [divtag more]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [abtag a] [ENDDIV] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[abtag a]</>
+    >: [BEGDIV] "." [WORDDIV d] "." [WORDDIV s] " " [abtag a] [ENDDIV] [NL] = <div n=[WORDDIV d] subtype =[WORDDIV s] type="textpart">[abtag a]</> [NL]
+    >: [BEGDIV] "." [WORDDIV d] "." [WORDDIV s] " " [NL] [abtag a] [ENDDIV]  = <div n=[WORDDIV d] subtype =[WORDDIV s] type="textpart"> [NL] [abtag a]</> 
+    >: [BEGDIV] "." [WORDDIV d] "." [WORDDIV s] " " [NL] [abtag a] [ENDDIV] [NL] = <div n=[WORDDIV d] subtype =[WORDDIV s] type="textpart"> [NL] [abtag a]</> [NL]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [abtag a] [ENDDIV] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[abtag a]</> [divtag more]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [NL] [abtag a] [ENDDIV] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [NL] [abtag a]</> [divtag more]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [abtag a] [ENDDIV] [NL] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[abtag a]</> [NL] [divtag more]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [NL] [abtag a] [ENDDIV] [NL] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [NL] [abtag a]</> [NL] [divtag more]
 
-// 1st line for 1 ab section, 2nd line for multiple ab sections, 3rd line for multiple ab sections with new line break, 6th line for empty tag ab section
-// 4th and 5th line to go back to a div textpart wrapping the ab
+// lines 1 & 2 for 1 ab section, lines 3 & 4 for multiple ab sections, lines 5 & 6 for ab sections followed by div, 7th line for empty tag ab section
+// need different formats for where the new line may appear
 abtag 
 		: [BEGAB] [items z] [ENDAB] = <ab>[items z]</>
+		>: [BEGAB] [items z] [ENDAB] [NL] = <ab>[items z]</> [NL]
 		>: [BEGAB] [items z] [ENDAB] [abtag more] = <ab>[items z]</> [abtag more]
 		>: [BEGAB] [items z] [ENDAB] [NL] [abtag more] = <ab>[items z]</> [NL] [abtag more]
 		>: [BEGAB] [items z] [ENDAB] [divtag more] = <ab>[items z]</> [divtag more]

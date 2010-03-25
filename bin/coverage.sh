@@ -7,6 +7,7 @@ today=`date +%Y.%m.%d`
 cd $idp2_prefix/idp.data
 echo "idp.data git:" >> $idp2_prefix/coverage/$today.txt
 git pull isawhttp master >> $idp2_prefix/coverage/$today.txt
+git log -n 1 --pretty=oneline >> $idp2_prefix/coverage/$today.txt
 cd $idp2_prefix/xsugar
 echo "xsugar git:" >> $idp2_prefix/coverage/$today.txt
 git pull >> $idp2_prefix/coverage/$today.txt

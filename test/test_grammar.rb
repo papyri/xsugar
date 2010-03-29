@@ -565,6 +565,8 @@ if(RUBY_PLATFORM == 'java')
     end
 	
 	def test_linenumber_specials
+	  assert_equal_fragment_transform '2/3,ms. ', '<lb n="2/3,ms"/>'
+	  assert_equal_fragment_transform '396/397,minf. ', '<lb n="396/397,minf"/>'
 	  assert_equal_fragment_transform '18. ', '<lb n="18"/>'
 	  assert_equal_fragment_transform '18,ms7. ', '<lb n="18,ms7"/>'
 	  assert_equal_fragment_transform '8,ms. ', '<lb n="8,ms"/>'

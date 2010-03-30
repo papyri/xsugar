@@ -77,8 +77,8 @@ LINENUM = [0-9]+[/\,a-zA-Z0-9]*[ms0-9]*
 //removed all uses of below per 12/16 review
 //GAPEXTNUM = [c]?[.]?[0-9]+
 ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯≡+\u0323]
-//added 0-9 to eliminate numbers 7/22 to fix reversability on some sup lost
-ANYMULT = [^\/\\\t\[\]\^<>0-9_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+
+//added 0-9 to eliminate numbers 7/22 to fix reversability on some sup lost - added l on 3/30 to make space line (ex.  vac.?lin) work
+ANYMULT = [^\/\\\t\[\]\^<>0-9l_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+
 
 //the third part of HANDSHIFT reg exp is same as ANYLETTER except does not allow space
 HANDSHIFT = m{1}[0-9]+[^ \/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]?
@@ -662,11 +662,7 @@ item
 	: "$" [HANDSHIFT h] " " = <handShift new=[HANDSHIFT h]></>
 	>: "$" [HANDSHIFT h] "? " = <handShift new=[HANDSHIFT h] cert="low"></>
 
-	
-	//---space_unknown---
-	//  vac.? **P5** 
-//	: "vac.?" = <space extent="unknown" unit="character" dim="horizontal"></>  removed horizontal in t esting
-	: "vac.?" = <space extent="unknown" unit="character"></>
+	: [spaceitem s] = [spaceitem s]
 	
 	//---note---
 	//  /*abcdefg*/ **P5**
@@ -859,7 +855,7 @@ inside_brackets
 	//[vac.?]
 	:[ANYMULT w] "vac.?" = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/></>
 	:"vac.?" [ANYMULT w] = <supplied reason="lost"><space extent="unknown" unit="character"/>[ANYMULT w]</>
-	:"vac.?" = <supplied reason="lost"><space extent="unknown" unit="character"/></>
+	:[spaceitem s] = <supplied reason="lost">[spaceitem s]</>
 	:[ANYMULT w] "vac.?" [ANYMULT w] = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
 	
 	//---test_lost_paragraphos
@@ -888,3 +884,13 @@ inside_brackets
 foritem
 	: "~|" [WORDSF a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a]</>
 	>: "~|" [WORDSF a][items c] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a][items c]</>
+
+spaceitem 
+	: "vac.?" = <space extent="unknown" unit="character"></>
+	>: "vac." [NUM n] = <space quantity=[NUM n] unit="character"></>
+	>: "vac." [NUM v] "-" [NUM w] = <space atLeast=[NUM v] atMost=[NUM w] unit="character"></>
+	>: "vac.ca." [NUM n] = <space quantity=[NUM n] unit="character" precision="low"></>
+	>: "vac.?lin" = <space extent="unknown" unit="line"></>
+	>: "vac." [NUM n] "lin" = <space quantity=[NUM n] unit="line"></>
+	>: "vac." [NUM v] "-" [NUM w] "lin" = <space atLeast=[NUM v] atMost=[NUM w] unit="line"></>
+	>: "vac.ca." [NUM n] "lin" = <space quantity=[NUM n] unit="line" precision="low"></>

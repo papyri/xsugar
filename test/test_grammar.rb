@@ -451,6 +451,34 @@ if(RUBY_PLATFORM == 'java')
 	
     def test_space_unknown
       assert_equal_fragment_transform 'vac.?', '<space extent="unknown" unit="character"/>'
+	  assert_equal_fragment_transform 'vac.3', '<space quantity="3" unit="character"/>'
+	  assert_equal_fragment_transform 'vac.2-5', '<space atLeast="2" atMost="5" unit="character"/>'
+	  assert_equal_fragment_transform 'vac.ca.3', '<space quantity="3" unit="character" precision="low"/>'
+	  assert_equal_fragment_transform 'vac.?lin', '<space extent="unknown" unit="line"/>'
+	  assert_equal_fragment_transform 'vac.3lin', '<space quantity="3" unit="line"/>'
+	  assert_equal_fragment_transform 'vac.2-5lin', '<space atLeast="2" atMost="5" unit="line"/>'
+	  assert_equal_fragment_transform 'vac.ca.3lin', '<space quantity="3" unit="line" precision="low"/>'
+    end
+	
+	def test_supplied_lost_space
+      assert_equal_fragment_transform '[vac.?]', '<supplied reason="lost"><space extent="unknown" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[vac.? .4-5]', '<supplied reason="lost"><space extent="unknown" unit="character"/> <gap reason="illegible" atLeast="4" atMost="5" unit="character"/></supplied>'  #worked with ANYMULT tweak
+	  assert_equal_fragment_transform '[εὶρ .2 vac.?]', '<supplied reason="lost">εὶρ <gap reason="illegible" quantity="2" unit="character"/> <space extent="unknown" unit="character"/></supplied>'  #worked with ANYMULT tweak
+	  assert_equal_fragment_transform '[ροι. vac.?]', '<supplied reason="lost">ροι. <space extent="unknown" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[ς. vac.?]', '<supplied reason="lost">ς. <space extent="unknown" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[ρίδος. vac.?]', '<supplied reason="lost">ρίδος. <space extent="unknown" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[εἰδυίας. vac.?]', '<supplied reason="lost">εἰδυίας. <space extent="unknown" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[ομοῦ αὐτῆς vac.?]', '<supplied reason="lost">ομοῦ αὐτῆς <space extent="unknown" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[ωκα. vac.?]', '<supplied reason="lost">ωκα. <space extent="unknown" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[θαι vac.?]', '<supplied reason="lost">θαι <space extent="unknown" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[vac.?]', '<supplied reason="lost"><space extent="unknown" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[vac.3]', '<supplied reason="lost"><space quantity="3" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[vac.2-5]', '<supplied reason="lost"><space atLeast="2" atMost="5" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[vac.ca.3]', '<supplied reason="lost"><space quantity="3" unit="character" precision="low"/></supplied>'
+	  assert_equal_fragment_transform '[vac.?lin]', '<supplied reason="lost"><space extent="unknown" unit="line"/></supplied>'
+	  assert_equal_fragment_transform '[vac.3lin]', '<supplied reason="lost"><space quantity="3" unit="line"/></supplied>'
+	  assert_equal_fragment_transform '[vac.2-5lin]', '<supplied reason="lost"><space atLeast="2" atMost="5" unit="line"/></supplied>'
+	  assert_equal_fragment_transform '[vac.ca.3lin]', '<supplied reason="lost"><space quantity="3" unit="line" precision="low"/></supplied>'
     end
     
     def test_del_rend
@@ -576,10 +604,14 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '3,4. ', '<lb n="3,4"/>'
 	  assert_equal_fragment_transform '(1,ms, perpendicular)', '<lb n="1,ms" rend="perpendicular"/>'
 	  assert_equal_fragment_transform '(1/side, perpendicular)', '<lb n="1/side" rend="perpendicular"/>'
-	  assert_equal_fragment_transform '(1.div, perpendicular)', '<lb n="1" rend="perpendicular" type="inWord"/>'
-	  assert_equal_fragment_transform '(2.div, inverse)', '<lb n="2" rend="inverse" type="inWord"/>'
-	  assert_equal_fragment_transform '3.div ', '<lb n="3" type="inWord"/>'
+	  assert_equal_fragment_transform '(1.-, perpendicular)', '<lb n="1" rend="perpendicular" type="inWord"/>'
+	  assert_equal_fragment_transform '(2.-, inverse)', '<lb n="2" rend="inverse" type="inWord"/>'
+	  assert_equal_fragment_transform '3.- ', '<lb n="3" type="inWord"/>'
 	  assert_equal_fragment_transform '4. ', '<lb n="4"/>'
+	  #inWord inside other markup
+	  assert_equal_fragment_transform '<:ὑπηR 8.- [ρετῶ]ν|ed:bgu 3 p.1|[.7]ν:>', '<app type="editorial"><lem resp="bgu 3 p.1">ὑπηR <lb n="8" type="inWord"/><supplied reason="lost">ρετῶ</supplied>ν</lem><rdg><gap reason="lost" quantity="7" unit="character"/>ν</rdg></app>'
+	  assert_equal_fragment_transform '<:Πα[νε]φρόμ 23.- μεως|ed:|Πα[νε]φρέμμεως:>', '<app type="editorial"><lem>Πα<supplied reason="lost">νε</supplied>φρόμ <lb n="23" type="inWord"/>μεως</lem><rdg>Πα<supplied reason="lost">νε</supplied>φρέμμεως</rdg></app>'
+	  assert_equal_fragment_transform '<:Πα[νε]φρόμ (2.-, inverse)μεως|ed:|Πα[νε]φρέμμεως:>', '<app type="editorial"><lem>Πα<supplied reason="lost">νε</supplied>φρόμ <lb n="2" rend="inverse" type="inWord"/>μεως</lem><rdg>Πα<supplied reason="lost">νε</supplied>φρέμμεως</rdg></app>'
 	end
 	
     def test_simple_reversibility

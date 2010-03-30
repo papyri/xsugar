@@ -145,7 +145,7 @@ items : [item i] [items more] = [item i] [items more]
 
 //**P5**
 linenumber : [LINENUM n] "." " " = <lb n=[LINENUM n]/>
-				 >: [LINENUM n] "." "div " = <lb n=[LINENUM n] type="inWord"/>
+				 >: [LINENUM n] "." "- " = <lb n=[LINENUM n] type="inWord"/>
 
 newline : [NL n] = [NL n]
 
@@ -190,7 +190,7 @@ item
 	//---special_lines---
 	//(23, perp)
 	: "(" [LINENUM v] ", " [WORD w] ")" = <lb n=[LINENUM v] rend=[WORD w]/>
-	>: "(" [LINENUM v] "." "div" ", " [WORD w] ")" = <lb n=[LINENUM v] rend=[WORD w] type="inWord"/>
+	>: "(" [LINENUM v] "." "-" ", " [WORD w] ")" = <lb n=[LINENUM v] rend=[WORD w] type="inWord"/>
 
 	//---test_abbreviation_unknown_resolution---
 	// ab( )

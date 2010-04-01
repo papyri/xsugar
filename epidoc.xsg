@@ -195,9 +195,9 @@ item
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
 	>: [BEGABBR] [WORDA w] [ENDABBR] = <abbr>[WORDA w]</>
-	>: [BEGABBR] [WORDA w] "?" [ENDABBR] = <abbr>[WORDA w]<certainty locus="name" match=".."/></>
+	>: [BEGABBR] [WORDA w] "(?)" [ENDABBR] = <abbr>[WORDA w]<certainty locus="name" match=".."/></>
 	>: [BEGABBR] [items w] [ENDABBR] = <abbr>[items w]</>
-	>: [BEGABBR] [items w] "?" [ENDABBR] = <abbr>[items w]<certainty locus="name" match=".."/></>
+	>: [BEGABBR] [items w] "(?)" [ENDABBR] = <abbr>[items w]<certainty locus="name" match=".."/></>
 
 //---test_uncertain_diacritical_diaeresis---generic
 //	// (¨)
@@ -361,16 +361,15 @@ item
 	
 	//---choice---
 	//  <:a|orth|b|:> 
-	: [BEGOPT] [WORDAVEST a] "?" "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic>[WORDAVEST b]</></>
+	: [BEGOPT] [WORDAVEST a] "(?)" "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic>[WORDAVEST b]</></>
 // the line below causes horizontal ambiguity but does what it needs to - set up for case such as   p.cair.zen/p.cair.zen.3/p.cair.zen.3.59403.xml
-// will see if it handles it tomorrow and what else it does
-	>: [BEGOPT] [WORDAVEST a] "?" [items c] "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[WORDAVEST a][items c]</><sic>[items d]</></>
-	>: [BEGOPT] [WORDAVEST a] "?" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic cert="low">[items d]</></>
+// will see if it handles it tomorrow and what else it does - think on 3/31/10 do not really need - see what happens
+//	>: [BEGOPT] [WORDAVEST a] "?" [items c] "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[WORDAVEST a][items c]</><sic>[items d]</></>
+	>: [BEGOPT] [WORDAVEST a] "(?)" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic cert="low">[items d]</></>
 	>: [BEGOPT] [WORDAVEST a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic cert="low">[items d]</></>
-	>: [BEGOPT] [items a] "?" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[items a]</><sic cert="low">[items d]</></>
+	>: [BEGOPT] [items a] "(?)" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[items a]</><sic cert="low">[items d]</></>
 	>: [BEGOPT] [items a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[items a]</><sic cert="low">[items d]</></>
-	>: [BEGOPT] [items a] "?" "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[items a]</><sic>[items d]</></>
-//30
+	>: [BEGOPT] [items a] "(?)" "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[items a]</><sic>[items d]</></>
 	: [BEGOPT] [WORDAVEST a] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[WORDAVEST b]</></>
 	>: [BEGOPT] [items a] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDAVEST b]</></>
 	>: [BEGOPT] [WORDAVEST a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[items b]</></>
@@ -384,6 +383,7 @@ item
 	: "--------" = <milestone rend="horizontal-rule" unit="undefined"></>
 	: "----" = <milestone rend="paragraphos" unit="undefined"></>
 	:"<---->" = <supplied reason="omitted"><milestone rend="paragraphos" unit="undefined"/></>
+	:"<----(?)>" = <supplied reason="omitted" cert="low"><milestone rend="paragraphos" unit="undefined"/></>
 	: "###" = <milestone rend="box" unit="undefined"></>
 	
 	//---test_illegible_dot_gap---
@@ -391,7 +391,6 @@ item
 	: [DOT] [NUM n] = <gap reason="illegible" quantity=[NUM n] unit="character"></>  
 // removed per 12/16 review
 //	>: [DOT] [GAPEXTNUM n] = <gap reason="illegible" extent=[GAPEXTNUM n] unit="character"></>  
-//40
 	//---test_illegible_dot_max---
 	// .#{n}-#{n} **P5**
 	: [DOT] [NUM v] "-" [NUM w] = <gap reason="illegible" atLeast=[NUM v] atMost=[NUM w] unit="character"></>
@@ -444,7 +443,7 @@ item
 	>: "\|" [items i] "\|" = <hi rend="tall">[items i]</>
 //	: "\^" [WORD a] "\^" = <hi rend="tall">[WORD a]</>
 //	>: "\^" [items i] "\^" = <hi rend="tall">[items i]</>
-//50
+
 	//---superscript---
 	//   \|abc|/
 	//   ^abc^
@@ -488,7 +487,6 @@ item
 	: "||" [ADDLIST a] ":" [WORDSSIC b] "||" = <add place=[ADDLIST a]>[WORDSSIC b]</>
 	>: "||" [ADDLIST a] ":" [items b] "||" = <add place=[ADDLIST a]>[items b]</>
 	
-//60
 	//---add_place_margin_sling---
 	//  <|abc|> **P5**
     : "<|" [WORDSSIC a] "|>" = <add rend="sling" place="margin">[WORDSSIC a]</>
@@ -540,19 +538,18 @@ item
 	//  _abc_  - underlines **P5**
 	// added @ 7/16 to make difference between beginning and ending symbol or xsugar would not parse Leiden+ correctly
 	// 7/20 changed illegible to undefined per gabby change to data
-	//: "_@" [WORDSSIC a] "@_" = <supplied evidence="parallel" reason="undefined">[WORDSSIC a]</>
-	//: "_@" [WORDSSIC a] "?" "@_" = <supplied evidence="parallel" reason="undefined" cert="low">[WORDSSIC a]</>
-	//>: "_@" [items a] "@_" = <supplied evidence="parallel" reason="undefined">[items a]</>
-	//>: "_@" [items a] "?" "@_" = <supplied evidence="parallel" reason="undefined" cert="low">[items a]</>
+	// changed @ to _ during Leiden+ review
 	: "|_" [WORDSSIC a] "_|" = <supplied evidence="parallel" reason="undefined">[WORDSSIC a]</>
-	: "|_" [WORDSSIC a] "?" "_|" = <supplied evidence="parallel" reason="undefined" cert="low">[WORDSSIC a]</>
+	: "|_" [WORDSSIC a] "(?)" "_|" = <supplied evidence="parallel" reason="undefined" cert="low">[WORDSSIC a]</>
 	>: "|_" [items a] "_|" = <supplied evidence="parallel" reason="undefined">[items a]</>
-	>: "|_" [items a] "?" "_|" = <supplied evidence="parallel" reason="undefined" cert="low">[items a]</>
+	>: "|_" [items a] "(?)" "_|" = <supplied evidence="parallel" reason="undefined" cert="low">[items a]</>
 		
 	//---lost_parallel---
 	//  _[abc]_  - underlines
     : "_[" [WORDSSIC a] "]_" = <supplied evidence="parallel" reason="lost">[WORDSSIC a]</>
+	: "_[" [WORDSSIC a] "(?)" "]_" = <supplied evidence="parallel" reason="lost" cert="low">[WORDSSIC a]</>
 	>: "_[" [items a] "]_" = <supplied evidence="parallel" reason="lost">[items a]</>
+	>: "_[" [items a] "(?)" "]_" = <supplied evidence="parallel" reason="lost" cert="low">[items a]</>
 
 	//---number or fraction_no_symbol---
     : "<#=frac" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction"/>
@@ -660,7 +657,7 @@ item
 	//---hand_shift---
 	//  $m# 
 	: "$" [HANDSHIFT h] " " = <handShift new=[HANDSHIFT h]></>
-	>: "$" [HANDSHIFT h] "? " = <handShift new=[HANDSHIFT h] cert="low"></>
+	>: "$" [HANDSHIFT h] "(?) " = <handShift new=[HANDSHIFT h] cert="low"></>
 
 	: [spaceitem s] = [spaceitem s]
 	
@@ -782,9 +779,9 @@ flat
 	//---test_omitted---
 	//< > **P5**
 	>: "<" [WORDS w] ">" = <supplied reason="omitted">[WORDS w]</>
-	>: "<" [WORDS w] "?" ">" = <supplied reason="omitted" cert="low">[WORDS w]</>
+	>: "<" [WORDS w] "(?)" ">" = <supplied reason="omitted" cert="low">[WORDS w]</>
 	>: "<" [items i] ">" = <supplied reason="omitted">[items i]</>
-	>: "<" [items w] "?" ">" = <supplied reason="omitted" cert="low">[items w]</>
+	>: "<" [items w] "(?)" ">" = <supplied reason="omitted" cert="low">[items w]</>
 //removed per Josh/Rodney review 3/17
 //	>: "<" ">" = <supplied reason="omitted"/>
 //	>: "<" "?" ">" = <supplied reason="omitted" cert="low"/>
@@ -857,12 +854,19 @@ inside_brackets
 	:"vac.?" [ANYMULT w] = <supplied reason="lost"><space extent="unknown" unit="character"/>[ANYMULT w]</>
 	:[spaceitem s] = <supplied reason="lost">[spaceitem s]</>
 	:[ANYMULT w] "vac.?" [ANYMULT w] = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
+	:[ANYMULT w] "vac.?" "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<space extent="unknown" unit="character"/></>
+	:"vac.?" [ANYMULT w] "(?)" = <supplied reason="lost" cert="low"><space extent="unknown" unit="character"/>[ANYMULT w]</>
+	:[spaceitem s] "(?)" = <supplied reason="lost" cert="low">[spaceitem s]</>
+	:[ANYMULT w] "vac.?" [ANYMULT w] "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
 	
 	//---test_lost_paragraphos
 	//[----]
 	:[ANYMULT w] "----" = <supplied reason="lost">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/></>
 	:"----" = <supplied reason="lost"><milestone rend="paragraphos" unit="undefined"/></>
 	:[ANYMULT w] "----" [ANYMULT x] = <supplied reason="lost">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/>[ANYMULT x]</>
+	>:[ANYMULT w] "----" "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/></>
+	>:"----" "(?)" = <supplied reason="lost" cert="low"><milestone rend="paragraphos" unit="undefined"/></>
+	>:[ANYMULT w] "----" [ANYMULT x] "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/>[ANYMULT x]</>
 	
 	//---test_lost_words---
 	// [ abc def ] lost words
@@ -870,8 +874,8 @@ inside_brackets
 	
 	//---test_lost_uncertain---
 	// [ abc? ] uncertain lost **P5**
-	>: [WORDSSIC w] " ?" = <supplied reason="lost" cert="low">[WORDSSIC w]</>
-	>: [items w] " ?" = <supplied reason="lost" cert="low">[items w]</>
+	>: [WORDSSIC w] "(?)" = <supplied reason="lost" cert="low">[WORDSSIC w]</>
+	>: [items w] "(?)" = <supplied reason="lost" cert="low">[items w]</>
 	
 	//---test_lost--- - placed at the end so all other possibilities of inside brackets are checked before looping through 'items' production
 	// [ ] lost

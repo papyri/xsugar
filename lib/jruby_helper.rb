@@ -41,6 +41,19 @@ module RXSugar
       require 'rinda/rinda'
       require 'rinda/ring'
       
+      #----used for translation----
+      def get_body(xml)  
+        REXML::XPath.match(REXML::Document.new(xml), '/TEI/text/body/')        
+      end
+      
+      def get_div_translation(xml)
+        # new to pull from div edition on to get the get_non_lb_element_children xpath to work
+        REXML::XPath.match(REXML::Document.new(xml), '/TEI/text/body/div[@type = "translation"]')
+      end          
+      #====end used for translation====      
+      
+      
+      
       def preprocess_abs(abs)
         return "<wrapab>" + abs.to_s + "</wrapab>"
       end

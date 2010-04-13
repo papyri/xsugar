@@ -2,6 +2,7 @@ require 'lib/rxsugar'
 require 'lib/jruby_helper'
 
 require 'test/test_assertions'
+require 'test/test_translation_assertions'
 
 require 'rubygems'
 require 'haml'
@@ -34,6 +35,101 @@ module RXSugar
         @examples.length > 0
       end
     end
+    
+    #----translation----
+    class TranslationRunner
+      include JRubyHelper::ClassMethods
+      
+      def run(data_path)
+        transcov = TranslationCoverage.new
+
+        xml_files = Dir[data_path + '/*.xml']
+        puts "#{xml_files.length} XML files being checked in path #{data_path} "
+        passing_fragments = 0
+        parse_errors = 0
+        reversibility_errors = 0
+
+        error_frequencies = ErrorFrequency.new()
+
+        xml_files_passing = Array.new()
+        xml_files_failing = Array.new()
+
+        xml_files_bar = ProgressBar.new("files", xml_files.length)
+
+        xml_files.each do |xml_file|
+          xml_content = IO.readlines(xml_file).to_s
+          xml_file = xml_file.sub(/#{data_path}\/?/,'')
+          body = get_body(xml_content)
+
+          # try whole body
+          begin
+            #xsugar parser is expecting a string not an array but did not want to lose 
+            collapsed = body.to_s()
+            transcov.xsugar.xml_to_non_xml(collapsed)          
+            xml_files_passing << xml_file
+          rescue
+            xml_files_failing << xml_file
+          end
+                   
+          divtranslation = get_div_translation(xml_content)
+            # do each fragment individually
+            REXML::XPath.match(divtranslation, './p/*').each do |child|
+            xml_fragment_content = child.to_s.tr("'",'"')
+            fragment_reference = XMLFragmentReference.new(xml_file, child)
+            begin
+              fragment_reference.text = transcov.assert_equal_xml_fragment_to_non_xml_to_xml_fragment(xml_fragment_content, xml_fragment_content)
+              passing_fragments += 1
+              error_frequencies.add_error(:pass, fragment_reference)
+            rescue NonXMLParseError,
+                   Test::Unit::AssertionFailedError => e
+              reversibility_errors += 1
+              fragment_reference.text = transcov.transform_xml_fragment_to_non_xml(xml_fragment_content)
+              error_frequencies.add_error(:reversibility, fragment_reference)
+            rescue XMLParseError => e
+              parse_errors += 1
+              error_frequencies.add_error(:parse, fragment_reference)
+            end
+          end
+
+
+          
+          xml_files_bar.inc
+        end
+        xml_files_bar.finish
+
+        puts "Failing:           #{xml_files_failing.length} / #{xml_files.length}"
+        puts "Non-empty passing: #{xml_files_passing.length} / #{xml_files.length}"
+        error_frequencies.pretty_print
+
+        puts "\nPassing XML files with content:\n" + 
+          xml_files_passing.join("\n")
+        puts "\nFailing XML files:\n" + xml_files_failing.join("\n")
+
+        
+        if HTML_OUTPUT != ''
+          translation_elements = error_frequencies.to_tree
+          coverage_template = IO.read(File.join(File.dirname(__FILE__), 'coverage.haml'))
+          haml_engine = Haml::Engine.new(coverage_template)
+          open(HTML_OUTPUT,'w') {|file|
+            file.write(haml_engine.render(Object.new, :ddb_elements => translation_elements)) }
+        end
+        
+      end
+    end
+    
+    class TranslationCoverage      
+      include TranslationGrammarAssertions
+      include RXSugarHelper
+      include JRubyHelper::InstanceMethods
+  
+      attr_reader :xsugar
+  
+      def initialize
+        translation_grammer = "/home/charles/work/protosite/protosite/vendor/plugins/rxsugar/translation_epidoc.xsg" #File.join(File.dirname(__FILE__), *%w".. translation_epidoc.xsg")
+        @xsugar = rxsugar_from_grammar(translation_grammer)
+      end
+    end    
+    #====end translation====
     
     class Runner
       include JRubyHelper::ClassMethods

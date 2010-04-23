@@ -282,6 +282,7 @@ item
 
 	: [BEGEXP] "(" [WORDS4EX a] ")" [ENDEXP] = <expan><ex>[WORDS4EX a]</></>
 	>: [BEGEXP] "(" [WORDS4EX a] ")" [WORDS b] [ENDEXP] = <expan><ex>[WORDS4EX a]</>[WORDS b]</>
+	>: [BEGEXP] "(" [WORDS4EX a] ")" [items b] [ENDEXP] = <expan><ex>[WORDS4EX a]</>[items b]</>
 //commented 11/23 due to 11/19 conversation with gabby stating no mark up inside <ex> tag
 //	>: [BEGEXP] "(" [items a] ")" [ENDEXP] = <expan><ex>[items a]</></>
 

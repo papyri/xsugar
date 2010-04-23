@@ -35,6 +35,8 @@ if(RUBY_PLATFORM == 'java')
       # Single symbol for an entire word
       assert_equal_fragment_transform '((abc))', '<expan><ex>abc</ex></expan>'
       assert_equal_fragment_transform '((ἑπτα)κωμίας)', '<expan><ex>ἑπτα</ex>κωμίας</expan>'
+      assert_equal_fragment_transform '((ἑπτα)κω̣μίας)', '<expan><ex>ἑπτα</ex>κ<unclear>ω</unclear>μίας</expan>'
+      assert_equal_fragment_transform '((ἑπτα)κω̣μ[ία̣]ς)', '<expan><ex>ἑπτα</ex>κ<unclear>ω</unclear>μ<supplied reason="lost">ί<unclear>α</unclear></supplied>ς</expan>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html

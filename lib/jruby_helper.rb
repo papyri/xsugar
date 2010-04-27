@@ -13,26 +13,36 @@ module RXSugar
           @rxsugar = rxsugar_from_grammar(RXSugarHelper::DEFAULT_GRAMMAR)
         end
       end
+      
+      class TranslationRXSugarSingleton < RXSugarSingleton
+        def initialize
+          @rxsugar = rxsugar_from_grammar(RXSugarHelper::TRANSLATION_GRAMMAR)
+        end
+      end
     end
     
-    def self.included(base)
-      base.extend(ActMethods)
-    end
     def self.included(base)
       base.extend(ActMethods)
     end
     
     module ActMethods
-      def acts_as_leiden_plus
+      def acts_as_x(x)
         unless included_modules.include? InstanceMethods
           if(RUBY_PLATFORM == 'java')
-            # require File.join(File.dirname(__FILE__), *%w'.. lib rxsugar')
             extend RXSugarHelper
           end
           
-          extend ClassMethods
+          extend x
           include InstanceMethods
         end
+      end
+      
+      def acts_as_leiden_plus
+        acts_as_x LeidenPlusClassMethods
+      end
+      
+      def acts_as_translation
+        acts_as_x TranslationClassMethods
       end
     end
     
@@ -78,7 +88,7 @@ module RXSugar
         # jruby_pipe(ruby_file, content)
         if(RUBY_PLATFORM == 'java')
           begin
-            xformed = RXSugarSingleton.instance.rxsugar.xml_to_non_xml(content)
+            xformed = transformer_singleton.instance.rxsugar.xml_to_non_xml(content)
             return xformed.to_s
           rescue NativeException => e
             parse_exception = e.cause()
@@ -99,7 +109,7 @@ module RXSugar
         # jruby_pipe(ruby_file, content)
         if(RUBY_PLATFORM == 'java')
           begin
-            xformed = RXSugarSingleton.instance.rxsugar.non_xml_to_xml(content)
+            xformed = transformer_singleton.instance.rxsugar.non_xml_to_xml(content)
             return xformed.to_s
           rescue NativeException => e
             parse_exception = e.cause()
@@ -143,6 +153,20 @@ module RXSugar
           return transformed
         end
       end
+    end
+    
+    module LeidenPlusClassMethods
+      def transformer_singleton
+        RXSugarSingleton
+      end
+      include ClassMethods
+    end
+    
+    module TranslationClassMethods
+      def transformer_singleton
+        TranslationRXSugarSingleton
+      end
+      include ClassMethods
     end
     
     module InstanceMethods

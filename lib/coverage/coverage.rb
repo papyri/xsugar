@@ -125,8 +125,7 @@ module RXSugar
       attr_reader :xsugar
   
       def initialize
-        translation_grammer = "/home/charles/work/protosite/protosite/vendor/plugins/rxsugar/translation_epidoc.xsg" #File.join(File.dirname(__FILE__), *%w".. translation_epidoc.xsg")
-        @xsugar = rxsugar_from_grammar(translation_grammer)
+        @xsugar = rxsugar_from_grammar(RXSugarHelper::TRANSLATION_GRAMMAR)
       end
     end    
     #====end translation====

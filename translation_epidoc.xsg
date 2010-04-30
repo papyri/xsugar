@@ -6,10 +6,13 @@ SPO = [ ]+ (MAX)
 SPO2 = [ ]*
 ANYSP = [\r\n \t]*
 
+BEGTRAN = "<T="
+ENDTRAN = "=T>"
+BEGP = "<="
+ENDP = "=>"
+
 BEGDIV = "<D="
 ENDDIV = "=D>"
-BEGAB = "<="
-ENDAB = "=>"
 
 BEGOPT = "<:"
 ENDOPT = ":>"
@@ -18,98 +21,159 @@ QUESTION = [\?]?
 
 LINENUM = [0-9]+[/\,a-zA-Z]*[ms0-9]*
 
-ANYLETTER = [^\/\\\t\^<>_#@~〚〛$\*\&\:\=\|\!\{\}\?\"¯≡+\u0323]
+//ANYLETTER = [^\/\\\t\^<>_#@~〚〛$\*\&\:\|\!\{\}\?\"¯≡+\u0323]
+ANYLETTER = [^\/\\\t\^<>_#@~〚〛$\*\&\:\|\!\{\}\?\"¯≡+\u0323]
 
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORD = ([^ \/\\\n\r\t\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 // WORDDIV breaks at space and does not allow DOT - allows +, \,
 WORDDIV = ([^ \n\r\t\^<>_#@~〚〛$\*\&\.\:\=\|\'\!\(\)\{\}\?\"¯≡\u0323]+) (MAX)
 
 // WORDS allows space (therefore multiple words) and DOT
-WORDS = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDS = ([^\/\\\n\r\t\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
-WORDSLR = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDSLR = ([^\/\\\n\r\t\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
+// WORDS 
+WORDSTERM = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
+//WORDSFOREIGN = WORDSTERM
+WORDSFOREIGN = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
 
-
+//very permisive for free text
+WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
 
   file
-    : [divtag a] = <body>[divtag a]</>
-    : [divtag a] [ANYSP s] = <body>[divtag a]</> [ANYSP s]
+    : [transtag a] = <body>[transtag a]</>
+    : [ANYSP s][transtag a]  = <body>[ANYSP s][transtag a]</> 
+    : [transtag a] [ANYSP s] = <body>[transtag a]</> [ANYSP s]
     : =
       
+  transtag
+  
+  
+    :  [BEGTRAN] "." [WORDDIV d] " " [divtag t] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[divtag t]</>
+    >: [BEGTRAN] "." [WORDDIV d] " " [divtag t] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[divtag t]</> [transtag more]
+    >: [BEGTRAN] "." [WORDDIV d] " " [divtag t] [ENDTRAN] [NL] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[divtag t]</> [NL] [transtag more]
+
+
+
+
+    :  [BEGTRAN] "." [WORDDIV d] " " [ptag p] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ptag p]</>
+    >: [BEGTRAN] "." [WORDDIV d] " " [ptag p] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ptag p]</> [transtag more]
+    >: [BEGTRAN] "." [WORDDIV d] " " [ptag p] [ENDTRAN] [NL] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ptag p]</> [NL] [transtag more]
+  
+
+
+  
   divtag
-    :  [BEGDIV] "." [WORDDIV d] " " [ptag p] [ENDDIV] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ptag p]</>
-    >: [BEGDIV] "." [WORDDIV d] " " [ptag p] [ENDDIV] [divtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ptag p]</> [divtag more]
-    >: [BEGDIV] "." [WORDDIV d] " " [ptag p] [ENDDIV] [NL] [divtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ptag p]</> [NL] [divtag more]
+     : [BEGDIV] "." [WORDDIV d] " " [items a] [ENDDIV] = <div n=[WORDDIV d] type="textpart">[items a]</>
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [items a] [ENDDIV] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[items a]</>
+
+
+     : [BEGDIV] " " [items p] " " [ENDDIV] = <div type="textpart">[items p]</>
+
+     : [BEGDIV] "." [WORDDIV d] " " [ptag p] [ENDDIV] = <div n=[WORDDIV d] type="textpart">[ptag p]</>
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ptag p] [ENDDIV] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[ptag p]</>
+
   
   // this is equivalent to <ab> in normal L+
   ptag
-    :  [BEGAB] [items z] [ENDAB] = <p>[items z]</>
-    >: [BEGAB] [items z] [ENDAB] [ptag more] = <p>[items z]</> [ptag more]
-    >: [BEGAB] [items z] [ENDAB] [NL] [ptag more] = <p>[items z]</> [NL] [ptag more]
-    >: [BEGAB] [items z] [ENDAB] [divtag more] = <p>[items z]</> [divtag more]
-    >: [BEGAB] [items z] [ENDAB] [NL] [divtag more] = <p>[items z]</> [NL] [divtag more]
-    >: [BEGAB] [ENDAB] = <p></>
+    :  [BEGP] [divtag d] [ENDP] = <p>[divtag d]</>
+    :  [BEGP] [items z] [ENDP] = <p>[items z]</>
+    >: [BEGP] [items z] [ENDP] [ptag more] = <p>[items z]</> [ptag more]
+    >: [BEGP] [items z] [ENDP] [NL] [ptag more] = <p>[items z]</> [NL] [ptag more]
+    //>: [BEGP] [items z] [ENDP] [divtag more] = <p>[items z]</> [divtag more]
+    //>: [BEGP] [items z] [ENDP] [NL] [divtag more] = <p>[items z]</> [NL] [divtag more]
+    >: [BEGP] [ENDP] = <p></>
   
   items
     :  [item i] [items more] = [item i] [items more]
     >: [item p] = [item p]
 
   item
-     
-    :  [app a] = [app a]
-    :  [foreign f] = [foreign f]
-    :  [newline n] = [newline n]
-    :  [linenumber l] = [linenumber l]
-    :  [del d] = [del d]
-    >: [term t] = [term t]
-    >: [lb l] = [lb l]
-    >: [gap g] = [gap g]
     
+     : [app a] = [app a]
+     : [foreign f] = [foreign f]
+     : [linenumber l] = [linenumber l]
+     : [del d] = [del d]
+     : [term t] = [term t]
+     : [lb l] = [lb l]
+     : [gap g] = [gap g] 
+     
+     : [NL n] = [NL n]
     >: [WORDS w] = [WORDS w]
     >: [ANYLETTER a] = [ANYLETTER a]
   
   
+  
   linenumber
-    :  "(" [LINENUM n] ")." " " = <milestone unit="line" n=[LINENUM n]/>
-    >: "(" [LINENUM n] ")." "div " = <milestone unit="line" n=[LINENUM n] rend="break"/>
+//    :  "(" [LINENUM n] ")." " " = <milestone unit="line" n=[LINENUM n]/>
+//    >: "(" [LINENUM n] ")." "div " = <milestone unit="line" n=[LINENUM n] rend="break"/>
 
-  newline : [NL n] = [NL n]
+    :  "(" [LINENUM n] ")" = <milestone unit="line" n=[LINENUM n]/>
+    >: "((" [LINENUM n] "))" = <milestone unit="line" n=[LINENUM n] rend="break"/>
+
+
+
   
   foreign
-    : "~|" [items a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]</>
+
+    : "~|" [items a] "|~" [WORD lang] " " = <foreign xml:lang=[WORD lang]>[items a]</>
+    : "~|" [WORDSFOREIGN a] "|~" [WORD lang] " " = <foreign xml:lang=[WORD lang]>[WORDSFOREIGN a]</>
+    
+    //: "~|" [WORDSFOREIGN a][items i] "|~" [WORD lang] " " = <foreign xml:lang=[WORD lang]>[WORDSFOREIGN a][items i]</>
+    //: "~|" [items i][WORDSFOREIGN a] "|~" [WORD lang] " " = <foreign xml:lang=[WORD lang]>[items i][WORDSFOREIGN a]</>
   
+    
   lb
     : "---" = <lb></>
   
   term
-    : "<" [items w] "=" [WORDS def] ">" = <term target=[WORDS def]>[items w]</>
+    : "<" [items def] "=" [WORDSTERM t] ">" = <term target=[WORDSTERM t]>[items def]</>
     //with lang
-    : "<" [items w] "=" [WORDS def] "~" [WORD lang] ">" = <term target=[WORDS def] xml:lang=[WORD lang]>[items w]</>
+    : "<" [items def] "=" [WORDSTERM t] "~" [WORD lang] ">" = <term target=[WORDSTERM t] xml:lang=[WORD lang]>[items def]</>
+
+
+//    : "<" [WORDSTERM def] "=" [items t] ">" = <term target=[items t]>[WORDSTERM def]</>
+    //with lang
+//    : "<" [WORDSTERM def] "=" [items t] "~" [WORD lang] ">" = <term target=[items t] xml:lang=[WORD lang]>[WORDSTERM def]</>
+
+
+    >: "<" [WORDSTERM def] "=" [WORDSTERM t] ">" = <term target=[WORDSTERM t]>[WORDSTERM def]</>
+    //with lang
+    >: "<" [WORDSTERM def] "=" [WORDSTERM t] "~" [WORD lang] ">" = <term target=[WORDSTERM t] xml:lang=[WORD lang]>[WORDSTERM def]</>
 
 
   gap
-    >: "[.?]" = <gap reason="lost" extent="unknown" unit="character"></>
-    >: ".?" = <gap reason="illegible" extent="unknown" unit="character"></>
+    //>: "[.?]" = <gap reason="lost" extent="unknown" unit="character"></>
+    //>: ".?" = <gap reason="illegible" extent="unknown" unit="character"></>
+    
+    : "[...]" = <gap reason="lost" extent="unknown" unit="character"></>
+    : "..." = <gap reason="illegible" extent="unknown" unit="character"></>
 
   del
+     : "〚" [WORDS w] "〛" = <del>[WORDS w]</>
     >: "〚" [items a] "〛" = <del>[items a]</>
-    
+
   
   app
   
     //no type  ??
-    //: [BEGOPT] [WORD a] "|BGU:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU"><lem resp=[WORDSLR c]>[WORD a]</></>
+    : [BEGOPT] [WORD a] "|:" [WORDSLR c] "|" [ENDOPT] = <app><lem resp=[WORDSLR c]>[WORD a]</></>
+    : [BEGOPT] [WORD a] "|:|" [ENDOPT] = <app><lem resp="">[WORD a]</></>
+    
     
     // BGU
     //: [BEGOPT] [WORD a] "|BGU:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU"><lem resp=[WORDSLR c]>[WORD a]</></>
     : [BEGOPT] [items a] "|BGU:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU"><lem resp=[WORDSLR c]>[items a]</></>
+    : [BEGOPT] [items a] "|BGU:|" [ENDOPT] = <app type="BGU"><lem resp="">[items a]</></>
+    
     
     //BGU_DDbDP
     : [BEGOPT] [WORD a] "|BGU_DDbDP:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU_DDbDP"><lem resp=[WORDSLR c]>[WORD a]</></>
+    : [BEGOPT] [WORD a] "|BGU_DDbDP:|" [ENDOPT] = <app type="BGU_DDbDP"><lem resp="">[WORD a]</></>
     
 
 // DONE:

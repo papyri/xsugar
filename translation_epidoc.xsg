@@ -45,9 +45,9 @@ WORDSFOREIGN = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
 WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
 
   file
-    : [transtag a] = <body>[transtag a]</>
+    //: [transtag a] = <body>[transtag a]</>
     : [ANYSP s][transtag a]  = <body>[ANYSP s][transtag a]</> 
-    : [transtag a] [ANYSP s] = <body>[transtag a]</> [ANYSP s]
+    : [transtag a][ANYSP s] = <body>[transtag a][ANYSP s]</> 
     : =
       
   transtag

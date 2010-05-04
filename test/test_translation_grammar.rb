@@ -71,15 +71,17 @@ if(RUBY_PLATFORM == 'java')
     
     def test_app_lem
     
-      assert_equal_fragment_transform '<:a|:|:>', '<app><lem resp="">a</lem></app>'
+      assert_equal_fragment_transform '<:a|:|:>', '<app><lem>a</lem></app>'
       
-      assert_equal_fragment_transform '<:a|BGU:|:>', '<app type="BGU"><lem resp="">a</lem></app>'
+      assert_equal_fragment_transform '<:a|BGU:|:>', '<app type="BGU"><lem>a</lem></app>'
       assert_equal_fragment_transform '<:a|BGU:1.215|:>', '<app type="BGU"><lem resp="1.215">a</lem></app>'
       
       assert_equal_fragment_transform '<:a|BGU_DDbDP:1.215|:>', '<app type="BGU_DDbDP"><lem resp="1.215">a</lem></app>'
-      assert_equal_fragment_transform '<:a|BGU_DDbDP:|:>', '<app type="BGU_DDbDP"><lem resp="">a</lem></app>'
+      assert_equal_fragment_transform '<:a|BGU_DDbDP:|:>', '<app type="BGU_DDbDP"><lem>a</lem></app>'
       
+      assert_equal_fragment_transform '<:für die|BGU:BL II 2, S. 20|:>',  '<app type="BGU"><lem resp="BL II 2, S. 20">für die</lem></app>'
       
+
     end
   
   

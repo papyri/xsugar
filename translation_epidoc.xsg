@@ -22,7 +22,7 @@ QUESTION = [\?]?
 LINENUM = [0-9]+[/\,a-zA-Z]*[ms0-9]*
 
 //ANYLETTER = [^\/\\\t\^<>_#@~〚〛$\*\&\:\|\!\{\}\?\"¯≡+\u0323]
-ANYLETTER = [^\/\\\t\^<>_#@~〚〛$\*\&\:\|\!\{\}\?\"¯≡+\u0323]
+ANYLETTER = [^\^<>_#@~〚〛$\*\&\:\|\!\{\}\"¯≡+\u0323]
 
 // WORD breaks at space and does not allow DOT
 WORD = ([^ \/\\\n\r\t\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
@@ -44,20 +44,16 @@ WORDSFOREIGN = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
 //very permisive for free text
 WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
 
-  file
-    //: [transtag a] = <body>[transtag a]</>
-    : [ANYSP s][transtag a]  = <body>[ANYSP s][transtag a]</> 
-    : [transtag a][ANYSP s] = <body>[transtag a][ANYSP s]</> 
+
+  file    
+    : [ANYSP s][transtag a][ANYSP ss] = <body>[ANYSP s][transtag a][ANYSP ss]</> 
     : =
       
   transtag
-  
-  
+                                                                                                                                                                                                                                                    
     :  [BEGTRAN] "." [WORDDIV d] " " [divtag t] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[divtag t]</>
     >: [BEGTRAN] "." [WORDDIV d] " " [divtag t] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[divtag t]</> [transtag more]
     >: [BEGTRAN] "." [WORDDIV d] " " [divtag t] [ENDTRAN] [NL] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[divtag t]</> [NL] [transtag more]
-
-
 
 
     :  [BEGTRAN] "." [WORDDIV d] " " [ptag p] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ptag p]</>
@@ -65,8 +61,6 @@ WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
     >: [BEGTRAN] "." [WORDDIV d] " " [ptag p] [ENDTRAN] [NL] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ptag p]</> [NL] [transtag more]
   
 
-
-  
   divtag
      : [BEGDIV] "." [WORDDIV d] " " [items a] [ENDDIV] = <div n=[WORDDIV d] type="textpart">[items a]</>
     >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [items a] [ENDDIV] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[items a]</>
@@ -161,20 +155,39 @@ WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
   app
   
     //no type  ??
-    : [BEGOPT] [WORD a] "|:" [WORDSLR c] "|" [ENDOPT] = <app><lem resp=[WORDSLR c]>[WORD a]</></>
-    : [BEGOPT] [WORD a] "|:|" [ENDOPT] = <app><lem resp="">[WORD a]</></>
+    //: [BEGOPT] [WORD a] "|:" [WORDSLR c] "|" [ENDOPT] = <app><lem resp=[WORDSLR c]>[WORD a]</></>
+    //: [BEGOPT] [WORD a] "|:|" [ENDOPT] = <app><lem>[WORD a]</></>
+    
+    : [BEGOPT] [items a] "|:" [WORDSLOOSE c] "|" [ENDOPT] = <app><lem resp=[WORDSLOOSE c]>[items a]</></>
+    : [BEGOPT] [items a] "|:|" [ENDOPT] = <app><lem>[items a]</></>
+    
+    : [BEGOPT] [WORDSLOOSE a] "|:" [WORDSLOOSE c] "|" [ENDOPT] = <app><lem resp=[WORDSLOOSE c]>[WORDSLOOSE a]</></>
+    : [BEGOPT] [WORDSLOOSE a] "|:|" [ENDOPT] = <app><lem>[WORDSLOOSE a]</></>
     
     
     // BGU
     //: [BEGOPT] [WORD a] "|BGU:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU"><lem resp=[WORDSLR c]>[WORD a]</></>
+    
+    //: [BEGOPT] [items a] "|BGU:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU"><lem resp=[WORDSLR c]>[items a]</></>
+    //: [BEGOPT] [items a] "|BGU:|" [ENDOPT] = <app type="BGU"><lem>[items a]</></>
+    
+    
     : [BEGOPT] [items a] "|BGU:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU"><lem resp=[WORDSLR c]>[items a]</></>
-    : [BEGOPT] [items a] "|BGU:|" [ENDOPT] = <app type="BGU"><lem resp="">[items a]</></>
+    : [BEGOPT] [items a] "|BGU:|" [ENDOPT] = <app type="BGU"><lem>[items a]</></>
+    
+    : [BEGOPT] [WORDSLOOSE a] "|BGU:" [WORDSLOOSE c] "|" [ENDOPT] = <app type="BGU"><lem resp=[WORDSLOOSE c]>[WORDSLOOSE a]</></>
+    : [BEGOPT] [WORDSLOOSE a] "|BGU:|" [ENDOPT] = <app type="BGU"><lem>[WORDSLOOSE a]</></>
     
     
     //BGU_DDbDP
-    : [BEGOPT] [WORD a] "|BGU_DDbDP:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU_DDbDP"><lem resp=[WORDSLR c]>[WORD a]</></>
-    : [BEGOPT] [WORD a] "|BGU_DDbDP:|" [ENDOPT] = <app type="BGU_DDbDP"><lem resp="">[WORD a]</></>
+    //: [BEGOPT] [WORD a] "|BGU_DDbDP:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU_DDbDP"><lem resp=[WORDSLR c]>[WORD a]</></>
+    //: [BEGOPT] [WORD a] "|BGU_DDbDP:|" [ENDOPT] = <app type="BGU_DDbDP"><lem>[WORD a]</></>
     
+    : [BEGOPT] [items a] "|BGU_DDbDP:" [WORDSLOOSE c] "|" [ENDOPT] = <app type="BGU_DDbDP"><lem resp=[WORDSLOOSE c]>[items a]</></>
+    : [BEGOPT] [items a] "|BGU_DDbDP:|" [ENDOPT] = <app type="BGU_DDbDP"><lem>[items a]</></>
+    
+    : [BEGOPT] [WORDSLOOSE a] "|BGU_DDbDP:" [WORDSLOOSE c] "|" [ENDOPT] = <app type="BGU_DDbDP"><lem resp=[WORDSLOOSE c]>[WORDSLOOSE a]</></>
+    : [BEGOPT] [WORDSLOOSE a] "|BGU_DDbDP:|" [ENDOPT] = <app type="BGU_DDbDP"><lem>[WORDSLOOSE a]</></>
 
 // DONE:
 // <gap reason="lost" extent="unknown" unit="character"/> [.?]

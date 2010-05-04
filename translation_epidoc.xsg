@@ -51,14 +51,14 @@ WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
       
   transtag
                                                                                                                                                                                                                                                     
-    :  [BEGTRAN] "." [WORDDIV d] " " [divtag t] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[divtag t]</>
-    >: [BEGTRAN] "." [WORDDIV d] " " [divtag t] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[divtag t]</> [transtag more]
-    >: [BEGTRAN] "." [WORDDIV d] " " [divtag t] [ENDTRAN] [NL] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[divtag t]</> [NL] [transtag more]
+    :  [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</>
+    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</> [transtag more]
+    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] [ANYSP sss] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</> [ANYSP sss] [transtag more]
 
 
-    :  [BEGTRAN] "." [WORDDIV d] " " [ptag p] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ptag p]</>
-    >: [BEGTRAN] "." [WORDDIV d] " " [ptag p] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ptag p]</> [transtag more]
-    >: [BEGTRAN] "." [WORDDIV d] " " [ptag p] [ENDTRAN] [NL] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ptag p]</> [NL] [transtag more]
+    :  [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</>
+    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</> [transtag more]
+    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] [ANYSP sss] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</> [ANYSP sss] [transtag more]
   
 
   divtag

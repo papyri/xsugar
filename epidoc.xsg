@@ -773,8 +773,8 @@ flat
 	
 	//---test_sic---
 	//sic
-	>: "{" [WORDSSIC w] "}" = <sic>[WORDSSIC w]</>	
-	>: "{" [items w] "}" = <sic>[items w]</>
+	>: "{" [WORDSSIC w] "}" = <surplus>[WORDSSIC w]</>	
+	>: "{" [items w] "}" = <surplus>[items w]</>
 	
 	//---test_seg---
 	//seg

@@ -260,12 +260,12 @@ if(RUBY_PLATFORM == 'java')
     # http://www.stoa.org/epidoc/gl/5/erroneousinclusion.html
     def test_sic
       # scribe wrote unnecessary characters and modern ed flagged them as such
-      assert_equal_fragment_transform '{test}', '<sic>test</sic>'
-      assert_equal_fragment_transform 'te{sting 1 2} 3', 'te<sic>sting 1 2</sic> 3'
-	  assert_equal_fragment_transform '{.1}', '<sic><gap reason="illegible" quantity="1" unit="character"/></sic>'
-	  assert_equal_fragment_transform '{abc.4.2}', '<sic>abc<gap reason="illegible" quantity="4" unit="character"/><gap reason="illegible" quantity="2" unit="character"/></sic>'
-	  assert_equal_fragment_transform '{.1ab}', '<sic><gap reason="illegible" quantity="1" unit="character"/>ab</sic>'
-	  assert_equal_fragment_transform '{ab.1}', '<sic>ab<gap reason="illegible" quantity="1" unit="character"/></sic>'
+    assert_equal_fragment_transform '{test}', '<surplus>test</surplus>'
+    assert_equal_fragment_transform 'te{sting 1 2} 3', 'te<surplus>sting 1 2</surplus> 3'
+	  assert_equal_fragment_transform '{.1}', '<surplus><gap reason="illegible" quantity="1" unit="character"/></surplus>'
+	  assert_equal_fragment_transform '{abc.4.2}', '<surplus>abc<gap reason="illegible" quantity="4" unit="character"/><gap reason="illegible" quantity="2" unit="character"/></surplus>'
+	  assert_equal_fragment_transform '{.1ab}', '<surplus><gap reason="illegible" quantity="1" unit="character"/>ab</surplus>'
+	  assert_equal_fragment_transform '{ab.1}', '<surplus>ab<gap reason="illegible" quantity="1" unit="character"/></surplus>'
     end
   
     # http://www.stoa.org/epidoc/gl/5/supplementforlost.html
@@ -657,7 +657,7 @@ if(RUBY_PLATFORM == 'java')
   
     def test_multiple_ab
       #test multiple ab sections
-	  assert_equal_fragment_transform '{.1ab}=><=12. {ab.1}', '<sic><gap reason="illegible" quantity="1" unit="character"/>ab</sic></ab><ab><lb n="12"/><sic>ab<gap reason="illegible" quantity="1" unit="character"/></sic>'
+	  assert_equal_fragment_transform '{.1ab}=><=12. {ab.1}', '<surplus><gap reason="illegible" quantity="1" unit="character"/>ab</surplus></ab><ab><lb n="12"/><surplus>ab<gap reason="illegible" quantity="1" unit="character"/></surplus>'
     end
 	
 	def test_line_number_formats

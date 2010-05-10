@@ -12,7 +12,7 @@ module TranslationGrammarAssertions
   def enclose_leiden_fragment(leiden)
     #formerly lab(notxml) for transcriptions
     #need start - end for translation leiden
-    return "<D=.en <=#{leiden}=>=D>"
+    return "<T=.en <=#{leiden}=>=T>"
   end
 
 

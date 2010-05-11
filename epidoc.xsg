@@ -602,8 +602,12 @@ item
 //	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [WORD b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[WORD b]</></>
 //	>: [BEGOPT] [WORD a] "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "(?)" "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [items b] "(?)" [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|BL:" [WORDSLR c] "|" [items b] "(?)"[ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag rdg on BL
 	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg></></>
+	>: [BEGOPT] [items a] "(?)" "|BL:" [WORDSLR c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]<certainty match=".." locus="value"/></><rdg></></>
 //this set of app Bl does not have 'lem resp=' attribute
 	>: [BEGOPT] [items a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|BL:|" [ENDOPT] = <app type="BL"><lem>[items a]</><rdg></></>
@@ -627,6 +631,9 @@ item
 	>: [BEGOPT] [items a] "|ed:" [WORDSBL e] "|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[items a]</><rdg>[WORDVEST b]</></>
 	>: [BEGOPT] [WORD a] "|ed:" [WORDSBL e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|ed:" [WORDSBL e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[items a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSBL e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|ed:" [WORDSBL c] "|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL c]>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSBL c] "|" [items b] "(?)"[ENDOPT] = <app type="editorial"><lem resp=[WORDSBL c]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag lem on editorial with resp
 	>: [BEGOPT] "|ed:" [WORDSBL e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]></><rdg>[items b]</></>
 //line below added for empty tag lem on editorial without resp

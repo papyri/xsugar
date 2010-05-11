@@ -411,6 +411,13 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '<:a|BL:|b:>', '<app type="BL"><lem>a</lem><rdg>b</rdg></app>'
       assert_equal_fragment_transform '<:a|ed:bgu 3 p.4|b:>', '<app type="editorial"><lem resp="bgu 3 p.4">a</lem><rdg>b</rdg></app>'
       assert_equal_fragment_transform '<:a|alt:|b:>', '<app type="alternative"><lem>a</lem><rdg>b</rdg></app>'
+      assert_equal_fragment_transform '<:[μου][μάμ]μη|BL:2.14|[.5][διδύ(?)]μη(?):>', '<app type="BL"><lem resp="2.14"><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
+      assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|BL:1.27|η̣μο.2:>', '<app type="BL"><lem resp="1.27"><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><unclear>η</unclear>μο<gap reason="illegible" quantity="2" unit="character"/></rdg></app>'
+      assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|BL:1.27|[.2]α(?):>', '<app type="BL"><lem resp="1.27"><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
+      assert_equal_fragment_transform '<:[μου][μάμ]μη|ed:2.14|[.5][διδύ(?)]μη(?):>', '<app type="editorial"><lem resp="2.14"><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
+      assert_equal_fragment_transform '<:[καθ]ὰ(?)|ed:bgu 1 p.357|[.2]α:>', '<app type="editorial"><lem resp="bgu 1 p.357"><supplied reason="lost">καθ</supplied>ὰ<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α</rdg></app>'
+      assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|ed:1.27|[.2]α(?):>', '<app type="editorial"><lem resp="1.27"><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
+      assert_equal_fragment_transform '<:〚κ〛 (?)|BL:1.24|:>', '<app type="BL"><lem resp="1.24"><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
     end
     
     def test_glyph

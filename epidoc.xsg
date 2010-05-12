@@ -580,38 +580,37 @@ item
 		
 	//---subst---
 	//  <:a|subst|b|:> 
-//comment 10/07 because not allow certlow on del rend
-//	: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] "?" [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del cert="low" rend="corrected">[WORDVEST b]</></>
-//	>: [BEGOPT] [items a] "|subst|" [items b] "?" [ENDOPT] = <subst><add place="inline">[items a]</><del cert="low" rend="corrected">[items b]</></>
 	: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[WORDVEST b]</></>
-//		>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORDVEST b]</></>
 	>: [BEGOPT] [WORDVEST a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [WORDVEST a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del rend="corrected">[items b]</></>
-//comment 10/07 because not allow certlow on del rend
-//	>: [BEGOPT] [items a] "?" "|subst|" [items b] "?" [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del cert="low" rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [items a] "|subst|" [items b] "(?)" [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]<certainty match=".." locus="value"/></><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [items a] "(?)" "|subst|" [items b] "(?)" [ENDOPT] = <subst><add place="inline">[items a]<certainty match=".." locus="value"/></><del rend="corrected">[items b]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] "|subst|" [items b] [ENDOPT] = <subst><add place="inline"></><del rend="corrected">[items b]</></>
 	
 	//---app_lem---
 	//  <:|abc|def|:> 
 	: [BEGOPT] [WORD a] "|BL:" [WORDSLR c] "|" [WORD b] [QUESTION q] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
 //this set of app BL has 'lem resp=' attribute
-//	>: [BEGOPT] [WORDOPT a] "|BL:" [WORDSLR c] "|" [WORDOPT b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORDOPT a]</><rdg>[WORDOPT b]</></>
 //	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [WORD b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[WORD b]</></>
 //	>: [BEGOPT] [WORD a] "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "(?)" "|BL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [items b] "(?)" [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] [items a] "(?)" "|BL:" [WORDSLR c] "|" [items b] "(?)"[ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
-//line below added for empty tag rdg on BL
+//line below added for empty tag rdg on BL with resp attribute
 	>: [BEGOPT] [items a] "|BL:" [WORDSLR c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]</><rdg></></>
 	>: [BEGOPT] [items a] "(?)" "|BL:" [WORDSLR c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDSLR c]>[items a]<certainty match=".." locus="value"/></><rdg></></>
 //this set of app Bl does not have 'lem resp=' attribute
 	>: [BEGOPT] [items a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "(?)" "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|BL:|" [items b] "(?)" [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|BL:|" [items b] "(?)"[ENDOPT] = <app type="BL"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] [items a] "|BL:|" [ENDOPT] = <app type="BL"><lem>[items a]</><rdg></></>
-//	>: [BEGOPT] [WORDOPT a] "|BL:|" [WORDOPT b] [ENDOPT] = <app type="BL"><lem>[WORDOPT a]</><rdg>[WORDOPT b]</></>
+	>: [BEGOPT] [items a] "(?)" "|BL:|" [ENDOPT] = <app type="BL"><lem>[items a]<certainty match=".." locus="value"/></><rdg></></>
 //	>: [BEGOPT] [items a] "|BL:|" [WORD b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[WORD b]</></>
 //	>: [BEGOPT] [WORD a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[WORD a]</><rdg>[items b]</></>
 
@@ -621,10 +620,7 @@ item
 	>: [BEGOPT] [items a] "|SoSOL:" [WORDSLR c] "|" [items b] [ENDOPT] = <app type="SoSOL"><lem resp=[WORDSLR c]>[items a]</><rdg>[items b]</></>
 //line below added for empty tag rdg on SoSOL
 	>: [BEGOPT] [items a] "|SoSOL:" [WORDSLR c] "|" [ENDOPT] = <app type="SoSOL"><lem resp=[WORDSLR c]>[items a]</><rdg></></>
-//this set of app Bl does not have 'lem resp=' attribute
-//comment 2 lines below because do not want to allow SoSOL without lem resp=
-//	>: [BEGOPT] [items a] "|SoSOL|" [items b] [ENDOPT] = <app type="SoSOL"><lem>[items a]</><rdg>[items b]</></>
-//	>: [BEGOPT] [items a] "|SoSOL|" [ENDOPT] = <app type="SoSOL"><lem>[items a]</><rdg></></>
+//do not want to allow SoSOL without lem resp so those rules removed
 	
 //this set of app editorial has 'lem resp=' attribute
 	: [BEGOPT] [WORD a] "|ed:" [WORDSBL e] "|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[WORD a]</><rdg>[WORDVEST b]</></>
@@ -640,15 +636,21 @@ item
 	>: [BEGOPT] "|ed:" "|" [items b] [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]</></>
 //line below added for empty tag rdg on editorial with resp
 	>: [BEGOPT] [items a] "|ed:" [WORDSBL e] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL e]>[items a]</><rdg></></>
+	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSBL c] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL c]>[items a]<certainty match=".." locus="value"/></><rdg></></>
 //line below added for the '(BL 1.24)' at the end of the 'lem resp=' attribute value - parens cannot be a valid value in WORD or WORDS
-	>: [BEGOPT] [items a] "|ed:" [WORDSBL c] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL c]>[items a]</><rdg>[items b]</></>
+//	>: [BEGOPT] [items a] "|ed:" [WORDSBL c] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSBL c]>[items a]</><rdg>[items b]</></>
 //this set of app editorial does not have 'lem resp=' attribute
 	: [BEGOPT] [WORDSNONUM a] "|ed:|" [WORD b] [ENDOPT] = <app type="editorial"><lem>[WORDSNONUM a]</><rdg>[WORD b]</></>
 	>: [BEGOPT] [items a] "|ed:|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[WORDVEST b]</></>
 	>: [BEGOPT] [WORDSNONUM a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[WORDSNONUM a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "(?)" "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|ed:|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|ed:|" [items b] "(?)"[ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag rdg on editorial without resp
 	>: [BEGOPT] [items a] "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg></></>
+	>: [BEGOPT] [items a] "(?)" "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg></></>
+	
 	: [BEGOPT] [WORD a] "|alt:|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[WORDVEST b]</></>
 	>: [BEGOPT] [items a] "|alt:|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[WORDVEST b]</></>
 	>: [BEGOPT] [WORD a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
@@ -708,30 +710,19 @@ item
 	
 	//---del_rend---
 	//  not brackets - already defined in inside-brackets
-//	: "〚X" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a]</>
 	>: "〚X" [items a] "〛" = <del rend="cross-strokes">[items a]</>
-// repeat of above with NL at end - if fix XML may not need these 2 lines
-//	>: "〚X" [WORDS a] "〛" = <del rend="cross-strokes">[WORDS a] [NL]</>
-//	>: "〚X" [items a] "〛" = <del rend="cross-strokes">[items a] [NL]</>
-//	: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a]</>
+	>: "〚X" [items a] "(?)" "〛" = <del rend="cross-strokes">[items a]<certainty match=".." locus="value"/></>
+
 	>: "〚\/" [items a] "〛" = <del rend="slashes">[items a]</>
-// repeat of above with NL at end - if fix XML may not need these 2 lines
-//	>: "〚\/" [WORDS a] "〛" = <del rend="slashes">[WORDS a] [NL]</>
-//	>: "〚\/" [items a] "〛" = <del rend="slashes">[items a] [NL]</>
+	>: "〚\/" [items a] "(?)" "〛" = <del rend="slashes">[items a]<certainty match=".." locus="value"/></>
+
 //this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
-//	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a]</>
 	>: "〚" [items a] "〛" = <del rend="erasure">[items a]</>
-//comment out 10/07 because supposed to remove certlow from del rend
-//	>: "〚" [items a] "?〛" = <del rend="erasure" cert="low">[items a]</>
-// repeat of above with NL at end - if fix XML may not need these 2 lines
-//	>: "〚" [WORDS a] "〛" = <del rend="erasure">[WORDS a] [NL]</>
-//	>: "〚" [items a] "〛" = <del rend="erasure">[items a] [NL]</>
+	>: "〚" [items a] "(?)" "〛" = <del rend="erasure">[items a]<certainty match=".." locus="value"/></>
 	
 	
 	>: [flat f] = [flat f]
 
-
-	
 flat 
 	//---test_vestige_lines---
 	// vestig.#{n}lin **P5**
@@ -794,6 +785,8 @@ flat
 	//sic
 	>: "{" [WORDSSIC w] "}" = <surplus>[WORDSSIC w]</>	
 	>: "{" [items w] "}" = <surplus>[items w]</>
+	>: "{" [WORDSSIC w] "(?)" "}" = <surplus>[WORDSSIC w]<certainty match=".." locus="value"/></>	
+	>: "{" [items w] "(?)" "}" = <surplus>[items w]<certainty match=".." locus="value"/></>
 	
 	//---test_seg---
 	//seg

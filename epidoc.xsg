@@ -210,7 +210,9 @@ item
 //---test_uncertain_diacritical_diaeresis---
 	// (¨)
 	: " " [ANYLETTER a] "(¨)" = <hi rend="diaeresis">[ANYLETTER a]</>
+	: " " [ANYLETTER a] "(¨)(?)" = <hi rend="diaeresis">[ANYLETTER a]<certainty match=".." locus="value"/></>
 	>: " " [ANYLETTER a] [UNDERDOT] "(¨)" = <hi rend="diaeresis"><unclear>[ANYLETTER a]</></>
+	>: " " [ANYLETTER a] [UNDERDOT] "(¨)(?)" = <hi rend="diaeresis"><unclear>[ANYLETTER a]</><certainty match=".." locus="value"/></>
 	>: " " "[." [NUM n] "]" "(¨)" = <hi rend="diaeresis"><gap reason="lost" quantity=[NUM n] unit="character"/></>
 	>: " " "." [NUM n] "(¨)" = <hi rend="diaeresis"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
 	>: " " [ANYLETTER a] "(¨" [nestanc n] ")" = <hi rend="diaeresis"><hi rend=[nestanc n]>[ANYLETTER a]</></>
@@ -358,26 +360,18 @@ item
 //	>: [unclears_non_terminal u] "*" [WORDS k] "*" [unclears_non_terminal w] = <unclear>[unclears_non_terminal u] <g type=[WORDS k]></> [unclears_non_terminal w]</>
 //	>: "*" [UNDERDOT] [WORDS k]  [UNDERDOT] "*" = <unclear><g type=[WORDS k]></></>
 	
-//	: "<CERTAINTY>" = <certainty match=".." locus="value"/>
-	
 	//---choice---
 	//  <:a|orth|b|:> 
 	: [BEGOPT] [WORDAVEST a] "(?)" "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic>[WORDAVEST b]</></>
-// the line below causes horizontal ambiguity but does what it needs to - set up for case such as   p.cair.zen/p.cair.zen.3/p.cair.zen.3.59403.xml
-// will see if it handles it tomorrow and what else it does - think on 3/31/10 do not really need - see what happens
-//	>: [BEGOPT] [WORDAVEST a] "?" [items c] "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[WORDAVEST a][items c]</><sic>[items d]</></>
-	>: [BEGOPT] [WORDAVEST a] "(?)" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic cert="low">[items d]</></>
-	>: [BEGOPT] [WORDAVEST a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic cert="low">[items d]</></>
-	>: [BEGOPT] [items a] "(?)" "|orth|" [items d] "?" [ENDOPT] = <choice><corr cert="low">[items a]</><sic cert="low">[items d]</></>
-	>: [BEGOPT] [items a] "|orth|" [items d] "?" [ENDOPT] = <choice><corr>[items a]</><sic cert="low">[items d]</></>
+	>: [BEGOPT] [WORDAVEST a] "(?)" "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [WORDAVEST a] "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr cert="low">[items a]</><sic>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr>[items a]</><sic>[items d]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] [items a] "(?)" "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[items a]</><sic>[items d]</></>
 	: [BEGOPT] [WORDAVEST a] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[WORDAVEST b]</></>
 	>: [BEGOPT] [items a] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDAVEST b]</></>
 	>: [BEGOPT] [WORDAVEST a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[items b]</></>
 	>: [BEGOPT] [items a] "|orth|" [items b] [ENDOPT] = <choice><corr>[items a]</><sic>[items b]</></>
-// comment 2 lines below because empty corr not valid per 12/16 review
-//	>: [BEGOPT] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr></><sic>[WORDAVEST b]</></>
-//	>: [BEGOPT] "|orth|" [items b] [ENDOPT] = <choice><corr></><sic>[items b]</></>
 
 	//---milestone---
 	//  '----' or  '--------'
@@ -426,61 +420,29 @@ item
 	>: "(Lines: " [NUM v] "-" [NUM w] " non transcribed)" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="line"><desc>"non transcribed"</></>
 	
 	//---subscript---
-	//   /abc\
 	//   \|abc|/
 	: "\\\|" [WORDSSIC a] "\|\/" = <hi rend="subscript">[WORDSSIC a]</>
+	>: "\\\|" [WORDSSIC a] "(?)" "\|\/" = <hi rend="subscript">[WORDSSIC a]<certainty match=".." locus="value"/></>
 	>: "\\\|" [items i] "\|\/" = <hi rend="subscript">[items i]</>
-//	: "\/" [WORD a] "\\" = <hi rend="subscript">[WORD a]</>
-//	>: "\/" [items i] "\\" = <hi rend="subscript">[items i]</>
+	>: "\\\|" [items i] "(?)" "\|\/" = <hi rend="subscript">[items i]<certainty match=".." locus="value"/></>
 	
 	//---tall---
-	//   ^abc^
 	//   |abc|
 	: "\|" [WORDSSIC a] "\|" = <hi rend="tall">[WORDSSIC a]</>
 	>: "\|" [items i] "\|" = <hi rend="tall">[items i]</>
-//	: "\^" [WORD a] "\^" = <hi rend="tall">[WORD a]</>
-//	>: "\^" [items i] "\^" = <hi rend="tall">[items i]</>
 
 	//---superscript---
-	//   \|abc|/
 	//   ^abc^
     : "\^" [WORDSSIC a] "\^" = <hi rend="superscript">[WORDSSIC a]</>
 	>: "\^" [items i] "\^" = <hi rend="superscript">[items i]</>
-//	 : "\\\|" [WORD a] "\|\/" = <hi rend="superscript">[WORD a]</>
-//	>: "\\\|" [items i] "\|\/" = <hi rend="superscript">[items i]</>
-	
-	//---add_place_supralinear---
-	//  #\abc/# **P5**
-//remove per 12/16 review - replaced by above
-//    : "#\\" [WORDSSIC a] "\/#" = <add place="supralinear">[WORDSSIC a]</>
-//	: "#\\" [WORDSSIC a] "?" "\/#" = <add place="supralinear" cert="low">[WORDSSIC a]</>
-//	>: "#\\" [items a] "\/#" = <add place="supralinear">[items a]</>
-//	>: "#\\" [items a] "?" "\/#" = <add place="supralinear" cert="low">[items a]</>
-	
-	//---add_place_infralinear---
-	//  </abc\>
-//remove per 12/16 review - replaced by below
-//    : "<\/" [WORDS a] "\\>" = <add place="infralinear">[WORDS a]</>
-//	>: "<\/" [items a] "\\>" = <add place="infralinear">[items a]</>
-	
-	//---add_place_intralinear---
-	//  <\abc/>
-//remove per 12/16 review - replaced by interlinear
-//    : "<\\" [WORDS a] "\/>" = <add place="intralinear">[WORDS a]</>
-//	>: "<\\" [items a] "\/>" = <add place="intralinear">[items a]</>
 	
 	//---add_place_interlinear---
-	//  <^abc^> - changed to below syntax per 12/16 review
 	//  >>abc<<
     : ">>" [WORDSSIC a] "<<" = <add place="interlinear">[WORDSSIC a]</>
 	>: ">>" [items a] "<<" = <add place="interlinear">[items a]</>
-//    : "<^" [WORDSSIC a] "^>" = <add place="interlinear">[WORDSSIC a]</>
-//	>: "<^" [items a] "^>" = <add place="interlinear">[items a]</>
 
 	//---add_place_general---
-	//  |!|abc|!| - changed to below syntax per 12/16 review
-	//  >abc<
-    //: "|!|" [ADDLIST a] ":" [WORDSSIC b] "|!|" = <add place=[ADDLIST a]>[WORDSSIC b]</>
+	//  ||bottom:abc||
 	: "||" [ADDLIST a] ":" [WORDSSIC b] "||" = <add place=[ADDLIST a]>[WORDSSIC b]</>
 	>: "||" [ADDLIST a] ":" [items b] "||" = <add place=[ADDLIST a]>[items b]</>
 	
@@ -495,24 +457,16 @@ item
 	>: "<_" [items a] "_>" = <add rend="underline" place="margin">[items a]</>
 	
 	//---add_place_above--- - special character is u+26a0
-	//  <⚠abc⚠> **P5** - not sure - added because of testing - need to verify with James
 	//  \abc/
 	: "\\" [WORDSSIC a] "\/" = <add place="above">[WORDSSIC a]</>
 	: "\\" [WORDSSIC a] "?" "\/" = <add cert="low" place="above">[WORDSSIC a]</>
 	>: "\\" [items a] "\/" = <add place="above">[items a]</>
 	>: "\\" [items a] "?" "\/" = <add cert="low" place="above">[items a]</>
-//	: "<⚠" [WORD a] "⚠>" = <add place="above">[WORD a]</>
-//	: "<⚠" [WORD a] "?" "⚠>" = <add cert="low" place="above">[WORD a]</>
-//	>: "<⚠" [items a] "⚠>" = <add place="above">[items a]</>
-//	>: "<⚠" [items a] "?" "⚠>" = <add cert="low" place="above">[items a]</>
 	
 	//---add_place_below--- - special character is u+2692
-	//   <⚒abc⚒> **P5** - not sure - added because of testing - need to verify with James
 	//   //abc\\
 	: "\/\/" [WORDSSIC a] "\\\\" = <add place="below">[WORDSSIC a]</>
 	>: "\/\/" [items a] "\\\\" = <add place="below">[items a]</>
-//	: "<⚒" [WORD a] "⚒>" = <add place="below">[WORD a]</>
-//	>: "<⚒" [items a] "⚒>" = <add place="below">[items a]</>
 	
 	//---grave---
 	//   \abc/
@@ -521,22 +475,19 @@ item
 	//---supraline---
 	//   ¯abc¯ - uses non-combining macron
 	: "¯" [WORDSSIC a] "¯" = <hi rend="supraline">[WORDSSIC a]</>
+	>: "¯" [WORDSSIC a] "(?)" "¯" = <hi rend="supraline">[WORDSSIC a]<certainty match=".." locus="value"/></>
 	>: "¯" [items i] "¯" = <hi rend="supraline">[items i]</>
+	>: "¯" [items i] "(?)" "¯" = <hi rend="supraline">[items i]<certainty match=".." locus="value"/></>
 		
 	//---supraline_underline---
-	//   ≡abc≡
 	//   =abc=
     : "=" [WORDSSIC a] "=" = <hi rend="supraline-underline">[WORDSSIC a]</>
 	>: "=" [items i] "=" = <hi rend="supraline-underline">[items i]</>
-//    : "≡" [WORD a] "≡" = <hi rend="supraline-underline">[WORD a]</>
-//	>: "≡" [items i] "≡" = <hi rend="supraline-underline">[items i]</>
 		
 	//---undefined_parallel---
 	//  _abc_  - underlines **P5**
-	// added @ 7/16 to make difference between beginning and ending symbol or xsugar would not parse Leiden+ correctly
-	// 7/20 changed illegible to undefined per gabby change to data
-	// changed @ to _ during Leiden+ review
-	: "|_" [WORDSSIC a] "_|" = <supplied evidence="parallel" reason="undefined">[WORDSSIC a]</>
+	// added _ to make difference between beginning and ending symbol or xsugar would not parse Leiden+ correctly
+		: "|_" [WORDSSIC a] "_|" = <supplied evidence="parallel" reason="undefined">[WORDSSIC a]</>
 	: "|_" [WORDSSIC a] "(?)" "_|" = <supplied evidence="parallel" reason="undefined" cert="low">[WORDSSIC a]</>
 	>: "|_" [items a] "_|" = <supplied evidence="parallel" reason="undefined">[items a]</>
 	>: "|_" [items a] "(?)" "_|" = <supplied evidence="parallel" reason="undefined" cert="low">[items a]</>
@@ -655,10 +606,15 @@ item
 	>: [BEGOPT] [items a] "|alt:|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[WORDVEST b]</></>
 	>: [BEGOPT] [WORD a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "(?)" "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|alt:|" [items b] "(?)" [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|alt:|" [items b] "(?)"[ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag rdg on alternative
-	>: [BEGOPT] [items a] "|alt:" "|" [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg></></>
+	>: [BEGOPT] [items a] "|alt:|" [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg></></>
+	>: [BEGOPT] [items a] "(?)" "|alt:|" [ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></><rdg></></>
 //line below added for empty tag lem on alternative
-	>: [BEGOPT] "|alt:" "|" [items b] [ENDOPT] = <app type="alternative"><lem/><rdg>[items b]</></>
+	>: [BEGOPT] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem/><rdg>[items b]</></>
+	>: [BEGOPT] "|alt:|" [items b] "(?)" [ENDOPT] = <app type="alternative"><lem/><rdg>[items b]<certainty match=".." locus="value"/></></>
 	
 	//---glyph---
 	//  *a*, *a,b*, *filler(a)*, *@a*  

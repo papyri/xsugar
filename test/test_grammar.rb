@@ -334,10 +334,13 @@ if(RUBY_PLATFORM == 'java')
       # Google Doc has U+00AD = soft hyphen before U+00A8 = diaeresis
       # RB notes: I have dropped the soft hyphen
       assert_equal_fragment_transform ' a(¨)bc', '<hi rend="diaeresis">a</hi>bc'
+	  assert_equal_fragment_transform ' a(¨)(?)bc', '<hi rend="diaeresis">a<certainty match=".." locus="value"/></hi>bc'
       # test with precombined unicode just to be sure
       assert_equal_fragment_transform ' Ἰ(¨)ουστινιανοῦ', '<hi rend="diaeresis">Ἰ</hi>ουστινιανοῦ'
+      assert_equal_fragment_transform ' Ἰ(¨)(?)ουστινιανοῦ', '<hi rend="diaeresis">Ἰ<certainty match=".." locus="value"/></hi>ουστινιανοῦ'
 	  # test with unclears - ex. p.mert.3.125.xml
 	  assert_equal_fragment_transform ' ạ(¨)bc', '<hi rend="diaeresis"><unclear>a</unclear></hi>bc'
+	  assert_equal_fragment_transform ' ạ(¨)(?)bc', '<hi rend="diaeresis"><unclear>a</unclear><certainty match=".." locus="value"/></hi>bc'
 	  assert_equal_fragment_transform ' [.1](¨)', '<hi rend="diaeresis"><gap reason="lost" quantity="1" unit="character"/></hi>'
 	  assert_equal_fragment_transform ' .1(¨)', '<hi rend="diaeresis"><gap reason="illegible" quantity="1" unit="character"/></hi>'
     end
@@ -395,11 +398,11 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '<:a(?)|orth|b:>', '<choice><corr cert="low">a</corr><sic>b</sic></choice>'
 	  assert_equal_fragment_transform '<:aạ(?)|orth|bạ:>', '<choice><corr cert="low">a<unclear>a</unclear></corr><sic>b<unclear>a</unclear></sic></choice>'
 	  assert_equal_fragment_transform '<:σωλῆνας̣(?)|orth|σηληνας̣:>', '<choice><corr cert="low">σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear></sic></choice>'
-	  assert_equal_fragment_transform '<:σωλῆνας̣|orth|σηληνας̣?:>', '<choice><corr>σωλῆνα<unclear>ς</unclear></corr><sic cert="low">σηληνα<unclear>ς</unclear></sic></choice>'
-	  assert_equal_fragment_transform '<:σωλῆνας̣(?)|orth|σηληνας̣?:>', '<choice><corr cert="low">σωλῆνα<unclear>ς</unclear></corr><sic cert="low">σηληνα<unclear>ς</unclear></sic></choice>'
+	  assert_equal_fragment_transform '<:σωλῆνας̣|orth|σηληνας̣(?):>', '<choice><corr>σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear><certainty match=".." locus="value"/></sic></choice>'
+	  assert_equal_fragment_transform '<:σωλῆνας̣(?)|orth|σηληνας̣(?):>', '<choice><corr cert="low">σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear><certainty match=".." locus="value"/></sic></choice>'
 	  assert_equal_fragment_transform '<:σωλῆνας̣|orth|σηληνας̣:>', '<choice><corr>σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear></sic></choice>'
 	  assert_equal_fragment_transform '<:a(?)|orth|<:b|orth|c:>:>', '<choice><corr cert="low">a</corr><sic><choice><corr>b</corr><sic>c</sic></choice></sic></choice>'
-	  assert_equal_fragment_transform '<:a|orth|<:b|orth|c?:>:>', '<choice><corr>a</corr><sic><choice><corr>b</corr><sic cert="low">c</sic></choice></sic></choice>'
+	  assert_equal_fragment_transform '<:a|orth|<:b|orth|c(?):>:>', '<choice><corr>a</corr><sic><choice><corr>b</corr><sic>c<certainty match=".." locus="value"/></sic></choice></sic></choice>'
 	  assert_equal_fragment_transform '<:<:b|orth|c:>|orth|σηλη:>', '<choice><corr><choice><corr>b</corr><sic>c</sic></choice></corr><sic>σηλη</sic></choice>'
 	end
     
@@ -432,6 +435,11 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<:[καθ]ὰ(?)|ed:|[.2]α:>', '<app type="editorial"><lem><supplied reason="lost">καθ</supplied>ὰ<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α</rdg></app>'
       assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|ed:|[.2]α(?):>', '<app type="editorial"><lem><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
       assert_equal_fragment_transform '<:〚κ〛 (?)|ed:|:>', '<app type="editorial"><lem><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
+      assert_equal_fragment_transform '<:[μου][μάμ]μη|alt:|[.5][διδύ(?)]μη(?):>', '<app type="alternative"><lem><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
+      assert_equal_fragment_transform '<:[καθ]ὰ(?)|alt:|[.2]α:>', '<app type="alternative"><lem><supplied reason="lost">καθ</supplied>ὰ<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α</rdg></app>'
+      assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|alt:|[.2]α(?):>', '<app type="alternative"><lem><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
+      assert_equal_fragment_transform '<:〚κ〛 (?)|alt:|:>', '<app type="alternative"><lem><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
+      assert_equal_fragment_transform '<:|alt:|〚κ〛 (?):>', '<app type="alternative"><lem/><rdg><del rend="erasure">κ</del> <certainty match=".." locus="value"/></rdg></app>'
     end
     
     def test_glyph
@@ -569,9 +577,18 @@ if(RUBY_PLATFORM == 'java')
 
 	def test_subscript
 	  assert_equal_fragment_transform '\\|(χρυσοχο ϊ(¨)κ(ῷ))|/', '<hi rend="subscript"><expan>χρυσοχο<hi rend="diaeresis">ϊ</hi>κ<ex>ῷ</ex></expan></hi>'
+	  assert_equal_fragment_transform '\\|(χρυσοχο ϊ(¨)κ(ῷ))(?)|/', '<hi rend="subscript"><expan>χρυσοχο<hi rend="diaeresis">ϊ</hi>κ<ex>ῷ</ex></expan><certainty match=".." locus="value"/></hi>'
 	  assert_equal_fragment_transform '\\|η|/', '<hi rend="subscript">η</hi>'
+	  assert_equal_fragment_transform '\\|η(?)|/', '<hi rend="subscript">η<certainty match=".." locus="value"/></hi>'
     end
 	
+    def test_supraline
+	  assert_equal_fragment_transform '¯words sic¯', '<hi rend="supraline">words sic</hi>'
+	  assert_equal_fragment_transform '¯words sic(?)¯', '<hi rend="supraline">words sic<certainty match=".." locus="value"/></hi>'
+	  assert_equal_fragment_transform '¯vestig ¯', '<hi rend="supraline"><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></hi>'
+     assert_equal_fragment_transform '¯vestig (?)¯', '<hi rend="supraline"><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap><certainty match=".." locus="value"/></hi>'
+  end
+    
 	def test_superscript
 	  assert_equal_fragment_transform '^<#ι=10#> ^', '<hi rend="superscript"><num value="10">ι</num> </hi>'
 	  assert_equal_fragment_transform '^<:σημεῖον|orth|σημιον:>^', '<hi rend="superscript"><choice><corr>σημεῖον</corr><sic>σημιον</sic></choice></hi>'

@@ -384,7 +384,7 @@ item
 	//---test_illegible_dot_gap---
 	// .1, .2, .3 **P5**
 	: [DOT] [NUM n] = <gap reason="illegible" quantity=[NUM n] unit="character"></>
-	>: [DOT] [NUM n] "(?)" = <gap reason="illegible" quantity=[NUM n] unit="character"><certainty match=".." locus="name"></></>  
+	>: [DOT] [NUM n] "(?) " = <gap reason="illegible" quantity=[NUM n] unit="character"><certainty match=".." locus="name"></></>  
 	//---test_illegible_dot_max---
 	// .#{n}-#{n} **P5**
 	: [DOT] [NUM v] "-" [NUM w] = <gap reason="illegible" atLeast=[NUM v] atMost=[NUM w] unit="character"></>
@@ -393,7 +393,7 @@ item
 	// .1lin, .2lin, .3lin **P5**
 	: [DOT] [NUM n] "lin" = <gap reason="illegible" quantity=[NUM n] unit="line"></>  
 	>: [LEADCA] [NUM n] "lin" = <gap reason="illegible" quantity=[NUM n] unit="line" precision="low"></> 
-	>: [DOT] [NUM n] "lin(?)" = <gap reason="illegible" quantity=[NUM n] unit="line"><certainty match=".." locus="name"></></>  
+	>: [DOT] [NUM n] "lin(?) " = <gap reason="illegible" quantity=[NUM n] unit="line"><certainty match=".." locus="name"></></>  
 	
 	//---test_illegible_dot_lin_extentmax---
 	// .1-2lin **P5**
@@ -531,16 +531,16 @@ item
 		
 	//---subst---
 	//  <:a|subst|b|:> 
-	: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[WORDVEST b]</></>
-	>: [BEGOPT] [items a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORDVEST b]</></>
-	>: [BEGOPT] [WORDVEST a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
-	>: [BEGOPT] [WORDVEST a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
-	>: [BEGOPT] [items a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del rend="corrected">[items b]</></>
+	: [BEGOPT] [items a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [items b] "(?)" [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] [items a] "(?)" "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]<certainty match=".." locus="value"/></><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "(?)" "|subst|" [items b] "(?)" [ENDOPT] = <subst><add place="inline">[items a]<certainty match=".." locus="value"/></><del rend="corrected">[items b]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] "|subst|" [items b] [ENDOPT] = <subst><add place="inline"></><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [items a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORDVEST b]</></>
+	>: [BEGOPT] [WORDVEST a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [WORDVEST a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[WORDVEST b]</></>
 	
 	//---app_lem---
 	//  <:|abc|def|:> 
@@ -692,7 +692,7 @@ flat
 	//---test_vestige_lines_unknown---
 	// vestig.?lin **P5**
 	: "vestig.?lin" = <gap reason="illegible" extent="unknown" unit="line"></>
-	>: "vestig.?lin(?)" = <gap reason="illegible" extent="unknown" unit="line"><certainty match=".." locus="name"></></>
+	>: "vestig.?lin(?) " = <gap reason="illegible" extent="unknown" unit="line"><certainty match=".." locus="name"></></>
 	
 	//---test_vestige_known_char---
 	// vestig.!.#{n} **P5**
@@ -714,13 +714,13 @@ flat
 	// lost.#{n}lin **P5**
 	: "lost." [NUM v] "lin" = <gap reason="lost" quantity=[NUM v] unit="line"></>
 	>: "lost.ca." [NUM v] "lin" = <gap reason="lost" quantity=[NUM v] unit="line" precision="low"></>
-	>: "lost." [NUM v] "lin(?)" = <gap reason="lost" quantity=[NUM v] unit="line"><certainty match=".." locus="name"></></>
+	>: "lost." [NUM v] "lin(?) " = <gap reason="lost" quantity=[NUM v] unit="line"><certainty match=".." locus="name"></></>
 	>: "lost." [NUM v] "-" [NUM w] "lin" = <gap reason="lost" atLeast=[NUM v] atMost=[NUM w] unit="line"></>
 	
 	//---test_lost_lines_unknown---
 	// lost.#{n}lin **P5**
 	: "lost.?lin" = <gap reason="lost" extent="unknown" unit="line"></>
-	>: "lost.?lin(?)" = <gap reason="lost" extent="unknown" unit="line"><certainty match=".." locus="name"></></>
+	>: "lost.?lin(?) " = <gap reason="lost" extent="unknown" unit="line"><certainty match=".." locus="name"></></>
 	
 	//---test_quotation_marks---
 	// " "
@@ -763,7 +763,7 @@ flat
 	//---test_illegible_gap_unknown---
 	// .? **P5**
 	: ".?" = <gap reason="illegible" extent="unknown" unit="character"></>
-	>: ".?(?)" = <gap reason="illegible" extent="unknown" unit="character"><certainty match=".." locus="name"></></>
+	>: ".?(?) " = <gap reason="illegible" extent="unknown" unit="character"><certainty match=".." locus="name"></></>
 	
 	//---test_illegible_gap_unknown_ca---
 	// ca.? **P5**

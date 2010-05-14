@@ -95,6 +95,17 @@ if(RUBY_PLATFORM == 'java')
 	  #assert_equal_fragment_transform '(abc?)', '<expan><ex cert="low">abc</ex></expan>'
     end
   
+    def test_expan_certainty_match
+      assert_equal_fragment_transform '[.3(?)]', '<gap reason="lost" quantity="3" unit="character"><certainty match=".." locus="name"/></gap>'
+      assert_equal_fragment_transform '.3(?) ', '<gap reason="illegible" quantity="3" unit="character"><certainty match=".." locus="name"/></gap>'
+      assert_equal_fragment_transform 'lost.3lin(?) ', '<gap reason="lost" quantity="3" unit="line"><certainty match=".." locus="name"/></gap>'
+      assert_equal_fragment_transform '.3lin(?) ', '<gap reason="illegible" quantity="3" unit="line"><certainty match=".." locus="name"/></gap>'
+      assert_equal_fragment_transform '[.?(?)]', '<gap reason="lost" extent="unknown" unit="character"><certainty match=".." locus="name"/></gap>'
+      assert_equal_fragment_transform '.?(?) ', '<gap reason="illegible" extent="unknown" unit="character"><certainty match=".." locus="name"/></gap>'
+      assert_equal_fragment_transform 'lost.?lin(?) ', '<gap reason="lost" extent="unknown" unit="line"><certainty match=".." locus="name"/></gap>'
+      assert_equal_fragment_transform 'vestig.?lin(?) ', '<gap reason="illegible" extent="unknown" unit="line"><certainty match=".." locus="name"/></gap>'
+	  end
+    
     # http://www.stoa.org/epidoc/gl/5/lostcertain.html
     def test_lost_dot_gap
       # Some number of missing characters

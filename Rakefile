@@ -70,7 +70,7 @@ namespace :coverage do
       TRANSLATION_DATA_PATH = ENV['TRANSLATION_DATA_PATH']
     else
       warn 'Use "rake translation_coverage:translation TRANSLATION_DATA_PATH=../path/to/dir" to override default data dir'
-      TRANSLATION_DATA_PATH = '../idp.data/HGV_transEpiDoc'
+      TRANSLATION_DATA_PATH = '../idp.data/HGV_trans_EpiDoc'
     end
     
     if ENV.include?('SAMPLE_FRAGMENTS')

@@ -72,8 +72,8 @@ module RXSugar
           end
                    
           divtranslation = get_div_translation(xml_content)
-            # do each fragment individually
-            REXML::XPath.match(divtranslation, './p/*').each do |child|
+          # do each fragment individually - added ./div/p/*| 5/20 to allow for p tag inside a div textpart
+            REXML::XPath.match(divtranslation, './div/p/*|./p/*').each do |child|
             xml_fragment_content = child.to_s.tr("'",'"')
             fragment_reference = XMLFragmentReference.new(xml_file, child)
             begin

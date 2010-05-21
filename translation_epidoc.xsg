@@ -66,10 +66,12 @@ WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
     >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [items a] [ENDDIV] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[items a]</>
 
 
-     : [BEGDIV] " " [items p] " " [ENDDIV] = <div type="textpart">[items p]</>
+    >: [BEGDIV] " " [items p] " " [ENDDIV] = <div type="textpart">[items p]</>
 
-     : [BEGDIV] "." [WORDDIV d] " " [ptag p] [ENDDIV] = <div n=[WORDDIV d] type="textpart">[ptag p]</>
-    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ptag p] [ENDDIV] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[ptag p]</>
+    >: [BEGDIV] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDDIV] = <div n=[WORDDIV d] type="textpart">[ANYSP s][ptag p][ANYSP ss]</>
+    >: [BEGDIV] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDDIV] [ANYSP sss] [divtag more] = <div n=[WORDDIV d] type="textpart">[ANYSP s][ptag p][ANYSP ss]</> [ANYSP sss][divtag more]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP ss][ptag p][ANYSP sss] [ENDDIV] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[ANYSP ss][ptag p][ANYSP sss]</>
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP ss][ptag p][ANYSP sss] [ENDDIV] [ANYSP ssss] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[ANYSP ss][ptag p][ANYSP sss]</> [ANYSP ssss][divtag more]
 
   
   // this is equivalent to <ab> in normal L+

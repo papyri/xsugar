@@ -9,9 +9,6 @@ BEGOPT = "<:"
 ENDOPT = ":>"
 BEGNUM = "<#"
 ENDNUM = "#>"
-//removed per Josh/Rodney review 3/17
-//BEGSEG = "<\&"
-//ENDSEG = "\&>"
 BEGEXP = "("
 ENDEXP = ")"
 BEGAB = "<="
@@ -438,35 +435,45 @@ item
 	
 	//---add_place_interlinear---
 	//  >>abc<<
-    : ">>" [WORDSSIC a] "<<" = <add place="interlinear">[WORDSSIC a]</>
+	: ">>" [WORDSSIC a] "<<" = <add place="interlinear">[WORDSSIC a]</>
+	>: ">>" [WORDSSIC a] "(?)" "<<" = <add place="interlinear">[WORDSSIC a]<certainty match=".." locus="name"/></>
 	>: ">>" [items a] "<<" = <add place="interlinear">[items a]</>
+	>: ">>" [items a] "(?)" "<<" = <add place="interlinear">[items a]<certainty match=".." locus="name"/></>
 
 	//---add_place_general---
 	//  ||bottom:abc||
 	: "||" [ADDLIST a] ":" [WORDSSIC b] "||" = <add place=[ADDLIST a]>[WORDSSIC b]</>
+	>: "||" [ADDLIST a] ":" [WORDSSIC b] "(?)" "||" = <add place=[ADDLIST a]>[WORDSSIC b]<certainty match=".." locus="name"/></>
 	>: "||" [ADDLIST a] ":" [items b] "||" = <add place=[ADDLIST a]>[items b]</>
+	>: "||" [ADDLIST a] ":" [items b] "(?)" "||" = <add place=[ADDLIST a]>[items b]<certainty match=".." locus="name"/></>
 	
 	//---add_place_margin_sling---
 	//  <|abc|> **P5**
-    : "<|" [WORDSSIC a] "|>" = <add rend="sling" place="margin">[WORDSSIC a]</>
+  : "<|" [WORDSSIC a] "|>" = <add rend="sling" place="margin">[WORDSSIC a]</>
+  >: "<|" [WORDSSIC a] "(?)" "|>" = <add rend="sling" place="margin">[WORDSSIC a]<certainty match=".." locus="name"/></>
 	>: "<|" [items a] "|>" = <add rend="sling" place="margin">[items a]</>
+	>: "<|" [items a] "(?)" "|>" = <add rend="sling" place="margin">[items a]<certainty match=".." locus="name"/></>
 	
 	//---add_place_margin_underline---
 	//  <_abc_> **P5**
-    : "<_" [WORDSSIC a] "_>" = <add rend="underline" place="margin">[WORDSSIC a]</>
+  : "<_" [WORDSSIC a] "_>" = <add rend="underline" place="margin">[WORDSSIC a]</>
+  >: "<_" [WORDSSIC a] "(?)" "_>" = <add rend="underline" place="margin">[WORDSSIC a]<certainty match=".." locus="name"/></>
 	>: "<_" [items a] "_>" = <add rend="underline" place="margin">[items a]</>
+	>: "<_" [items a] "(?)" "_>" = <add rend="underline" place="margin">[items a]<certainty match=".." locus="name"/></>
 	
-	//---add_place_above--- - special character is u+26a0
+	//---add_place_above---
 	//  \abc/
 	: "\\" [WORDSSIC a] "\/" = <add place="above">[WORDSSIC a]</>
-	: "\\" [WORDSSIC a] "?" "\/" = <add cert="low" place="above">[WORDSSIC a]</>
+	>: "\\" [WORDSSIC a] "(?)" "\/" = <add place="above">[WORDSSIC a]<certainty match=".." locus="name"/></>
 	>: "\\" [items a] "\/" = <add place="above">[items a]</>
-	>: "\\" [items a] "?" "\/" = <add cert="low" place="above">[items a]</>
+	>: "\\" [items a] "(?)" "\/" = <add place="above">[items a]<certainty match=".." locus="name"/></>
 	
 	//---add_place_below--- - special character is u+2692
 	//   //abc\\
 	: "\/\/" [WORDSSIC a] "\\\\" = <add place="below">[WORDSSIC a]</>
+	>: "\/\/" [WORDSSIC a] "(?)" "\\\\" = <add place="below">[WORDSSIC a]<certainty match=".." locus="name"/></>
 	>: "\/\/" [items a] "\\\\" = <add place="below">[items a]</>
+	>: "\/\/" [items a] "(?)" "\\\\" = <add place="below">[items a]<certainty match=".." locus="name"/></>
 	
 	//---grave---
 	//   \abc/
@@ -531,15 +538,14 @@ item
 		
 	//---subst---
 	//  <:a|subst|b|:> 
-	: [BEGOPT] [items a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[items a]</><del rend="corrected">[items b]</></>
-	>: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
+	: [BEGOPT] [items a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [items b] "(?)" [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[items b]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] [items a] "(?)" "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[items a]<certainty match=".." locus="value"/></><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "(?)" "|subst|" [items b] "(?)" [ENDOPT] = <subst><add place="inline">[items a]<certainty match=".." locus="value"/></><del rend="corrected">[items b]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] "|subst|" [items b] [ENDOPT] = <subst><add place="inline"></><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [items a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[items a]</><del rend="corrected">[WORDVEST b]</></>
 	>: [BEGOPT] [WORDVEST a] "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
-	>: [BEGOPT] [WORDVEST a] "?" "|subst|" [items b] [ENDOPT] = <subst><add cert="low" place="inline">[WORDVEST a]</><del rend="corrected">[items b]</></>
+	>: [BEGOPT] [WORDVEST a] "(?)" "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]<certainty match=".." locus="value"/></><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[WORDVEST b]</></>
 	
 	//---app_lem---

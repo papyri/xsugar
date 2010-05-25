@@ -805,14 +805,14 @@ inside_brackets
 	
 	//---test_lost_space_unknown
 	//[vac?]
-	:[ANYMULT w] "vac?" = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/></>
-	:"vac?" [ANYMULT w] = <supplied reason="lost"><space extent="unknown" unit="character"/>[ANYMULT w]</>
+	:[ANYMULT w] "vac.?" = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/></>
+	:"vac.?" [ANYMULT w] = <supplied reason="lost"><space extent="unknown" unit="character"/>[ANYMULT w]</>
 	:[spaceitem s] = <supplied reason="lost">[spaceitem s]</>
-	:[ANYMULT w] "vac?" [ANYMULT w] = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
-	:[ANYMULT w] "vac?" "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<space extent="unknown" unit="character"/></>
-	:"vac?" [ANYMULT w] "(?)" = <supplied reason="lost" cert="low"><space extent="unknown" unit="character"/>[ANYMULT w]</>
+	:[ANYMULT w] "vac.?" [ANYMULT w] = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
+	:[ANYMULT w] "vac.?" "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<space extent="unknown" unit="character"/></>
+	:"vac.?" [ANYMULT w] "(?)" = <supplied reason="lost" cert="low"><space extent="unknown" unit="character"/>[ANYMULT w]</>
 	:[spaceitem s] "(?)" = <supplied reason="lost" cert="low">[spaceitem s]</>
-	:[ANYMULT w] "vac?" [ANYMULT w] "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
+	:[ANYMULT w] "vac.?" [ANYMULT w] "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
 	
 	//---test_lost_paragraphos
 	//[----]
@@ -845,11 +845,15 @@ foritem
 	>: "~|" [WORDSF a][items c] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a][items c]</>
 
 spaceitem 
-	: "vac?" = <space extent="unknown" unit="character"></>
+	: "vac.?" = <space extent="unknown" unit="character"></>
 	>: "vac." [NUM n] = <space quantity=[NUM n] unit="character"></>
+	>: "vac." [NUM n] "(?) " = <space quantity=[NUM n] unit="character"><certainty match=".." locus="name"></></>
 	>: "vac." [NUM v] "-" [NUM w] = <space atLeast=[NUM v] atMost=[NUM w] unit="character"></>
 	>: "vac.ca." [NUM n] = <space quantity=[NUM n] unit="character" precision="low"></>
-	>: "vac?lin" = <space extent="unknown" unit="line"></>
+	>: "vac.ca." [NUM n] "(?) " = <space quantity=[NUM n] unit="character" precision="low"><certainty match=".." locus="name"></></>
+	>: "vac.?lin" = <space extent="unknown" unit="line"></>
 	>: "vac." [NUM n] "lin" = <space quantity=[NUM n] unit="line"></>
+	>: "vac." [NUM n] "lin" "(?) " = <space quantity=[NUM n] unit="line"><certainty match=".." locus="name"></></>
 	>: "vac." [NUM v] "-" [NUM w] "lin" = <space atLeast=[NUM v] atMost=[NUM w] unit="line"></>
 	>: "vac.ca." [NUM n] "lin" = <space quantity=[NUM n] unit="line" precision="low"></>
+	>: "vac.ca." [NUM n] "lin" "(?) " = <space quantity=[NUM n] unit="line" precision="low"><certainty match=".." locus="name"></></>

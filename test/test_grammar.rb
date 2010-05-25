@@ -504,15 +504,19 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<|.1|>', '<add rend="sling" place="margin"><gap reason="illegible" quantity="1" unit="character"/></add>'
     end
 	
-    def test_space_unknown
-      assert_equal_fragment_transform 'vac.?', '<space extent="unknown" unit="character"/>'
+    def test_space
+    assert_equal_fragment_transform 'vac.?', '<space extent="unknown" unit="character"/>'
 	  assert_equal_fragment_transform 'vac.3', '<space quantity="3" unit="character"/>'
+	  assert_equal_fragment_transform 'vac.3(?) ', '<space quantity="3" unit="character"><certainty match=".." locus="name"/></space>'
 	  assert_equal_fragment_transform 'vac.2-5', '<space atLeast="2" atMost="5" unit="character"/>'
 	  assert_equal_fragment_transform 'vac.ca.3', '<space quantity="3" unit="character" precision="low"/>'
+	  assert_equal_fragment_transform 'vac.ca.3(?) ', '<space quantity="3" unit="character" precision="low"><certainty match=".." locus="name"/></space>'
 	  assert_equal_fragment_transform 'vac.?lin', '<space extent="unknown" unit="line"/>'
 	  assert_equal_fragment_transform 'vac.3lin', '<space quantity="3" unit="line"/>'
+	  assert_equal_fragment_transform 'vac.3lin(?) ', '<space quantity="3" unit="line"><certainty match=".." locus="name"/></space>'
 	  assert_equal_fragment_transform 'vac.2-5lin', '<space atLeast="2" atMost="5" unit="line"/>'
 	  assert_equal_fragment_transform 'vac.ca.3lin', '<space quantity="3" unit="line" precision="low"/>'
+	  assert_equal_fragment_transform 'vac.ca.3lin(?) ', '<space quantity="3" unit="line" precision="low"><certainty match=".." locus="name"/></space>'
     end
 	
 	def test_supplied_lost_space
@@ -528,12 +532,16 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '[θαι vac.? εὶρ]', '<supplied reason="lost">θαι <space extent="unknown" unit="character"/> εὶρ</supplied>'
 	  assert_equal_fragment_transform '[vac.?]', '<supplied reason="lost"><space extent="unknown" unit="character"/></supplied>'
 	  assert_equal_fragment_transform '[vac.3]', '<supplied reason="lost"><space quantity="3" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[vac.3(?) ]', '<supplied reason="lost"><space quantity="3" unit="character"><certainty match=".." locus="name"/></space></supplied>'
 	  assert_equal_fragment_transform '[vac.2-5]', '<supplied reason="lost"><space atLeast="2" atMost="5" unit="character"/></supplied>'
 	  assert_equal_fragment_transform '[vac.ca.3]', '<supplied reason="lost"><space quantity="3" unit="character" precision="low"/></supplied>'
+	  assert_equal_fragment_transform '[vac.ca.3(?) ]', '<supplied reason="lost"><space quantity="3" unit="character" precision="low"><certainty match=".." locus="name"/></space></supplied>'
 	  assert_equal_fragment_transform '[vac.?lin]', '<supplied reason="lost"><space extent="unknown" unit="line"/></supplied>'
 	  assert_equal_fragment_transform '[vac.3lin]', '<supplied reason="lost"><space quantity="3" unit="line"/></supplied>'
+	  assert_equal_fragment_transform '[vac.3lin(?) ]', '<supplied reason="lost"><space quantity="3" unit="line"><certainty match=".." locus="name"/></space></supplied>'
 	  assert_equal_fragment_transform '[vac.2-5lin]', '<supplied reason="lost"><space atLeast="2" atMost="5" unit="line"/></supplied>'
 	  assert_equal_fragment_transform '[vac.ca.3lin]', '<supplied reason="lost"><space quantity="3" unit="line" precision="low"/></supplied>'
+	  assert_equal_fragment_transform '[vac.ca.3lin(?) ]', '<supplied reason="lost"><space quantity="3" unit="line" precision="low"><certainty match=".." locus="name"/></space></supplied>'
 	  #dup above with cert low on supplied
 	  assert_equal_fragment_transform '[vac.? .4-5(?)]', '<supplied reason="lost" cert="low"><space extent="unknown" unit="character"/> <gap reason="illegible" atLeast="4" atMost="5" unit="character"/></supplied>'  #worked with ANYMULT tweak
 	  assert_equal_fragment_transform '[εὶρ .2 vac.?(?)]', '<supplied reason="lost" cert="low">εὶρ <gap reason="illegible" quantity="2" unit="character"/> <space extent="unknown" unit="character"/></supplied>'  #worked with ANYMULT tweak
@@ -547,12 +555,16 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '[θαι vac.? εὶρ(?)]', '<supplied reason="lost" cert="low">θαι <space extent="unknown" unit="character"/> εὶρ</supplied>'
 	  assert_equal_fragment_transform '[vac.?(?)]', '<supplied reason="lost" cert="low"><space extent="unknown" unit="character"/></supplied>'
 	  assert_equal_fragment_transform '[vac.3(?)]', '<supplied reason="lost" cert="low"><space quantity="3" unit="character"/></supplied>'
+	  assert_equal_fragment_transform '[vac.3(?) (?)]', '<supplied reason="lost" cert="low"><space quantity="3" unit="character"><certainty match=".." locus="name"/></space></supplied>'
 	  assert_equal_fragment_transform '[vac.2-5(?)]', '<supplied reason="lost" cert="low"><space atLeast="2" atMost="5" unit="character"/></supplied>'
 	  assert_equal_fragment_transform '[vac.ca.3(?)]', '<supplied reason="lost" cert="low"><space quantity="3" unit="character" precision="low"/></supplied>'
+	  assert_equal_fragment_transform '[vac.ca.3(?) (?)]', '<supplied reason="lost" cert="low"><space quantity="3" unit="character" precision="low"><certainty match=".." locus="name"/></space></supplied>'
 	  assert_equal_fragment_transform '[vac.?lin(?)]', '<supplied reason="lost" cert="low"><space extent="unknown" unit="line"/></supplied>'
 	  assert_equal_fragment_transform '[vac.3lin(?)]', '<supplied reason="lost" cert="low"><space quantity="3" unit="line"/></supplied>'
+	  assert_equal_fragment_transform '[vac.3lin(?) (?)]', '<supplied reason="lost" cert="low"><space quantity="3" unit="line"><certainty match=".." locus="name"/></space></supplied>'
 	  assert_equal_fragment_transform '[vac.2-5lin(?)]', '<supplied reason="lost" cert="low"><space atLeast="2" atMost="5" unit="line"/></supplied>'
 	  assert_equal_fragment_transform '[vac.ca.3lin(?)]', '<supplied reason="lost" cert="low"><space quantity="3" unit="line" precision="low"/></supplied>'
+	  assert_equal_fragment_transform '[vac.ca.3lin(?) (?)]', '<supplied reason="lost" cert="low"><space quantity="3" unit="line" precision="low"><certainty match=".." locus="name"/></space></supplied>'
     end
     
     def test_del_rend

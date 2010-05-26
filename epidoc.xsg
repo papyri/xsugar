@@ -846,14 +846,18 @@ foritem
 
 spaceitem 
 	: "vac.?" = <space extent="unknown" unit="character"></>
+	: "vac.?" "(?) " = <space extent="unknown" unit="character"><certainty match=".." locus="name"></></>
 	>: "vac." [NUM n] = <space quantity=[NUM n] unit="character"></>
 	>: "vac." [NUM n] "(?) " = <space quantity=[NUM n] unit="character"><certainty match=".." locus="name"></></>
 	>: "vac." [NUM v] "-" [NUM w] = <space atLeast=[NUM v] atMost=[NUM w] unit="character"></>
+	>: "vac." [NUM v] "-" [NUM w] "(?) " = <space atLeast=[NUM v] atMost=[NUM w] unit="character"><certainty match=".." locus="name"></></>
 	>: "vac.ca." [NUM n] = <space quantity=[NUM n] unit="character" precision="low"></>
 	>: "vac.ca." [NUM n] "(?) " = <space quantity=[NUM n] unit="character" precision="low"><certainty match=".." locus="name"></></>
 	>: "vac.?lin" = <space extent="unknown" unit="line"></>
+	>: "vac.?lin" "(?) " = <space extent="unknown" unit="line"><certainty match=".." locus="name"></></>
 	>: "vac." [NUM n] "lin" = <space quantity=[NUM n] unit="line"></>
 	>: "vac." [NUM n] "lin" "(?) " = <space quantity=[NUM n] unit="line"><certainty match=".." locus="name"></></>
 	>: "vac." [NUM v] "-" [NUM w] "lin" = <space atLeast=[NUM v] atMost=[NUM w] unit="line"></>
+	>: "vac." [NUM v] "-" [NUM w] "lin" "(?) " = <space atLeast=[NUM v] atMost=[NUM w] unit="line"><certainty match=".." locus="name"></></>
 	>: "vac.ca." [NUM n] "lin" = <space quantity=[NUM n] unit="line" precision="low"></>
 	>: "vac.ca." [NUM n] "lin" "(?) " = <space quantity=[NUM n] unit="line" precision="low"><certainty match=".." locus="name"></></>

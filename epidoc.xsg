@@ -337,6 +337,7 @@ item
 	>: [BEGEXP] "[" "(" [WORDS4EX c] ")" "]" [ENDEXP] = <expan><supplied reason="lost"><ex>[WORDS4EX c]</></></>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] "(" [WORDS4EX f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]<ex>[WORDS4EX f]</></>
 	>: [BEGEXP] [items a] "(" [WORDS4EX f] ")" [WORDOPT g] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<ex>[WORDS4EX f]</>[WORDOPT g]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
+	>: [BEGEXP] [items a] "(" [WORDS4EX f] ")" [WORDOPT g] [items h] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [WORDOPT e] [ENDEXP] = <expan>[items a]<ex>[WORDS4EX f]</>[WORDOPT g][items h]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[WORDOPT e]</>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [items e] "(" [WORDS4EX f] ")" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[items e]<ex>[WORDS4EX f]</></>
 	>: [BEGEXP] [WORDOPT a] "[" [WORDOPT b] "(" [WORDS4EX c] ")" [WORDOPT d] "]" [items e] "[" "(" [WORDS4EX f] ")" "]" [ENDEXP] = <expan>[WORDOPT a]<supplied reason="lost">[WORDOPT b]<ex>[WORDS4EX c]</>[WORDOPT d]</>[items e]<supplied reason="lost"><ex>[WORDS4EX f]</></></>
 //added 3/1 per Email reply from Gabby on XML valid question

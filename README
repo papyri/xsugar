@@ -1,3 +1,25 @@
+Requirements
+------------
+
+ * [JRuby](http://jruby.org/)
+
+Usage
+-----
+
+This project contains JRuby libraries and wrappers for
+[XSugar](http://www.brics.dk/xsugar/) as well as grammars for converting
+between [EpiDoc XML](http://epidoc.sourceforge.net/) and Leiden+ (a 
+Leiden-style plaintext markup).
+
+To convert between the EpiDoc and Leiden+, the utility scripts
+`xml2nonxml.rb` and `nonxml2xml.rb` are provided.
+
+To use them you can simply run:
+
+    ./bin/xml2nonxml.rb < epidoc.xml > leiden.txt
+or
+    ./bin/nonxml2xml.rb < leiden.txt > epidoc.xml
+
 File Structure
 --------------
 

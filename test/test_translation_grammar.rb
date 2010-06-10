@@ -85,6 +85,13 @@ if(RUBY_PLATFORM == 'java')
     end
   
   
+    def test_random
+      assert_equal_fragment_transform 'a place you live', 'a place you live'    	    
+      assert_equal_fragment_transform 'house : a place you live', 'house : a place you live'
+      assert_equal_fragment_transform 'store:where you shop', 'store:where you shop'
+      
+    
+    end
     
     #==================end changed from transcription
     

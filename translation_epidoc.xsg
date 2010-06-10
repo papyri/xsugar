@@ -22,19 +22,19 @@ QUESTION = [\?]?
 LINENUM = [0-9]+[/\,a-zA-Z]*[ms0-9]*
 
 //ANYLETTER = [^\/\\\t\^<>_#@~〚〛$\*\&\:\|\!\{\}\?\"¯≡+\u0323]
-ANYLETTER = [^\^<>_#@~〚〛$\*\&\:\|\!\{\}\"¯≡+\u0323]
+ANYLETTER = [^\^<>_#@~〚〛$\*\&\|\!\{\}\"¯≡+\u0323]
 
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORD = ([^ \/\\\n\r\t\^<>_#@~〚〛$\*\&\,\.\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 // WORDDIV breaks at space and does not allow DOT - allows +, \,
-WORDDIV = ([^ \n\r\t\^<>_#@~〚〛$\*\&\.\:\=\|\'\!\(\)\{\}\?\"¯≡\u0323]+) (MAX)
+WORDDIV = ([^ \n\r\t\^<>_#@~〚〛$\*\&\.\=\|\'\!\(\)\{\}\?\"¯≡\u0323]+) (MAX)
 
 // WORDS allows space (therefore multiple words) and DOT
-WORDS = ([^\/\\\n\r\t\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDS = ([^\/\\\n\r\t\^<>_#@~〚〛$\*\&\,\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
-WORDSLR = ([^\/\\\n\r\t\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDSLR = ([^\/\\\n\r\t\^<>_#@~〚〛$\*\&\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 // WORDS 
 WORDSTERM = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)

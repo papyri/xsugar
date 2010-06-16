@@ -216,12 +216,13 @@ supexpan
 ///////////////////////////  >:[item c] = [item c]
   
 supcertexpan
-//  :"(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
+  :"(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
   >:[WORD b][supcertexpan more] = [WORD b][supcertexpan more]
+  >:"(" [WORDS4EX a] ")"[supcertexpan more] = <ex>[WORDS4EX a]</>[supcertexpan more]
   >:"(" [WORDS4EX a] ")"[expanstuff more] = <ex>[WORDS4EX a]</>[expanstuff more]
-  >:"(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
-  >:[item b][supcertexpan more] = [item b][supcertexpan more]
-  >:[item c] = [item c]
+//  >:"(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
+//  >:[item b][supcertexpan more] = [item b][supcertexpan more]
+//  >:[item c] = [item c]
   
 nestanc : " ῾" = "asper"
 			: "´" = "acute"
@@ -609,6 +610,9 @@ item
 
 	: [spaceitem s] = [spaceitem s]
 	
+	//words foreign
+	: "~|" [WORDS a]": "[item b][WORDS c] "|~" [WORD d] " " = <foreign xml:lang=[WORD d]>[WORDS a]": "[item b][WORDS c]</>
+	
 	//---note---
 	//  /*abcdefg*/ **P5**
 	: "\/*" [WORDSF a] "*\/" = <note xml:lang="en">[WORDSF a]</>
@@ -619,19 +623,13 @@ item
 	//---foreign_lang---
 	//  ~veni vedi vici~la **P5** 
 	: "~|" [items a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]</>
-////	>: "~|" [WORDSF a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a]</>
-////	>: "~|" [items a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]</>
 	>: "~|" [items a] ": " "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "</>
 	>: "~|" [items a] ":" "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]":"</>
-////	>: "~|" [items a]": "[WORDSF c][items d] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "[WORDSF c][items d]</>
 	>: "~|" [items a]": "[items d] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "[items d]</>
-////	>: "~|" [items a]": "[WORDSF c][items d]": " "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "[WORDSF c][items d]": "</>
 	>: "~|" [items a]": "[items d]": " "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]": "[items d]": "</>
 	>: "~|" [items a] ". " "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]". "</>
 	>: "~|" [items a] "." "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]"."</>
-//	>: "~|" [items a]". "[WORDSF c][items d] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]". "[WORDSF c][items d]</>
 	>: "~|" [items a]". "[items d] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]". "[items d]</>
-//	>: "~|" [items a]". "[WORDSF c][items d]". " "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]". "[WORDSF c][items d]". "</>
 	>: "~|" [items a]". "[items d]". " "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[items a]". "[items d]". "</>
 	
 	//---figure---

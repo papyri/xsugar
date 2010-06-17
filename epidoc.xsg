@@ -155,6 +155,12 @@ unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [A
 morenum : [BEGNUM] [WORD w] "=" [NUM x] [ENDNUM] [morenum y] = <num value=[NUM x]>[WORD w]</>  [morenum y]
 			   >: [BEGNUM] [WORD w] "=" [NUM x] [ENDNUM] = <num value=[NUM x]>[WORD w]</>
 		 
+multwordsp
+			: [WORD a] [item c][multwordsp more] = [WORD a] [item c][multwordsp more]
+			>: [WORD a] " " [item c] = [WORD a] " " [item c]
+			>: [WORD a] " " [multwordsp more] = [WORD a] " " [multwordsp more]
+			>: [WORD a] = [WORD a]
+
 //expand 	: [WORD a] "(" [WORDSSIC b] ")" [expand more] = [WORD a]<ex>[WORDSSIC b]</>[expand more]
 //			>: [WORD a] "(" [WORDSSIC b] ")" = [WORD a]<ex>[WORDSSIC b]</>
 			
@@ -231,6 +237,10 @@ nestanc : " ῾" = "asper"
 			: "^" = "circumflex"
 			: " ᾿" = "lenis"
 
+//ordereditem
+//  : [diacriticals a] = [diacriticals a]
+//  : [item b] = [item b]
+			
 item
 
 	: [linenumber l] = [linenumber l]
@@ -248,7 +258,7 @@ item
 	>: [BEGABBR] [items w] [ENDABBR] = <abbr>[items w]</>
 	>: [BEGABBR] [items w] "(?)" [ENDABBR] = <abbr>[items w]<certainty locus="name" match=".."/></>
 
-//---test_uncertain_diacritical_diaeresis---generic
+	//---test_uncertain_diacritical_diaeresis---generic
 //	// (¨)
 //	: " " [ANYLETTER a] "(" [nestanc d] ")" = <hi rend=[nestanc d]>[ANYLETTER a]</>
 //	>: " " [ANYLETTER a] [UNDERDOT] "(" [nestanc o] ")" = <hi rend=[nestanc o]><unclear>[ANYLETTER a]</></>
@@ -612,6 +622,7 @@ item
 	
 	//words foreign
 	: "~|" [WORDS a]": "[item b][WORDS c] "|~" [WORD d] " " = <foreign xml:lang=[WORD d]>[WORDS a]": "[item b][WORDS c]</>
+	: "~|" [multwordsp a][item b][WORDSF c] "|~" [WORD d] " " = <foreign xml:lang=[WORD d]>[multwordsp a][item b][WORDSF c]</>
 	
 	//---note---
 	//  /*abcdefg*/ **P5**

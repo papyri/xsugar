@@ -21,6 +21,10 @@ QUESTION = [\?]?
 
 LINENUM = [0-9]+[/\,a-zA-Z]*[ms0-9]*
 
+TERMLANG = ((la)|(grc\-Latn))
+FOREIGNLANG = ((la)|(grc\-Latn))
+NOTELANG = ((en)|(de))
+
 //ANYLETTER = [^\/\\\t\^<>_#@~〚〛$\*\&\:\|\!\{\}\?\"¯≡+\u0323]
 ANYLETTER = [^\^<>_#@~〚〛$\*\&\|\!\{\}\"¯≡+\u0323]
 
@@ -43,7 +47,7 @@ WORDSFOREIGN = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
 
 //very permisive for free text
 WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
-
+WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
 
   file    
     : [ANYSP s][transtag a][ANYSP ss] = <body>[ANYSP s][transtag a][ANYSP ss]</> 
@@ -95,8 +99,9 @@ WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
      : [linenumber l] = [linenumber l]
      : [del d] = [del d]
      : [term t] = [term t]
-     : [lb l] = [lb l]
+//     : [lb l] = [lb l]
      : [gap g] = [gap g] 
+     : [note n] = [note n]
      
      : [NL n] = [NL n]
     >: [WORDS w] = [WORDS w]
@@ -116,30 +121,25 @@ WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
   
   foreign
 
-    : "~|" [items a] "|~" [WORD lang] " " = <foreign xml:lang=[WORD lang]>[items a]</>
-    : "~|" [WORDSFOREIGN a] "|~" [WORD lang] " " = <foreign xml:lang=[WORD lang]>[WORDSFOREIGN a]</>
+    : "~|" [items a] "|~" [FOREIGNLANG lang] " " = <foreign xml:lang=[FOREIGNLANG lang]>[items a]</>
+    : "~|" [WORDSFOREIGN a] "|~" [FOREIGNLANG lang] " " = <foreign xml:lang=[FOREIGNLANG lang]>[WORDSFOREIGN a]</>
     
     //: "~|" [WORDSFOREIGN a][items i] "|~" [WORD lang] " " = <foreign xml:lang=[WORD lang]>[WORDSFOREIGN a][items i]</>
     //: "~|" [items i][WORDSFOREIGN a] "|~" [WORD lang] " " = <foreign xml:lang=[WORD lang]>[items i][WORDSFOREIGN a]</>
   
     
-  lb
-    : "---" = <lb></>
+//  lb
+//    : "---" = <lb></>
   
   term
     : "<" [items def] "=" [WORDSTERM t] ">" = <term target=[WORDSTERM t]>[items def]</>
     //with lang
-    : "<" [items def] "=" [WORDSTERM t] "~" [WORD lang] ">" = <term target=[WORDSTERM t] xml:lang=[WORD lang]>[items def]</>
-
-
-//    : "<" [WORDSTERM def] "=" [items t] ">" = <term target=[items t]>[WORDSTERM def]</>
-    //with lang
-//    : "<" [WORDSTERM def] "=" [items t] "~" [WORD lang] ">" = <term target=[items t] xml:lang=[WORD lang]>[WORDSTERM def]</>
+    : "<" [items def] "=" [WORDSTERM t] "~" [TERMLANG lang] ">" = <term target=[WORDSTERM t] xml:lang=[TERMLANG lang]>[items def]</>
 
 
     >: "<" [WORDSTERM def] "=" [WORDSTERM t] ">" = <term target=[WORDSTERM t]>[WORDSTERM def]</>
     //with lang
-    >: "<" [WORDSTERM def] "=" [WORDSTERM t] "~" [WORD lang] ">" = <term target=[WORDSTERM t] xml:lang=[WORD lang]>[WORDSTERM def]</>
+    >: "<" [WORDSTERM def] "=" [WORDSTERM t] "~" [TERMLANG lang] ">" = <term target=[WORDSTERM t] xml:lang=[TERMLANG lang]>[WORDSTERM def]</>
 
 
   gap
@@ -150,7 +150,8 @@ WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
     : "..." = <gap reason="illegible" extent="unknown" unit="character"></>
 
   del
-     : "〚" [WORDS w] "〛" = <del>[WORDS w]</>
+  	: "〚" [WORDSLOOSE w] "〛" = <del>[WORDSLOOSE w]</>
+     //: "〚" [WORDS w] "〛" = <del>[WORDS w]</>
     >: "〚" [items a] "〛" = <del>[items a]</>
 
   
@@ -191,6 +192,14 @@ WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
     : [BEGOPT] [WORDSLOOSE a] "|BGU_DDbDP:" [WORDSLOOSE c] "|" [ENDOPT] = <app type="BGU_DDbDP"><lem resp=[WORDSLOOSE c]>[WORDSLOOSE a]</></>
     : [BEGOPT] [WORDSLOOSE a] "|BGU_DDbDP:|" [ENDOPT] = <app type="BGU_DDbDP"><lem>[WORDSLOOSE a]</></>
 
+    
+   note
+	
+  	//: "\/*[NOTELANG nl] " [WORDSLOOSE a] "*\/" = <note xml:lang="[NOTELANG nl]">[WORDSLOOSE a]</>
+  	: "\/*" [NOTELANG nl] " " [WORDSANDMORE a] "*\/" = <note xml:lang=[NOTELANG nl]>[WORDSANDMORE a]</>
+
+    
+    
 // DONE:
 // <gap reason="lost" extent="unknown" unit="character"/> [.?]
 // <milestone unit="line" n="*"/>

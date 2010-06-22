@@ -26,59 +26,63 @@ CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
 //																								   ¨΄`῾᾿´\^῾᾿
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 // WORDDIV breaks at space and does not allow DOT - allows +, \,
-WORDDIV = ([^ \n\r\t\[\]\^<>_#@~〚〛$\*\&\.\:\=\|\'\!\(\)\{\}\?\"¯≡\u0323]+) (MAX)
+WORDDIV = ([^ \n\r\t\[\]\^<>_#@~〚〛$\*\&\.\:\=\|\'\!\(\)\{\}\?\"¯\u0323]+) (MAX)
 
 // WORDVEST breaks at space and does not allow DOT  - added 'v' to keep vestig out
-WORDVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
-WORDA = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDA = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 //WORDAVEST does not allow underdot (\u0323 at the end) - used to make choice work - A = abbreviation - added 'v' to keep vestig out
-WORDAVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDAVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 //WORDS allows space (therefore multiple words) and DOT
-WORDS = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDS = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 //WORDSNONUM allows space (therefore multiple words) and DOT - not numbers 0-9
-WORDSNONUM = ([^\/\\\n\r\t\[\]\^<>0-9_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDSNONUM = ([^\/\\\n\r\t\[\]\^<>0-9_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 //WORDSF allows space (therefore multiple words) and DOT - allow ?, \, , $, +, : for foreign language
-WORDSF = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯≡\u0323]+) (MAX)
+WORDSF = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0323v]+) (MAX)
+//WORDSF = (([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0323v]+)|([^vac]+)) - this not work so just added v to WORDSF
+
+//WORDSN same as WORDSF except for 'v' not in list
+WORDSN = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0323]+) (MAX)
 
 //WORDSED allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
 //allowed comma on 11/09 because of p.hombert.1.32.xml parse error - change all editorial lem resp= from WORDS to WORDSED
-WORDSED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯≡\u0323]+) (MAX)
+WORDSED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0323]+) (MAX)
 
 //WORDSBL allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
-WORDSBL = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDSBL = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 // wordsnum allow '/' for fractional numbers - added DOT to break .gap on 7/7 see if break other things
-WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for supralinear - same as WORDAVEST except
 //for allowing space therefore mulitple words
-WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 //WORDS4EX created 11/23 from WORDSSIC to use in expan <ex> tags to allow fraction numbers to appear within tag - removed / in not allowed
-WORDS4EX = ([^\\\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDS4EX = ([^\\\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
-WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]*) (MAX)
+WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]*) (MAX)
 
 NUM = [0-9]+
 LINENUM = [0-9]+[/\,a-zA-Z0-9]*[ms0-9]*
 //removed all uses of below per 12/16 review
 //GAPEXTNUM = [c]?[.]?[0-9]+
-ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯≡+\u0323]
+ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0323]
 //added 0-9 to eliminate numbers 7/22 to fix reversability on some sup lost - added l on 3/30 to make space line (ex.  vac?lin) work
-ANYMULT = [^\/\\\t\[\]\^<>0-9l_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]+
+ANYMULT = [^\/\\\t\[\]\^<>0-9l_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+
 
 //the third part of HANDSHIFT reg exp is same as ANYLETTER except does not allow space
-HANDSHIFT = m{1}[0-9]+[^ \/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯≡+\u0323]?
+HANDSHIFT = m{1}[0-9]+[^ \/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]?
 
 DOT = "."
 QUESTION = [\?]?
@@ -626,7 +630,7 @@ item
 	
 	//---note---
 	//  /*abcdefg*/ **P5**
-	: "\/*" [WORDSF a] "*\/" = <note xml:lang="en">[WORDSF a]</>
+	: "\/*" [WORDSN a] "*\/" = <note xml:lang="en">[WORDSN a]</>
 //	: "\/*" [WORDS a] [QUESTION b] "*\/" = <note place="not specified" xml:lang="en">[WORDS a][QUESTION b]</>
 //	: "\/*" [QUESTION b] "*\/" = <note place="not specified" xml:lang="en">[QUESTION b]</>
 	>: "\/*" [items b] "*\/" = <note xml:lang="en">[items b]</>
@@ -777,11 +781,11 @@ item
 	>: ".?(?) " = <gap reason="illegible" extent="unknown" unit="character"><certainty match=".." locus="name"></></>
 	
 
-	>: [foritem f] = [foritem f]
+//	>: [foritem f] = [foritem f]
 	
 	>: [ANYLETTER a] = [ANYLETTER a]
 		
-	
+	>: [foritem f] = [foritem f]
 	
 inside_brackets 
 	
@@ -840,8 +844,9 @@ inside_brackets
 // solving grammar (within 1 on BGU.1 so going to leave that for now.  Not sure why WORD/WORDS causes ambiguity and ANYLETTER doesn't.
 
 foritem
-	: "~|" [WORDSF a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a]</>
+//	: "~|" [WORDSF a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a]</>
 	>: "~|" [WORDSF a][items c] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a][items c]</>
+	>: "~|" [WORDSF a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a]</>
 
 spaceitem 
 	: "vac.?" = <space extent="unknown" unit="character"></>

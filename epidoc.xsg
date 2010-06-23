@@ -161,7 +161,7 @@ morenum : [BEGNUM] [WORD w] "=" [NUM x] [ENDNUM] [morenum y] = <num value=[NUM x
 		 
 multwordsp
 			: [WORD a] [item c][multwordsp more] = [WORD a] [item c][multwordsp more]
-			>: [WORD a] " " [item c] = [WORD a] " " [item c]
+////			>: [WORD a] " " [item c] = [WORD a] " " [item c]
 			>: [WORD a] " " [multwordsp more] = [WORD a] " " [multwordsp more]
 			>: [WORD a] = [WORD a]
 

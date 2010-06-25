@@ -94,7 +94,13 @@ namespace :coverage do
       HTML_OUTPUT = ''
     end
     
-    RXSugar::Coverage::TranslationRunner.new.run(TRANSLATION_DATA_PATH)
+    if ENV.include?('RUN_NOTE')
+      RUN_NOTE = ENV['RUN_NOTE']
+    else
+      RUNE_NOTE = ""
+    end
+    
+    RXSugar::Coverage::TranslationRunner.new.run(TRANSLATION_DATA_PATH, RUN_NOTE)
   end
 
 

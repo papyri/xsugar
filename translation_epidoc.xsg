@@ -56,12 +56,12 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
   transtag
                                                                                                                                                                                                                                                     
     :  [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</>
-    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</> [transtag more]
+//redundent    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</> [transtag more]
     >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] [ANYSP sss] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</> [ANYSP sss] [transtag more]
 
 
     :  [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</>
-    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</> [transtag more]
+//redundent    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</> [transtag more]
     >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] [ANYSP sss] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</> [ANYSP sss] [transtag more]
   
 
@@ -83,7 +83,7 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
     :  [BEGP] [divtag d] [ENDP] = <p>[divtag d]</>
     :  [BEGP] [items z] [ENDP] = <p>[items z]</>
     >: [BEGP] [items z] [ENDP] [ptag more] = <p>[items z]</> [ptag more]
-    >: [BEGP] [items z] [ENDP] [NL] [ptag more] = <p>[items z]</> [NL] [ptag more]
+    >: [BEGP] [items z] [ENDP] [ANYSP sp] [ptag more] = <p>[items z]</> [ANYSP sp] [ptag more]
     //>: [BEGP] [items z] [ENDP] [divtag more] = <p>[items z]</> [divtag more]
     //>: [BEGP] [items z] [ENDP] [NL] [divtag more] = <p>[items z]</> [NL] [divtag more]
     >: [BEGP] [ENDP] = <p></>
@@ -128,6 +128,7 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
     //: "~|" [items i][WORDSFOREIGN a] "|~" [WORD lang] " " = <foreign xml:lang=[WORD lang]>[items i][WORDSFOREIGN a]</>
   
     
+// removed from lang june-2010
 //  lb
 //    : "---" = <lb></>
   
@@ -194,9 +195,10 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
 
     
    note
-	
-  	//: "\/*[NOTELANG nl] " [WORDSLOOSE a] "*\/" = <note xml:lang="[NOTELANG nl]">[WORDSLOOSE a]</>
-  	: "\/*" [NOTELANG nl] " " [WORDSANDMORE a] "*\/" = <note xml:lang=[NOTELANG nl]>[WORDSANDMORE a]</>
+
+    //version with lang, decided not needed since note will be in same lang as overall translation 6-25-2010
+  	//: "\/*" [NOTELANG nl] " " [WORDSANDMORE a] "*\/" = <note xml:lang=[NOTELANG nl]>[WORDSANDMORE a]</>
+  	: "\/*" [WORDSANDMORE a] "*\/" = <note>[WORDSANDMORE a]</>
 
     
     

@@ -114,12 +114,18 @@ ADDLIST = ((bottom)|(left)|(right)|(top)|(margin))
 // cannot have a standalone ab section after a div - must be wrapped in a div (but can have a div after a standalone ab)
 // need different formats for where the new line may appear
 divtag 
-    : [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
-    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
-    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
-    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
-    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa]
-    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+    : [BEGDIV] "." [WORDDIV n] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
+    >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+    >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa]
+    >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+//    : [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
+//    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+//    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
+//    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+//    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa]
+//    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
 
 // lines 1 & 2 for 1 ab section, lines 3 & 4 for multiple ab sections, lines 5 & 6 for ab sections followed by div, 7th line for empty tag ab section
 // need different formats for where the new line may appear

@@ -15,7 +15,8 @@ module GrammarAssertions
   def lab(notxml)
   # added to wrap in leiden syntax to match new grammar for multiple ab sections
   # added <D=.Fr1 .... =D> for new div textpart
-    return "<D=.Fr1 <=#{notxml}=>=D>"
+    #return "<D=.Fr1 <=#{notxml}=>=D>"
+    return "<D=.Fr1<=#{notxml}=>=D>"
   end
 
   def lb(xmlline)

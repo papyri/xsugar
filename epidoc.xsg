@@ -4,6 +4,7 @@ NL = [\r\n]+
 SP = [ ]
 SPO = [ ]+ (MAX)
 SPO2 = [ ]*
+ANYSP = [\r\n \t]*
 
 BEGOPT = "<:"
 ENDOPT = ":>"
@@ -106,39 +107,32 @@ ADDLIST = ((bottom)|(left)|(right)|(top)|(margin))
 
 // had to wrap multiple ab sections in root tag to keep from getting XML not well formed error - decided to do whether multiple or not
 // allows for ab to be inside a div textpart or not - occurs both ways
- file : [divtag a] = <wrapab>[divtag a]</>
-     : [abtag a] = <wrapab>[abtag a]</>
+ file : [ANYSP a][divtag d][ANYSP aa] = <wrapab>[ANYSP a][divtag d][ANYSP aa]</>
+     : [ANYSP a][abtag ab][ANYSP aa] = <wrapab>[ANYSP a][abtag ab][ANYSP aa]</>
      : =
 
 // cannot have a standalone ab section after a div - must be wrapped in a div (but can have a div after a standalone ab)
 // need different formats for where the new line may appear
 divtag 
-     : [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] = <div n=[WORDDIV d] type="textpart">[abtag a]</>
-    >: [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] [NL] = <div n=[WORDDIV d] type="textpart">[abtag a]</> [NL]
-    >: [BEGDIV] "." [WORDDIV d] " " [NL] [abtag a] [ENDDIV]  = <div n=[WORDDIV d] type="textpart"> [NL] [abtag a]</> 
-    >: [BEGDIV] "." [WORDDIV d] " " [NL] [abtag a] [ENDDIV] [NL] = <div n=[WORDDIV d] type="textpart"> [NL] [abtag a]</> [NL]
-    >: [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] [divtag more] = <div n=[WORDDIV d] type="textpart">[abtag a]</> [divtag more]
-    >: [BEGDIV] "." [WORDDIV d] " " [NL] [abtag a] [ENDDIV] [divtag more] = <div n=[WORDDIV d] type="textpart"> [NL] [abtag a]</> [divtag more]
-    >: [BEGDIV] "." [WORDDIV d] " " [abtag a] [ENDDIV] [NL] [divtag more] = <div n=[WORDDIV d] type="textpart">[abtag a]</> [NL] [divtag more]
-    >: [BEGDIV] "." [WORDDIV d] " " [NL] [abtag a] [ENDDIV] [NL] [divtag more] = <div n=[WORDDIV d] type="textpart"> [NL] [abtag a]</> [NL] [divtag more]
-    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [abtag a] [ENDDIV] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[abtag a]</>
-    >: [BEGDIV] "." [WORDDIV d] "." [WORDDIV s] " " [abtag a] [ENDDIV] [NL] = <div n=[WORDDIV d] subtype =[WORDDIV s] type="textpart">[abtag a]</> [NL]
-    >: [BEGDIV] "." [WORDDIV d] "." [WORDDIV s] " " [NL] [abtag a] [ENDDIV]  = <div n=[WORDDIV d] subtype =[WORDDIV s] type="textpart"> [NL] [abtag a]</> 
-    >: [BEGDIV] "." [WORDDIV d] "." [WORDDIV s] " " [NL] [abtag a] [ENDDIV] [NL] = <div n=[WORDDIV d] subtype =[WORDDIV s] type="textpart"> [NL] [abtag a]</> [NL]
-    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [abtag a] [ENDDIV] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[abtag a]</> [divtag more]
-    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [NL] [abtag a] [ENDDIV] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [NL] [abtag a]</> [divtag more]
-    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [abtag a] [ENDDIV] [NL] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[abtag a]</> [NL] [divtag more]
-    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [NL] [abtag a] [ENDDIV] [NL] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [NL] [abtag a]</> [NL] [divtag more]
+    : [BEGDIV] "." [WORDDIV n] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
+    >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+    >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa]
+    >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+//    : [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
+//    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+//    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
+//    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+//    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa]
+//    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
 
 // lines 1 & 2 for 1 ab section, lines 3 & 4 for multiple ab sections, lines 5 & 6 for ab sections followed by div, 7th line for empty tag ab section
 // need different formats for where the new line may appear
 abtag 
-		: [BEGAB] [items z] [ENDAB] = <ab>[items z]</>
-		>: [BEGAB] [items z] [ENDAB] [NL] = <ab>[items z]</> [NL]
-		>: [BEGAB] [items z] [ENDAB] [abtag more] = <ab>[items z]</> [abtag more]
-		>: [BEGAB] [items z] [ENDAB] [NL] [abtag more] = <ab>[items z]</> [NL] [abtag more]
-		>: [BEGAB] [items z] [ENDAB] [divtag more] = <ab>[items z]</> [divtag more]
-		>: [BEGAB] [items z] [ENDAB] [NL] [divtag more] = <ab>[items z]</> [NL] [divtag more]
+		: [BEGAB] [items z] [ENDAB] [ANYSP a] = <ab>[items z]</> [ANYSP a]
+		>: [BEGAB] [items z] [ENDAB] [ANYSP a] [abtag more] = <ab>[items z]</> [ANYSP a] [abtag more]
+		>: [BEGAB] [items z] [ENDAB] [ANYSP a] [divtag more] = <ab>[items z]</> [ANYSP a] [divtag more]
 		>: [BEGAB] [ENDAB] = <ab></>
 
 items : [item i] [items more] = [item i] [items more]  
@@ -161,43 +155,14 @@ morenum : [BEGNUM] [WORD w] "=" [NUM x] [ENDNUM] [morenum y] = <num value=[NUM x
 		 
 multwordsp
 			: [WORD a] [item c][multwordsp more] = [WORD a] [item c][multwordsp more]
-////			>: [WORD a] " " [item c] = [WORD a] " " [item c]
 			>: [WORD a] " " [multwordsp more] = [WORD a] " " [multwordsp more]
 			>: [WORD a] = [WORD a]
 
-//expand 	: [WORD a] "(" [WORDSSIC b] ")" [expand more] = [WORD a]<ex>[WORDSSIC b]</>[expand more]
-//			>: [WORD a] "(" [WORDSSIC b] ")" = [WORD a]<ex>[WORDSSIC b]</>
-			
-////expand : "(" [WORDS4EX b] ")" [WORD a] [expand more] = <ex>[WORDS4EX b]</>[WORD a][expand more]
-////			>: "(" [WORDS4EX b] ")" = <ex>[WORDS4EX b]</>
-			
-////expandex : "(" [WORDS4EX b] ")" [expandex more] = <ex>[WORDS4EX b]</>[expandex more]
-////			>: "(" [WORDS4EX b] ")" = <ex>[WORDS4EX b]</>
-			
-////expando : [items a] "(" [WORDS4EX b] ")" [expando more] = [items a]<ex>[WORDS4EX b]</>[expando more]
-////			>: [items a] "(" [WORDS4EX b] ")" = [items a]<ex>[WORDS4EX b]</>
-//commented out 11/23 per conversation 11/19 that no markup allowed inside <ex> tag
-//			>: [items a] "(" [items c] ")" = [items a]<ex>[items c]</>
-
 expanstuff
-//  :[expandex g] = [expandex g]
-/////  :[expand g] = [expand g]
-//  :[expando g] = [expando g]
-//  :[expanditems g] = [expanditems g]
   :"(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
   :"(" [WORDS4EX f] "?" ")" = <ex cert="low">[WORDS4EX f]</>
-///////////////  >:[WORD b][expanstuff more] = [WORD b][expanstuff more]
-//  >:[item b][expanstuff more] = [item b][expanstuff more]
-//  >:[WORD b] = [WORD b]
-//  : [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
-///////////////////    :"[" [supexpan d] "]" [expanstuff more] = <supplied reason="lost">[supexpan d]</>[expanstuff more]
-//////////////////    :"[" [supexpan d] "]" = <supplied reason="lost">[supexpan d]</>
-//////////////////////  :"[" [supcertexpan e] "(?)" "]" [expanstuff more] = <supplied reason="lost" cert="low">[supcertexpan e]</>[expanstuff more]
-/////////////////////  :"[" [supcertexpan e] "(?)" "]" = <supplied reason="lost" cert="low">[supcertexpan e]</>
   >:"(" [WORDS4EX a] ")" [expanstuff more] = <ex>[WORDS4EX a]</>[expanstuff more]
   >:"(" [WORDS4EX f] "?" ")" [expanstuff more] = <ex cert="low">[WORDS4EX f]</>[expanstuff more]
-//////  >:[item c]"(" [WORDS4EX a] ")" = [item c]<ex>[WORDS4EX a]</>
-//  >:[expanstuff more] = [expanstuff more]
   >: "[" [inside_brackets i] "]"[expanstuff more] =  [inside_brackets i][expanstuff more]
   >:"[" [supexpan d] "]" [expanstuff more] = <supplied reason="lost">[supexpan d]</>[expanstuff more]
   >:"[" [supexpan d] "]" = <supplied reason="lost">[supexpan d]</>
@@ -218,21 +183,12 @@ supexpan
   >:"(" [WORDS4EX f] "?" ")"[supexpan more] = <ex cert="low">[WORDS4EX f]</>[supexpan more]
   >:"(" [WORDS4EX a] ")"[expanstuff more] = <ex>[WORDS4EX a]</>[expanstuff more]
   >:"(" [WORDS4EX f] "?" ")"[expanstuff more] = <ex cert="low">[WORDS4EX f]</>[expanstuff more]
-////////////////////////////  >:[item b][supexpan more] = [item b][supexpan more]
-//////////  >:[WORD b] = [WORD b]
-//////////  >:[item c]"(" [WORDS4EX a] ")" = [item c]<ex>[WORDS4EX a]</>
-//  >:[supexpan more] = [supexpan more]
-//////////////  >:[item c][supexpan more] = [item c][supexpan more]
-///////////////////////////  >:[item c] = [item c]
   
 supcertexpan
   :"(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
   >:[WORD b][supcertexpan more] = [WORD b][supcertexpan more]
   >:"(" [WORDS4EX a] ")"[supcertexpan more] = <ex>[WORDS4EX a]</>[supcertexpan more]
   >:"(" [WORDS4EX a] ")"[expanstuff more] = <ex>[WORDS4EX a]</>[expanstuff more]
-//  >:"(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
-//  >:[item b][supcertexpan more] = [item b][supcertexpan more]
-//  >:[item c] = [item c]
   
 nestanc : " ῾" = "asper"
 			: "´" = "acute"
@@ -240,10 +196,6 @@ nestanc : " ῾" = "asper"
 			: "`" = "grave"
 			: "^" = "circumflex"
 			: " ᾿" = "lenis"
-
-//ordereditem
-//  : [diacriticals a] = [diacriticals a]
-//  : [item b] = [item b]
 			
 item
 
@@ -844,7 +796,6 @@ inside_brackets
 // solving grammar (within 1 on BGU.1 so going to leave that for now.  Not sure why WORD/WORDS causes ambiguity and ANYLETTER doesn't.
 
 foritem
-//	: "~|" [WORDSF a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a]</>
 	>: "~|" [WORDSF a][items c] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a][items c]</>
 	>: "~|" [WORDSF a] "|~" [WORD b] " " = <foreign xml:lang=[WORD b]>[WORDSF a]</>
 

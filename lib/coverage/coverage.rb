@@ -133,7 +133,7 @@ module RXSugar
     class Runner
       include JRubyHelper::ClassMethods
       
-      def run(data_path)
+      def run(data_path, run_note)
         ddbcov = DDbCoverage.new
 
         xml_files = Dir[data_path + '/**/*.xml']
@@ -210,7 +210,7 @@ module RXSugar
           coverage_template = IO.read(File.join(File.dirname(__FILE__), 'coverage.haml'))
           haml_engine = Haml::Engine.new(coverage_template)
           open(HTML_OUTPUT,'w') {|file|
-            file.write(haml_engine.render(Object.new, :ddb_elements => ddb_elements)) }
+            file.write(haml_engine.render(Object.new, :ddb_elements => ddb_elements, :run_note => run_note)) }
         end
         
       end

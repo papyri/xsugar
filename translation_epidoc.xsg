@@ -55,14 +55,11 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
       
   transtag
                                                                                                                                                                                                                                                     
-    :  [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</>
-//redundent    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</> [transtag more]
-    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] [ANYSP sss] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</> [ANYSP sss] [transtag more]
+    :  [BEGTRAN] "." [WORDDIV d] [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</>
+    >: [BEGTRAN] "." [WORDDIV d] [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] [ANYSP sss] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</> [ANYSP sss] [transtag more]
 
-
-    :  [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</>
-//redundent    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</> [transtag more]
-    >: [BEGTRAN] "." [WORDDIV d] " " [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] [ANYSP sss] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</> [ANYSP sss] [transtag more]
+    :  [BEGTRAN] "." [WORDDIV d] [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</>
+    >: [BEGTRAN] "." [WORDDIV d] [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] [ANYSP sss] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</> [ANYSP sss] [transtag more]
   
 
   divtag
@@ -138,12 +135,14 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
   term
     : "<" [items def] "=" [WORDSTERM t] ">" = <term target=[WORDSTERM t]>[items def]</>
     //with lang
-    : "<" [items def] "=" [WORDSTERM t] "~" [TERMLANG lang] ">" = <term target=[WORDSTERM t] xml:lang=[TERMLANG lang]>[items def]</>
+    ////changed July 9 2010 : "<" [items def] "=" [WORDSTERM t] "~" [TERMLANG lang] ">" = <term target=[WORDSTERM t] xml:lang=[TERMLANG lang]>[items def]</>
+    : "<" [items def] "~" [TERMLANG lang] "=" [WORDSTERM t] ">" = <term target=[WORDSTERM t] xml:lang=[TERMLANG lang]>[items def]</>
 
 
     >: "<" [WORDSTERM def] "=" [WORDSTERM t] ">" = <term target=[WORDSTERM t]>[WORDSTERM def]</>
     //with lang
-    >: "<" [WORDSTERM def] "=" [WORDSTERM t] "~" [TERMLANG lang] ">" = <term target=[WORDSTERM t] xml:lang=[TERMLANG lang]>[WORDSTERM def]</>
+    //changed July 9 2010 >: "<" [WORDSTERM def] "=" [WORDSTERM t] "~" [TERMLANG lang] ">" = <term target=[WORDSTERM t] xml:lang=[TERMLANG lang]>[WORDSTERM def]</>
+    >: "<" [WORDSTERM def] "~" [TERMLANG lang]  "=" [WORDSTERM t] ">" = <term target=[WORDSTERM t] xml:lang=[TERMLANG lang]>[WORDSTERM def]</>
 
 
   gap

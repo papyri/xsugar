@@ -32,19 +32,21 @@ WORD = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]
 // WORDDIV breaks at space and does not allow DOT - allows +, \,
 WORDDIV = ([^ \n\r\t\[\]\^<>_#@~〚〛$\*\&\.\:\=\|\'\!\(\)\{\}\?\"¯\u0323]+) (MAX)
 
-// WORDVEST breaks at space and does not allow DOT  - added 'v' to keep vestig out
+// WORDVEST same as WORD except added 'v' to keep vestig out
 WORDVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
-WORDA = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+//commented out because ended up being the same reg exp as WORD
+//WORDA = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 //WORDAVEST does not allow underdot (\u0323 at the end) - used to make choice work - A = abbreviation - added 'v' to keep vestig out
-WORDAVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+//commented out because ended up being the same reg exp as WORDVEST
+//WORDAVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 //WORDS allows space (therefore multiple words) and DOT
 WORDS = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
-//WORDSNONUM allows space (therefore multiple words) and DOT - not numbers 0-9
+//WORDSNONUM same as WORDS except added numbers 0-9 to keep them out
 WORDSNONUM = ([^\/\\\n\r\t\[\]\^<>0-9_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 //WORDSF allows space (therefore multiple words) and DOT - allow ?, \, , $, +, : for foreign language
@@ -64,7 +66,7 @@ WORDSBL = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+)
 // wordsnum allow '/' for fractional numbers - added DOT to break .gap on 7/7 see if break other things
 WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
-//WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for supralinear - same as WORDAVEST except
+//WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for supralinear - same as WORDVEST except
 //for allowing space therefore mulitple words
 WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
@@ -72,7 +74,8 @@ WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0
 WORDS4EX = ([^\\\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
-WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]*) (MAX)
+//commented out because not using anywhere
+//WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]*) (MAX)
 
 NUM = [0-9]+
 LINENUM = [0-9]+[/\,a-zA-Z0-9]*[ms0-9]*
@@ -209,8 +212,8 @@ item
 
 	//---test_abbreviation_unknown_resolution---
 	// ab( )
-	>: [BEGABBR] [WORDA w] [ENDABBR] = <abbr>[WORDA w]</>
-	>: [BEGABBR] [WORDA w] "(?)" [ENDABBR] = <abbr>[WORDA w]<certainty locus="name" match=".."/></>
+	>: [BEGABBR] [WORD w] [ENDABBR] = <abbr>[WORD w]</>
+	>: [BEGABBR] [WORD w] "(?)" [ENDABBR] = <abbr>[WORD w]<certainty locus="name" match=".."/></>
 	>: [BEGABBR] [items w] [ENDABBR] = <abbr>[items w]</>
 	>: [BEGABBR] [items w] "(?)" [ENDABBR] = <abbr>[items w]<certainty locus="name" match=".."/></>
 
@@ -282,15 +285,15 @@ item
 	
 	//---choice---
 	//  <:a|orth|b|:> 
-	: [BEGOPT] [WORDAVEST a] "(?)" "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic>[WORDAVEST b]</></>
-	>: [BEGOPT] [WORDAVEST a] "(?)" "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr cert="low">[WORDAVEST a]</><sic>[items d]<certainty match=".." locus="value"/></></>
-	>: [BEGOPT] [WORDAVEST a] "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[items d]<certainty match=".." locus="value"/></></>
+	: [BEGOPT] [WORDVEST a] "(?)" "|orth|" [WORDVEST b] [ENDOPT] = <choice><corr cert="low">[WORDVEST a]</><sic>[WORDVEST b]</></>
+	>: [BEGOPT] [WORDVEST a] "(?)" "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr cert="low">[WORDVEST a]</><sic>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [WORDVEST a] "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr>[WORDVEST a]</><sic>[items d]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] [items a] "(?)" "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr cert="low">[items a]</><sic>[items d]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] [items a] "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr>[items a]</><sic>[items d]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] [items a] "(?)" "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[items a]</><sic>[items d]</></>
-	: [BEGOPT] [WORDAVEST a] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[WORDAVEST b]</></>
-	>: [BEGOPT] [items a] "|orth|" [WORDAVEST b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDAVEST b]</></>
-	>: [BEGOPT] [WORDAVEST a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORDAVEST a]</><sic>[items b]</></>
+	: [BEGOPT] [WORDVEST a] "|orth|" [WORDVEST b] [ENDOPT] = <choice><corr>[WORDVEST a]</><sic>[WORDVEST b]</></>
+	>: [BEGOPT] [items a] "|orth|" [WORDVEST b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDVEST b]</></>
+	>: [BEGOPT] [WORDVEST a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORDVEST a]</><sic>[items b]</></>
 	>: [BEGOPT] [items a] "|orth|" [items b] [ENDOPT] = <choice><corr>[items a]</><sic>[items b]</></>
 
 	//---milestone---
@@ -448,18 +451,18 @@ item
 	: "<#=" [NUM s] "(?)" [ENDNUM] = <num value=[NUM s]><certainty locus="value" match=".."/></>
 	: "<#=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]/>
 	: "<#=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s]><certainty locus="value" match=".."/></>
-	: [BEGNUM] [WORDA o] "=#>" = <num>[WORDA o]</>
-	: [BEGNUM] [WORDA o] "=(?)#>" = <num>[WORDA o]<certainty locus="value" match=".."/></>
+	: [BEGNUM] [WORD o] "=#>" = <num>[WORD o]</>
+	: [BEGNUM] [WORD o] "=(?)#>" = <num>[WORD o]<certainty locus="value" match=".."/></>
 	: [BEGNUM] "frac" [ENDNUM] = <num type="fraction"/>
 
 	//---fraction_number and whole_number symbol and multi_symbol---
-	: [BEGNUM] [WORDA o] "=frac" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[WORDA o]</>
-	: [BEGNUM] [WORDA o] "=frac" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[WORDA o]<certainty locus="value" match=".."/></>
-	: [BEGNUM] [WORDA o] "=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]>[WORDA o]</>
-	: [BEGNUM] [WORDA o] "=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s]>[WORDA o]<certainty locus="value" match=".."/></>
-	: [BEGNUM] [WORDA o] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[WORDA o]</>
-	: [BEGNUM] [WORDA o] "=" [NUM s] "(?)" [ENDNUM] = <num value=[NUM s]>[WORDA o]<certainty locus="value" match=".."/></>
-	: [BEGNUM] [WORDA o] [morenum m] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[WORDA o] [morenum m]</>
+	: [BEGNUM] [WORD o] "=frac" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[WORD o]</>
+	: [BEGNUM] [WORD o] "=frac" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[WORD o]<certainty locus="value" match=".."/></>
+	: [BEGNUM] [WORD o] "=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]>[WORD o]</>
+	: [BEGNUM] [WORD o] "=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s]>[WORD o]<certainty locus="value" match=".."/></>
+	: [BEGNUM] [WORD o] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[WORD o]</>
+	: [BEGNUM] [WORD o] "=" [NUM s] "(?)" [ENDNUM] = <num value=[NUM s]>[WORD o]<certainty locus="value" match=".."/></>
+	: [BEGNUM] [WORD o] [morenum m] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[WORD o] [morenum m]</>
 	>: [BEGNUM] [items o] "=frac" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[items o]</>
 	>: [BEGNUM] [items o] "=frac" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[items o]<certainty locus="value" match=".."/></>
 	>: [BEGNUM] [items o] "=frac" [ENDNUM] = <num rend="fraction">[items o]</>
@@ -523,9 +526,11 @@ item
 	>: [BEGOPT] [items a] "|ed:" [WORDSED c] "|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSED c] "|" [items b] "(?)"[ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag lem on editorial with resp
-	>: [BEGOPT] "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]></><rdg>[items b]</></>
+	>: [BEGOPT] "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]/><rdg>[items b]</></>
+	>: [BEGOPT] "|ed:" [WORDSED e] "|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]/><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag lem on editorial without resp
-	>: [BEGOPT] "|ed:" "|" [items b] [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]</></>
+	>: [BEGOPT] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]</></>
+	>: [BEGOPT] "|ed:|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag rdg on editorial with resp
 	>: [BEGOPT] [items a] "|ed:" [WORDSED e] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]</><rdg></></>
 	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSED c] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]<certainty match=".." locus="value"/></><rdg></></>
@@ -543,19 +548,33 @@ item
 	>: [BEGOPT] [items a] "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg></></>
 	>: [BEGOPT] [items a] "(?)" "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg></></>
 	
-	: [BEGOPT] [WORD a] "|alt|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[WORDVEST b]</></>
-	>: [BEGOPT] [items a] "|alt|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[WORDVEST b]</></>
-	>: [BEGOPT] [WORD a] "|alt|" [items b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "|alt|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "(?)" "|alt|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "|alt|" [items b] "(?)" [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
-	>: [BEGOPT] [items a] "(?)" "|alt|" [items b] "(?)"[ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
+	: [BEGOPT] [WORD a] "|alt:" [WORDSED e] "|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem resp=[WORDSED e]>[WORD a]</><rdg>[WORDVEST b]</></>
+	>: [BEGOPT] [items a] "|alt:" [WORDSED e] "|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem resp=[WORDSED e]>[items a]</><rdg>[WORDVEST b]</></>
+	>: [BEGOPT] [WORD a] "|alt:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="alternative"><lem resp=[WORDSED e]>[WORD a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|alt:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="alternative"><lem resp=[WORDSED e]>[items a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "(?)" "|alt:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="alternative"><lem resp=[WORDSED e]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|alt:" [WORDSED e] "|" [items b] "(?)" [ENDOPT] = <app type="alternative"><lem resp=[WORDSED e]>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|alt:" [WORDSED e] "|" [items b] "(?)"[ENDOPT] = <app type="alternative"><lem resp=[WORDSED e]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag rdg on alternative
-	>: [BEGOPT] [items a] "|alt|" [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg></></>
-	>: [BEGOPT] [items a] "(?)" "|alt|" [ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></><rdg></></>
+	>: [BEGOPT] [items a] "|alt:" [WORDSED e] "|" [ENDOPT] = <app type="alternative"><lem resp=[WORDSED e]>[items a]</><rdg></></>
+	>: [BEGOPT] [items a] "(?)" "|alt:" [WORDSED e] "|" [ENDOPT] = <app type="alternative"><lem resp=[WORDSED e]>[items a]<certainty match=".." locus="value"/></><rdg></></>
 //line below added for empty tag lem on alternative
-	>: [BEGOPT] "|alt|" [items b] [ENDOPT] = <app type="alternative"><lem/><rdg>[items b]</></>
-	>: [BEGOPT] "|alt|" [items b] "(?)" [ENDOPT] = <app type="alternative"><lem/><rdg>[items b]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] "|alt:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="alternative"><lem resp=[WORDSED e]/><rdg>[items b]</></>
+	>: [BEGOPT] "|alt:" [WORDSED e] "|" [items b] "(?)" [ENDOPT] = <app type="alternative"><lem resp=[WORDSED e]/><rdg>[items b]<certainty match=".." locus="value"/></></>
+	
+	: [BEGOPT] [WORD a] "|alt:|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[WORDVEST b]</></>
+	>: [BEGOPT] [items a] "|alt:|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[WORDVEST b]</></>
+	>: [BEGOPT] [WORD a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "(?)" "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
+	>: [BEGOPT] [items a] "|alt:|" [items b] "(?)" [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|alt:|" [items b] "(?)"[ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
+//line below added for empty tag rdg on alternative
+	>: [BEGOPT] [items a] "|alt:|" [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg></></>
+	>: [BEGOPT] [items a] "(?)" "|alt:|" [ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></><rdg></></>
+//line below added for empty tag lem on alternative
+	>: [BEGOPT] "|alt:|" [items b] [ENDOPT] = <app type="alternative"><lem/><rdg>[items b]</></>
+	>: [BEGOPT] "|alt:|" [items b] "(?)" [ENDOPT] = <app type="alternative"><lem/><rdg>[items b]<certainty match=".." locus="value"/></></>
 	
 	//---glyph---
 	//  *a*, *a,b*, *filler(a)*, *@a*  

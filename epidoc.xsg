@@ -162,18 +162,28 @@ multwordsp
 			>: [WORD a] = [WORD a]
 
 expanstuff
-  :"(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
-  :"(" [WORDS4EX f] "?" ")" = <ex cert="low">[WORDS4EX f]</>
-  >:"(" [WORDS4EX a] ")" [expanstuff more] = <ex>[WORDS4EX a]</>[expanstuff more]
-  >:"(" [WORDS4EX f] "?" ")" [expanstuff more] = <ex cert="low">[WORDS4EX f]</>[expanstuff more]
+  :[bef_aft_ex b] "(" [WORDS4EX a] ")" [bef_aft_ex c] = [bef_aft_ex b]<ex>[WORDS4EX a]</>[bef_aft_ex c]
+  :[bef_aft_ex b] "(" [WORDS4EX f] "?" ")" [bef_aft_ex c] = [bef_aft_ex b] <ex cert="low">[WORDS4EX f]</>[bef_aft_ex c]
+  >:[bef_aft_ex b] "(" [WORDS4EX a] ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex>[WORDS4EX a]</> [bef_aft_ex c][expanstuff more]
+  >:[bef_aft_ex b] "(" [WORDS4EX f] "?" ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex cert="low">[WORDS4EX f]</> [bef_aft_ex c][expanstuff more]
+//    : "(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
+//    : "(" [WORDS4EX f] "?" ")" = <ex cert="low">[WORDS4EX f]</>
+//  >: "(" [WORDS4EX a] ")" [expanstuff more] = <ex>[WORDS4EX a]</> [expanstuff more]
+//  >: "(" [WORDS4EX f] "?" ")" [expanstuff more] = <ex cert="low">[WORDS4EX f]</> [expanstuff more]
   >: "[" [inside_brackets i] "]"[expanstuff more] =  [inside_brackets i][expanstuff more]
   >:"[" [supexpan d] "]" [expanstuff more] = <supplied reason="lost">[supexpan d]</>[expanstuff more]
   >:"[" [supexpan d] "]" = <supplied reason="lost">[supexpan d]</>
   >:"[" [supcertexpan e] "(?)" "]" [expanstuff more] = <supplied reason="lost" cert="low">[supcertexpan e]</>[expanstuff more]
   >:"[" [supcertexpan e] "(?)" "]" = <supplied reason="lost" cert="low">[supcertexpan e]</>
-  >:[item c][expanstuff more] = [item c][expanstuff more]
-  >:[item c] = [item c]
+  >:[WORD b][expanstuff more] = [WORD b][expanstuff more]
+//  >:[item c][expanstuff more] = [item c][expanstuff more]
+//  >:[item c] = [item c]
 
+bef_aft_ex
+    >:[item c][bef_aft_ex more] = [item c][bef_aft_ex more]
+    >:[item c][expanstuff more] = [item c][expanstuff more]
+    >:[item c] = [item c]
+    : =
 supexpan
 //  :[expandex g] = [expandex g]
 //  :[expand g] = [expand g]

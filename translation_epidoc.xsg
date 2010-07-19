@@ -77,6 +77,8 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
     
     >: [BEGDIV] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDDIV] = <div n=[WORDDIV d] type="textpart">[ANYSP s][divtag t][ANYSP ss]</>
     >: [BEGDIV] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDDIV] [ANYSP sss] [divtag more] = <div n=[WORDDIV d] type="textpart">[ANYSP s][divtag t][ANYSP ss]</> [ANYSP sss][divtag more]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP ss][divtag t][ANYSP sss] [ENDDIV] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[ANYSP ss][divtag t][ANYSP sss]</>
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP ss][divtag t][ANYSP sss] [ENDDIV] [ANYSP ssss] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[ANYSP ss][divtag t][ANYSP sss]</> [ANYSP ssss][divtag more]
   
   // this is equivalent to <ab> in normal L+
   ptag

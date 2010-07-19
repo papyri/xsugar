@@ -114,8 +114,9 @@ ADDLIST = ((bottom)|(left)|(right)|(top)|(margin))
      : [ANYSP a][abtag ab][ANYSP aa] = <wrapab>[ANYSP a][abtag ab][ANYSP aa]</>
      : =
 
-// cannot have a standalone ab section after a div - must be wrapped in a div (but can have a div after a standalone ab)
-// need different formats for where the new line may appear
+// cannot have a standalone ab section after a div - must be wrapped in a div - but can have a div after a standalone ab
+// this is why divtag section only does 'divtag more' and the the abtag section does 'abtag more' and 'divtag more' 
+// ANYSP covers space(s), new line(s), and tab(s)
 divtag 
     : [BEGDIV] "." [WORDDIV n] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
     >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
@@ -123,15 +124,9 @@ divtag
     >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
     >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa]
     >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
-//    : [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
-//    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
-//    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
-//    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
-//    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa]
-//    >: [BEGDIV] "." [WORDDIV n] " " [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa]
+    >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
 
-// lines 1 & 2 for 1 ab section, lines 3 & 4 for multiple ab sections, lines 5 & 6 for ab sections followed by div, 7th line for empty tag ab section
-// need different formats for where the new line may appear
 abtag 
 		: [BEGAB] [items z] [ENDAB] [ANYSP a] = <ab>[items z]</> [ANYSP a]
 		>: [BEGAB] [items z] [ENDAB] [ANYSP a] [abtag more] = <ab>[items z]</> [ANYSP a] [abtag more]
@@ -147,8 +142,8 @@ linenumber : [LINENUM n] "." " " = <lb n=[LINENUM n]/>
 
 newline : [NL n] = [NL n]
 
-unclears_SP_non_terminal : [SP] [UNDERDOT] [unclears_SP_non_terminal mu] = "\u00A0" [unclears_SP_non_terminal mu]
-								 >: [SP] [UNDERDOT] = "\u00A0"
+//unclears_SP_non_terminal : [SP] [UNDERDOT] [unclears_SP_non_terminal mu] = "\u00A0" [unclears_SP_non_terminal mu]
+//								 >: [SP] [UNDERDOT] = "\u00A0"
 
 unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [ANYLETTER a] [unclears_non_terminal mu]
 								 >: [ANYLETTER a] [UNDERDOT] = [ANYLETTER a]

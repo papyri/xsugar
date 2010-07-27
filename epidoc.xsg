@@ -25,7 +25,7 @@ UNDERDOT = "\u0323"
 //ca. with 0 or more spaces followed by ? mark
 CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
-//																								   ¨΄`῾᾿´\^῾᾿
+// diacriticals as of 7/27/2010												   ῾´¨`\^᾿
 // WORD breaks at space and does not allow DOT
 WORD = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
@@ -72,6 +72,9 @@ WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0
 
 //WORDS4EX created 11/23 from WORDSSIC to use in expan <ex> tags to allow fraction numbers to appear within tag - removed / in not allowed
 WORDS4EX = ([^\\\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+
+//WORDS4EXND created 11/23 from WORDSSIC to use in expan <ex> tags to allow fraction numbers to appear within tag - removed / in not allowed
+WORDS4EXND = ([^\\\[\]\^<>_#@~῾´¨`\^᾿〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
 
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
 //commented out because not using anywhere
@@ -157,10 +160,14 @@ multwordsp
 			>: [WORD a] = [WORD a]
 
 expanstuff
-  :[bef_aft_ex b] "(" [WORDS4EX a] ")" [bef_aft_ex c] = [bef_aft_ex b]<ex>[WORDS4EX a]</>[bef_aft_ex c]
-  :[bef_aft_ex b] "(" [WORDS4EX f] "?" ")" [bef_aft_ex c] = [bef_aft_ex b] <ex cert="low">[WORDS4EX f]</>[bef_aft_ex c]
-  >:[bef_aft_ex b] "(" [WORDS4EX a] ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex>[WORDS4EX a]</> [bef_aft_ex c][expanstuff more]
-  >:[bef_aft_ex b] "(" [WORDS4EX f] "?" ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex cert="low">[WORDS4EX f]</> [bef_aft_ex c][expanstuff more]
+  :[bef_aft_ex b] "(" [WORDS4EXND a] ")" [bef_aft_ex c] = [bef_aft_ex b]<ex>[WORDS4EXND a]</>[bef_aft_ex c]
+  :[bef_aft_ex b] "(" [WORDS4EXND f] "?" ")" [bef_aft_ex c] = [bef_aft_ex b] <ex cert="low">[WORDS4EXND f]</>[bef_aft_ex c]
+  :[bef_aft_ex b] "(" [WORDS4EXND a] ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex>[WORDS4EXND a]</> [bef_aft_ex c][expanstuff more]
+  :[bef_aft_ex b] "(" [WORDS4EXND f] "?" ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex cert="low">[WORDS4EXND f]</> [bef_aft_ex c][expanstuff more]
+//  >:[bef_aft_ex b] "(" [WORDS4EX a] ")" [bef_aft_ex c] = [bef_aft_ex b]<ex>[WORDS4EX a]</>[bef_aft_ex c]
+//  >:[bef_aft_ex b] "(" [WORDS4EX f] "?" ")" [bef_aft_ex c] = [bef_aft_ex b] <ex cert="low">[WORDS4EX f]</>[bef_aft_ex c]
+//  >:[bef_aft_ex b] "(" [WORDS4EX a] ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex>[WORDS4EX a]</> [bef_aft_ex c][expanstuff more]
+//  >:[bef_aft_ex b] "(" [WORDS4EX f] "?" ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex cert="low">[WORDS4EX f]</> [bef_aft_ex c][expanstuff more]
 //    : "(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
 //    : "(" [WORDS4EX f] "?" ")" = <ex cert="low">[WORDS4EX f]</>
 //  >: "(" [WORDS4EX a] ")" [expanstuff more] = <ex>[WORDS4EX a]</> [expanstuff more]
@@ -170,7 +177,7 @@ expanstuff
   >:"[" [supexpan d] "]" = <supplied reason="lost">[supexpan d]</>
   >:"[" [supcertexpan e] "(?)" "]" [expanstuff more] = <supplied reason="lost" cert="low">[supcertexpan e]</>[expanstuff more]
   >:"[" [supcertexpan e] "(?)" "]" = <supplied reason="lost" cert="low">[supcertexpan e]</>
-  >:[WORD b][expanstuff more] = [WORD b][expanstuff more]
+  >:[WORDVEST b][expanstuff more] = [WORDVEST b][expanstuff more]
 //  >:[item c][expanstuff more] = [item c][expanstuff more]
 //  >:[item c] = [item c]
 
@@ -184,24 +191,24 @@ supexpan
 //  :[expand g] = [expand g]
 //  >:[expando g] = [expando g]
 //  >:[expanditems g] = [expanditems g]
-  :"(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
-  :"(" [WORDS4EX f] "?" ")" = <ex cert="low">[WORDS4EX f]</>
-  >:[WORD b][supexpan more] = [WORD b][supexpan more]
-  >:"(" [WORDS4EX a] ")"[supexpan more] = <ex>[WORDS4EX a]</>[supexpan more]
-  >:"(" [WORDS4EX f] "?" ")"[supexpan more] = <ex cert="low">[WORDS4EX f]</>[supexpan more]
-  >:"(" [WORDS4EX a] ")"[expanstuff more] = <ex>[WORDS4EX a]</>[expanstuff more]
-  >:"(" [WORDS4EX f] "?" ")"[expanstuff more] = <ex cert="low">[WORDS4EX f]</>[expanstuff more]
+  :"(" [WORDS4EXND a] ")" = <ex>[WORDS4EXND a]</>
+  :"(" [WORDS4EXND f] "?" ")" = <ex cert="low">[WORDS4EXND f]</>
+  >:[WORDVEST b][supexpan more] = [WORDVEST b][supexpan more]
+  >:"(" [WORDS4EXND a] ")"[supexpan more] = <ex>[WORDS4EXND a]</>[supexpan more]
+  >:"(" [WORDS4EXND f] "?" ")"[supexpan more] = <ex cert="low">[WORDS4EXND f]</>[supexpan more]
+  >:"(" [WORDS4EXND a] ")"[expanstuff more] = <ex>[WORDS4EXND a]</>[expanstuff more]
+  >:"(" [WORDS4EXND f] "?" ")"[expanstuff more] = <ex cert="low">[WORDS4EXND f]</>[expanstuff more]
   
 supcertexpan
-  :"(" [WORDS4EX a] ")" = <ex>[WORDS4EX a]</>
-  >:[WORD b][supcertexpan more] = [WORD b][supcertexpan more]
-  >:"(" [WORDS4EX a] ")"[supcertexpan more] = <ex>[WORDS4EX a]</>[supcertexpan more]
-  >:"(" [WORDS4EX a] ")"[expanstuff more] = <ex>[WORDS4EX a]</>[expanstuff more]
+  :"(" [WORDS4EXND a] ")" = <ex>[WORDS4EXND a]</>
+  >:[WORDVEST b][supcertexpan more] = [WORDVEST b][supcertexpan more]
+  >:"(" [WORDS4EXND a] ")"[supcertexpan more] = <ex>[WORDS4EXND a]</>[supcertexpan more]
+  >:"(" [WORDS4EXND a] ")"[expanstuff more] = <ex>[WORDS4EXND a]</>[expanstuff more]
   
 nestanc : " ῾" = "asper"
 			: "´" = "acute"
 			: "¨" = "diaeresis"
-			: "`" = "grave"
+			: "`" = "grave"
 			: "^" = "circumflex"
 			: " ᾿" = "lenis"
 			
@@ -241,7 +248,7 @@ item
 	>: " " [ANYLETTER a] "(¨" [nestanc n] ")" = <hi rend="diaeresis"><hi rend=[nestanc n]>[ANYLETTER a]</></>
 	
 	//---test_uncertain_diacritical_grave---
-	// (`) u+0060 - changed from 1fef on 6/9/2010
+	// (`) u+0060 - changed from 1fef on 6/9/2010
 	: " " [ANYLETTER a] "(`)" = <hi rend="grave">[ANYLETTER a]</>
 	>: " " [ANYLETTER a] [UNDERDOT] "(`)" = <hi rend="grave"><unclear>[ANYLETTER a]</></>
 	>: " " "[." [NUM n] "]" "(`)" = <hi rend="grave"><gap reason="lost" quantity=[NUM n] unit="character"/></>
@@ -719,26 +726,26 @@ item
 
 
 
-  : [BEGEXP][items a]"(" [WORDS4EX b] ")" [ENDEXP] = <expan>[items a]<ex>[WORDS4EX b]</></>
-  : [BEGEXP][items a]"(" [WORDS4EX b] ")"[expanstuff s] [ENDEXP] = <expan>[items a]<ex>[WORDS4EX b]</>[expanstuff s]</>
-  >: [BEGEXP][items a]"(" [WORDS4EX b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS4EX b]</></>
-  >: [BEGEXP][items a]"(" [WORDS4EX b] "?" ")"[expanstuff s] [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS4EX b]</>[expanstuff s]</>
+  : [BEGEXP][items a]"(" [WORDS4EXND b] ")" [ENDEXP] = <expan>[items a]<ex>[WORDS4EXND b]</></>
+  : [BEGEXP][items a]"(" [WORDS4EXND b] ")"[expanstuff s] [ENDEXP] = <expan>[items a]<ex>[WORDS4EXND b]</>[expanstuff s]</>
+  >: [BEGEXP][items a]"(" [WORDS4EXND b] "?" ")" [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS4EXND b]</></>
+  >: [BEGEXP][items a]"(" [WORDS4EXND b] "?" ")"[expanstuff s] [ENDEXP] = <expan>[items a]<ex cert="low">[WORDS4EXND b]</>[expanstuff s]</>
   >: [BEGEXP][items a]"[" [supexpan d] "]" [ENDEXP] = <expan>[items a]<supplied reason="lost">[supexpan d]</></>
   >: [BEGEXP][items a]"[" [supexpan d] "]" [expanstuff s][ENDEXP] = <expan>[items a]<supplied reason="lost">[supexpan d]</>[expanstuff s]</>
   >: [BEGEXP][items a]"[" [supcertexpan d] "(?)" "]" [ENDEXP] = <expan>[items a]<supplied reason="lost" cert="low">[supcertexpan d]</></>
   >: [BEGEXP][items a]"[" [supcertexpan d] "(?)" "]" [expanstuff s][ENDEXP] = <expan>[items a]<supplied reason="lost" cert="low">[supcertexpan d]</>[expanstuff s]</>
-  >: [BEGEXP][WORD a]"(" [WORDS4EX b] ")" [ENDEXP] = <expan>[WORD a]<ex>[WORDS4EX b]</></>
-  >: [BEGEXP][WORD a]"(" [WORDS4EX b] ")"[expanstuff s] [ENDEXP] = <expan>[WORD a]<ex>[WORDS4EX b]</>[expanstuff s]</>
-  >: [BEGEXP][WORD a]"(" [WORDS4EX b] "?" ")" [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORDS4EX b]</></>
-  >: [BEGEXP][WORD a]"(" [WORDS4EX b] "?" ")"[expanstuff s] [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORDS4EX b]</>[expanstuff s]</>
+  >: [BEGEXP][WORD a]"(" [WORDS4EXND b] ")" [ENDEXP] = <expan>[WORD a]<ex>[WORDS4EXND b]</></>
+  >: [BEGEXP][WORD a]"(" [WORDS4EXND b] ")"[expanstuff s] [ENDEXP] = <expan>[WORD a]<ex>[WORDS4EXND b]</>[expanstuff s]</>
+  >: [BEGEXP][WORD a]"(" [WORDS4EXND b] "?" ")" [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORDS4EXND b]</></>
+  >: [BEGEXP][WORD a]"(" [WORDS4EXND b] "?" ")"[expanstuff s] [ENDEXP] = <expan>[WORD a]<ex cert="low">[WORDS4EXND b]</>[expanstuff s]</>
   >: [BEGEXP][WORD a]"[" [supexpan d] "]" [ENDEXP] = <expan>[WORD a]<supplied reason="lost">[supexpan d]</></>
   >: [BEGEXP][WORD a]"[" [supexpan d] "]" [expanstuff s][ENDEXP] = <expan>[WORD a]<supplied reason="lost">[supexpan d]</>[expanstuff s]</>
   >: [BEGEXP][WORD a]"[" [supcertexpan d] "(?)" "]" [ENDEXP] = <expan>[WORD a]<supplied reason="lost" cert="low">[supcertexpan d]</></>
   >: [BEGEXP][WORD a]"[" [supcertexpan d] "(?)" "]" [expanstuff s][ENDEXP] = <expan>[WORD a]<supplied reason="lost" cert="low">[supcertexpan d]</>[expanstuff s]</>
-  >: [BEGEXP]"(" [WORDS4EX b] ")" [ENDEXP] = <expan><ex>[WORDS4EX b]</></>
-  >: [BEGEXP]"(" [WORDS4EX b] ")" [expanstuff s][ENDEXP] = <expan><ex>[WORDS4EX b]</>[expanstuff s]</>
-  >: [BEGEXP]"(" [WORDS4EX b] "?" ")" [ENDEXP] = <expan><ex cert="low">[WORDS4EX b]</></>
-  >: [BEGEXP]"(" [WORDS4EX b] "?" ")" [expanstuff s][ENDEXP] = <expan><ex cert="low">[WORDS4EX b]</>[expanstuff s]</>
+  >: [BEGEXP]"(" [WORDS4EXND b] ")" [ENDEXP] = <expan><ex>[WORDS4EXND b]</></>
+  >: [BEGEXP]"(" [WORDS4EXND b] ")" [expanstuff s][ENDEXP] = <expan><ex>[WORDS4EXND b]</>[expanstuff s]</>
+  >: [BEGEXP]"(" [WORDS4EXND b] "?" ")" [ENDEXP] = <expan><ex cert="low">[WORDS4EXND b]</></>
+  >: [BEGEXP]"(" [WORDS4EXND b] "?" ")" [expanstuff s][ENDEXP] = <expan><ex cert="low">[WORDS4EXND b]</>[expanstuff s]</>
 //  >: [BEGEXP]"[" [supexpan d] "]" [ENDEXP] = <expan><supplied reason="lost">[supexpan d]</></>
 //  >: [BEGEXP]"[" [supexpan d] "]" [expanstuff s][ENDEXP] = <expan><supplied reason="lost">[supexpan d]</>[expanstuff s]</>
   >: [BEGEXP] [expanstuff s][ENDEXP] = <expan>[expanstuff s]</>

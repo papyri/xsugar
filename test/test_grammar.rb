@@ -45,6 +45,17 @@ if(RUBY_PLATFORM == 'java')
     end
   
     def test_expan_redo_pretty_exhaustive
+      assert_equal_fragment_transform '([(Ἑπτα)]κ̣ω̣μ̣[(ίας)])', '<expan><supplied reason="lost"><ex>Ἑπτα</ex></supplied><unclear>κωμ</unclear><supplied reason="lost"><ex>ίας</ex></supplied></expan>'
+      assert_equal_fragment_transform '([Κ(α)ρ]ανίδ(ος))', '<expan><supplied reason="lost">Κ<ex>α</ex>ρ</supplied>ανίδ<ex>ος</ex></expan>'
+      assert_equal_fragment_transform '((῾επταρούρῳ))', '<expan><ex>῾επταρούρῳ</ex></expan>'
+      assert_equal_fragment_transform '((ἀρταβίας᾿?))', '<expan><ex cert="low">ἀρταβίας᾿</ex></expan>'
+      assert_equal_fragment_transform '<:(Ἀ ι(¨)ου[λ(ίου)]) [.?] |BL:8.455|(Ἰου[λ(ίου)]) [.?] :>', '<app type="BL"><lem resp="8.455"><expan>Ἀ<hi rend="diaeresis">ι</hi>ου<supplied reason="lost">λ<ex>ίου</ex></supplied></expan> <gap reason="lost" extent="unknown" unit="character"/> </lem><rdg><expan>Ἰου<supplied reason="lost">λ<ex>ίου</ex></supplied></expan> <gap reason="lost" extent="unknown" unit="character"/> </rdg></app>'
+      assert_equal_fragment_transform '(Ψ̣α ΐ(¨)ο(υ))', '<expan><unclear>Ψ</unclear>α<hi rend="diaeresis">ΐ</hi>ο<ex>υ</ex></expan>'
+      assert_equal_fragment_transform '(Ψεvac.?ν(τ))', '<expan>Ψε<space extent="unknown" unit="character"/>ν<ex>τ</ex></expan>'
+      assert_equal_fragment_transform '(μο̣ύ ι(¨)(α))', '<expan>μ<unclear>ο</unclear>ύ<hi rend="diaeresis">ι</hi><ex>α</ex></expan>'
+      assert_equal_fragment_transform '(Ψ̣α ί(¨)ο(υ))', '<expan><unclear>Ψ</unclear>α<hi rend="diaeresis">ί</hi>ο<ex>υ</ex></expan>'
+      assert_equal_fragment_transform '(ἔ̣πα ι(¨)(τον))', '<expan><unclear>ἔ</unclear>πα<hi rend="diaeresis">ι</hi><ex>τον</ex></expan>'
+      assert_equal_fragment_transform '(Θεμα ΐ(¨)τ[ο(ς)(?)])', '<expan>Θεμα<hi rend="diaeresis">ΐ</hi>τ<supplied reason="lost" cert="low">ο<ex>ς</ex></supplied></expan>'
       assert_equal_fragment_transform '(Α[.2]ωνο(ς))', '<expan>Α<gap reason="lost" quantity="2" unit="character"/>ωνο<ex>ς</ex></expan>'
       assert_equal_fragment_transform '([.?].1λινο̣κ(αλάμης))', '<expan><gap reason="lost" extent="unknown" unit="character"/><gap reason="illegible" quantity="1" unit="character"/>λιν<unclear>ο</unclear>κ<ex>αλάμης</ex></expan>'
       assert_equal_fragment_transform '([.?]ή̣σιο(ς))', '<expan><gap reason="lost" extent="unknown" unit="character"/><unclear>ή</unclear>σιο<ex>ς</ex></expan>'

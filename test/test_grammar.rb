@@ -312,6 +312,8 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<abc>', '<supplied reason="omitted">abc</supplied>'
       assert_equal_fragment_transform 'we will <we will> rock you', 'we will <supplied reason="omitted">we will</supplied> rock you'
       assert_equal_fragment_transform 'we ea<t the fi>sh', 'we ea<supplied reason="omitted">t the fi</supplied>sh'
+      assert_equal_fragment_transform '<.?>', '<gap reason="omitted" extent="unknown" unit="character"/>'
+      assert_equal_fragment_transform '<.12>', '<gap reason="omitted" quantity="12" unit="character"/>'
     end
     
     def test_omitted_cert_low

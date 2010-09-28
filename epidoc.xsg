@@ -791,6 +791,7 @@ inside_brackets
 	//---test_lost_dot_max---
 	// .#{n}-#{n} **P5**
 	: [DOT] [NUM v] "-" [NUM w] = <gap reason="lost" atLeast=[NUM v] atMost=[NUM w] unit="character"></>
+	>: [DOT] [NUM v] "-" [NUM w] "(?)" = <gap reason="lost" atLeast=[NUM v] atMost=[NUM w] unit="character"><certainty match=".." locus="name"></></>
 			
 	//---test_lost_gap_unknown---
 	// [.?] - diff from empty tag low cert because DOT and no space **P5**

@@ -216,13 +216,19 @@ if(RUBY_PLATFORM == 'java')
     
     def test_illegible_dot_gap_extentmax
       assert_equal_fragment_transform '.2-3', '<gap reason="illegible" atLeast="2" atMost="3" unit="character"/>'
-	  assert_equal_fragment_transform '.7-14', '<gap reason="illegible" atLeast="7" atMost="14" unit="character"/>'
-	  assert_equal_fragment_transform '.31-77', '<gap reason="illegible" atLeast="31" atMost="77" unit="character"/>'
+      assert_equal_fragment_transform '.7-14', '<gap reason="illegible" atLeast="7" atMost="14" unit="character"/>'
+      assert_equal_fragment_transform '.31-77', '<gap reason="illegible" atLeast="31" atMost="77" unit="character"/>'
+      assert_equal_fragment_transform '.3-5(?) ', '<gap reason="illegible" atLeast="3" atMost="5" unit="character"><certainty match=".." locus="name"/></gap>'
+      assert_equal_fragment_transform '.3-5lin', '<gap reason="illegible" atLeast="3" atMost="5" unit="line"/>'
+      assert_equal_fragment_transform '.3-5lin(?) ', '<gap reason="illegible" atLeast="3" atMost="5" unit="line"><certainty match=".." locus="name"/></gap>'
     end
 	
 	def test_lost_dot_gap_extentmax
       # Some number of missing characters
       assert_equal_fragment_transform '[.1-2]', '<gap reason="lost" atLeast="1" atMost="2" unit="character"/>'
+      assert_equal_fragment_transform '[.3-5(?)]', '<gap reason="lost" atLeast="3" atMost="5" unit="character"><certainty match=".." locus="name"/></gap>'
+      assert_equal_fragment_transform 'lost.3-5lin', '<gap reason="lost" atLeast="3" atMost="5" unit="line"/>'
+      assert_equal_fragment_transform 'lost.3-5lin(?) ', '<gap reason="lost" atLeast="3" atMost="5" unit="line"><certainty match=".." locus="name"/></gap>'
       assert_equal_fragment_transform '[.7-14]', '<gap reason="lost" atLeast="7" atMost="14" unit="character"/>'
       assert_equal_fragment_transform '[.31-77]', '<gap reason="lost" atLeast="31" atMost="77" unit="character"/>'
       (11..100).each do |n|

@@ -57,7 +57,7 @@ module RXSugar
       end
       
       def get_div_translation(xml)
-        # new to pull from div edition on to get the get_non_lb_element_children xpath to work
+        # new to pull from div type=translation for translation processing
         REXML::XPath.match(REXML::Document.new(xml), '/TEI/text/body/div[@type = "translation"]')
       end          
       #====end used for translation====      
@@ -65,11 +65,10 @@ module RXSugar
       
       
       def preprocess_abs(abs)
-        return "<wrapab>" + abs.to_s + "</wrapab>"
+        return "<div xml:lang=\"grc\" type=\"edition\" xml:space=\"preserve\">" + abs.to_s + "</div>"
       end
       
       def get_abs_from_edition_div(xml)
-        #REXML::XPath.match(REXML::Document.new(xml), '/TEI.2/text/body/div[@type = "edition"]//ab')
         REXML::XPath.match(REXML::Document.new(xml), '/TEI/text/body/div[@type = "edition"]/*')
       end
       

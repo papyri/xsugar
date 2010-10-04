@@ -5,28 +5,25 @@ module GrammarAssertions
   
   def ab(xml)
   # added wrapab tags to match new grammar for multiple ab sections
-  # changed wrapab to div edition tags with div textpart for new requirements of processing tags outside ab section
-  # kept wrapab div textpart for new requirements of processing tags outside ab section to get xpath stuff to work
-    #return "<wrapab><ab>#{xml}</ab></wrapab>"
-	#return "<div lang=\"grc\" type=\"edition\"><div n=\"Fr1\" type=\"textpart\"><ab>#{xml}</ab></div></div>" worked
-	return "<wrapab xmlns:xml=\"http://www.w3.org/XML/1998/namespace\"><div n=\"Fr1\" type=\"textpart\"><ab>#{xml}</ab></div></wrapab>"
+  # added <div  type=textpart
+  #change wrapab to div editon to match new grammar to handle language on div edition
+    return "<div xml:lang=\"grc\" type=\"edition\" xml:space=\"preserve\" xmlns:xml=\"http://www.w3.org/XML/1998/namespace\"><div n=\"Fr1\" type=\"textpart\"><ab>#{xml}</ab></div></div>"
   end
   
   def lab(notxml)
-  # added to wrap in leiden syntax to match new grammar for multiple ab sections
+  # added <=.... => to wrap in leiden syntax to match new grammar for multiple ab sections
   # added <D=.Fr1 .... =D> for new div textpart
-    #return "<D=.Fr1 <=#{notxml}=>=D>"
-    return "<D=.Fr1<=#{notxml}=>=D>"
+  #added <S=.grc to match new grammar to handle language on div edition
+    return "<S=.grc<D=.Fr1<=#{notxml}=>=D>"
   end
 
   def lb(xmlline)
     return "<lb n=\"1\"/>#{xmlline}"
-	#return "<lb n=\"1\"></lb>#{xmlline}"
   end
 
   def assert_equal_fragment_transform(non_xml_fragment, xml_fragment)
     non_xml_fragment = "1. #{non_xml_fragment}"
-	non_xml_fragment = lab(non_xml_fragment)
+    non_xml_fragment = lab(non_xml_fragment)
     assert_equal ab(lb(xml_fragment)), @xsugar.non_xml_to_xml(non_xml_fragment)
     assert_equal non_xml_fragment, @xsugar.xml_to_non_xml(ab(lb(xml_fragment)))
     assert_equal_non_xml_to_xml_to_non_xml non_xml_fragment, non_xml_fragment

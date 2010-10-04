@@ -152,27 +152,24 @@ module RXSugar
         xml_files.each do |xml_file|
           xml_content = IO.readlines(xml_file).to_s
           xml_file = xml_file.sub(/#{data_path}\/?/,'')
-          abs = get_abs_from_edition_div(xml_content)
+          #get div type=edition from input
+          divedition = get_div_edition(xml_content)
 
-          # try whole abs
+          # try to parse the file as a whole
           begin
             #xsugar parser is expecting a string not an array but did not want to lose line breaks so did not use special collapse method
-			# had to put in wrapab tags for xsugar grammar to work with multiple ab sections 
-            collapsed = preprocess_abs(abs)
+            collapsed = divedition.to_s
+            #try to transform from XML to Leiden+
             ddbcov.xsugar.xml_to_non_xml(collapsed)
-            # xml2nonxml(collapsed)
-            if collapsed.length > "<wrapab><ab/></wrapab>".length
+            # count as passing only  if the file is longer than a file with no text
+            if collapsed.length > "<div xml:lang=\"grc\" type=\"edition\" xml:space=\"preserve\"><ab/></div>".length
               xml_files_passing << xml_file
             end
           rescue
             xml_files_failing << xml_file
-          end
-          # pull xml again into new variable including div edition to get the pulling of children tags to work in get_non_lb_element_children
-          divedition = get_div_edition(xml_content)
-          # do each fragment individually
-          #use new divedition variable rather than abs used previously
-          #ddbcov.get_non_lb_element_children(divedition).each do |child|
-            ddbcov.get_all_element_children(divedition).each do |child|
+          end #end begin
+          # try to transform each XML fragment individually including <lb> tags
+          ddbcov.get_all_element_children(divedition).each do |child|
             xml_fragment_content = child.to_s.tr("'",'"')
             fragment_reference = XMLFragmentReference.new(xml_file, child)
             begin
@@ -189,8 +186,8 @@ module RXSugar
             rescue XMLParseError => e
               parse_errors += 1
               error_frequencies.add_error(:parse, fragment_reference)
-            end
-          end
+            end #end begin
+          end #end each do
           
           xml_files_bar.inc
         end

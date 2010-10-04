@@ -16,6 +16,7 @@ BEGAB = "<="
 ENDAB = "=>"
 BEGDIV = "<D="
 ENDDIV = "=D>"
+BEGDE = "<S="
 BEGABBR = "(|"
 ENDABBR = "|)"
 
@@ -111,12 +112,12 @@ ADDLIST = ((bottom)|(left)|(right)|(top)|(margin))
 
 // actual grammar starts below at file.  regular expressions used are above
 
-// had to wrap multiple ab sections in root tag to keep from getting XML not well formed error - decided to do whether multiple or not
 // allows for ab to be inside a div textpart or not - occurs both ways
- file : [ANYSP a][divtag d][ANYSP aa] = <wrapab>[ANYSP a][divtag d][ANYSP aa]</>
-     : [ANYSP a][abtag ab][ANYSP aa] = <wrapab>[ANYSP a][abtag ab][ANYSP aa]</>
+file : [BEGDE] "." [WORDDIV n] [ANYSP a][divtag d][ANYSP aa]  = <div xml:lang=[WORDDIV n] type="edition" xml:space="preserve">[ANYSP a][divtag d][ANYSP aa]</>
+     : [BEGDE] "." [WORDDIV n] [ANYSP a][abtag ab][ANYSP aa]  = <div xml:lang=[WORDDIV n] type="edition" xml:space="preserve">[ANYSP a][abtag ab][ANYSP aa]</>
      : =
-
+     
+     
 // cannot have a standalone ab section after a div - must be wrapped in a div - but can have a div after a standalone ab
 // this is why divtag section only does 'divtag more' and the the abtag section does 'abtag more' and 'divtag more' 
 // ANYSP covers space(s), new line(s), and tab(s)

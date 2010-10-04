@@ -473,7 +473,10 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<#=1#>', '<num value="1"/>'
       assert_equal_fragment_transform '<#δ=1/4#>', '<num value="1/4">δ</num>'
       assert_equal_fragment_transform '<#ιδ=14#>', '<num value="14">ιδ</num>'
-	  assert_equal_fragment_transform '<#frac#>', '<num type="fraction"/>'
+      assert_equal_fragment_transform '<#frac#>', '<num type="fraction"/>'
+      assert_equal_fragment_transform '<#Α=1000(?)#>', '<num value="1000">Α<certainty locus="value" match=".."/></num>'
+      assert_equal_fragment_transform '<#[ι]γ=13(?)#>', '<num value="13"><supplied reason="lost">ι</supplied>γ<certainty locus="value" match=".."/></num>'
+      assert_equal_fragment_transform '[ίως ((ἔτους)) <#ι=10(?)#>  καὶ ]', '<supplied reason="lost">ίως <expan><ex>ἔτους</ex></expan> <num value="10">ι<certainty locus="value" match=".."/></num>  καὶ </supplied>'
     end
     
     def test_num_myriads
@@ -609,7 +612,7 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform 'vac.ca.3lin', '<space quantity="3" unit="line" precision="low"/>'
 	  assert_equal_fragment_transform 'vac.ca.3lin(?) ', '<space quantity="3" unit="line" precision="low"><certainty match=".." locus="name"/></space>'
     end
-	
+    
 	def test_supplied_lost_space
 	  assert_equal_fragment_transform '[vac.? .4-5]', '<supplied reason="lost"><space extent="unknown" unit="character"/> <gap reason="illegible" atLeast="4" atMost="5" unit="character"/></supplied>'  #worked with ANYMULT tweak
     assert_equal_fragment_transform '[vac.?(?)  .4-5]', '<supplied reason="lost"><space extent="unknown" unit="character"><certainty match=".." locus="name"/></space> <gap reason="illegible" atLeast="4" atMost="5" unit="character"/></supplied>'
@@ -697,7 +700,7 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_note
-      assert_equal_fragment_transform '/*abcdefg*/', '<note xml:lang="en">abcdefg</note>'
+    assert_equal_fragment_transform '/*abcdefg*/', '<note xml:lang="en">abcdefg</note>'
 	  assert_equal_fragment_transform '/*?*/', '<note xml:lang="en">?</note>'
 	  assert_equal_fragment_transform '/*m2?*/', '<note xml:lang="en">m2?</note>'
 	  assert_equal_fragment_transform '/*text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4*/', '<note xml:lang="en">text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4</note>'
@@ -774,6 +777,7 @@ if(RUBY_PLATFORM == 'java')
     def test_foreign_lang
       assert_equal_fragment_transform '~|veni vedi vici|~la ', '<foreign xml:lang="la">veni vedi vici</foreign>'
       assert_equal_fragment_transform '~|di\' emu Foibạmṃ[onis]|~la ', '<foreign xml:lang="la">di\' emu Foib<unclear>a</unclear>m<unclear>m</unclear><supplied reason="lost">onis</supplied></foreign>'
+      assert_equal_fragment_transform '[ ~|cum obtulisset libellum Eulogii: .? ex officio.|~la  ὁποῖον]', '<supplied reason="lost"> <foreign xml:lang="la">cum obtulisset libellum Eulogii: <gap reason="illegible" extent="unknown" unit="character"/> ex officio.</foreign> ὁποῖον</supplied>'
     end
     
     def test_milestone
@@ -799,10 +803,10 @@ if(RUBY_PLATFORM == 'java')
     end
     
 	def test_certainty
-	  assert_equal_fragment_transform '[<:λίβα<CERTAINTY>|BL:8.236|.4:> τοπαρχίας ]', '<supplied reason="lost"><app type="BL"><lem resp="8.236">λίβα<certainty match=".." locus="value"/></lem><rdg><gap reason="illegible" quantity="4" unit="character"/></rdg></app> τοπαρχίας </supplied>'
-    end
+	  assert_equal_fragment_transform '[<:λίβα(?)|BL:8.236|.4:> τοπαρχίας ]', '<supplied reason="lost"><app type="BL"><lem resp="8.236">λίβα<certainty match=".." locus="value"/></lem><rdg><gap reason="illegible" quantity="4" unit="character"/></rdg></app> τοπαρχίας </supplied>'
+	end
 	
-	def test_SoSOL
+    def test_SoSOL
 	  assert_equal_fragment_transform '<:πέπρα 23.- κα ὡς <(πρόκ(ειται))>. (ἔγ(ρα))ψα Μύσ̣θη̣ς (Μέλαν(ος)) <(ὑπ(ὲρ))> (αὐ̣(τοῦ)) μὴ (εἰδ̣(ότος)) (γρ(άμματα))|SoSOL:Cowey|.4κ̣.3εγψα.4.4.2:>', '<app type="SoSOL"><lem resp="Cowey">πέπρα <lb n="23" type="inWord"/>κα ὡς <supplied reason="omitted"><expan>πρόκ<ex>ειται</ex></expan></supplied>. <expan>ἔγ<ex>ρα</ex></expan>ψα Μύ<unclear>σ</unclear>θ<unclear>η</unclear>ς <expan>Μέλαν<ex>ος</ex></expan> <supplied reason="omitted"><expan>ὑπ<ex>ὲρ</ex></expan></supplied> <expan>α<unclear>ὐ</unclear><ex>τοῦ</ex></expan> μὴ <expan>εἰ<unclear>δ</unclear><ex>ότος</ex></expan> <expan>γρ<ex>άμματα</ex></expan></lem><rdg><gap reason="illegible" quantity="4" unit="character"/><unclear>κ</unclear><gap reason="illegible" quantity="3" unit="character"/>εγψα<gap reason="illegible" quantity="4" unit="character"/><gap reason="illegible" quantity="4" unit="character"/><gap reason="illegible" quantity="2" unit="character"/></rdg></app>'
 	  assert_equal_fragment_transform '<:[.?]<#λβ=32#> .2 ἐκ <((ταλάντων))> <#κζ=27#> <((δραχμῶν))> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <((δραχμαὶ))> <#Γσ=3200#>|SoSOL:Sosin|[.?]<#λβ=32#> <#𐅵=frac1/2#> <#ιβ=frac1/12#> ἐκ ((ταλάντων)) <#ζ=7#> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <#η=frac1/8(?)#>:>', '<app type="SoSOL"><lem resp="Sosin"><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <gap reason="illegible" quantity="2" unit="character"/> ἐκ <supplied reason="omitted"><expan><ex>ταλάντων</ex></expan></supplied> <num value="27">κζ</num> <supplied reason="omitted"><expan><ex>δραχμῶν</ex></expan></supplied> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <supplied reason="omitted"><expan><ex>δραχμαὶ</ex></expan></supplied> <num value="3200">Γσ</num></lem><rdg><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <num value="1/2" rend="fraction">𐅵</num> <num value="1/12" rend="fraction">ιβ</num> ἐκ <expan><ex>ταλάντων</ex></expan> <num value="7">ζ</num> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <num value="1/8" rend="fraction">η<certainty locus="value" match=".."/></num></rdg></app>'
 	  assert_equal_fragment_transform '<:〚(Λεόντ(ιος)) (Σεν̣ο̣[υθί(ου)])[ Σενουθίου ][.?] 〛|SoSOL:Ast|(Σενούθ(ιος)) \vestig / (Σενουθ(ίου)) vestig :>', '<app type="SoSOL"><lem resp="Ast"><del rend="erasure"><expan>Λεόντ<ex>ιος</ex></expan> <expan>Σε<unclear>νο</unclear><supplied reason="lost">υθί<ex>ου</ex></supplied></expan><supplied reason="lost"> Σενουθίου </supplied><gap reason="lost" extent="unknown" unit="character"/> </del></lem><rdg><expan>Σενούθ<ex>ιος</ex></expan> <add place="above"><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></add> <expan>Σενουθ<ex>ίου</ex></expan> <gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></rdg></app>'
@@ -849,16 +853,21 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '(1.-, perpendicular)', '<lb n="1" rend="perpendicular" type="inWord"/>'
 	  assert_equal_fragment_transform '(2.-, inverse)', '<lb n="2" rend="inverse" type="inWord"/>'
 	  assert_equal_fragment_transform '3.- ', '<lb n="3" type="inWord"/>'
+	  #assert_equal_fragment_transform '(1.div, perpendicular)', '<lb n="1" rend="perpendicular" type="inWord"/>'
+	  #assert_equal_fragment_transform '(2.div, inverse)', '<lb n="2" rend="inverse" type="inWord"/>'
+	  #assert_equal_fragment_transform '3.div ', '<lb n="3" type="inWord"/>'
 	  assert_equal_fragment_transform '4. ', '<lb n="4"/>'
 	  #inWord inside other markup
 	  assert_equal_fragment_transform '<:ὑπηR 8.- [ρετῶ]ν|ed:bgu 3 p.1|[.7]ν:>', '<app type="editorial"><lem resp="bgu 3 p.1">ὑπηR <lb n="8" type="inWord"/><supplied reason="lost">ρετῶ</supplied>ν</lem><rdg><gap reason="lost" quantity="7" unit="character"/>ν</rdg></app>'
 	  assert_equal_fragment_transform '<:Πα[νε]φρόμ 23.- μεως|ed:|Πα[νε]φρέμμεως:>', '<app type="editorial"><lem>Πα<supplied reason="lost">νε</supplied>φρόμ <lb n="23" type="inWord"/>μεως</lem><rdg>Πα<supplied reason="lost">νε</supplied>φρέμμεως</rdg></app>'
 	  assert_equal_fragment_transform '<:Πα[νε]φρόμ (2.-, inverse)μεως|ed:|Πα[νε]φρέμμεως:>', '<app type="editorial"><lem>Πα<supplied reason="lost">νε</supplied>φρόμ <lb n="2" rend="inverse" type="inWord"/>μεως</lem><rdg>Πα<supplied reason="lost">νε</supplied>φρέμμεως</rdg></app>'
 	end
-	
+    
     def test_simple_reversibility
-      assert_equal_non_xml_to_xml_to_non_xml "<=1. test=>", "<=1. test=>"
-      assert_equal_non_xml_to_xml_to_non_xml "<=1. test1\n2. test2=>", "<=1. test1\n2. test2=>"
+      #assert_equal_non_xml_to_xml_to_non_xml "<=1. test=>", "<=1. test=>"
+      #assert_equal_non_xml_to_xml_to_non_xml "<=1. test1\n2. test2=>", "<=1. test1\n2. test2=>"
+      assert_equal_non_xml_to_xml_to_non_xml "<S=.grc<=1. test=>", "<S=.grc<=1. test=>"
+      assert_equal_non_xml_to_xml_to_non_xml "<S=.grc<=1. test1\n2. test2=>", "<S=.grc<=1. test1\n2. test2=>"
     end
   
     def test_multiple_ab
@@ -867,12 +876,18 @@ if(RUBY_PLATFORM == 'java')
     end
 	
 	def test_line_number_formats
-      assert_equal_non_xml_to_xml_to_non_xml "<=1. test=>", "<=1. test=>"
-      assert_equal_non_xml_to_xml_to_non_xml "<=1a. test1a=>", "<=1a. test1a=>"
-	  assert_equal_non_xml_to_xml_to_non_xml "<=4/5. test45=>", "<=4/5. test45=>"
-	  assert_equal_non_xml_to_xml_to_non_xml "<=14/15. test1415=>", "<=14/15. test1415=>"
-	  assert_equal_non_xml_to_xml_to_non_xml "<=1,ms. test1ms=>", "<=1,ms. test1ms=>"
-	  assert_equal_non_xml_to_xml_to_non_xml "<=17,ms. test17ms=>", "<=17,ms. test17ms=>"
+    #assert_equal_non_xml_to_xml_to_non_xml "<=1. test=>", "<=1. test=>"
+    #assert_equal_non_xml_to_xml_to_non_xml "<=1a. test1a=>", "<=1a. test1a=>"
+	  #assert_equal_non_xml_to_xml_to_non_xml "<=4/5. test45=>", "<=4/5. test45=>"
+	  #assert_equal_non_xml_to_xml_to_non_xml "<=14/15. test1415=>", "<=14/15. test1415=>"
+	  #assert_equal_non_xml_to_xml_to_non_xml "<=1,ms. test1ms=>", "<=1,ms. test1ms=>"
+	  #assert_equal_non_xml_to_xml_to_non_xml "<=17,ms. test17ms=>", "<=17,ms. test17ms=>"
+	  assert_equal_non_xml_to_xml_to_non_xml "<S=.grc<=1. test=>", "<S=.grc<=1. test=>"
+    assert_equal_non_xml_to_xml_to_non_xml "<S=.grc<=1a. test1a=>", "<S=.grc<=1a. test1a=>"
+	  assert_equal_non_xml_to_xml_to_non_xml "<S=.grc<=4/5. test45=>", "<S=.grc<=4/5. test45=>"
+	  assert_equal_non_xml_to_xml_to_non_xml "<S=.grc<=14/15. test1415=>", "<S=.grc<=14/15. test1415=>"
+	  assert_equal_non_xml_to_xml_to_non_xml "<S=.grc<=1,ms. test1ms=>", "<S=.grc<=1,ms. test1ms=>"
+	  assert_equal_non_xml_to_xml_to_non_xml "<S=.grc<=17,ms. test17ms=>", "<S=.grc<=17,ms. test17ms=>"
     end
 	
 	def test_P5_linenumber_funky
@@ -896,19 +911,23 @@ if(RUBY_PLATFORM == 'java')
         end
         str.chomp!
 		# I think the line below doing Leiden+ wrapper will have to moved/rethougt if the the outter loop is reactivated
-		str = "<=" + str + "=>"
+		#str = "<=" + str + "=>"
+		str = "<S=.grc<=" + str + "=>"
         assert_equal_non_xml_to_xml_to_non_xml str, str
       #end
     end
   
     def test_xml_trailing_newline_stripped
 	# added \n at end to prove newline not stripped anymore
-      assert_equal_non_xml_to_xml_to_non_xml "<=1. test\n=>", "<=1. test\n=>"
-      assert_equal_non_xml_to_xml_to_non_xml "<=1. test1\n2. test2\n=>", "<=1. test1\n2. test2\n=>"
+      #assert_equal_non_xml_to_xml_to_non_xml "<=1. test\n=>", "<=1. test\n=>"
+      #assert_equal_non_xml_to_xml_to_non_xml "<=1. test1\n2. test2\n=>", "<=1. test1\n2. test2\n=>"
+      assert_equal_non_xml_to_xml_to_non_xml "<S=.grc<=1. test\n=>", "<S=.grc<=1. test\n=>"
+      assert_equal_non_xml_to_xml_to_non_xml "<S=.grc<=1. test1\n2. test2\n=>", "<S=.grc<=1. test1\n2. test2\n=>"
     end
   
     def test_unicode_greek_reversibility
-      assert_equal_non_xml_to_xml_to_non_xml '<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>', '<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>'
+      #assert_equal_non_xml_to_xml_to_non_xml '<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>', '<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>'
+      assert_equal_non_xml_to_xml_to_non_xml '<S=.grc<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>', '<S=.grc<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>'
     end
   
     def test_xsugar_reversibility_true

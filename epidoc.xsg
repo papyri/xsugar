@@ -107,14 +107,15 @@ FRACNUM = [0-9]+\/{1}[0-9]+
 APPNUM = [0-9]+\.{1}[0-9]+
 
 LANGLIST = ((Arabic)|(Aramaic)|(Coptic)|(Demotic)|(Hieratic)|(Nabatean))
+TEXTLANGLIST = ((grc)|(la)|(la\-Grek)|(grc\-Latn)|(cop))
 
 ADDLIST = ((bottom)|(left)|(right)|(top)|(margin))
 
 // actual grammar starts below at file.  regular expressions used are above
 
 // allows for ab to be inside a div textpart or not - occurs both ways
-file : [BEGDE] "." [WORDDIV n] [ANYSP a][divtag d][ANYSP aa]  = <div xml:lang=[WORDDIV n] type="edition" xml:space="preserve">[ANYSP a][divtag d][ANYSP aa]</>
-     : [BEGDE] "." [WORDDIV n] [ANYSP a][abtag ab][ANYSP aa]  = <div xml:lang=[WORDDIV n] type="edition" xml:space="preserve">[ANYSP a][abtag ab][ANYSP aa]</>
+file : [BEGDE] "." [TEXTLANGLIST lg] [ANYSP a][divtag d][ANYSP aa]  = <div xml:lang=[TEXTLANGLIST lg] type="edition" xml:space="preserve">[ANYSP a][divtag d][ANYSP aa]</>
+     : [BEGDE] "." [TEXTLANGLIST lg] [ANYSP a][abtag ab][ANYSP aa]  = <div xml:lang=[TEXTLANGLIST lg] type="edition" xml:space="preserve">[ANYSP a][abtag ab][ANYSP aa]</>
      : =
      
      

@@ -477,6 +477,9 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<#Α=1000(?)#>', '<num value="1000">Α<certainty locus="value" match=".."/></num>'
       assert_equal_fragment_transform '<#[ι]γ=13(?)#>', '<num value="13"><supplied reason="lost">ι</supplied>γ<certainty locus="value" match=".."/></num>'
       assert_equal_fragment_transform '[ίως ((ἔτους)) <#ι=10(?)#>  καὶ ]', '<supplied reason="lost">ίως <expan><ex>ἔτους</ex></expan> <num value="10">ι<certainty locus="value" match=".."/></num>  καὶ </supplied>'
+      assert_equal_fragment_transform '<#a=1-9#>', '<num atLeast="1" atMost="9">a</num>'
+      assert_equal_fragment_transform '<#κ[.1]=20-29#>', '<num atLeast="20" atMost="29">κ<gap reason="lost" quantity="1" unit="character"/></num>'
+      assert_equal_fragment_transform '<#ι̣=10-19#>', '<num atLeast="10" atMost="19"><unclear>ι</unclear></num>'
     end
     
     def test_num_myriads
@@ -828,14 +831,30 @@ if(RUBY_PLATFORM == 'java')
     end
 	
 	def test_nontrans
-	  assert_equal_fragment_transform '(Lines: 19 non transcribed)', '<gap reason="ellipsis" quantity="19" unit="line"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Lines: 4-5 non transcribed)', '<gap reason="ellipsis" atLeast="4" atMost="5" unit="line"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: 3 non transcribed)', '<gap reason="ellipsis" quantity="3" unit="line"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: 3 non transcribed(?))', '<gap reason="ellipsis" quantity="3" unit="line"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
+	  assert_equal_fragment_transform '(Lines: ca.3 non transcribed)', '<gap reason="ellipsis" quantity="3" unit="line" precision="low"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: ca.3 non transcribed(?))', '<gap reason="ellipsis" quantity="3" unit="line" precision="low"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
 	  assert_equal_fragment_transform '(Lines: ? non transcribed)', '<gap reason="ellipsis" extent="unknown" unit="line"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Chars: ? non transcribed)', '<gap reason="ellipsis" extent="unknown" unit="character"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: ? non transcribed(?))', '<gap reason="ellipsis" extent="unknown" unit="line"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
+	  assert_equal_fragment_transform '(Lines: 3-5 non transcribed)', '<gap reason="ellipsis" atLeast="3" atMost="5" unit="line"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Lines: 3-5 non transcribed(?))', '<gap reason="ellipsis" atLeast="3" atMost="5" unit="line"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
 	  assert_equal_fragment_transform '(Chars: 3 non transcribed)', '<gap reason="ellipsis" quantity="3" unit="character"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Chars: 4-5 non transcribed)', '<gap reason="ellipsis" atLeast="4" atMost="5" unit="character"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Lines: ca.18 non transcribed)', '<gap reason="ellipsis" quantity="18" unit="line" precision="low"><desc>non transcribed</desc></gap>'
-	  assert_equal_fragment_transform '(Chars: ca.18 non transcribed)', '<gap reason="ellipsis" quantity="18" unit="character" precision="low"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: 3 non transcribed(?))', '<gap reason="ellipsis" quantity="3" unit="character"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
+	  assert_equal_fragment_transform '(Chars: ca.3 non transcribed)', '<gap reason="ellipsis" quantity="3" unit="character" precision="low"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: ca.3 non transcribed(?))', '<gap reason="ellipsis" quantity="3" unit="character" precision="low"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
+	  assert_equal_fragment_transform '(Chars: ? non transcribed)', '<gap reason="ellipsis" extent="unknown" unit="character"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: ? non transcribed(?))', '<gap reason="ellipsis" extent="unknown" unit="character"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
+	  assert_equal_fragment_transform '(Chars: 3-5 non transcribed)', '<gap reason="ellipsis" atLeast="3" atMost="5" unit="character"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Chars: 3-5 non transcribed(?))', '<gap reason="ellipsis" atLeast="3" atMost="5" unit="character"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
+	  assert_equal_fragment_transform '(Column: 3 non transcribed)', '<gap reason="ellipsis" quantity="3" unit="column"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Column: 3 non transcribed(?))', '<gap reason="ellipsis" quantity="3" unit="column"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
+	  assert_equal_fragment_transform '(Column: ca.3 non transcribed)', '<gap reason="ellipsis" quantity="3" unit="column" precision="low"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Column: ca.3 non transcribed(?))', '<gap reason="ellipsis" quantity="3" unit="column" precision="low"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
+	  assert_equal_fragment_transform '(Column: ? non transcribed)', '<gap reason="ellipsis" extent="unknown" unit="column"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Column: ? non transcribed(?))', '<gap reason="ellipsis" extent="unknown" unit="column"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
+	  assert_equal_fragment_transform '(Column: 3-5 non transcribed)', '<gap reason="ellipsis" atLeast="3" atMost="5" unit="column"><desc>non transcribed</desc></gap>'
+	  assert_equal_fragment_transform '(Column: 3-5 non transcribed(?))', '<gap reason="ellipsis" atLeast="3" atMost="5" unit="column"><desc>non transcribed</desc><certainty match=".." locus="name"/></gap>'
     end
 	
 	def test_linenumber_specials

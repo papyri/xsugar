@@ -488,6 +488,7 @@ item
 	>: [BEGNUM] [items o] "=" [NUM s] "(?)" [ENDNUM] = <num value=[NUM s]>[items o]<certainty locus="value" match=".."/></>
 	>: [BEGNUM] [items o] "=" [ENDNUM] = <num>[items o]</>
 	>: [BEGNUM] [items o] "=" "(?)" [ENDNUM] = <num>[items o]<certainty locus="value" match=".."/></>
+	>: [BEGNUM] [items o] "=" [NUM l] "-" [NUM m] [ENDNUM] = <num atLeast=[NUM l] atMost=[NUM m]>[items o]</>
 		
 	//---subst---
 	//  <:a|subst|b|:> 
@@ -693,6 +694,16 @@ item
 	>: "(Chars: ? non transcribed(?))" = <gap reason="ellipsis" extent="unknown" unit="character"><desc>"non transcribed"</><certainty match=".." locus="name"></></>
 	>: "(Chars: " [NUM v] "-" [NUM w] " non transcribed)" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"non transcribed"</></>
 	>: "(Chars: " [NUM v] "-" [NUM w] " non transcribed(?))" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="character"><desc>"non transcribed"</><certainty match=".." locus="name"></></>
+	
+	//---test_nontran_column---
+	: "(Column: " [NUM v] " non transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="column"><desc>"non transcribed"</></>
+	>: "(Column: " [NUM v] " non transcribed(?))" = <gap reason="ellipsis" quantity=[NUM v] unit="column"><desc>"non transcribed"</><certainty match=".." locus="name"></></>
+	>: "(Column: ca." [NUM v] " non transcribed)" = <gap reason="ellipsis" quantity=[NUM v] unit="column" precision="low"><desc>"non transcribed"</></>
+	>: "(Column: ca." [NUM v] " non transcribed(?))" = <gap reason="ellipsis" quantity=[NUM v] unit="column" precision="low"><desc>"non transcribed"</><certainty match=".." locus="name"></></>
+	>: "(Column: ? non transcribed)" = <gap reason="ellipsis" extent="unknown" unit="column"><desc>"non transcribed"</></>
+	>: "(Column: ? non transcribed(?))" = <gap reason="ellipsis" extent="unknown" unit="column"><desc>"non transcribed"</><certainty match=".." locus="name"></></>
+	>: "(Column: " [NUM v] "-" [NUM w] " non transcribed)" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="column"><desc>"non transcribed"</></>
+	>: "(Column: " [NUM v] "-" [NUM w] " non transcribed(?))" = <gap reason="ellipsis" atLeast=[NUM v] atMost=[NUM w] unit="column"><desc>"non transcribed"</><certainty match=".." locus="name"></></>
 	
 	//---test_lost_lines---
 	// lost.#{n}lin **P5**

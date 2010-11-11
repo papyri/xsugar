@@ -42,25 +42,31 @@ module GrammarAssertions
     workxml = REXML::Document.new(wrapxml)
 
     workxml.elements['wrapab'].each do |z|
-      #add node name to array for equal comparison
-      nodesback << z.name
-      #put attributes in hash for equal comparison
-      #using hash with key as name+value so same attributes with different values show as separate entries in hash
-      #ex. reason=lost, reason=illegible
-      z.attributes.each do |name, value|
-        attribsback.store("#{name+value}","#{name}")
-      end
-
-      z.each do |y|
-        if y.node_type.to_s == "element"
-          #recursive call when another tag nested inside
-          get_attrib_text_node(y.to_s, attribsback, textback, nodesback)
-        else
-          #add text value to array for equal comparison
-          textback << y.value
-        end #if element
-      end #z.each
-    end #wrapab do
+      if z.node_type.to_s == "element"
+        #add node name to array for equal comparison
+        nodesback << z.name
+        
+        #put attributes in hash for equal comparison
+        #using hash with key as name+value so same attributes with different values show as separate entries in hash
+        #ex. reason=lost, reason=illegible
+        z.attributes.each do |name, value|
+          attribsback.store("#{name+value}","#{name}")
+        end
+        
+        z.each do |y|
+          if y.node_type.to_s == "element"
+            #recursive call when another tag nested inside
+            get_attrib_text_node(y.to_s, attribsback, textback, nodesback)
+          else
+            #add text value to array for equal comparison
+            textback << y.value
+          end #if y element
+        end #z.each
+      else
+        textback << z.value
+      end #if z element
+    end #wrapab each do
+    
     return
   end
 
@@ -83,14 +89,20 @@ module GrammarAssertions
     
     #parse the 'expected' XML passed in into attributes, text values, and node names
     
-    #jump through a lot of hoops to make test cases for all XML work
-    startexpected = REXML::Document.new(ab(lb(expected)))
-    expectedinsideab = REXML::XPath.match(startexpected, 'div/div/ab/*')
-    #remove line number tag added above that is not needed
-    tempexpected = expectedinsideab.to_s.sub!(/<lb n='1'\/>/, "")
-    #wrap it to keep away from 'adding second root' error 
-    tempexpected = "<wrapab>" + tempexpected + "</wrapab>"
-    finalexpected = REXML::Document.new(tempexpected)
+    if expected.include?("</ab><ab>")
+      #jump through a lot of hoops to make multiple ab section test case work - may pull out
+      tempab = ab(expected)
+      #remove namespace or REXML barfs in Linux
+      tempab.sub!(/ xmlns:xml="http:\/\/www.w3.org\/XML\/1998\/namespace"/,'')
+      startexpected = REXML::Document.new(tempab)
+      expectedinsideab = REXML::XPath.match(startexpected, 'div/div/ab/node()')
+      #wrap it to keep away from 'adding second root' error
+      tempexpected = "<wrapab>" + expectedinsideab.to_s + "</wrapab>"
+      finalexpected = REXML::Document.new(tempexpected)
+    else
+      tempexpected = "<wrapab>" + expected + "</wrapab>"
+      finalexpected = REXML::Document.new(tempexpected)
+    end
     
     compare_expected_attribs = Hash.new
     compare_expected_text = Array.new
@@ -104,10 +116,13 @@ module GrammarAssertions
     #parse the XML created by taking the 'input' XML and converting to Leiden+ and then back to XML
     #this is where the attribute order can change from the 'expected' and why the extra is in 
     
-    #jump through a lot of hoops to make test cases for all XML work
+    #jump through a lot of hoops to get all nodes from inside the ab tag
+    #remove namespace or REXML barfs in Linux
+    non_xml_to_xml_from_xml_to_non_xml.sub!(/ xmlns:xml="http:\/\/www.w3.org\/XML\/1998\/namespace"/,'')
     startinput = REXML::Document.new(non_xml_to_xml_from_xml_to_non_xml)
-    inputinsideab = REXML::XPath.match(startinput, 'div/div/ab/*')
-    #remove line number tag added above that is not needed
+    #only comparing the XML inside the ab tag - node() will pull text nodes and element nodes
+    inputinsideab = REXML::XPath.match(startinput, 'div/div/ab/node()')
+    #remove line number tag added during Xsugar transformation process that is not needed
     tempinput = inputinsideab.to_s.sub!(/<lb n='1'\/>/, "")
     #wrap it to keep away from 'adding second root' error 
     tempinput = "<wrapab>" + tempinput + "</wrapab>"

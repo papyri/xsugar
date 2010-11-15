@@ -196,6 +196,7 @@ supexpan
   :"(" [WORDS4EXND a] ")" = <ex>[WORDS4EXND a]</>
   :"(" [WORDS4EXND f] "?" ")" = <ex cert="low">[WORDS4EXND f]</>
   >:[WORDVEST b][supexpan more] = [WORDVEST b][supexpan more]
+  >:[ANYLETTER b][expanstuff more] = [ANYLETTER b][expanstuff more]
   >:[WORDVEST b][expanstuff more] = [WORDVEST b][expanstuff more]
   >:"(" [WORDS4EXND a] ")"[supexpan more] = <ex>[WORDS4EXND a]</>[supexpan more]
   >:"(" [WORDS4EXND f] "?" ")"[supexpan more] = <ex cert="low">[WORDS4EXND f]</>[supexpan more]

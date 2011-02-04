@@ -415,8 +415,8 @@ if(RUBY_PLATFORM == 'java')
       # quotation marks on papyrus
       assert_equal_fragment_transform '"abc"', '<q>abc</q>'
       assert_equal_fragment_transform '"abc def ghi"', '<q>abc def ghi</q>'
-	  assert_equal_fragment_transform '"<:ἔλα 3. βα|orth|αιλαβα:> αὐτὰ"', '<q><choice><corr>ἔλα <lb n="3"/>βα</corr><sic>αιλαβα</sic></choice> αὐτὰ</q>'
-	   #                                                  '<:a|orth|b:>',     '<choice><corr>a</corr><sic>b</sic></choice>'
+	  assert_equal_fragment_transform '"<:ἔλα 3. βα|corr|αιλαβα:> αὐτὰ"', '<q><choice><corr>ἔλα <lb n="3"/>βα</corr><sic>αιλαβα</sic></choice> αὐτὰ</q>'
+	   #                                                  '<:a|corr|b:>',     '<choice><corr>a</corr><sic>b</sic></choice>'
     end
   
     def test_uncertain_diacritical_diaeresis
@@ -487,18 +487,35 @@ if(RUBY_PLATFORM == 'java')
     end
     
     def test_choice
-	  assert_equal_fragment_transform '<:a|orth|b:>', '<choice><corr>a</corr><sic>b</sic></choice>'
-	  #empty corr no longer valid - 12/16 - assert_equal_fragment_transform '<:|orth|b:>', '<choice><corr/><sic>b</sic></choice>'
-	  assert_equal_fragment_transform '<:a|orth|<:b|orth|c:>:>', '<choice><corr>a</corr><sic><choice><corr>b</corr><sic>c</sic></choice></sic></choice>'
-	  assert_equal_fragment_transform '<:a(?)|orth|b:>', '<choice><corr cert="low">a</corr><sic>b</sic></choice>'
-	  assert_equal_fragment_transform '<:aạ(?)|orth|bạ:>', '<choice><corr cert="low">a<unclear>a</unclear></corr><sic>b<unclear>a</unclear></sic></choice>'
-	  assert_equal_fragment_transform '<:σωλῆνας̣(?)|orth|σηληνας̣:>', '<choice><corr cert="low">σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear></sic></choice>'
-	  assert_equal_fragment_transform '<:σωλῆνας̣|orth|σηληνας̣(?):>', '<choice><corr>σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear><certainty match=".." locus="value"/></sic></choice>'
-	  assert_equal_fragment_transform '<:σωλῆνας̣(?)|orth|σηληνας̣(?):>', '<choice><corr cert="low">σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear><certainty match=".." locus="value"/></sic></choice>'
-	  assert_equal_fragment_transform '<:σωλῆνας̣|orth|σηληνας̣:>', '<choice><corr>σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear></sic></choice>'
-	  assert_equal_fragment_transform '<:a(?)|orth|<:b|orth|c:>:>', '<choice><corr cert="low">a</corr><sic><choice><corr>b</corr><sic>c</sic></choice></sic></choice>'
-	  assert_equal_fragment_transform '<:a|orth|<:b|orth|c(?):>:>', '<choice><corr>a</corr><sic><choice><corr>b</corr><sic>c<certainty match=".." locus="value"/></sic></choice></sic></choice>'
-	  assert_equal_fragment_transform '<:<:b|orth|c:>|orth|σηλη:>', '<choice><corr><choice><corr>b</corr><sic>c</sic></choice></corr><sic>σηλη</sic></choice>'
+	  assert_equal_fragment_transform '<:a|corr|b:>', '<choice><corr>a</corr><sic>b</sic></choice>'
+	  #empty corr no longer valid - 12/16 - assert_equal_fragment_transform '<:|corr|b:>', '<choice><corr/><sic>b</sic></choice>'
+	  assert_equal_fragment_transform '<:a|corr|<:b|corr|c:>:>', '<choice><corr>a</corr><sic><choice><corr>b</corr><sic>c</sic></choice></sic></choice>'
+	  assert_equal_fragment_transform '<:a(?)|corr|b:>', '<choice><corr cert="low">a</corr><sic>b</sic></choice>'
+	  assert_equal_fragment_transform '<:aạ(?)|corr|bạ:>', '<choice><corr cert="low">a<unclear>a</unclear></corr><sic>b<unclear>a</unclear></sic></choice>'
+	  assert_equal_fragment_transform '<:σωλῆνας̣(?)|corr|σηληνας̣:>', '<choice><corr cert="low">σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear></sic></choice>'
+	  assert_equal_fragment_transform '<:σωλῆνας̣|corr|σηληνας̣(?):>', '<choice><corr>σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear><certainty match=".." locus="value"/></sic></choice>'
+	  assert_equal_fragment_transform '<:σωλῆνας̣(?)|corr|σηληνας̣(?):>', '<choice><corr cert="low">σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear><certainty match=".." locus="value"/></sic></choice>'
+	  assert_equal_fragment_transform '<:σωλῆνας̣|corr|σηληνας̣:>', '<choice><corr>σωλῆνα<unclear>ς</unclear></corr><sic>σηληνα<unclear>ς</unclear></sic></choice>'
+	  assert_equal_fragment_transform '<:a(?)|corr|<:b|corr|c:>:>', '<choice><corr cert="low">a</corr><sic><choice><corr>b</corr><sic>c</sic></choice></sic></choice>'
+	  assert_equal_fragment_transform '<:a|corr|<:b|corr|c(?):>:>', '<choice><corr>a</corr><sic><choice><corr>b</corr><sic>c<certainty match=".." locus="value"/></sic></choice></sic></choice>'
+	  assert_equal_fragment_transform '<:<:b|corr|c:>|corr|σηλη:>', '<choice><corr><choice><corr>b</corr><sic>c</sic></choice></corr><sic>σηλη</sic></choice>'
+	  #new reg stuff
+	  assert_equal_fragment_transform '<:a|reg|b:>', '<choice><reg>a</reg><orig>b</orig></choice>'
+	  assert_equal_fragment_transform '<:a|reg|<:b|reg|c:>:>', '<choice><reg>a</reg><orig><choice><reg>b</reg><orig>c</orig></choice></orig></choice>'
+	  assert_equal_fragment_transform '<:a(?)|reg|b:>', '<choice><reg cert="low">a</reg><orig>b</orig></choice>'
+	  assert_equal_fragment_transform '<:aạ(?)|reg|bạ:>', '<choice><reg cert="low">a<unclear>a</unclear></reg><orig>b<unclear>a</unclear></orig></choice>'
+	  assert_equal_fragment_transform '<:σωλῆνας̣(?)|reg|σηληνας̣:>', '<choice><reg cert="low">σωλῆνα<unclear>ς</unclear></reg><orig>σηληνα<unclear>ς</unclear></orig></choice>'
+	  assert_equal_fragment_transform '<:σωλῆνας̣|reg|σηληνας̣(?):>', '<choice><reg>σωλῆνα<unclear>ς</unclear></reg><orig>σηληνα<unclear>ς</unclear><certainty match=".." locus="value"/></orig></choice>'
+	  assert_equal_fragment_transform '<:σωλῆνας̣(?)|reg|σηληνας̣(?):>', '<choice><reg cert="low">σωλῆνα<unclear>ς</unclear></reg><orig>σηληνα<unclear>ς</unclear><certainty match=".." locus="value"/></orig></choice>'
+	  assert_equal_fragment_transform '<:σωλῆνας̣|reg|σηληνας̣:>', '<choice><reg>σωλῆνα<unclear>ς</unclear></reg><orig>σηληνα<unclear>ς</unclear></orig></choice>'
+	  assert_equal_fragment_transform '<:a(?)|reg|<:b|reg|c:>:>', '<choice><reg cert="low">a</reg><orig><choice><reg>b</reg><orig>c</orig></choice></orig></choice>'
+	  assert_equal_fragment_transform '<:a|reg|<:b|reg|c(?):>:>', '<choice><reg>a</reg><orig><choice><reg>b</reg><orig>c<certainty match=".." locus="value"/></orig></choice></orig></choice>'
+	  assert_equal_fragment_transform '<:<:b|reg|c:>|reg|σηλη:>', '<choice><reg><choice><reg>b</reg><orig>c</orig></choice></reg><orig>σηλη</orig></choice>'
+	  #combined
+	  assert_equal_fragment_transform '<:a|corr|<:b|reg|c:>:>', '<choice><corr>a</corr><sic><choice><reg>b</reg><orig>c</orig></choice></sic></choice>'
+	  assert_equal_fragment_transform '<:<:b|corr|c:>|reg|σηλη:>', '<choice><reg><choice><corr>b</corr><sic>c</sic></choice></reg><orig>σηλη</orig></choice>'
+	  assert_equal_fragment_transform '<:a|reg|<:b|corr|c:>:>', '<choice><reg>a</reg><orig><choice><corr>b</corr><sic>c</sic></choice></orig></choice>'
+	  assert_equal_fragment_transform '<:<:b|reg|c:>|corr|σηλη:>', '<choice><corr><choice><reg>b</reg><orig>c</orig></choice></corr><sic>σηλη</sic></choice>'
 	end
     
   def test_subst
@@ -735,7 +752,7 @@ if(RUBY_PLATFORM == 'java')
     
 	def test_superscript
 	  assert_equal_fragment_transform '^<#ι=10#> ^', '<hi rend="superscript"><num value="10">ι</num> </hi>'
-	  assert_equal_fragment_transform '^<:σημεῖον|orth|σημιον:>^', '<hi rend="superscript"><choice><corr>σημεῖον</corr><sic>σημιον</sic></choice></hi>'
+	  assert_equal_fragment_transform '^<:σημεῖον|corr|σημιον:>^', '<hi rend="superscript"><choice><corr>σημεῖον</corr><sic>σημιον</sic></choice></hi>'
     end
 	
     def test_P5_above
@@ -814,9 +831,9 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '<:[.?]<#λβ=32#> .2 ἐκ <((ταλάντων))> <#κζ=27#> <((δραχμῶν))> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <((δραχμαὶ))> <#Γσ=3200#>|SoSOL:Sosin|[.?]<#λβ=32#> <#𐅵=frac1/2#> <#ιβ=frac1/12#> ἐκ ((ταλάντων)) <#ζ=7#> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <#η=frac1/8(?)#>:>', '<app type="SoSOL"><lem resp="Sosin"><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <gap reason="illegible" quantity="2" unit="character"/> ἐκ <supplied reason="omitted"><expan><ex>ταλάντων</ex></expan></supplied> <num value="27">κζ</num> <supplied reason="omitted"><expan><ex>δραχμῶν</ex></expan></supplied> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <supplied reason="omitted"><expan><ex>δραχμαὶ</ex></expan></supplied> <num value="3200">Γσ</num></lem><rdg><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <num value="1/2" rend="fraction">𐅵</num> <num value="1/12" rend="fraction">ιβ</num> ἐκ <expan><ex>ταλάντων</ex></expan> <num value="7">ζ</num> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <num value="1/8" rend="fraction">η<certainty locus="value" match=".."/></num></rdg></app>'
 	  assert_equal_fragment_transform '<:〚(Λεόντ(ιος)) (Σεν̣ο̣[υθί(ου)])[ Σενουθίου ][.?] 〛|SoSOL:Ast|(Σενούθ(ιος)) \vestig / (Σενουθ(ίου)) vestig :>', '<app type="SoSOL"><lem resp="Ast"><del rend="erasure"><expan>Λεόντ<ex>ιος</ex></expan> <expan>Σε<unclear>νο</unclear><supplied reason="lost">υθί<ex>ου</ex></supplied></expan><supplied reason="lost"> Σενουθίου </supplied><gap reason="lost" extent="unknown" unit="character"/> </del></lem><rdg><expan>Σενούθ<ex>ιος</ex></expan> <add place="above"><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></add> <expan>Σενουθ<ex>ίου</ex></expan> <gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></rdg></app>'
 	  assert_equal_fragment_transform '<:<#α=1#>\|<#ι=10#>|/ <#α=1#>\|<#ξ=60#>|/ <#α=1#>\|<#ρκ=120#>|/|SoSOL:Cayless|<#β=2#> <#𐅵=frac1/2#> <#ξδ=frac1/64#>:>', '<app type="SoSOL"><lem resp="Cayless"><num value="1">α</num><hi rend="subscript"><num value="10">ι</num></hi> <num value="1">α</num><hi rend="subscript"><num value="60">ξ</num></hi> <num value="1">α</num><hi rend="subscript"><num value="120">ρκ</num></hi></lem><rdg><num value="2">β</num> <num value="1/2" rend="fraction">𐅵</num> <num value="1/64" rend="fraction">ξδ</num></rdg></app>'
-	  assert_equal_fragment_transform '<:καὶ <:<καν(?)>ονικῶν(?)|orth|ονι̣κ̣ων:>|SoSOL:Elliott|καιονι̣κ̣ων:>', '<app type="SoSOL"><lem resp="Elliott">καὶ <choice><corr cert="low"><supplied reason="omitted" cert="low">καν</supplied>ονικῶν</corr><sic>ον<unclear>ικ</unclear>ων</sic></choice></lem><rdg>καιον<unclear>ικ</unclear>ων</rdg></app>'
+	  assert_equal_fragment_transform '<:καὶ <:<καν(?)>ονικῶν(?)|corr|ονι̣κ̣ων:>|SoSOL:Elliott|καιονι̣κ̣ων:>', '<app type="SoSOL"><lem resp="Elliott">καὶ <choice><corr cert="low"><supplied reason="omitted" cert="low">καν</supplied>ονικῶν</corr><sic>ον<unclear>ικ</unclear>ων</sic></choice></lem><rdg>καιον<unclear>ικ</unclear>ων</rdg></app>'
 	  assert_equal_fragment_transform '<:[καὶ ὧν δε]κάτη [27]<#β=2#>|SoSOL:Gabby|[.6]ων.2[.2]<#β=2#>:>', '<app type="SoSOL"><lem resp="Gabby"><supplied reason="lost">καὶ ὧν δε</supplied>κάτη <supplied reason="lost">27</supplied><num value="2">β</num></lem><rdg><gap reason="lost" quantity="6" unit="character"/>ων<gap reason="illegible" quantity="2" unit="character"/><gap reason="lost" quantity="2" unit="character"/><num value="2">β</num></rdg></app>'
-	  assert_equal_fragment_transform '<:(Κών̣ων̣(ος))|SoSOL:Fox|Κω.2ω <:vestig |orth|*monogram*:>:>', '<app type="SoSOL"><lem resp="Fox"><expan>Κώ<unclear>ν</unclear>ω<unclear>ν</unclear><ex>ος</ex></expan></lem><rdg>Κω<gap reason="illegible" quantity="2" unit="character"/>ω <choice><corr><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></corr><sic><g type="monogram"/></sic></choice></rdg></app>'
+	  assert_equal_fragment_transform '<:(Κών̣ων̣(ος))|SoSOL:Fox|Κω.2ω <:vestig |corr|*monogram*:>:>', '<app type="SoSOL"><lem resp="Fox"><expan>Κώ<unclear>ν</unclear>ω<unclear>ν</unclear><ex>ος</ex></expan></lem><rdg>Κω<gap reason="illegible" quantity="2" unit="character"/>ω <choice><corr><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></corr><sic><g type="monogram"/></sic></choice></rdg></app>'
 	  assert_equal_fragment_transform '\<:.3(|ομ|)|SoSOL:Sosin|ε.1ε.2:>/', '<add place="above"><app type="SoSOL"><lem resp="Sosin"><gap reason="illegible" quantity="3" unit="character"/><abbr>ομ</abbr></lem><rdg>ε<gap reason="illegible" quantity="1" unit="character"/>ε<gap reason="illegible" quantity="2" unit="character"/></rdg></app></add>'
     end
 	

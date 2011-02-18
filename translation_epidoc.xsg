@@ -115,10 +115,12 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
 //    :  "(" [LINENUM n] ")." " " = <milestone unit="line" n=[LINENUM n]/>
 //    >: "(" [LINENUM n] ")." "div " = <milestone unit="line" n=[LINENUM n] rend="break"/>
 
-    :  "(" [LINENUM n] ")" = <milestone unit="line" n=[LINENUM n]/>
-    >: "((" [LINENUM n] "))" = <milestone unit="line" n=[LINENUM n] rend="break"/>
+//    :  "(" [LINENUM n] ")" = <milestone unit="line" n=[LINENUM n]/>
+//    >: "((" [LINENUM n] "))" = <milestone unit="line" n=[LINENUM n] rend="break"/>
 
-
+//as per discusson 2-18-11, JC & JS make line number unique but similar to before
+    :  "((" [LINENUM n] "))" = <milestone unit="line" n=[LINENUM n]/>
+    >: "(((" [LINENUM n] ")))" = <milestone unit="line" n=[LINENUM n] rend="break"/>
 
   
   foreign

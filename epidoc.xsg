@@ -300,17 +300,29 @@ item
 //	>: "*" [UNDERDOT] [WORDS k]  [UNDERDOT] "*" = <unclear><g type=[WORDS k]></></>
 	
 	//---choice---
-	//  <:a|orth|b|:> 
-	: [BEGOPT] [WORDVEST a] "(?)" "|orth|" [WORDVEST b] [ENDOPT] = <choice><corr cert="low">[WORDVEST a]</><sic>[WORDVEST b]</></>
-	>: [BEGOPT] [WORDVEST a] "(?)" "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr cert="low">[WORDVEST a]</><sic>[items d]<certainty match=".." locus="value"/></></>
-	>: [BEGOPT] [WORDVEST a] "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr>[WORDVEST a]</><sic>[items d]<certainty match=".." locus="value"/></></>
-	>: [BEGOPT] [items a] "(?)" "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr cert="low">[items a]</><sic>[items d]<certainty match=".." locus="value"/></></>
-	>: [BEGOPT] [items a] "|orth|" [items d] "(?)" [ENDOPT] = <choice><corr>[items a]</><sic>[items d]<certainty match=".." locus="value"/></></>
-	>: [BEGOPT] [items a] "(?)" "|orth|" [items d] [ENDOPT] = <choice><corr cert="low">[items a]</><sic>[items d]</></>
-	: [BEGOPT] [WORDVEST a] "|orth|" [WORDVEST b] [ENDOPT] = <choice><corr>[WORDVEST a]</><sic>[WORDVEST b]</></>
-	>: [BEGOPT] [items a] "|orth|" [WORDVEST b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDVEST b]</></>
-	>: [BEGOPT] [WORDVEST a] "|orth|" [items b] [ENDOPT] = <choice><corr>[WORDVEST a]</><sic>[items b]</></>
-	>: [BEGOPT] [items a] "|orth|" [items b] [ENDOPT] = <choice><corr>[items a]</><sic>[items b]</></>
+	//  <:a|corr|b|:> 
+	: [BEGOPT] [WORDVEST a] "(?)" "|corr|" [WORDVEST b] [ENDOPT] = <choice><corr cert="low">[WORDVEST a]</><sic>[WORDVEST b]</></>
+	>: [BEGOPT] [WORDVEST a] "(?)" "|corr|" [items d] "(?)" [ENDOPT] = <choice><corr cert="low">[WORDVEST a]</><sic>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [WORDVEST a] "|corr|" [items d] "(?)" [ENDOPT] = <choice><corr>[WORDVEST a]</><sic>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|corr|" [items d] "(?)" [ENDOPT] = <choice><corr cert="low">[items a]</><sic>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "|corr|" [items d] "(?)" [ENDOPT] = <choice><corr>[items a]</><sic>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|corr|" [items d] [ENDOPT] = <choice><corr cert="low">[items a]</><sic>[items d]</></>
+	: [BEGOPT] [WORDVEST a] "|corr|" [WORDVEST b] [ENDOPT] = <choice><corr>[WORDVEST a]</><sic>[WORDVEST b]</></>
+	>: [BEGOPT] [items a] "|corr|" [WORDVEST b] [ENDOPT] = <choice><corr>[items a]</><sic>[WORDVEST b]</></>
+	>: [BEGOPT] [WORDVEST a] "|corr|" [items b] [ENDOPT] = <choice><corr>[WORDVEST a]</><sic>[items b]</></>
+	>: [BEGOPT] [items a] "|corr|" [items b] [ENDOPT] = <choice><corr>[items a]</><sic>[items b]</></>
+
+	//  <:a|reg|b|:> 
+	: [BEGOPT] [WORDVEST a] "(?)" "|reg|" [WORDVEST b] [ENDOPT] = <choice><reg cert="low">[WORDVEST a]</><orig>[WORDVEST b]</></>
+	>: [BEGOPT] [WORDVEST a] "(?)" "|reg|" [items d] "(?)" [ENDOPT] = <choice><reg cert="low">[WORDVEST a]</><orig>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [WORDVEST a] "|reg|" [items d] "(?)" [ENDOPT] = <choice><reg>[WORDVEST a]</><orig>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|reg|" [items d] "(?)" [ENDOPT] = <choice><reg cert="low">[items a]</><orig>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "|reg|" [items d] "(?)" [ENDOPT] = <choice><reg>[items a]</><orig>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|reg|" [items d] [ENDOPT] = <choice><reg cert="low">[items a]</><orig>[items d]</></>
+	: [BEGOPT] [WORDVEST a] "|reg|" [WORDVEST b] [ENDOPT] = <choice><reg>[WORDVEST a]</><orig>[WORDVEST b]</></>
+	>: [BEGOPT] [items a] "|reg|" [WORDVEST b] [ENDOPT] = <choice><reg>[items a]</><orig>[WORDVEST b]</></>
+	>: [BEGOPT] [WORDVEST a] "|reg|" [items b] [ENDOPT] = <choice><reg>[WORDVEST a]</><orig>[items b]</></>
+	>: [BEGOPT] [items a] "|reg|" [items b] [ENDOPT] = <choice><reg>[items a]</><orig>[items b]</></>
 
 	//---milestone---
 	//  '----' or  '--------'

@@ -6,10 +6,11 @@ if(RUBY_PLATFORM == 'java')
     #-------------------new for translation----------------------
     
     def test_term
+
       assert_equal_fragment_transform '<cow=vaca>', '<term target="vaca">cow</term>'
       assert_equal_fragment_transform '<def=target>', '<term target="target">def</term>'
-      assert_equal_fragment_transform '<cow=vaca~la>', '<term target="vaca" xml:lang="la">cow</term>'
-      assert_equal_fragment_transform '<cow=vaca~grc-Latn>', '<term target="vaca" xml:lang="grc-Latn">cow</term>'
+      assert_equal_fragment_transform '<cow~la=vaca>', '<term target="vaca" xml:lang="la">cow</term>'
+      assert_equal_fragment_transform '<cow~grc-Latn=vaca>', '<term target="vaca" xml:lang="grc-Latn">cow</term>'
       
       assert_equal_fragment_transform '<scrutinized (?)=epikekrimenos>', '<term target="epikekrimenos">scrutinized (?)</term>'
       assert_equal_fragment_transform '<Treasuries\' quarter=amphTam>', '<term target="amphTam">Treasuries\' quarter</term>'
@@ -18,8 +19,8 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<von 1/100 und 1/50=rkain>', '<term target="rkain">von 1/100 und 1/50</term>'
       
       assert_equal_fragment_transform '<[...]-Viertels=amphodon>', '<term target="amphodon"><gap reason="lost" extent="unknown" unit="character"/>-Viertels</term>'
-      
-      #assert_equal_fragment_transform '<~|katoikoi(?)|~la=katoikos>', '<term target="katoikos" xml:lang="la"><foreign xml:lang="la">katoikoi(?)</foreign></term>'
+
+      ##assert_equal_fragment_transform '<~|katoikoi(?)|~la=katoikos>', '<term target="katoikos" xml:lang="la"><foreign xml:lang="la">katoikoi(?)</foreign></term>'
       
     end 
  
@@ -52,21 +53,24 @@ if(RUBY_PLATFORM == 'java')
     #-----------------changed from transcription-----------------------
     
     
-    def test_note
-      assert_equal_fragment_transform '/*en abcdefg*/', '<note xml:lang="en">abcdefg</note>'
-      assert_equal_fragment_transform '/*de abcdefg*/', '<note xml:lang="de">abcdefg</note>'
+    def test_note      
+      assert_equal_fragment_transform '/*abcdefg*/', '<note>abcdefg</note>'
+      assert_equal_fragment_transform '/*?*/', '<note>?</note>'
+      assert_equal_fragment_transform '/*End of sentence.*/', '<note>End of sentence.</note>'
+      assert_equal_fragment_transform '/*text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4*/', '<note>text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4</note>' 
       
-      #assert_equal_fragment_transform '/*abcdefg*/', '<note xml:lang="en">abcdefg</note>'
+      #with xml:lang that was removed 6-25-1010
+      #assert_equal_fragment_transform '/*en abcdefg*/', '<note xml:lang="en">abcdefg</note>'
+      #assert_equal_fragment_transform '/*de abcdefg*/', '<note xml:lang="de">abcdefg</note>'
       
-      assert_equal_fragment_transform '/*en ?*/', '<note xml:lang="en">?</note>'
-      assert_equal_fragment_transform '/*de ?*/', '<note xml:lang="de">?</note>'
+      #assert_equal_fragment_transform '/*en ?*/', '<note xml:lang="en">?</note>'
+      #assert_equal_fragment_transform '/*de ?*/', '<note xml:lang="de">?</note>'
       
-      assert_equal_fragment_transform '/*en End of sentence.*/', '<note xml:lang="en">End of sentence.</note>'
-      assert_equal_fragment_transform '/*de End of sentence.*/', '<note xml:lang="de">End of sentence.</note>'
+      #assert_equal_fragment_transform '/*en End of sentence.*/', '<note xml:lang="en">End of sentence.</note>'
+      #assert_equal_fragment_transform '/*de End of sentence.*/', '<note xml:lang="de">End of sentence.</note>'      
       
-      
-      assert_equal_fragment_transform '/*en text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4*/', '<note xml:lang="en">text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4</note>'
-      assert_equal_fragment_transform '/*de text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4*/', '<note xml:lang="de">text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4</note>'
+      #assert_equal_fragment_transform '/*en text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4*/', '<note xml:lang="en">text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4</note>'
+      #assert_equal_fragment_transform '/*de text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4*/', '<note xml:lang="de">text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4</note>'
     end
     
     
@@ -75,8 +79,12 @@ if(RUBY_PLATFORM == 'java')
       #assert_equal_fragment_transform '(1). ', '<milestone unit="line" n="1"/>'
       #assert_equal_fragment_transform '(1).div ', '<milestone unit="line" n="1" rend="break"/>'
       
-      assert_equal_fragment_transform '(1)', '<milestone unit="line" n="1"/>'
-      assert_equal_fragment_transform '((1))', '<milestone unit="line" n="1" rend="break"/>'
+      #assert_equal_fragment_transform '(1)', '<milestone unit="line" n="1"/>'
+      #assert_equal_fragment_transform '((1))', '<milestone unit="line" n="1" rend="break"/>'
+      
+      #changed 2-18-2010
+      assert_equal_fragment_transform '((1))', '<milestone unit="line" n="1"/>'
+      assert_equal_fragment_transform '(((1)))', '<milestone unit="line" n="1" rend="break"/>'
       
     end
     

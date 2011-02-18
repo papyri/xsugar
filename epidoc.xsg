@@ -97,8 +97,8 @@ QUESTION = [\?]?
 
 // symbolnum is for recognizing either a fraction or whole number with multiple digits
 //SYMBOLNUM = [0-9]+\/{1}[0-9]+|[0-9]+
-// fracnum is for recognizing a fraction
-FRACNUM = [0-9]+\/{1}[0-9]+
+// fracnum is for recognizing a fraction or wholenumber
+FRACNUM = ([0-9]+\/{1}[0-9]+|[0-9]+)
 
 // symnummulti is for recognizing multiple fractions or whole numbers with multiple digits divided by 1 or more spaces
 //SYMNUMMULTI = ([ ]*[0-9]+\/{1}[0-9]+[ ]+|[ ]*[0-9]+[ ]+)+
@@ -473,34 +473,48 @@ item
 	>: "_[" [items a] "(?)" "]_" = <supplied evidence="parallel" reason="lost" cert="low">[items a]</>
 
 	//---number or fraction_no_symbol---
-	: "<#=frac" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction"/>
-	: "<#=frac" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s] rend="fraction"><certainty locus="value" match=".."/></>
-	: "<#=" [NUM s] [ENDNUM] = <num value=[NUM s]/>
-	: "<#=" [NUM s] "(?)" [ENDNUM] = <num value=[NUM s]><certainty locus="value" match=".."/></>
+//going away	: "<#=frac" [ENDNUM] = <num type="fraction"/>
+//going away	: "<#=frac" "(?)" [ENDNUM] = <num type="fraction"><certainty match=".." locus="value"/></>
+	: "<#tic=frac" [ENDNUM] = <num type="fraction" rend="tick"/>
+	: "<#tic=frac" "(?)" [ENDNUM] = <num type="fraction" rend="tick"><certainty match=".." locus="value"/></>
+	: "<#tic=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="tick"/>
+	: "<#tic=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s] rend="tick"><certainty match=".." locus="value"/></>
+////	: "<#=" [NUM s] [ENDNUM] = <num value=[NUM s]/>
+////	: "<#=" [NUM s] "(?)" [ENDNUM] = <num value=[NUM s]><certainty match=".." locus="value"/></>
 	: "<#=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]/>
-	: "<#=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s]><certainty locus="value" match=".."/></>
+	: "<#=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s]><certainty match=".." locus="value"/></>
 	: [BEGNUM] [WORD o] "=#>" = <num>[WORD o]</>
-	: [BEGNUM] [WORD o] "=(?)#>" = <num>[WORD o]<certainty locus="value" match=".."/></>
+	: [BEGNUM] [WORD o] "=(?)#>" = <num>[WORD o]<certainty match=".." locus="value"/></>
 	: [BEGNUM] "frac" [ENDNUM] = <num type="fraction"/>
 
 	//---fraction_number and whole_number symbol and multi_symbol---
-	: [BEGNUM] [WORD o] "=frac" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[WORD o]</>
-	: [BEGNUM] [WORD o] "=frac" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[WORD o]<certainty locus="value" match=".."/></>
+	: [BEGNUM] [WORD o] "=frac" [ENDNUM] = <num type="fraction">[WORD o]</>
+	: [BEGNUM] [WORD o] "=frac" "(?)" [ENDNUM] = <num type="fraction">[WORD o]<certainty match=".." locus="value"/></>
+	: [BEGNUM] [WORD o] " tic=frac" [ENDNUM] = <num type="fraction" rend="tick">[WORD o]</>
+	: [BEGNUM] [WORD o] " tic=frac" "(?)" [ENDNUM] = <num type="fraction" rend="tick">[WORD o]<certainty match=".." locus="value"/></>
+	: [BEGNUM] [WORD o] " tic=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="tick">[WORD o]</>
+	: [BEGNUM] [WORD o] " tic=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s] rend="tick">[WORD o]<certainty match=".." locus="value"/></>
 	: [BEGNUM] [WORD o] "=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]>[WORD o]</>
-	: [BEGNUM] [WORD o] "=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s]>[WORD o]<certainty locus="value" match=".."/></>
-	: [BEGNUM] [WORD o] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[WORD o]</>
-	: [BEGNUM] [WORD o] "=" [NUM s] "(?)" [ENDNUM] = <num value=[NUM s]>[WORD o]<certainty locus="value" match=".."/></>
+	: [BEGNUM] [WORD o] "=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s]>[WORD o]<certainty match=".." locus="value"/></>
+////	: [BEGNUM] [WORD o] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[WORD o]</>
+////	: [BEGNUM] [WORD o] "=" [NUM s] "(?)" [ENDNUM] = <num value=[NUM s]>[WORD o]<certainty match=".." locus="value"/></>
 	: [BEGNUM] [WORD o] [morenum m] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[WORD o] [morenum m]</>
-	>: [BEGNUM] [items o] "=frac" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[items o]</>
-	>: [BEGNUM] [items o] "=frac" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s] rend="fraction">[items o]<certainty locus="value" match=".."/></>
-	>: [BEGNUM] [items o] "=frac" [ENDNUM] = <num rend="fraction">[items o]</>
-	>: [BEGNUM] [items o] "=frac" "(?)" [ENDNUM] = <num rend="fraction">[items o]<certainty locus="value" match=".."/></>
+	>: [BEGNUM] [items o] "=frac" [ENDNUM] = <num type="fraction">[items o]</>
+	>: [BEGNUM] [items o] "=frac" "(?)" [ENDNUM] = <num type="fraction">[items o]<certainty match=".." locus="value"/></>
+	>: [BEGNUM] [items o] " tic=frac" [ENDNUM] = <num type="fraction" rend="tick">[items o]</>
+	>: [BEGNUM] [items o] " tic=frac" "(?)" [ENDNUM] = <num type="fraction" rend="tick">[items o]<certainty match=".." locus="value"/></>
+	>: [BEGNUM] [items o] " tic=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="tick">[items o]</>
+	>: [BEGNUM] [items o] " tic=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s] rend="tick">[items o]<certainty match=".." locus="value"/></>
+///////////	>: [BEGNUM] [items o] "=frac" [ENDNUM] = <num type="fraction">[items o]</>
+//////////	>: [BEGNUM] [items o] "=frac" "(?)" [ENDNUM] = <num type="fraction">[items o]<certainty locus="value" match=".."/></>
+//rend with no value???//	>: [BEGNUM] [items o] "tic=" [ENDNUM] = <num rend="tick">[items o]</>
+//rend with no value???//	>: [BEGNUM] [items o] "tic=" "(?)" [ENDNUM] = <num rend="tick">[items o]<certainty match=".." locus="value"/></>
 	>: [BEGNUM] [items o] "=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]>[items o]</>
-	>: [BEGNUM] [items o] "=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s]>[items o]<certainty locus="value" match=".."/></>
-	>: [BEGNUM] [items o] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[items o]</>
-	>: [BEGNUM] [items o] "=" [NUM s] "(?)" [ENDNUM] = <num value=[NUM s]>[items o]<certainty locus="value" match=".."/></>
+	>: [BEGNUM] [items o] "=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s]>[items o]<certainty match=".." locus="value"/></>
+////	>: [BEGNUM] [items o] "=" [NUM s] [ENDNUM] = <num value=[NUM s]>[items o]</>
+////	>: [BEGNUM] [items o] "=" [NUM s] "(?)" [ENDNUM] = <num value=[NUM s]>[items o]<certainty match=".." locus="value"/></>
 	>: [BEGNUM] [items o] "=" [ENDNUM] = <num>[items o]</>
-	>: [BEGNUM] [items o] "=" "(?)" [ENDNUM] = <num>[items o]<certainty locus="value" match=".."/></>
+	>: [BEGNUM] [items o] "=" "(?)" [ENDNUM] = <num>[items o]<certainty match=".." locus="value"/></>
 	>: [BEGNUM] [items o] "=" [NUM l] "-" [NUM m] [ENDNUM] = <num atLeast=[NUM l] atMost=[NUM m]>[items o]</>
 		
 	//---subst---

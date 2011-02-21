@@ -571,24 +571,23 @@ if(RUBY_PLATFORM == 'java')
     
     def test_glyph
 	  assert_equal_fragment_transform '*stauros*', '<g type="stauros"/>'
-      assert_equal_fragment_transform '*stauros,♱*', '<g type="stauros">♱</g>'
+	  assert_equal_fragment_transform '*stauros,♱*', '<g type="stauros">♱</g>'
 	  assert_equal_fragment_transform '*stauros?,♱*', '<unclear><g type="stauros">♱</g></unclear>'
 	  assert_equal_fragment_transform '*stauros?,♱̣*', '<unclear><g type="stauros"><unclear>♱</unclear></g></unclear>'
 	  assert_equal_fragment_transform '*stauros,♱̣*', '<g type="stauros"><unclear>♱</unclear></g>'
-      assert_equal_fragment_transform '*filler(extension)*', '<g rend="extension" type="filler"/>'
-	  assert_equal_fragment_transform '*@stauros*', '<orig><g type="stauros"/></orig>'
+	  assert_equal_fragment_transform '*filler(extension)*', '<g rend="extension" type="filler"/>'
 	  assert_equal_fragment_transform '*mid-punctus*', '<g type="mid-punctus"/>'
 	  assert_equal_fragment_transform '*mid-punctus?*', '<unclear><g type="mid-punctus"/></unclear>'
 	  assert_equal_fragment_transform '*filler(extension)?*', '<unclear><g rend="extension" type="filler"/></unclear>'
     end
     
     def test_hand_shift
-      assert_equal_fragment_transform '$m2(?) ', '<handShift new="m2" cert="low"/>'
+	  assert_equal_fragment_transform '$m2(?) ', '<handShift new="m2" cert="low"/>'
 	  assert_equal_fragment_transform '$m22(?) ', '<handShift new="m22" cert="low"/>'
 	  assert_equal_fragment_transform '$m2b(?) ', '<handShift new="m2b" cert="low"/>'
 	  assert_equal_fragment_transform '[$m5(?)  ]', '<supplied reason="lost"><handShift new="m5" cert="low"/> </supplied>'
 	  assert_equal_fragment_transform '$m1 ', '<handShift new="m1"/>'
-      assert_equal_fragment_transform '$m20 ', '<handShift new="m20"/>' 
+	  assert_equal_fragment_transform '$m20 ', '<handShift new="m20"/>' 
 	  assert_equal_fragment_transform '$m1a ', '<handShift new="m1a"/>' 
 	  assert_equal_fragment_transform '[$m5  ]', '<supplied reason="lost"><handShift new="m5"/> </supplied>'
     end

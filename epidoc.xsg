@@ -615,7 +615,8 @@ item
 	: "*" [WORD a] "?," [WORD b] "*" = <unclear><g type=[WORD a]>[WORD b]</></>
 	>: "*" [WORD a] "?," [items b] "*" = <unclear><g type=[WORD a]>[items b]</></>
 	: "*filler(" [WORD a] ")" "*" = <g rend=[WORD a] type="filler"></>
-	: "*@" [WORD a] "*" = <orig><g type=[WORD a]></></>
+//commented out per James email 2/19/2011
+//	: "*@" [WORD a] "*" = <orig><g type=[WORD a]></></>
 	
 	//---hand_shift---
 	//  $m# 

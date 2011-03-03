@@ -6,6 +6,8 @@ idp2_prefix="$HOME/source/idp2"
 today=`date +%Y.%m.%d`
 cd $idp2_prefix/idp.data-master
 echo "idp.data git:" >> $idp2_prefix/coverage/$today.txt
+git checkout .
+git clean -f >> $idp2_prefix/coverage/$today.txt
 git pull origin master >> $idp2_prefix/coverage/$today.txt
 git log -n 1 --pretty=oneline >> $idp2_prefix/coverage/$today.txt
 cd $idp2_prefix/xsugar

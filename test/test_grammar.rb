@@ -466,21 +466,93 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform ' ạ( ᾿)bc', '<hi rend="lenis"><unclear>a</unclear></hi>bc'
     end
         
-    def test_num_simple
-      assert_equal_fragment_transform '<#α=1#>', '<num value="1">α</num>'
-      assert_equal_fragment_transform '<#α=#>', '<num>α</num>'
-	  #below is only num test changed for empty tag processing
-      assert_equal_fragment_transform '<#=1#>', '<num value="1"/>'
-      assert_equal_fragment_transform '<#δ=1/4#>', '<num value="1/4">δ</num>'
-      assert_equal_fragment_transform '<#ιδ=14#>', '<num value="14">ιδ</num>'
-      assert_equal_fragment_transform '<#frac#>', '<num type="fraction"/>'
-      assert_equal_fragment_transform '<#Α=1000(?)#>', '<num value="1000">Α<certainty locus="value" match=".."/></num>'
-      assert_equal_fragment_transform '<#[ι]γ=13(?)#>', '<num value="13"><supplied reason="lost">ι</supplied>γ<certainty locus="value" match=".."/></num>'
-      assert_equal_fragment_transform '[ίως ((ἔτους)) <#ι=10(?)#>  καὶ ]', '<supplied reason="lost">ίως <expan><ex>ἔτους</ex></expan> <num value="10">ι<certainty locus="value" match=".."/></num>  καὶ </supplied>'
-      assert_equal_fragment_transform '<#a=1-9#>', '<num atLeast="1" atMost="9">a</num>'
-      assert_equal_fragment_transform '<#κ[.1]=20-29#>', '<num atLeast="20" atMost="29">κ<gap reason="lost" quantity="1" unit="character"/></num>'
-      assert_equal_fragment_transform '<#ι̣=10-19#>', '<num atLeast="10" atMost="19"><unclear>ι</unclear></num>'
-    end
+    def test_num_exhaustive
+    assert_equal_fragment_transform '<#=14#>', '<num value="14"/>'
+    assert_equal_fragment_transform '<#=1/4#>', '<num value="1/4"/>'
+    assert_equal_fragment_transform '<#α=#>', '<num>α</num>'
+    
+    assert_equal_fragment_transform '<#α=frac#>', '<num type="fraction">α</num>'
+    assert_equal_fragment_transform '<#ο \'=frac#>', '<num type="fraction" rend="tick">ο</num>'
+    assert_equal_fragment_transform '<#ο \'=15#>', '<num value="15" rend="tick">ο</num>'
+    assert_equal_fragment_transform '<#ο \'=1/5#>', '<num value="1/5" rend="tick">ο</num>'
+    assert_equal_fragment_transform '<#ο \'=15(?)#>', '<num value="15" rend="tick">ο<certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#ο \'=1/5(?)#>', '<num value="1/5" rend="tick">ο<certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#ο=15#>', '<num value="15">ο</num>'
+    assert_equal_fragment_transform '<#ο=1/5#>', '<num value="1/5">ο</num>'
+    assert_equal_fragment_transform '<#ο=15(?)#>', '<num value="15">ο<certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#ο=1/5(?)#>', '<num value="1/5">ο<certainty match="../@value" locus="value"/></num>'
+    #myriads below
+    assert_equal_fragment_transform '<#.1=frac#>', '<num type="fraction"><gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1ο=frac#>', '<num type="fraction"><gap reason="illegible" quantity="1" unit="character"/>ο</num>'
+    assert_equal_fragment_transform '<#ι.1=frac#>', '<num type="fraction">ι<gap reason="illegible" quantity="1" unit="character"/></num>'
+    
+    assert_equal_fragment_transform '<#.1 \'=frac#>', '<num type="fraction" rend="tick"><gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1ο \'=frac#>', '<num type="fraction" rend="tick"><gap reason="illegible" quantity="1" unit="character"/>ο</num>'
+    assert_equal_fragment_transform '<#ι.1 \'=frac#>', '<num type="fraction" rend="tick">ι<gap reason="illegible" quantity="1" unit="character"/></num>'
+    
+    assert_equal_fragment_transform '<#.1 \'=16#>', '<num value="16" rend="tick"><gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1ο \'=16#>', '<num value="16" rend="tick"><gap reason="illegible" quantity="1" unit="character"/>ο</num>'
+    assert_equal_fragment_transform '<#ι.1 \'=16#>', '<num value="16" rend="tick">ι<gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1 \'=16(?)#>', '<num value="16" rend="tick"><gap reason="illegible" quantity="1" unit="character"/><certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#.1ο \'=16(?)#>', '<num value="16" rend="tick"><gap reason="illegible" quantity="1" unit="character"/>ο<certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#ι.1 \'=16(?)#>', '<num value="16" rend="tick">ι<gap reason="illegible" quantity="1" unit="character"/><certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#.1 \'=1/6#>', '<num value="1/6" rend="tick"><gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1ο \'=1/6#>', '<num value="1/6" rend="tick"><gap reason="illegible" quantity="1" unit="character"/>ο</num>'
+    assert_equal_fragment_transform '<#ι.1 \'=1/6#>', '<num value="1/6" rend="tick">ι<gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1 \'=1/6(?)#>', '<num value="1/6" rend="tick"><gap reason="illegible" quantity="1" unit="character"/><certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#.1ο \'=1/6(?)#>', '<num value="1/6" rend="tick"><gap reason="illegible" quantity="1" unit="character"/>ο<certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#ι.1 \'=1/6(?)#>', '<num value="1/6" rend="tick">ι<gap reason="illegible" quantity="1" unit="character"/><certainty match="../@value" locus="value"/></num>'
+    
+    assert_equal_fragment_transform '<#.1=16#>', '<num value="16"><gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1ο=16#>', '<num value="16"><gap reason="illegible" quantity="1" unit="character"/>ο</num>'
+    assert_equal_fragment_transform '<#ι.1=16#>', '<num value="16">ι<gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1=16(?)#>', '<num value="16"><gap reason="illegible" quantity="1" unit="character"/><certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#.1ο=16(?)#>', '<num value="16"><gap reason="illegible" quantity="1" unit="character"/>ο<certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#ι.1=16(?)#>', '<num value="16">ι<gap reason="illegible" quantity="1" unit="character"/><certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#.1=1/6#>', '<num value="1/6"><gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1ο=1/6#>', '<num value="1/6"><gap reason="illegible" quantity="1" unit="character"/>ο</num>'
+    assert_equal_fragment_transform '<#ι.1=1/6#>', '<num value="1/6">ι<gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1=1/6(?)#>', '<num value="1/6"><gap reason="illegible" quantity="1" unit="character"/><certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#.1ο=1/6(?)#>', '<num value="1/6"><gap reason="illegible" quantity="1" unit="character"/>ο<certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#ι.1=1/6(?)#>', '<num value="1/6">ι<gap reason="illegible" quantity="1" unit="character"/><certainty match="../@value" locus="value"/></num>'
+    
+    assert_equal_fragment_transform '<#ο \'=#>', '<num rend="tick">ο</num>'
+    assert_equal_fragment_transform '<#.1 \'=#>', '<num rend="tick"><gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1ο \'=#>', '<num rend="tick"><gap reason="illegible" quantity="1" unit="character"/>ο</num>'
+    assert_equal_fragment_transform '<#ι.1 \'=#>', '<num rend="tick">ι<gap reason="illegible" quantity="1" unit="character"/></num>'
+    
+    assert_equal_fragment_transform '<#.1=#>', '<num><gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#.1ο=#>', '<num><gap reason="illegible" quantity="1" unit="character"/>ο</num>'
+    assert_equal_fragment_transform '<#ι.1=#>', '<num>ι<gap reason="illegible" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#α=#>', '<num>α</num>'
+    #range below
+    
+    assert_equal_fragment_transform '<#[.1] \'=frac#>', '<num type="fraction" rend="tick"><gap reason="lost" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#[.1]ο \'=frac#>', '<num type="fraction" rend="tick"><gap reason="lost" quantity="1" unit="character"/>ο</num>'
+    assert_equal_fragment_transform '<#.2 \'=frac#>', '<num type="fraction" rend="tick"><gap reason="illegible" quantity="2" unit="character"/></num>'
+    
+    assert_equal_fragment_transform '<#[.1]=frac#>', '<num type="fraction"><gap reason="lost" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#[.1]ο=frac#>', '<num type="fraction"><gap reason="lost" quantity="1" unit="character"/>ο</num>'
+    assert_equal_fragment_transform '<#.2=frac#>', '<num type="fraction"><gap reason="illegible" quantity="2" unit="character"/></num>'
+    
+    ###orig below
+    assert_equal_fragment_transform '<#α=1#>', '<num value="1">α</num>'
+    assert_equal_fragment_transform '<#α=#>', '<num>α</num>'
+  #below is only num test changed for empty tag processing
+    assert_equal_fragment_transform '<#=1#>', '<num value="1"/>'
+    assert_equal_fragment_transform '<#δ=1/4#>', '<num value="1/4">δ</num>'
+    assert_equal_fragment_transform '<#ιδ=14#>', '<num value="14">ιδ</num>'
+    assert_equal_fragment_transform '<#Α=1000(?)#>', '<num value="1000">Α<certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '<#[ι]γ=13(?)#>', '<num value="13"><supplied reason="lost">ι</supplied>γ<certainty match="../@value" locus="value"/></num>'
+    assert_equal_fragment_transform '[ίως ((ἔτους)) <#ι=10(?)#>  καὶ ]', '<supplied reason="lost">ίως <expan><ex>ἔτους</ex></expan> <num value="10">ι<certainty match="../@value" locus="value"/></num>  καὶ </supplied>'
+    assert_equal_fragment_transform '<#a=1-9#>', '<num atLeast="1" atMost="9">a</num>'
+    assert_equal_fragment_transform '<#κ[.1]=20-29#>', '<num atLeast="20" atMost="29">κ<gap reason="lost" quantity="1" unit="character"/></num>'
+    assert_equal_fragment_transform '<#ι̣=10-19#>', '<num atLeast="10" atMost="19"><unclear>ι</unclear></num>'
+  end
+  
+  def test_num_myriads
+    assert_equal_fragment_transform '<#μυρίαδες<#β=2#><#Βφ=2500#>=22500#>', '<num value="22500">μυρίαδες<num value="2">β</num><num value="2500">Βφ</num></num>'
+  end
     
     def test_num_myriads
       assert_equal_fragment_transform '<#μυρίαδες<#β=2#><#Βφ=2500#>=22500#>', '<num value="22500">μυρίαδες<num value="2">β</num><num value="2500">Βφ</num></num>'
@@ -518,6 +590,72 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '<:<:b|reg|c:>|corr|σηλη:>', '<choice><corr><choice><reg>b</reg><orig>c</orig></choice></corr><sic>σηλη</sic></choice>'
 	end
     
+  def test_mult_regs_no_nattrib
+    assert_equal_fragment_transform '<:Jon=grc|Jean=ital|Jun=de|John(?)=en||reg||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="ital">Jean</reg><reg xml:lang="de">Jun</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John(?)=en||reg||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John=en||reg||Jan:>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg xml:lang="en">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John(?)=en||reg||Jan:>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John=en||reg||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John(?)||reg||Jan:>', '<choice><reg>Jon</reg><reg cert="low">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John||reg||Jan:>', '<choice><reg cert="low">Jon</reg><reg>John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John(?)||reg||Jan:>', '<choice><reg cert="low">Jon</reg><reg cert="low">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John||reg||Jan:>', '<choice><reg>Jon</reg><reg>John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John=en||reg||Jan:>', '<choice><reg>Jon</reg><reg xml:lang="en">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John||reg||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg>John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John=en||reg||Jan:>', '<choice><reg cert="low">Jon</reg><reg xml:lang="en">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John(?)=en||reg||Jan:>', '<choice><reg cert="low">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John(?)=en||reg||Jan:>', '<choice><reg>Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John||reg||Jan:>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg>John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John(?)||reg||Jan:>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg cert="low">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John(?)||reg||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg cert="low">John</reg><orig>Jan</orig></choice>'
+  end
+    
+  def test_mult_regs_with_markup_no_nattrib
+    #all above tests with orig being markup
+    assert_equal_fragment_transform '<:Jon=grc|Jean=ital|Jun=de|John(?)=en||reg||[Jan]:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="ital">Jean</reg><reg xml:lang="de">Jun</reg><reg xml:lang="en" cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John(?)=en||reg||[Jan]:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John=en||reg||[Jan]:>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg xml:lang="en">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John(?)=en||reg||[Jan]:>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John=en||reg||[Jan]:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John(?)||reg||[Jan]:>', '<choice><reg>Jon</reg><reg cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John||reg||[Jan]:>', '<choice><reg cert="low">Jon</reg><reg>John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John(?)||reg||[Jan]:>', '<choice><reg cert="low">Jon</reg><reg cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John||reg||[Jan]:>', '<choice><reg>Jon</reg><reg>John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John=en||reg||[Jan]:>', '<choice><reg>Jon</reg><reg xml:lang="en">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John||reg||[Jan]:>', '<choice><reg xml:lang="grc">Jon</reg><reg>John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John=en||reg||[Jan]:>', '<choice><reg cert="low">Jon</reg><reg xml:lang="en">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John(?)=en||reg||[Jan]:>', '<choice><reg cert="low">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John(?)=en||reg||[Jan]:>', '<choice><reg>Jon</reg><reg xml:lang="en" cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John||reg||[Jan]:>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg>John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John(?)||reg||[Jan]:>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John(?)||reg||[Jan]:>', '<choice><reg xml:lang="grc">Jon</reg><reg cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+  end
+  
+  def test_mult_regs_nested_etc_no_nattrib
+    #break reg and origs with markup combinations
+    assert_equal_fragment_transform '<:[Jon](?)=grc|[John](?)=en||reg||[Jan]:>', '<choice><reg xml:lang="grc" cert="low"><supplied reason="lost">Jon</supplied></reg><reg xml:lang="en" cert="low"><supplied reason="lost">John</supplied></reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:[Jon]=grc|[John]=en||reg||[Jan]:>', '<choice><reg xml:lang="grc"><supplied reason="lost">Jon</supplied></reg><reg xml:lang="en"><supplied reason="lost">John</supplied></reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:[Jon](?)|[John](?)||reg||[Jan]:>', '<choice><reg cert="low"><supplied reason="lost">Jon</supplied></reg><reg cert="low"><supplied reason="lost">John</supplied></reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:[Jon]|[John]||reg||[Jan]:>', '<choice><reg><supplied reason="lost">Jon</supplied></reg><reg><supplied reason="lost">John</supplied></reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:[.3]=grc|John(?)=en||reg||Jan:>', '<choice><reg xml:lang="grc"><gap reason="lost" quantity="3" unit="character"/></reg><reg xml:lang="en" cert="low">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|[.4]=en||reg||Jan:>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg xml:lang="en"><gap reason="lost" quantity="4" unit="character"/></reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:[.3](?)=grc|John(?)=en||reg||Jan:>', '<choice><reg xml:lang="grc" cert="low"><gap reason="lost" quantity="3" unit="character"/></reg><reg xml:lang="en" cert="low">John</reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:Jon|[.4](?)||reg||Jan:>', '<choice><reg>Jon</reg><reg cert="low"><gap reason="lost" quantity="4" unit="character"/></reg><orig>Jan</orig></choice>'
+    assert_equal_fragment_transform '<:[.3]=grc|John(?)=en||reg||[Jan]:>', '<choice><reg xml:lang="grc"><gap reason="lost" quantity="3" unit="character"/></reg><reg xml:lang="en" cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|[.4]=en||reg||[Jan]:>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg xml:lang="en"><gap reason="lost" quantity="4" unit="character"/></reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:[.3](?)=grc|John(?)=en||reg||[Jan]:>', '<choice><reg xml:lang="grc" cert="low"><gap reason="lost" quantity="3" unit="character"/></reg><reg xml:lang="en" cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|[.4](?)||reg||[Jan]:>', '<choice><reg>Jon</reg><reg cert="low"><gap reason="lost" quantity="4" unit="character"/></reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
+    assert_equal_fragment_transform '<:June|BL:1.123|<:Jon|John||reg||Jan:>:>', '<app type="BL"><lem resp="1.123">June</lem><rdg><choice><reg>Jon</reg><reg>John</reg><orig>Jan</orig></choice></rdg></app>'
+    assert_equal_fragment_transform '<:June|BL:1.123|<:[.3](?)=grc|John(?)=en||reg||[Jan]:>:>', '<app type="BL"><lem resp="1.123">June</lem><rdg><choice><reg xml:lang="grc" cert="low"><gap reason="lost" quantity="3" unit="character"/></reg><reg xml:lang="en" cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice></rdg></app>'
+    #Josh adds
+    assert_equal_fragment_transform '<:June|BL:1.123|<:Jon|John(?)||reg||<:Jön|subst|jan:>:>:>', '<app type="BL"><lem resp="1.123">June</lem><rdg><choice><reg>Jon</reg><reg cert="low">John</reg><orig><subst><add place="inline">Jön</add><del rend="corrected">jan</del></subst></orig></choice></rdg></app>'
+    assert_equal_fragment_transform '<:<:Jun[e]|subst|jan:>|BL:1.123|<:Jon|John(?)||reg||<:Jön|subst|jan:>:>:>', '<app type="BL"><lem resp="1.123"><subst><add place="inline">Jun<supplied reason="lost">e</supplied></add><del rend="corrected">jan</del></subst></lem><rdg><choice><reg>Jon</reg><reg cert="low">John</reg><orig><subst><add place="inline">Jön</add><del rend="corrected">jan</del></subst></orig></choice></rdg></app>'
+    assert_equal_fragment_transform '<:(Jen(nifer))|BL:4.567|<:<:Jun[e]|subst|jan:>|BL:1.123|<:Jon|John(?)||reg||<:Jön|subst|jan:>:>:>:>', '<app type="BL"><lem resp="4.567"><expan>Jen<ex>nifer</ex></expan></lem><rdg><app type="BL"><lem resp="1.123"><subst><add place="inline">Jun<supplied reason="lost">e</supplied></add><del rend="corrected">jan</del></subst></lem><rdg><choice><reg>Jon</reg><reg cert="low">John</reg><orig><subst><add place="inline">Jön</add><del rend="corrected">jan</del></subst></orig></choice></rdg></app></rdg></app>'
+    assert_equal_fragment_transform '<:<:(Jen(nifer))|corr|(Ren(nifer)):>|BL:4.567|<:<:Jun[e]|subst|jan:>|BL:1.123|<:Jon|John(?)||reg||<:Jön|subst|jan:>:>:>:>', '<app type="BL"><lem resp="4.567"><choice><corr><expan>Jen<ex>nifer</ex></expan></corr><sic><expan>Ren<ex>nifer</ex></expan></sic></choice></lem><rdg><app type="BL"><lem resp="1.123"><subst><add place="inline">Jun<supplied reason="lost">e</supplied></add><del rend="corrected">jan</del></subst></lem><rdg><choice><reg>Jon</reg><reg cert="low">John</reg><orig><subst><add place="inline">Jön</add><del rend="corrected">jan</del></subst></orig></choice></rdg></app></rdg></app>'
+    #first#assert_equal_fragment_transform '<:Jon=reg.grc|John=reg.en||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en">John</reg><orig>Jan</orig></choice>'
+    #assert_equal_fragment_transform '<:Jon|reg.grc|John|reg.en||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en">John</reg><orig>Jan</orig></choice>'
+  end
+	
   def test_subst
     assert_equal_fragment_transform '<:Silvanus(?)|subst|silvanos(?):>', '<subst><add place="inline">Silvanus<certainty match=".." locus="value"/></add><del rend="corrected">silvanos<certainty match=".." locus="value"/></del></subst>'
     assert_equal_fragment_transform '<:a|subst|b:>', '<subst><add place="inline">a</add><del rend="corrected">b</del></subst>'

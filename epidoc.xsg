@@ -480,9 +480,9 @@ item
 	>: [BEGNUM] [items o] "=frac" [ENDNUM] = <num type="fraction">[items o]</>
 	>: [BEGNUM] [items o] " '=frac" [ENDNUM] = <num type="fraction" rend="tick">[items o]</>
 	>: [BEGNUM] [items o] " '=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s] rend="tick">[items o]</>
-	>: [BEGNUM] [items o] " '=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s] rend="tick">[items o]<certainty match=".." locus="value"/></>
+	>: [BEGNUM] [items o] " '=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s] rend="tick">[items o]<certainty match="../@value" locus="value"/></>
 	>: [BEGNUM] [items o] "=" [FRACNUM s] [ENDNUM] = <num value=[FRACNUM s]>[items o]</>
-	>: [BEGNUM] [items o] "=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s]>[items o]<certainty match=".." locus="value"/></>
+	>: [BEGNUM] [items o] "=" [FRACNUM s] "(?)" [ENDNUM] = <num value=[FRACNUM s]>[items o]<certainty match="../@value" locus="value"/></>
 	>: [BEGNUM] [items o] " '=" [ENDNUM] = <num rend="tick">[items o]</>
 	>: [BEGNUM] [items o] "=" [ENDNUM] = <num>[items o]</>
 	>: [BEGNUM] [items o] "=" [NUM l] "-" [NUM m] [ENDNUM] = <num atLeast=[NUM l] atMost=[NUM m]>[items o]</>

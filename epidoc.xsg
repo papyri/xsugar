@@ -161,6 +161,16 @@ multwordsp
 			>: [WORD a] " " [multwordsp more] = [WORD a] " " [multwordsp more]
 			>: [WORD a] = [WORD a]
 
+multregs
+    :[items a] "(?)" "|" [multregs more] = <reg cert="low">[items a]</>[multregs more]
+    >:[items a] "(?)" "||reg||" = <reg cert="low">[items a]</>
+    :[items a] "|" [multregs more] = <reg>[items a]</>[multregs more]
+    >:[items a] "||reg||" = <reg>[items a]</>
+    :[items a] "(?)" "=" [WORD b] "|" [multregs more] = <reg xml:lang=[WORD b] cert="low">[items a]</>[multregs more]
+    >:[items a] "(?)" "=" [WORD b] "||reg||" = <reg xml:lang=[WORD b] cert="low">[items a]</>
+    :[items a] "=" [WORD b] "|" [multregs more] = <reg xml:lang=[WORD b]>[items a]</>[multregs more]
+    >:[items a] "=" [WORD b] "||reg||" = <reg xml:lang=[WORD b]>[items a]</>
+			
 expanstuff
   :[bef_aft_ex b] "(" [WORDS4EXND a] ")" [bef_aft_ex c] = [bef_aft_ex b]<ex>[WORDS4EXND a]</>[bef_aft_ex c]
   :[bef_aft_ex b] "(" [WORDS4EXND f] "?" ")" [bef_aft_ex c] = [bef_aft_ex b] <ex cert="low">[WORDS4EXND f]</>[bef_aft_ex c]
@@ -324,6 +334,10 @@ item
 	>: [BEGOPT] [WORDVEST a] "|reg|" [items b] [ENDOPT] = <choice><reg>[WORDVEST a]</><orig>[items b]</></>
 	>: [BEGOPT] [items a] "|reg|" [items b] [ENDOPT] = <choice><reg>[items a]</><orig>[items b]</></>
 
+	//multiple reg tags - needs to be down here or nested regs above not work correctly
+	: [BEGOPT][multregs a][WORDVEST e][ENDOPT] = <choice>[multregs a]<orig>[WORDVEST e]</></>
+	>: [BEGOPT][multregs a][items e][ENDOPT] = <choice>[multregs a]<orig>[items e]</></>
+	
 	//---milestone---
 	//  '----' or  '--------'
 	: "--------" = <milestone rend="horizontal-rule" unit="undefined"></>

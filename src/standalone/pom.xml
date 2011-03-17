@@ -25,9 +25,16 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>1.3.2</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.3.2</version>
+    </dependency>
+    <dependency>
+      <groupId>dk.brics.xsugar</groupId>
+      <artifactId>xsugar</artifactId>
+      <version>1.2-2</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/xsugar-all.jar</systemPath>
     </dependency>
   </dependencies>
 </project>

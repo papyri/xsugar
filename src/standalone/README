@@ -1,0 +1,13 @@
+Request Parameters:
+content - contains the XML or Leiden+
+type - contains a string identifying the XSugar grammar to use (so we
+can use this for e.g. translation Leiden as well)
+direction - "xml2nonxml" or "nonxml2xml"
+
+The response should be JSON, with a provision for indicating
+and returning errors, including line/col. So something like:
+content - transformed content
+exception (optional)
+ cause
+ line
+ column

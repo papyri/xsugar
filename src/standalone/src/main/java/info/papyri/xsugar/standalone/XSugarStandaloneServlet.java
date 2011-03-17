@@ -16,28 +16,43 @@ public class XSugarStandaloneServlet extends HttpServlet
 {
     private Hashtable transformers = null;
     
-    public void init(ServletConfig config) throws ServletException
+    private static String[] known_grammars = {"epidoc"};
+    
+    public void init(ServletConfig config)
+        throws ServletException
     {
         super.init(config);
         
         transformers = new Hashtable();
+        
+        System.out.println("Initializing known-grammars...");
+        for (String grammar : known_grammars) {
+          initTransformer(grammar);
+        }
+        System.out.println("Done.");
     }
     
     private XSugarStandaloneTransformer initTransformer(String transformer_name)
-        throws IOException
     {
+        XSugarStandaloneTransformer transformer = null;
         URL url = this.getClass().getClassLoader().getResource("/" + transformer_name + ".xsg");
         StringWriter url_writer = new StringWriter();
-        IOUtils.copy(url.openStream(), url_writer);
         
-        XSugarStandaloneTransformer transformer = new XSugarStandaloneTransformer(url_writer.toString());
-        transformers.put(transformer_name, transformer);
+        try {
+          IOUtils.copy(url.openStream(), url_writer);
+          
+          transformer = new XSugarStandaloneTransformer(url_writer.toString());
+          transformers.put(transformer_name, transformer);
+        }
+        catch (IOException e) {
+        }
+        catch (Throwable t) {
+        }
         
         return transformer;
     }
     
     private XSugarStandaloneTransformer getTransformer(String transformer_name)
-        throws IOException
     {
         XSugarStandaloneTransformer transformer = 
             (XSugarStandaloneTransformer)transformers.get(transformer_name);

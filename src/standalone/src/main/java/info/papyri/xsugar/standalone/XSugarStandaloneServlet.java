@@ -69,8 +69,24 @@ public class XSugarStandaloneServlet extends HttpServlet
     {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println("<h1>Hello Servlet</h1>");
-        response.getWriter().println("session=" + request.getSession(true).getId());
+        PrintWriter out = response.getWriter();
+        
+        out.println("<html>");
+        out.println("<head><title>XSugarStandaloneServlet</title></head>");
+        out.println("<body>");
+        out.println("<h1>XSugarStandaloneServlet</h1>");
+        out.println("<form method=\"POST\" action=\"servlet\"/>");
+        out.println("<textarea name=\"content\" rows=\"20\" cols=\"80\"></textarea>");
+        out.println("<select name=\"type\">");
+        for (String grammar : known_grammars) {
+          out.println("<option value=\"" + grammar + "\">" + grammar + "</option>");
+        }
+        out.println("</select>");
+        out.println("<input type=\"submit\" value=\"Submit\" />");
+        out.println("</form>");
+        out.println("session=" + request.getSession(true).getId());
+        out.println("</body>");
+        out.println("</html>");
     }
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -91,8 +107,6 @@ public class XSugarStandaloneServlet extends HttpServlet
         out.println("<body>");
         out.println("You entered \"" + param_content + "\" into the text box.");
         out.println("Grammar: " + param_type);
-        
-        // out.println(FileUtils.readFileToString(new File("epidoc.xsg")));
         out.println("</body>");
         out.println("</html>");
     }

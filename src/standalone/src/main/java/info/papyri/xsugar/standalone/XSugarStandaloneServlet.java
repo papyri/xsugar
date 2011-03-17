@@ -82,6 +82,8 @@ public class XSugarStandaloneServlet extends HttpServlet
           out.println("<option value=\"" + grammar + "\">" + grammar + "</option>");
         }
         out.println("</select>");
+        out.println("<input type=\"radio\" name=\"direction\" value=\"xml2nonxml\" checked />XML->Non-XML&nbsp;&nbsp");
+        out.println("<input type=\"radio\" name=\"direction\" value=\"nonxml2xml\" />Non-XML->XML<br />");
         out.println("<input type=\"submit\" value=\"Submit\" />");
         out.println("</form>");
         out.println("session=" + request.getSession(true).getId());
@@ -105,8 +107,9 @@ public class XSugarStandaloneServlet extends HttpServlet
 
         out.println("<html>");
         out.println("<body>");
-        out.println("You entered \"" + param_content + "\" into the text box.");
-        out.println("Grammar: " + param_type);
+        out.println("You entered \"" + param_content + "\" into the text box.<br />");
+        out.println("Grammar: " + param_type + "<br />");
+        out.println("Direction: " + param_direction + "<br />");
         out.println("</body>");
         out.println("</html>");
     }

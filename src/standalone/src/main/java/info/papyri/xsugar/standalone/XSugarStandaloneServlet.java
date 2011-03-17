@@ -23,14 +23,28 @@ public class XSugarStandaloneServlet extends HttpServlet
         transformers = new Hashtable();
     }
     
+    private XSugarStandaloneTransformer initTransformer(String transformer_name)
+        throws IOException
+    {
+        URL url = this.getClass().getClassLoader().getResource("/" + transformer_name + ".xsg");
+        StringWriter url_writer = new StringWriter();
+        IOUtils.copy(url.openStream(), url_writer);
+        
+        XSugarStandaloneTransformer transformer = new XSugarStandaloneTransformer(url_writer.toString());
+        transformers.put(transformer_name, transformer);
+        
+        return transformer;
+    }
+    
     private XSugarStandaloneTransformer getTransformer(String transformer_name)
+        throws IOException
     {
         XSugarStandaloneTransformer transformer = 
             (XSugarStandaloneTransformer)transformers.get(transformer_name);
         if (transformer == null) {
             System.out.println("Cache miss for " + transformer_name);
-            transformer = new XSugarStandaloneTransformer();
-            transformers.put(transformer_name, transformer);
+            
+            transformer = initTransformer(transformer_name);
         }
         return transformer;
     }
@@ -47,10 +61,6 @@ public class XSugarStandaloneServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
-        URL url = this.getClass().getClassLoader().getResource("/epidoc.xsg");
-        StringWriter url_writer = new StringWriter();
-        IOUtils.copy(url.openStream(), url_writer);
-        
         String param_content = request.getParameter("content");
         String param_type = request.getParameter("type");
         String param_direction = request.getParameter("direction");
@@ -65,8 +75,8 @@ public class XSugarStandaloneServlet extends HttpServlet
         out.println("<html>");
         out.println("<body>");
         out.println("You entered \"" + param_content + "\" into the text box.");
-        out.println("Grammar:");
-        out.println(url_writer.toString());
+        out.println("Grammar: " + param_type);
+        
         // out.println(FileUtils.readFileToString(new File("epidoc.xsg")));
         out.println("</body>");
         out.println("</html>");

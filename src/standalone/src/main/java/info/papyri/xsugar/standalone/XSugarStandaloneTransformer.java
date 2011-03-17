@@ -8,4 +8,9 @@ public class XSugarStandaloneTransformer
   {
   
   }
+  
+  public XSugarStandaloneTransformer(String grammar)
+  {
+    String charset = java.nio.charset.Charset.forName("UTF-8").name();
+  }
 }

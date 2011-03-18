@@ -1,3 +1,8 @@
+For Jetty, pass:
+-Dorg.eclipse.jetty.server.Request.maxFormContentSize=-1
+to remove the default form size limit.
+Use -Xmx as usual to increase memory limits.
+
 Request Parameters:
 content - contains the XML or Leiden+
 type - contains a string identifying the XSugar grammar to use (so we

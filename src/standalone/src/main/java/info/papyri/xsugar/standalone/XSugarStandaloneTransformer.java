@@ -22,13 +22,13 @@ import dk.brics.xsugar.*;
 
 public class XSugarStandaloneTransformer
 {
-  private Stylesheet stylesheet = null;
-  private Grammar l_grammar = null;
-  private Grammar x_grammar = null;
-  private Parser parser_l = null;
-  private Parser parser_x = null;
+  private Stylesheet stylesheet;
+  private Grammar l_grammar;
+  private Grammar x_grammar;
+  private Parser parser_l;
+  private Parser parser_x;
   
-  private Grammar normalized_l_grammar = null;
+  private Grammar normalized_l_grammar;
   
   public XSugarStandaloneTransformer()
   {
@@ -43,7 +43,7 @@ public class XSugarStandaloneTransformer
     
     StylesheetParser parser = new StylesheetParser();
     
-    Stylesheet stylesheet = parser.parse(grammar, "dummy.xsg", charset);
+    stylesheet = parser.parse(grammar, "dummy.xsg", charset);
     new StylesheetChecker().check(stylesheet);
     GrammarBuilder grammar_builder = new GrammarBuilder(false);
     grammar_builder.convert(stylesheet);

@@ -82,8 +82,13 @@ public class XSugarStandaloneServlet extends HttpServlet
           result = "Bad direction " + direction;
         }
       }
+      catch (dk.brics.grammar.parser.ParseException e) {
+        System.out.println(e.getMessage());
+        System.out.println(e.getLocation().getLine() + "," + e.getLocation().getColumn());
+      }
       catch (Throwable t) {
-        System.out.println("Error!");
+        System.out.println("Error! " + t.getClass().getName());
+        t.printStackTrace();
       }
       
       return result;

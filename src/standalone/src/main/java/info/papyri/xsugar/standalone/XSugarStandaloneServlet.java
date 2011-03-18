@@ -100,7 +100,7 @@ public class XSugarStandaloneServlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
-        response.setContentType("text/html");
+        response.setContentType("text/html;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
         PrintWriter out = response.getWriter();
         
@@ -135,7 +135,7 @@ public class XSugarStandaloneServlet extends HttpServlet
                 
         PrintWriter out = response.getWriter();
         
-        response.setContentType("text/html");
+        response.setContentType("text/html;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
         out.println("<html>");

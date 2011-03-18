@@ -11,6 +11,7 @@ import info.papyri.xsugar.standalone.XSugarStandaloneTransformer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 
 public class XSugarStandaloneServlet extends HttpServlet
 {
@@ -137,10 +138,10 @@ public class XSugarStandaloneServlet extends HttpServlet
 
         out.println("<html>");
         out.println("<body>");
-        out.println("You entered \"" + param_content + "\" into the text box.<br />");
+        out.println("You entered: <br /><pre><code>" + StringEscapeUtils.escapeHtml(param_content) + "</code></pre><br />");
         out.println("Grammar: " + param_type + "<br />");
         out.println("Direction: " + param_direction + "<br />");
-        out.println("Result: " + result);
+        out.println("Result: <br /><pre><code>" + StringEscapeUtils.escapeHtml(result) + "</code></pre>");
         out.println("</body>");
         out.println("</html>");
     }

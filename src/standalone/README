@@ -3,6 +3,9 @@ For Jetty, pass:
 to remove the default form size limit.
 Use -Xmx as usual to increase memory limits.
 
+Invoke with Maven, e.g.:
+JAVA_TOOL_OPTIONS="-Xmx4G -Dorg.eclipse.jetty.server.Request.maxFormContentSize=-1 -Dfile.encoding=UTF8" mvn -Djetty.port=9999 jetty:run
+
 Request Parameters:
 content - contains the XML or Leiden+
 type - contains a string identifying the XSugar grammar to use (so we

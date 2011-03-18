@@ -39,7 +39,7 @@ public class XSugarStandaloneServlet extends HttpServlet
         StringWriter url_writer = new StringWriter();
         
         try {
-          IOUtils.copy(url.openStream(), url_writer);
+          IOUtils.copy(url.openStream(), url_writer, java.nio.charset.Charset.forName("UTF-8").name());
           
           transformer = new XSugarStandaloneTransformer(url_writer.toString());
           transformers.put(transformer_name, transformer);

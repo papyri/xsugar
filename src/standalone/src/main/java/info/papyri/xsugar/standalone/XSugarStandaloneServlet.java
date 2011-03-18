@@ -28,6 +28,7 @@ public class XSugarStandaloneServlet extends HttpServlet
         
         System.out.println("Initializing known-grammars...");
         for (String grammar : known_grammars) {
+          System.out.println(grammar);
           initTransformer(grammar);
         }
         System.out.println("Done.");
@@ -77,7 +78,7 @@ public class XSugarStandaloneServlet extends HttpServlet
         }
         else if (direction.equals("nonxml2xml"))
         {
-          result = transformer.nonXMLToXML(content);
+          result = transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));
         }
         else {
           result = "Bad direction " + direction;
@@ -85,7 +86,8 @@ public class XSugarStandaloneServlet extends HttpServlet
       }
       catch (dk.brics.grammar.parser.ParseException e) {
         System.out.println(e.getMessage());
-        System.out.println(e.getLocation().getLine() + "," + e.getLocation().getColumn());
+        // System.out.println(e.getLocation().getLine() + "," + e.getLocation().getColumn());
+        e.printStackTrace();
       }
       catch (Throwable t) {
         System.out.println("Error! " + t.getClass().getName());

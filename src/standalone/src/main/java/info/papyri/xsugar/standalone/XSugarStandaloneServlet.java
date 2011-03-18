@@ -69,6 +69,22 @@ public class XSugarStandaloneServlet extends HttpServlet
       String result = null;
       XSugarStandaloneTransformer transformer = getTransformer(transform_type);
       
+      try {
+        if (direction.equals("xml2nonxml"))
+        {
+          result = transformer.XMLToNonXML(content);
+        }
+        else if (direction.equals("nonxml2xml"))
+        {
+          result = transformer.nonXMLToXML(content);
+        }
+        else {
+          result = "Bad direction " + direction;
+        }
+      }
+      catch (Throwable t) {
+        System.out.println("Error!");
+      }
       
       return result;
     }
@@ -84,7 +100,7 @@ public class XSugarStandaloneServlet extends HttpServlet
         out.println("<head><title>XSugarStandaloneServlet</title></head>");
         out.println("<body>");
         out.println("<h1>XSugarStandaloneServlet</h1>");
-        out.println("<form method=\"POST\" action=\"servlet\"/>");
+        out.println("<form method=\"POST\" action=\"/\"/>");
         out.println("<textarea name=\"content\" rows=\"20\" cols=\"80\"></textarea>");
         out.println("<select name=\"type\">");
         for (String grammar : known_grammars) {
@@ -119,6 +135,7 @@ public class XSugarStandaloneServlet extends HttpServlet
         out.println("You entered \"" + param_content + "\" into the text box.<br />");
         out.println("Grammar: " + param_type + "<br />");
         out.println("Direction: " + param_direction + "<br />");
+        out.println("Result: " + result);
         out.println("</body>");
         out.println("</html>");
     }

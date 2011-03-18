@@ -337,6 +337,7 @@ item
 	//multiple reg tags - needs to be down here or nested regs above not work correctly
 	: [BEGOPT][multregs a][WORDVEST e][ENDOPT] = <choice>[multregs a]<orig>[WORDVEST e]</></>
 	>: [BEGOPT][multregs a][items e][ENDOPT] = <choice>[multregs a]<orig>[items e]</></>
+	>: [BEGOPT][multregs a][items e] "(?)"[ENDOPT] = <choice>[multregs a]<orig>[items e]<certainty match=".." locus="value"/></></>
 	
 	//---milestone---
 	//  '----' or  '--------'
@@ -405,8 +406,8 @@ item
 	
 	//---tall---
 	//   |abc|
-	: "\|" [WORDSSIC a] "\|" = <hi rend="tall">[WORDSSIC a]</>
-	>: "\|" [items i] "\|" = <hi rend="tall">[items i]</>
+	: "|||" [WORDSSIC a] "|||" = <hi rend="tall">[WORDSSIC a]</>
+	>: "|||" [items i] "|||" = <hi rend="tall">[items i]</>
 
 	//---superscript---
 	//   ^abc^

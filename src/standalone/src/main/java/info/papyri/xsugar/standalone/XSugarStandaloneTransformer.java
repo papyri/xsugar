@@ -29,6 +29,17 @@ public class XSugarStandaloneTransformer
   private Parser parser_x;
   
   private Grammar normalized_l_grammar;
+  private Grammar normalized_x_grammar;
+  
+  private NamespaceAdder namespace_adder;
+  private Unparser unparsed_l_grammar;
+  private Unparser unparsed_x_grammar;
+  
+  private static PrintWriter out = new PrintWriter(java.lang.System.out, true);
+  private static String charset = java.nio.charset.Charset.forName("UTF-8").name();
+  
+  private static InputNormalizer norm = new InputNormalizer();
+  private static EndTagNameAdder end_tag = new EndTagNameAdder();
   
   public XSugarStandaloneTransformer()
   {
@@ -38,9 +49,6 @@ public class XSugarStandaloneTransformer
   public XSugarStandaloneTransformer(String grammar)
     throws dk.brics.xsugar.XSugarException, IOException, ParseException, dk.brics.relaxng.converter.ParseException, InstantiationException,	IllegalAccessException, ClassNotFoundException
   {
-    PrintWriter out = new PrintWriter(java.lang.System.out, true);
-    String charset = java.nio.charset.Charset.forName("UTF-8").name();
-    
     StylesheetParser parser = new StylesheetParser();
     
     stylesheet = parser.parse(grammar, "dummy.xsg", charset);
@@ -55,10 +63,15 @@ public class XSugarStandaloneTransformer
     new StylesheetNormalizer().normalize(stylesheet);
     normalizing_grammar_builder.convert(stylesheet);
     normalized_l_grammar = normalizing_grammar_builder.getNonXMLGrammar();
-    Grammar normalized_x_grammar = normalizing_grammar_builder.getXMLGrammar();
-
+    normalized_x_grammar = normalizing_grammar_builder.getXMLGrammar();
+    
     parser_l = new Parser(l_grammar, out);
     parser_x = new Parser(normalized_x_grammar, out);
+    
+    unparsed_l_grammar = new Unparser(normalized_l_grammar);
+    unparsed_x_grammar = new Unparser(x_grammar);
+    
+    namespace_adder = new NamespaceAdder(stylesheet);
   }
   
   public String nonXMLToXML(String text)
@@ -66,9 +79,9 @@ public class XSugarStandaloneTransformer
   {
     AST ast = parser_l.parse(text, "dummy.txt");
     
-    String output = new Unparser(x_grammar).unparse(ast);
-    output = new EndTagNameAdder().fix(output);
-    output = new NamespaceAdder(stylesheet).fix(output);
+    String output = unparsed_x_grammar.unparse(ast);
+    output = end_tag.fix(output);
+    output = namespace_adder.fix(output);
     
     return output;
   }
@@ -76,12 +89,11 @@ public class XSugarStandaloneTransformer
   public String XMLToNonXML(String xml)
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, IOException
   {
-    InputNormalizer norm = new InputNormalizer();
     String input = norm.normalize(xml, "dummy.xml");
     
     AST ast = parser_x.parse(input, "dummy.xml");
     new ASTUnescaper().unescape(ast);
-    String output = new Unparser(normalized_l_grammar).unparse(ast);
+    String output = unparsed_l_grammar.unparse(ast);
     
     return output;
   }

@@ -590,6 +590,11 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '<:<:b|reg|c:>|corr|σηλη:>', '<choice><corr><choice><reg>b</reg><orig>c</orig></choice></corr><sic>σηλη</sic></choice>'
 	end
     
+  def test_mult_regs_no_nattrib_with_tall
+    assert_equal_fragment_transform '<:James|||Jaymes|||Jomes|reg|Jeames:>', '<choice><reg>James<hi rend="tall">Jaymes</hi>Jomes</reg><orig>Jeames</orig></choice>'
+    assert_equal_fragment_transform '<:Jon|Jean|Jun|John||reg||Jan:>', '<choice><reg>Jon</reg><reg>Jean</reg><reg>Jun</reg><reg>John</reg><orig>Jan</orig></choice>'
+  end
+    
   def test_mult_regs_no_nattrib
     assert_equal_fragment_transform '<:Jon=grc|Jean=ital|Jun=de|John(?)=en||reg||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="ital">Jean</reg><reg xml:lang="de">Jun</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan</orig></choice>'
     assert_equal_fragment_transform '<:Jon=grc|John(?)=en||reg||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan</orig></choice>'
@@ -610,6 +615,27 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '<:Jon=grc|John(?)||reg||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg cert="low">John</reg><orig>Jan</orig></choice>'
   end
     
+  def test_mult_regs_with_markup_origcert_no_nattrib
+      #all above tests with orig with certainty
+    assert_equal_fragment_transform '<:Jon=grc|Jean=ital|Jun=de|John(?)=en||reg||Jan(?):>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="ital">Jean</reg><reg xml:lang="de">Jun</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John(?)=en||reg||Jan(?):>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John=en||reg||Jan(?):>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg xml:lang="en">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John(?)=en||reg||Jan(?):>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John=en||reg||Jan(?):>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John(?)||reg||Jan(?):>', '<choice><reg>Jon</reg><reg cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John||reg||Jan(?):>', '<choice><reg cert="low">Jon</reg><reg>John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John(?)||reg||Jan(?):>', '<choice><reg cert="low">Jon</reg><reg cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John||reg||Jan(?):>', '<choice><reg>Jon</reg><reg>John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John=en||reg||Jan(?):>', '<choice><reg>Jon</reg><reg xml:lang="en">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John||reg||Jan(?):>', '<choice><reg xml:lang="grc">Jon</reg><reg>John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John=en||reg||Jan(?):>', '<choice><reg cert="low">Jon</reg><reg xml:lang="en">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John(?)=en||reg||Jan(?):>', '<choice><reg cert="low">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John(?)=en||reg||Jan(?):>', '<choice><reg>Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John||reg||Jan(?):>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg>John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John(?)||reg||Jan(?):>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John(?)||reg||Jan(?):>', '<choice><reg xml:lang="grc">Jon</reg><reg cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+  end
+  
   def test_mult_regs_with_markup_no_nattrib
     #all above tests with orig being markup
     assert_equal_fragment_transform '<:Jon=grc|Jean=ital|Jun=de|John(?)=en||reg||[Jan]:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="ital">Jean</reg><reg xml:lang="de">Jun</reg><reg xml:lang="en" cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
@@ -868,9 +894,9 @@ if(RUBY_PLATFORM == 'java')
 	end
 	
 	def test_tall
-	  assert_equal_fragment_transform '|Ἑρεννίαν Γέμελλαν|', '<hi rend="tall">Ἑρεννίαν Γέμελλαν</hi>'
-	  assert_equal_fragment_transform '|x|', '<hi rend="tall">x</hi>'
-	  assert_equal_fragment_transform '| ο(´ ῾)|', '<hi rend="tall"><hi rend="acute"><hi rend="asper">ο</hi></hi></hi>'
+	  assert_equal_fragment_transform '|||Ἑρεννίαν Γέμελλαν|||', '<hi rend="tall">Ἑρεννίαν Γέμελλαν</hi>'
+	  assert_equal_fragment_transform '|||x|||', '<hi rend="tall">x</hi>'
+	  assert_equal_fragment_transform '||| ο(´ ῾)|||', '<hi rend="tall"><hi rend="acute"><hi rend="asper">ο</hi></hi></hi>'
     end
 
 	def test_subscript

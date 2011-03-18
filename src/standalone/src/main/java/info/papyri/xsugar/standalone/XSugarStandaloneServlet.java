@@ -64,6 +64,15 @@ public class XSugarStandaloneServlet extends HttpServlet
         return transformer;
     }
     
+    private String doTransform(String content, String transform_type, String direction)
+    {
+      String result = null;
+      XSugarStandaloneTransformer transformer = getTransformer(transform_type);
+      
+      
+      return result;
+    }
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
@@ -98,8 +107,8 @@ public class XSugarStandaloneServlet extends HttpServlet
         String param_type = request.getParameter("type");
         String param_direction = request.getParameter("direction");
         
-        XSugarStandaloneTransformer transformer = getTransformer(param_type);
-        
+        String result = doTransform(param_content, param_type, param_direction);
+                
         PrintWriter out = response.getWriter();
         
         response.setContentType("text/html");

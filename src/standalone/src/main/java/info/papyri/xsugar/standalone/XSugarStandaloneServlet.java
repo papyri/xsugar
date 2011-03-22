@@ -135,16 +135,11 @@ public class XSugarStandaloneServlet extends HttpServlet
 
     PrintWriter out = response.getWriter();
 
-    response.setContentType("text/html;charset=UTF-8");
+    response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_OK);
 
-    out.println("<html>");
-    out.println("<body>");
-    out.println("You entered: <br /><pre><code>" + StringEscapeUtils.escapeHtml(param_content) + "</code></pre><br />");
-    out.println("Grammar: " + param_type + "<br />");
-    out.println("Direction: " + param_direction + "<br />");
-    out.println("Result: <br /><pre><code>" + StringEscapeUtils.escapeHtml(result) + "</code></pre>");
-    out.println("</body>");
-    out.println("</html>");
+    out.println("{");
+    out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(result) + "\"");
+    out.println("}");
   }
 }

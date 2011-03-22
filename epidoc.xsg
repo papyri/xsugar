@@ -416,10 +416,14 @@ item
 	
 	//---add_place_interlinear---
 	//  >>abc<<
-	: ">>" [WORDSSIC a] "<<" = <add place="interlinear">[WORDSSIC a]</>
-	>: ">>" [WORDSSIC a] "(?)" "<<" = <add place="interlinear">[WORDSSIC a]<certainty match=".." locus="name"/></>
-	>: ">>" [items a] "<<" = <add place="interlinear">[items a]</>
-	>: ">>" [items a] "(?)" "<<" = <add place="interlinear">[items a]<certainty match=".." locus="name"/></>
+	: ">)" [WORDSSIC a] "(<" = <add place="interlinear">[WORDSSIC a]</>
+	>: ">)" [WORDSSIC a] "(?)" "(<" = <add place="interlinear">[WORDSSIC a]<certainty match=".." locus="name"/></>
+	>: ">)" [items a] "(<" = <add place="interlinear">[items a]</>
+	>: ">)" [items a] "(?)" "(<" = <add place="interlinear">[items a]<certainty match=".." locus="name"/></>
+//	: ">>" [WORDSSIC a] "<<" = <add place="interlinear">[WORDSSIC a]</>
+//	>: ">>" [WORDSSIC a] "(?)" "<<" = <add place="interlinear">[WORDSSIC a]<certainty match=".." locus="name"/></>
+//	>: ">>" [items a] "<<" = <add place="interlinear">[items a]</>
+//	>: ">>" [items a] "(?)" "<<" = <add place="interlinear">[items a]<certainty match=".." locus="name"/></>
 
 	//---add_place_general---
 	//  ||bottom:abc||

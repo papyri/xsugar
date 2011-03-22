@@ -935,16 +935,19 @@ if(RUBY_PLATFORM == 'java')
     end
     
 	def test_add_place_interlinear
-   assert_equal_fragment_transform '>> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.<<', '<add place="interlinear"> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.</add>'
-	 assert_equal_fragment_transform '>> ὧ( ῾)ν<<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν</add>'
-	 assert_equal_fragment_transform '>> ὧ( ῾)ν(?)<<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν<certainty match=".." locus="name"/></add>'
-	 assert_equal_fragment_transform '>>[φοινίκ]ω̣ν̣ κ̣αὶ ἐ̣λ̣αιῶν<<', '<add place="interlinear"><supplied reason="lost">φοινίκ</supplied><unclear>ων</unclear> <unclear>κ</unclear>αὶ <unclear>ἐλ</unclear>αιῶν</add>'
-	 assert_equal_fragment_transform '>> $m2  (Οὐεναφρ(ίου)) <<', '<add place="interlinear"> <handShift new="m2"/> <expan>Οὐεναφρ<ex>ίου</ex></expan> </add>'
-	 assert_equal_fragment_transform '>>ε<<', '<add place="interlinear">ε</add>'
-	 assert_equal_fragment_transform '>>Πωλίων ἀπάτωρ<<', '<add place="interlinear">Πωλίων ἀπάτωρ</add>'
-	 assert_equal_fragment_transform '>>Πωλίων ἀπάτωρ(?)<<', '<add place="interlinear">Πωλίων ἀπάτωρ<certainty match=".." locus="name"/></add>'
-	 assert_equal_fragment_transform '>>.1<<', '<add place="interlinear"><gap reason="illegible" quantity="1" unit="character"/></add>'
-   end
+	  assert_equal_fragment_transform '>) καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.(<', '<add place="interlinear"> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.</add>'
+	  assert_equal_fragment_transform '>) ὧ( ῾)ν(<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν</add>'
+	  assert_equal_fragment_transform '>) ὧ( ῾)ν(?)(<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν<certainty match=".." locus="name"/></add>'
+	  assert_equal_fragment_transform '>)[φοινίκ]ω̣ν̣ κ̣αὶ ἐ̣λ̣αιῶν(<', '<add place="interlinear"><supplied reason="lost">φοινίκ</supplied><unclear>ων</unclear> <unclear>κ</unclear>αὶ <unclear>ἐλ</unclear>αιῶν</add>'
+	  assert_equal_fragment_transform '>) $m2  (Οὐεναφρ(ίου)) (<', '<add place="interlinear"> <handShift new="m2"/> <expan>Οὐεναφρ<ex>ίου</ex></expan> </add>'
+	  assert_equal_fragment_transform '>)ε(<', '<add place="interlinear">ε</add>'
+	  assert_equal_fragment_transform '>)Πωλίων ἀπάτωρ(<', '<add place="interlinear">Πωλίων ἀπάτωρ</add>'
+	  assert_equal_fragment_transform '>)Πωλίων ἀπάτωρ(?)(<', '<add place="interlinear">Πωλίων ἀπάτωρ<certainty match=".." locus="name"/></add>'
+	  assert_equal_fragment_transform '>).1(<', '<add place="interlinear"><gap reason="illegible" quantity="1" unit="character"/></add>'
+	  assert_equal_fragment_transform '>)καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?]< 8. καὶ Πάσιτ̣[ι .?] 9. >)καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?](< 10. καὶ Τεΰ̣ρ̣ει .3[.?] 11. > καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?](<', '<add place="interlinear">καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/><supplied reason="omitted"> <lb n="8"/>καὶ Πάσι<unclear>τ</unclear><supplied reason="lost">ι <gap reason="illegible" extent="unknown" unit="character"/></supplied> <lb n="9"/><add place="interlinear">καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/></add> <lb n="10"/>καὶ Τε<unclear>ΰρ</unclear>ει <gap reason="illegible" quantity="3" unit="character"/><gap reason="lost" extent="unknown" unit="character"/> <lb n="11"/></supplied> καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/></add>'
+	  assert_equal_fragment_transform '<>) καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.(<>', '<supplied reason="omitted"><add place="interlinear"> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.</add></supplied>'
+	  assert_equal_fragment_transform '>) ὧ( ῾)ν>) ὧ( ῾)ν(<(<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν<add place="interlinear"><hi rend="asper">ὧ</hi>ν</add></add>'
+  end
 	
   def test_add_place_margin_underline
     assert_equal_fragment_transform '<_ν_>', '<add rend="underline" place="margin">ν</add>'

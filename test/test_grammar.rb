@@ -590,6 +590,11 @@ if(RUBY_PLATFORM == 'java')
 	  assert_equal_fragment_transform '<:<:b|reg|c:>|corr|σηλη:>', '<choice><corr><choice><reg>b</reg><orig>c</orig></choice></corr><sic>σηλη</sic></choice>'
 	end
     
+  def test_mult_regs_no_nattrib_with_tall
+    assert_equal_fragment_transform '<:James|||Jaymes|||Jomes|reg|Jeames:>', '<choice><reg>James<hi rend="tall">Jaymes</hi>Jomes</reg><orig>Jeames</orig></choice>'
+    assert_equal_fragment_transform '<:Jon|Jean|Jun|John||reg||Jan:>', '<choice><reg>Jon</reg><reg>Jean</reg><reg>Jun</reg><reg>John</reg><orig>Jan</orig></choice>'
+  end
+    
   def test_mult_regs_no_nattrib
     assert_equal_fragment_transform '<:Jon=grc|Jean=ital|Jun=de|John(?)=en||reg||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="ital">Jean</reg><reg xml:lang="de">Jun</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan</orig></choice>'
     assert_equal_fragment_transform '<:Jon=grc|John(?)=en||reg||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan</orig></choice>'
@@ -610,6 +615,27 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '<:Jon=grc|John(?)||reg||Jan:>', '<choice><reg xml:lang="grc">Jon</reg><reg cert="low">John</reg><orig>Jan</orig></choice>'
   end
     
+  def test_mult_regs_with_markup_origcert_no_nattrib
+      #all above tests with orig with certainty
+    assert_equal_fragment_transform '<:Jon=grc|Jean=ital|Jun=de|John(?)=en||reg||Jan(?):>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="ital">Jean</reg><reg xml:lang="de">Jun</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John(?)=en||reg||Jan(?):>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John=en||reg||Jan(?):>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg xml:lang="en">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John(?)=en||reg||Jan(?):>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John=en||reg||Jan(?):>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="en">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John(?)||reg||Jan(?):>', '<choice><reg>Jon</reg><reg cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John||reg||Jan(?):>', '<choice><reg cert="low">Jon</reg><reg>John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John(?)||reg||Jan(?):>', '<choice><reg cert="low">Jon</reg><reg cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John||reg||Jan(?):>', '<choice><reg>Jon</reg><reg>John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John=en||reg||Jan(?):>', '<choice><reg>Jon</reg><reg xml:lang="en">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John||reg||Jan(?):>', '<choice><reg xml:lang="grc">Jon</reg><reg>John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John=en||reg||Jan(?):>', '<choice><reg cert="low">Jon</reg><reg xml:lang="en">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)|John(?)=en||reg||Jan(?):>', '<choice><reg cert="low">Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon|John(?)=en||reg||Jan(?):>', '<choice><reg>Jon</reg><reg xml:lang="en" cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John||reg||Jan(?):>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg>John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon(?)=grc|John(?)||reg||Jan(?):>', '<choice><reg xml:lang="grc" cert="low">Jon</reg><reg cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+    assert_equal_fragment_transform '<:Jon=grc|John(?)||reg||Jan(?):>', '<choice><reg xml:lang="grc">Jon</reg><reg cert="low">John</reg><orig>Jan<certainty match=".." locus="value"/></orig></choice>'
+  end
+  
   def test_mult_regs_with_markup_no_nattrib
     #all above tests with orig being markup
     assert_equal_fragment_transform '<:Jon=grc|Jean=ital|Jun=de|John(?)=en||reg||[Jan]:>', '<choice><reg xml:lang="grc">Jon</reg><reg xml:lang="ital">Jean</reg><reg xml:lang="de">Jun</reg><reg xml:lang="en" cert="low">John</reg><orig><supplied reason="lost">Jan</supplied></orig></choice>'
@@ -868,9 +894,9 @@ if(RUBY_PLATFORM == 'java')
 	end
 	
 	def test_tall
-	  assert_equal_fragment_transform '|Ἑρεννίαν Γέμελλαν|', '<hi rend="tall">Ἑρεννίαν Γέμελλαν</hi>'
-	  assert_equal_fragment_transform '|x|', '<hi rend="tall">x</hi>'
-	  assert_equal_fragment_transform '| ο(´ ῾)|', '<hi rend="tall"><hi rend="acute"><hi rend="asper">ο</hi></hi></hi>'
+	  assert_equal_fragment_transform '|||Ἑρεννίαν Γέμελλαν|||', '<hi rend="tall">Ἑρεννίαν Γέμελλαν</hi>'
+	  assert_equal_fragment_transform '|||x|||', '<hi rend="tall">x</hi>'
+	  assert_equal_fragment_transform '||| ο(´ ῾)|||', '<hi rend="tall"><hi rend="acute"><hi rend="asper">ο</hi></hi></hi>'
     end
 
 	def test_subscript
@@ -909,16 +935,19 @@ if(RUBY_PLATFORM == 'java')
     end
     
 	def test_add_place_interlinear
-   assert_equal_fragment_transform '>> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.<<', '<add place="interlinear"> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.</add>'
-	 assert_equal_fragment_transform '>> ὧ( ῾)ν<<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν</add>'
-	 assert_equal_fragment_transform '>> ὧ( ῾)ν(?)<<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν<certainty match=".." locus="name"/></add>'
-	 assert_equal_fragment_transform '>>[φοινίκ]ω̣ν̣ κ̣αὶ ἐ̣λ̣αιῶν<<', '<add place="interlinear"><supplied reason="lost">φοινίκ</supplied><unclear>ων</unclear> <unclear>κ</unclear>αὶ <unclear>ἐλ</unclear>αιῶν</add>'
-	 assert_equal_fragment_transform '>> $m2  (Οὐεναφρ(ίου)) <<', '<add place="interlinear"> <handShift new="m2"/> <expan>Οὐεναφρ<ex>ίου</ex></expan> </add>'
-	 assert_equal_fragment_transform '>>ε<<', '<add place="interlinear">ε</add>'
-	 assert_equal_fragment_transform '>>Πωλίων ἀπάτωρ<<', '<add place="interlinear">Πωλίων ἀπάτωρ</add>'
-	 assert_equal_fragment_transform '>>Πωλίων ἀπάτωρ(?)<<', '<add place="interlinear">Πωλίων ἀπάτωρ<certainty match=".." locus="name"/></add>'
-	 assert_equal_fragment_transform '>>.1<<', '<add place="interlinear"><gap reason="illegible" quantity="1" unit="character"/></add>'
-   end
+	  assert_equal_fragment_transform '>) καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.(<', '<add place="interlinear"> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.</add>'
+	  assert_equal_fragment_transform '>) ὧ( ῾)ν(<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν</add>'
+	  assert_equal_fragment_transform '>) ὧ( ῾)ν(?)(<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν<certainty match=".." locus="name"/></add>'
+	  assert_equal_fragment_transform '>)[φοινίκ]ω̣ν̣ κ̣αὶ ἐ̣λ̣αιῶν(<', '<add place="interlinear"><supplied reason="lost">φοινίκ</supplied><unclear>ων</unclear> <unclear>κ</unclear>αὶ <unclear>ἐλ</unclear>αιῶν</add>'
+	  assert_equal_fragment_transform '>) $m2  (Οὐεναφρ(ίου)) (<', '<add place="interlinear"> <handShift new="m2"/> <expan>Οὐεναφρ<ex>ίου</ex></expan> </add>'
+	  assert_equal_fragment_transform '>)ε(<', '<add place="interlinear">ε</add>'
+	  assert_equal_fragment_transform '>)Πωλίων ἀπάτωρ(<', '<add place="interlinear">Πωλίων ἀπάτωρ</add>'
+	  assert_equal_fragment_transform '>)Πωλίων ἀπάτωρ(?)(<', '<add place="interlinear">Πωλίων ἀπάτωρ<certainty match=".." locus="name"/></add>'
+	  assert_equal_fragment_transform '>).1(<', '<add place="interlinear"><gap reason="illegible" quantity="1" unit="character"/></add>'
+	  assert_equal_fragment_transform '>)καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?]< 8. καὶ Πάσιτ̣[ι .?] 9. >)καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?](< 10. καὶ Τεΰ̣ρ̣ει .3[.?] 11. > καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?](<', '<add place="interlinear">καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/><supplied reason="omitted"> <lb n="8"/>καὶ Πάσι<unclear>τ</unclear><supplied reason="lost">ι <gap reason="illegible" extent="unknown" unit="character"/></supplied> <lb n="9"/><add place="interlinear">καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/></add> <lb n="10"/>καὶ Τε<unclear>ΰρ</unclear>ει <gap reason="illegible" quantity="3" unit="character"/><gap reason="lost" extent="unknown" unit="character"/> <lb n="11"/></supplied> καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/></add>'
+	  assert_equal_fragment_transform '<>) καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.(<>', '<supplied reason="omitted"><add place="interlinear"> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.</add></supplied>'
+	  assert_equal_fragment_transform '>) ὧ( ῾)ν>) ὧ( ῾)ν(<(<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν<add place="interlinear"><hi rend="asper">ὧ</hi>ν</add></add>'
+  end
 	
   def test_add_place_margin_underline
     assert_equal_fragment_transform '<_ν_>', '<add rend="underline" place="margin">ν</add>'

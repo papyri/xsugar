@@ -25,6 +25,19 @@ module RXSugar
       base.extend(ActMethods)
     end
     
+    require 'net/http'
+    require 'uri'
+    require 'json'
+    
+    class XSugarStandalone
+      class << self
+        def transform_request(url, params)
+          resp = Net::HTTP.post_form(URI.parse(url), params)
+          return JSON.parse(resp.body)["content"]
+        end
+      end
+    end
+    
     module ActMethods
       def acts_as_x(x)
         unless included_modules.include? InstanceMethods
@@ -85,7 +98,16 @@ module RXSugar
       def xml2nonxml(content)
         # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin xml2nonxml.rb')
         # jruby_pipe(ruby_file, content)
-        if(RUBY_PLATFORM == 'java')
+        if(defined?(XSUGAR_STANDALONE_ENABLED) && XSUGAR_STANDALONE_ENABLED)
+          xformed = XSugarStandalone.transform_request(XSUGAR_STANDALONE_URL,
+            {
+              :content => content,
+              :type => transformer_name,
+              :direction => 'xml2nonxml'
+            }
+          )
+          return xformed.to_s
+        elsif(RUBY_PLATFORM == 'java')
           begin
             xformed = transformer_singleton.instance.rxsugar.xml_to_non_xml(content)
             return xformed.to_s
@@ -106,7 +128,16 @@ module RXSugar
       def nonxml2xml(content)
         # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin nonxml2xml.rb')
         # jruby_pipe(ruby_file, content)
-        if(RUBY_PLATFORM == 'java')
+        if(defined?(XSUGAR_STANDALONE_ENABLED) && XSUGAR_STANDALONE_ENABLED)
+          xformed = XSugarStandalone.transform_request(XSUGAR_STANDALONE_URL,
+            {
+              :content => content,
+              :type => transformer_name,
+              :direction => 'nonxml2xml'
+            }
+          )
+          return xformed.to_s
+        elsif(RUBY_PLATFORM == 'java')
           begin
             xformed = transformer_singleton.instance.rxsugar.non_xml_to_xml(content)
             return xformed.to_s
@@ -158,6 +189,11 @@ module RXSugar
       def transformer_singleton
         RXSugarSingleton
       end
+      
+      def transformer_name
+        "epidoc"
+      end
+      
       include ClassMethods
     end
     
@@ -165,6 +201,11 @@ module RXSugar
       def transformer_singleton
         TranslationRXSugarSingleton
       end
+      
+      def transformer_name
+        "translation_epidoc"
+      end
+      
       include ClassMethods
     end
     

@@ -328,12 +328,26 @@ item
 	>: [BEGOPT] [WORDVEST a] "|reg|" [items d] "(?)" [ENDOPT] = <choice><reg>[WORDVEST a]</><orig>[items d]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] [items a] "(?)" "|reg|" [items d] "(?)" [ENDOPT] = <choice><reg cert="low">[items a]</><orig>[items d]<certainty match=".." locus="value"/></></>
 	>: [BEGOPT] [items a] "|reg|" [items d] "(?)" [ENDOPT] = <choice><reg>[items a]</><orig>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "|reg|" [WORDVEST d] [ENDOPT] = <choice><reg cert="low">[items a]</><orig>[WORDVEST d]</></>
 	>: [BEGOPT] [items a] "(?)" "|reg|" [items d] [ENDOPT] = <choice><reg cert="low">[items a]</><orig>[items d]</></>
 	: [BEGOPT] [WORDVEST a] "|reg|" [WORDVEST b] [ENDOPT] = <choice><reg>[WORDVEST a]</><orig>[WORDVEST b]</></>
 	>: [BEGOPT] [items a] "|reg|" [WORDVEST b] [ENDOPT] = <choice><reg>[items a]</><orig>[WORDVEST b]</></>
 	>: [BEGOPT] [WORDVEST a] "|reg|" [items b] [ENDOPT] = <choice><reg>[WORDVEST a]</><orig>[items b]</></>
 	>: [BEGOPT] [items a] "|reg|" [items b] [ENDOPT] = <choice><reg>[items a]</><orig>[items b]</></>
-
+// |reg| with lang attribute
+	>: [BEGOPT] [WORDVEST a] "(?)" "=" [WORD c] "|reg|" [WORDVEST b] [ENDOPT] = <choice><reg xml:lang=[WORD c] cert="low">[WORDVEST a]</><orig>[WORDVEST b]</></>
+	>: [BEGOPT] [WORDVEST a] "(?)" "=" [WORD c] "|reg|" [items d] "(?)" [ENDOPT] = <choice><reg xml:lang=[WORD c] cert="low">[WORDVEST a]</><orig>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [WORDVEST a] "(?)" "=" [WORD c] "|reg|" [items d] [ENDOPT] = <choice><reg xml:lang=[WORD c] cert="low">[WORDVEST a]</><orig>[items d]</></>
+	>: [BEGOPT] [items a] "(?)" "=" [WORD c] "|reg|" [WORDVEST b] [ENDOPT] = <choice><reg xml:lang=[WORD c] cert="low">[items a]</><orig>[WORDVEST b]</></>
+	>: [BEGOPT] [items a] "(?)" "=" [WORD c] "|reg|" [items d] "(?)" [ENDOPT] = <choice><reg xml:lang=[WORD c] cert="low">[items a]</><orig>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "(?)" "=" [WORD c] "|reg|" [items d] [ENDOPT] = <choice><reg xml:lang=[WORD c] cert="low">[items a]</><orig>[items d]</></>
+	>: [BEGOPT] [WORDVEST a] "=" [WORD c] "|reg|" [WORDVEST b] [ENDOPT] = <choice><reg xml:lang=[WORD c]>[WORDVEST a]</><orig>[WORDVEST b]</></>
+	>: [BEGOPT] [WORDVEST a] "=" [WORD c] "|reg|" [items d] "(?)" [ENDOPT] = <choice><reg xml:lang=[WORD c]>[WORDVEST a]</><orig>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [WORDVEST a] "=" [WORD c] "|reg|" [items d] [ENDOPT] = <choice><reg xml:lang=[WORD c]>[WORDVEST a]</><orig>[items d]</></>
+	>: [BEGOPT] [items a] "=" [WORD c] "|reg|" [WORDVEST b] [ENDOPT] = <choice><reg xml:lang=[WORD c]>[items a]</><orig>[WORDVEST b]</></>
+	>: [BEGOPT] [items a] "=" [WORD c] "|reg|" [items d] "(?)" [ENDOPT] = <choice><reg xml:lang=[WORD c]>[items a]</><orig>[items d]<certainty match=".." locus="value"/></></>
+	>: [BEGOPT] [items a] "=" [WORD c] "|reg|" [items d] [ENDOPT] = <choice><reg xml:lang=[WORD c]>[items a]</><orig>[items d]</></>
+	
 	//multiple reg tags - needs to be down here or nested regs above not work correctly
 	: [BEGOPT][multregs a][WORDVEST e][ENDOPT] = <choice>[multregs a]<orig>[WORDVEST e]</></>
 	>: [BEGOPT][multregs a][items e][ENDOPT] = <choice>[multregs a]<orig>[items e]</></>

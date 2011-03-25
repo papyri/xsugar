@@ -17,7 +17,7 @@ public class XSugarStandaloneServlet extends HttpServlet
 {
   private Hashtable transformers = null;
 
-  private static String[] known_grammars = {"epidoc"};
+  private static String[] known_grammars = {"epidoc", "translation_epidoc"};
 
   public void init(ServletConfig config)
     throws ServletException

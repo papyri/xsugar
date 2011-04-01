@@ -19,6 +19,14 @@ module RXSugar
           @rxsugar = rxsugar_from_grammar(RXSugarHelper::TRANSLATION_GRAMMAR)
         end
       end
+      
+      class CommentaryRXSugarSingleton < RXSugarSingleton
+        def initialize
+          @rxsugar = rxsugar_from_grammar(RXSugarHelper::COMMENTARY_GRAMMAR)
+        end
+      end
+      
+      
     end
     
     def self.included(base)

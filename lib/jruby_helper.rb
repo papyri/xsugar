@@ -20,11 +20,11 @@ module RXSugar
         end
       end
       
-      class CommentaryRXSugarSingleton < RXSugarSingleton
-        def initialize
-          @rxsugar = rxsugar_from_grammar(RXSugarHelper::COMMENTARY_GRAMMAR)
-        end
-      end
+      #class CommentaryRXSugarSingleton < RXSugarSingleton
+      #  def initialize
+      #    @rxsugar = rxsugar_from_grammar(RXSugarHelper::COMMENTARY_GRAMMAR)
+      #  end
+      #end
       
       
     end
@@ -53,9 +53,9 @@ module RXSugar
         acts_as_x TranslationClassMethods
       end
       
-      def acts_as_commentary_sugar
-        acts_as_x CommentaryClassMethods
-      end
+      #def acts_as_commentary_sugar
+      #  acts_as_x CommentaryClassMethods
+      #end
     end
     
     module ClassMethods
@@ -180,12 +180,12 @@ module RXSugar
       include ClassMethods
     end
     
-    module CommentaryClassMethods
-      def transformer_commentary
-        CommentaryRXSugarSingleton
-      end
-      include ClassMethods
-    end
+    #module CommentaryClassMethods
+    #  def transformer_commentary
+    #    CommentaryRXSugarSingleton
+    #  end
+    #  include ClassMethods
+    #end
     
     module InstanceMethods
 

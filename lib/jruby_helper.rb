@@ -54,7 +54,7 @@ module RXSugar
       end
       
       def acts_as_commentary_sugar
-        acts_as_x_CommentaryClassMethods
+        acts_as_x CommentaryClassMethods
       end
     end
     

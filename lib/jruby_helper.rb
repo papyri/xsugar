@@ -33,7 +33,15 @@ module RXSugar
       class << self
         def transform_request(url, params)
           resp = Net::HTTP.post_form(URI.parse(url), params)
-          return JSON.parse(resp.body)["content"]
+          parsed_resp = JSON.parse(resp.body)
+          if parsed_resp.has_key?("exception")
+            error_type = params[:direction] == 'nonxml2xml' ? NonXMLParseError : XMLParseError
+            raise error_type.new(
+              parsed_resp["exception"]["line"], parsed_resp["exception"]["column"], params[:content]),
+              parsed_resp["exception"]["cause"]
+          else
+            return parsed_resp["content"]
+          end
         end
       end
     end

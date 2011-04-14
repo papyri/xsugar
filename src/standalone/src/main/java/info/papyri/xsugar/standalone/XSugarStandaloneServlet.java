@@ -67,6 +67,7 @@ public class XSugarStandaloneServlet extends HttpServlet
   }
 
   private String doTransform(String content, String transform_type, String direction)
+    throws dk.brics.grammar.parser.ParseException
   {
     String result = null;
     XSugarStandaloneTransformer transformer = getTransformer(transform_type);
@@ -88,6 +89,7 @@ public class XSugarStandaloneServlet extends HttpServlet
       System.out.println(e.getMessage());
       // System.out.println(e.getLocation().getLine() + "," + e.getLocation().getColumn());
       e.printStackTrace();
+      throw e;
     }
     catch (Throwable t) {
       System.out.println("Error! " + t.getClass().getName());
@@ -130,8 +132,22 @@ public class XSugarStandaloneServlet extends HttpServlet
     String param_content = request.getParameter("content");
     String param_type = request.getParameter("type");
     String param_direction = request.getParameter("direction");
-
-    String result = doTransform(param_content, param_type, param_direction);
+    
+    boolean parse_exception = false;
+    String result = null;
+    String cause = null;
+    int line = 0;
+    int column = 0;
+    
+    try {
+      result = doTransform(param_content, param_type, param_direction);
+    }
+    catch (dk.brics.grammar.parser.ParseException e) {
+      parse_exception = true;
+      cause = e.getMessage();
+      line = e.getLocation().getLine();
+      column = e.getLocation().getColumn();
+    }
 
     PrintWriter out = response.getWriter();
 
@@ -139,7 +155,18 @@ public class XSugarStandaloneServlet extends HttpServlet
     response.setStatus(HttpServletResponse.SC_OK);
 
     out.println("{");
-    out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(result) + "\"");
+    if (!parse_exception) {
+      out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(result) + "\"");
+    }
+    else {
+      out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(result) + "\",");
+      out.println("\"exception\":");
+        out.println("{");
+          out.println("\"cause\": \"" + StringEscapeUtils.escapeJavaScript(cause) + "\",");
+          out.println("\"line\": " + line + ",");
+          out.println("\"column\": " + column);
+        out.println("}");
+    }
     out.println("}");
   }
 }

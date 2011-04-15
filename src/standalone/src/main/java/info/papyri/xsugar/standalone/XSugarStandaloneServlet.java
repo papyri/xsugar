@@ -2,12 +2,14 @@ package info.papyri.xsugar.standalone;
 
 import java.io.*;
 import java.net.URL;
-import java.util.Hashtable;
+import java.util.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 
 import info.papyri.xsugar.standalone.XSugarStandaloneTransformer;
+import info.papyri.xsugar.splitter.EpiDocSplitter;
+import info.papyri.xsugar.splitter.LeidenPlusSplitter;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -75,11 +77,50 @@ public class XSugarStandaloneServlet extends HttpServlet
     try {
       if (direction.equals("xml2nonxml"))
       {
-        result = transformer.XMLToNonXML(content);
+        if (transform_type.equals("epidoc")) {
+          StringBuffer results_buffer = new StringBuffer();
+          EpiDocSplitter splitter = new EpiDocSplitter();
+          List<String> split_results = splitter.split(content);
+          ArrayList<String> results_list = new ArrayList();
+          System.out.println("Split into " + split_results.size());
+          for (String split_item : split_results) {
+            try {
+              String item_result = transformer.XMLToNonXML(split_item);
+              results_buffer.append(item_result);
+              results_list.add(item_result);
+            }
+            catch (org.jdom.input.JDOMParseException e) {
+              System.out.println("Error transforming:\n" + split_item);
+            }
+          }
+          // result = results_buffer.toString();
+          System.out.println("Joining from " + results_list.size());
+          result = new LeidenPlusSplitter().join(results_list);
+        }
+        else {
+          result = transformer.XMLToNonXML(content);
+        }
       }
       else if (direction.equals("nonxml2xml"))
       {
-        result = transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));
+        if (transform_type.equals("epidoc")) {
+          StringBuffer results_buffer = new StringBuffer();
+          LeidenPlusSplitter splitter = new LeidenPlusSplitter();
+          List<String> split_results = splitter.split(StringEscapeUtils.unescapeHtml(content));
+          ArrayList<String> results_list = new ArrayList();
+          System.out.println("Split into " + split_results.size());
+          for (String split_item : split_results) {
+            String item_result = transformer.nonXMLToXML(split_item);
+            results_buffer.append(item_result);
+            results_list.add(item_result);
+          }
+          // result = results_buffer.toString();
+          System.out.println("Joining from " + results_list.size());
+          result = new EpiDocSplitter().join(results_list);
+        }
+        else {
+          result = transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));
+        }
       }
       else {
         result = "Bad direction " + direction;

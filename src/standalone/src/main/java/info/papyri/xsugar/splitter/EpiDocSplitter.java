@@ -16,7 +16,7 @@ import org.xml.sax.helpers.*;
  * EpiDocSplitter takes an EpiDoc-style edition <div> and partitions it into
  * well-formed XML fragments of N lines each (plus a remainder).
  */
-public class EpiDocSplitter {
+public class EpiDocSplitter implements SplitterJoiner {
 
   public EpiDocSplitter() {
 

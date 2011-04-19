@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
  * LeidenPlusSplitter takes a Leiden+ style edition div and partitions it into
  * well-formed fragments of N lines each (plus a remainder).
  */
-public class LeidenPlusSplitter {
+public class LeidenPlusSplitter implements SplitterJoiner {
 
   private static Map<String, String> tokens = new HashMap<String, String>();
   private static Map<String, String> tokensRev = new HashMap<String, String>();

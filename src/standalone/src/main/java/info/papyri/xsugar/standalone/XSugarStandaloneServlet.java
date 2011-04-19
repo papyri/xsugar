@@ -10,6 +10,7 @@ import javax.servlet.http.*;
 import info.papyri.xsugar.standalone.XSugarStandaloneTransformer;
 import info.papyri.xsugar.splitter.EpiDocSplitter;
 import info.papyri.xsugar.splitter.LeidenPlusSplitter;
+import info.papyri.xsugar.splitter.SplitterJoiner;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -67,6 +68,31 @@ public class XSugarStandaloneServlet extends HttpServlet
     }
     return transformer;
   }
+  
+  private String doSplitTransform(String content, XSugarStandaloneTransformer transformer, String direction, SplitterJoiner splitter, SplitterJoiner joiner)
+    throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, Exception
+  {
+    List<String> split_results = splitter.split(content);
+    ArrayList<String> results_list = new ArrayList();
+    System.out.println("Split into " + split_results.size());
+    for (String split_item : split_results) {
+      try {
+        String item_result = "";
+        if(direction.equals("xml2nonxml")) {
+          item_result = transformer.XMLToNonXML(split_item);
+        }
+        else {
+          item_result = transformer.nonXMLToXML(split_item);
+        }
+        results_list.add(item_result);
+      }
+      catch (org.jdom.input.JDOMParseException e) {
+        System.out.println("Error transforming:\n" + split_item);
+      }
+    }
+    System.out.println("Joining from " + results_list.size());
+    return joiner.join(results_list);
+  }
 
   private String doTransform(String content, String transform_type, String direction)
     throws dk.brics.grammar.parser.ParseException
@@ -78,24 +104,7 @@ public class XSugarStandaloneServlet extends HttpServlet
       if (direction.equals("xml2nonxml"))
       {
         if (transform_type.equals("epidoc")) {
-          StringBuffer results_buffer = new StringBuffer();
-          EpiDocSplitter splitter = new EpiDocSplitter();
-          List<String> split_results = splitter.split(content);
-          ArrayList<String> results_list = new ArrayList();
-          System.out.println("Split into " + split_results.size());
-          for (String split_item : split_results) {
-            try {
-              String item_result = transformer.XMLToNonXML(split_item);
-              results_buffer.append(item_result);
-              results_list.add(item_result);
-            }
-            catch (org.jdom.input.JDOMParseException e) {
-              System.out.println("Error transforming:\n" + split_item);
-            }
-          }
-          // result = results_buffer.toString();
-          System.out.println("Joining from " + results_list.size());
-          result = new LeidenPlusSplitter().join(results_list);
+          result = doSplitTransform(content, transformer, direction, new EpiDocSplitter(), new LeidenPlusSplitter());
         }
         else {
           result = transformer.XMLToNonXML(content);
@@ -104,19 +113,7 @@ public class XSugarStandaloneServlet extends HttpServlet
       else if (direction.equals("nonxml2xml"))
       {
         if (transform_type.equals("epidoc")) {
-          StringBuffer results_buffer = new StringBuffer();
-          LeidenPlusSplitter splitter = new LeidenPlusSplitter();
-          List<String> split_results = splitter.split(StringEscapeUtils.unescapeHtml(content));
-          ArrayList<String> results_list = new ArrayList();
-          System.out.println("Split into " + split_results.size());
-          for (String split_item : split_results) {
-            String item_result = transformer.nonXMLToXML(split_item);
-            results_buffer.append(item_result);
-            results_list.add(item_result);
-          }
-          // result = results_buffer.toString();
-          System.out.println("Joining from " + results_list.size());
-          result = new EpiDocSplitter().join(results_list);
+          result = doSplitTransform(content, transformer, direction, new LeidenPlusSplitter(), new EpiDocSplitter());
         }
         else {
           result = transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));

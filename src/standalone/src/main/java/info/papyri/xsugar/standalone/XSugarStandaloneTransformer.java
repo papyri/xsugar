@@ -96,6 +96,15 @@ public class XSugarStandaloneTransformer
     return new String(grammar_hash + ":" + direction + ":" + text);
   }
   
+  private void cachePut(String direction, String text, TransformResult result) {
+    try {
+      cache.put(cacheKey(direction,text),result);
+    }
+    catch (CacheException e) {
+      System.out.println("Problem caching!");
+    }
+  }
+  
   public String nonXMLToXML(String text)
     throws dk.brics.grammar.parser.ParseException
   {
@@ -105,22 +114,28 @@ public class XSugarStandaloneTransformer
     if (cache_result == null) {
       System.out.println("Cache miss!");
       
-      AST ast = parser_l.parse(text, "dummy.txt");
-    
-      result = unparsed_x_grammar.unparse(ast);
-      result = end_tag.fix(result);
-      result = namespace_adder.fix(result);
-      
       try {
-        cache.put(cacheKey("nonxml2xml",text),new TransformResult(result));
+        AST ast = parser_l.parse(text, "dummy.txt");
+    
+        result = unparsed_x_grammar.unparse(ast);
+        result = end_tag.fix(result);
+        result = namespace_adder.fix(result);
       }
-      catch (CacheException e) {
-        System.out.println("Problem caching!");
+      catch (dk.brics.grammar.parser.ParseException e) {
+        cachePut("nonxml2xml",text,new TransformResult(e));
+        throw e;
       }
+      
+      cachePut("nonxml2xml",text,new TransformResult(result));
     }
     else {
       System.out.println("Cache hit!");
-      result = cache_result.content;
+      if (cache_result.isException()) {
+        throw cache_result.exception;
+      }
+      else {
+        result = cache_result.content;
+      }
     }
     return result;
   }
@@ -134,22 +149,29 @@ public class XSugarStandaloneTransformer
     if (cache_result == null) {
       System.out.println("Cache miss!");
       
-      String input = norm.normalize(xml, "dummy.xml");
-    
-      AST ast = parser_x.parse(input, "dummy.xml");
-      new ASTUnescaper().unescape(ast);
-      result = unparsed_l_grammar.unparse(ast);
-      
       try {
-        cache.put(cacheKey("xml2nonxml",xml),new TransformResult(result));
+        String input = norm.normalize(xml, "dummy.xml");
+    
+        AST ast = parser_x.parse(input, "dummy.xml");
+        new ASTUnescaper().unescape(ast);
+        result = unparsed_l_grammar.unparse(ast);
       }
-      catch (CacheException e) {
-        System.out.println("Problem caching!");
+      catch (dk.brics.grammar.parser.ParseException e) {
+        cachePut("xml2nonxml",xml,new TransformResult(e));
+        throw e;
       }
+      
+      cachePut("xml2nonxml",xml,new TransformResult(result));
     }
     else {
       System.out.println("Cache hit!");
       result = cache_result.content;
+      if (cache_result.isException()) {
+        throw cache_result.exception;
+      }
+      else {
+        result = cache_result.content;
+      }
     }
     return result;
   }

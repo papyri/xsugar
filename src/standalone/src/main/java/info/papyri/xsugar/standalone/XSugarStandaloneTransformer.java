@@ -97,7 +97,6 @@ public class XSugarStandaloneTransformer
   public String nonXMLToXML(String text)
     throws dk.brics.grammar.parser.ParseException
   {
-    // System.out.println("Getting: " + cacheKey("nonxml2xml",text.trim().substring(0,40)) + "…, " + text.trim().hashCode());
     String result = (String)cache.get(cacheKey("nonxml2xml", text));
     if (result == null) {
       System.out.println("Cache miss!");
@@ -109,10 +108,7 @@ public class XSugarStandaloneTransformer
       result = namespace_adder.fix(result);
       
       try {
-        // System.out.println("Putting: " + cacheKey("nonxml2xml",text.trim().substring(0,40)));
         cache.put(cacheKey("nonxml2xml",text),result);
-        // System.out.println("Putting: " + cacheKey("xml2nonxml",result.trim().substring(0,40)));
-        // cache.put(cacheKey("xml2nonxml",result.trim()),text);
       }
       catch (CacheException e) {
         System.out.println("Problem caching!");
@@ -127,7 +123,6 @@ public class XSugarStandaloneTransformer
   public String XMLToNonXML(String xml)
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, IOException
   {
-    // System.out.println("Getting: " + cacheKey("xml2nonxml",xml.trim().substring(0,40)) + "…, " + xml.trim().hashCode());
     String result = (String)cache.get(cacheKey("xml2nonxml",xml));
     if (result == null) {
       System.out.println("Cache miss!");
@@ -139,10 +134,7 @@ public class XSugarStandaloneTransformer
       result = unparsed_l_grammar.unparse(ast);
       
       try {
-        // System.out.println("Putting: " + cacheKey("xml2nonxml",xml.trim().substring(0,40)) + "…, " + xml.trim().hashCode());
         cache.put(cacheKey("xml2nonxml",xml),result);
-        // System.out.println("Putting: " + cacheKey("nonxml2xml",result.trim().substring(0,40)) + "…, " + result.trim().hashCode());
-        // cache.put(cacheKey("nonxml2xml",result.trim()),xml);
       }
       catch (CacheException e) {
         System.out.println("Problem caching!");

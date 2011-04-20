@@ -23,6 +23,8 @@ import dk.brics.xsugar.*;
 import org.apache.jcs.JCS;
 import org.apache.jcs.access.exception.CacheException;
 
+import info.papyri.xsugar.standalone.TransformResult;
+
 public class XSugarStandaloneTransformer
 {
   private Stylesheet stylesheet;
@@ -97,8 +99,10 @@ public class XSugarStandaloneTransformer
   public String nonXMLToXML(String text)
     throws dk.brics.grammar.parser.ParseException
   {
-    String result = (String)cache.get(cacheKey("nonxml2xml", text));
-    if (result == null) {
+    String result;
+    
+    TransformResult cache_result = (TransformResult)cache.get(cacheKey("nonxml2xml", text));
+    if (cache_result == null) {
       System.out.println("Cache miss!");
       
       AST ast = parser_l.parse(text, "dummy.txt");
@@ -108,7 +112,7 @@ public class XSugarStandaloneTransformer
       result = namespace_adder.fix(result);
       
       try {
-        cache.put(cacheKey("nonxml2xml",text),result);
+        cache.put(cacheKey("nonxml2xml",text),new TransformResult(result));
       }
       catch (CacheException e) {
         System.out.println("Problem caching!");
@@ -116,6 +120,7 @@ public class XSugarStandaloneTransformer
     }
     else {
       System.out.println("Cache hit!");
+      result = cache_result.content;
     }
     return result;
   }
@@ -123,8 +128,10 @@ public class XSugarStandaloneTransformer
   public String XMLToNonXML(String xml)
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, IOException
   {
-    String result = (String)cache.get(cacheKey("xml2nonxml",xml));
-    if (result == null) {
+    String result;
+    
+    TransformResult cache_result = (TransformResult)cache.get(cacheKey("xml2nonxml",xml));
+    if (cache_result == null) {
       System.out.println("Cache miss!");
       
       String input = norm.normalize(xml, "dummy.xml");
@@ -134,7 +141,7 @@ public class XSugarStandaloneTransformer
       result = unparsed_l_grammar.unparse(ast);
       
       try {
-        cache.put(cacheKey("xml2nonxml",xml),result);
+        cache.put(cacheKey("xml2nonxml",xml),new TransformResult(result));
       }
       catch (CacheException e) {
         System.out.println("Problem caching!");
@@ -142,6 +149,7 @@ public class XSugarStandaloneTransformer
     }
     else {
       System.out.println("Cache hit!");
+      result = cache_result.content;
     }
     return result;
   }

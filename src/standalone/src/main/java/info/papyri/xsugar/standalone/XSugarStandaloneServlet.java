@@ -16,16 +16,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 
-import org.apache.jcs.JCS;
-import org.apache.jcs.access.exception.CacheException;
-
 public class XSugarStandaloneServlet extends HttpServlet
 {
   private Hashtable transformers = null;
 
   private static String[] known_grammars = {"epidoc", "translation_epidoc"};
-
-  private JCS cache = null;
 
   public void init(ServletConfig config)
     throws ServletException
@@ -40,13 +35,6 @@ public class XSugarStandaloneServlet extends HttpServlet
       initTransformer(grammar);
     }
     System.out.println("Done.");
-    
-    try {
-      cache = JCS.getInstance("default");
-    }
-    catch (CacheException e) {
-      System.out.println("Error initializing cache!");
-    }
   }
 
   private XSugarStandaloneTransformer initTransformer(String transformer_name)
@@ -189,6 +177,11 @@ public class XSugarStandaloneServlet extends HttpServlet
     int line = 0;
     int column = 0;
     
+    PrintWriter out = response.getWriter();
+
+    response.setContentType("application/json;charset=UTF-8");
+    response.setStatus(HttpServletResponse.SC_OK);
+    
     try {
       result = doTransform(param_content, param_type, param_direction);
     }
@@ -198,11 +191,6 @@ public class XSugarStandaloneServlet extends HttpServlet
       line = e.getLocation().getLine();
       column = e.getLocation().getColumn();
     }
-
-    PrintWriter out = response.getWriter();
-
-    response.setContentType("application/json;charset=UTF-8");
-    response.setStatus(HttpServletResponse.SC_OK);
 
     out.println("{");
     if (!parse_exception) {

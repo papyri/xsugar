@@ -20,6 +20,9 @@ import dk.brics.xsugar.validator.*;
 import dk.brics.xsugar.xml.*;
 import dk.brics.xsugar.*;
 
+import org.apache.jcs.JCS;
+import org.apache.jcs.access.exception.CacheException;
+
 public class XSugarStandaloneTransformer
 {
   private Stylesheet stylesheet;
@@ -41,6 +44,9 @@ public class XSugarStandaloneTransformer
   private static InputNormalizer norm = new InputNormalizer();
   private static EndTagNameAdder end_tag = new EndTagNameAdder();
   
+  private int grammar_hash;
+  private JCS cache = null;
+  
   public XSugarStandaloneTransformer()
   {
   
@@ -50,6 +56,9 @@ public class XSugarStandaloneTransformer
     throws dk.brics.xsugar.XSugarException, IOException, ParseException, dk.brics.relaxng.converter.ParseException, InstantiationException,	IllegalAccessException, ClassNotFoundException
   {
     StylesheetParser parser = new StylesheetParser();
+    
+    grammar_hash = grammar.hashCode();
+    System.out.println("Hash: " + grammar_hash);
     
     stylesheet = parser.parse(grammar, "dummy.xsg", charset);
     new StylesheetChecker().check(stylesheet);
@@ -72,29 +81,76 @@ public class XSugarStandaloneTransformer
     unparsed_x_grammar = new Unparser(x_grammar);
     
     namespace_adder = new NamespaceAdder(stylesheet);
+    
+    try {
+      cache = JCS.getInstance("default");
+    }
+    catch (CacheException e) {
+      System.out.println("Error initializing cache!");
+    }
+  }
+  
+  private String cacheKey(String direction, String text) {
+    return new String(grammar_hash + ":" + direction + ":" + text);
   }
   
   public String nonXMLToXML(String text)
     throws dk.brics.grammar.parser.ParseException
   {
-    AST ast = parser_l.parse(text, "dummy.txt");
+    // System.out.println("Getting: " + cacheKey("nonxml2xml",text.trim().substring(0,40)) + "…, " + text.trim().hashCode());
+    String result = (String)cache.get(cacheKey("nonxml2xml", text));
+    if (result == null) {
+      System.out.println("Cache miss!");
+      
+      AST ast = parser_l.parse(text, "dummy.txt");
     
-    String output = unparsed_x_grammar.unparse(ast);
-    output = end_tag.fix(output);
-    output = namespace_adder.fix(output);
-    
-    return output;
+      result = unparsed_x_grammar.unparse(ast);
+      result = end_tag.fix(result);
+      result = namespace_adder.fix(result);
+      
+      try {
+        // System.out.println("Putting: " + cacheKey("nonxml2xml",text.trim().substring(0,40)));
+        cache.put(cacheKey("nonxml2xml",text),result);
+        // System.out.println("Putting: " + cacheKey("xml2nonxml",result.trim().substring(0,40)));
+        // cache.put(cacheKey("xml2nonxml",result.trim()),text);
+      }
+      catch (CacheException e) {
+        System.out.println("Problem caching!");
+      }
+    }
+    else {
+      System.out.println("Cache hit!");
+    }
+    return result;
   }
   
   public String XMLToNonXML(String xml)
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, IOException
   {
-    String input = norm.normalize(xml, "dummy.xml");
+    // System.out.println("Getting: " + cacheKey("xml2nonxml",xml.trim().substring(0,40)) + "…, " + xml.trim().hashCode());
+    String result = (String)cache.get(cacheKey("xml2nonxml",xml));
+    if (result == null) {
+      System.out.println("Cache miss!");
+      
+      String input = norm.normalize(xml, "dummy.xml");
     
-    AST ast = parser_x.parse(input, "dummy.xml");
-    new ASTUnescaper().unescape(ast);
-    String output = unparsed_l_grammar.unparse(ast);
-    
-    return output;
+      AST ast = parser_x.parse(input, "dummy.xml");
+      new ASTUnescaper().unescape(ast);
+      result = unparsed_l_grammar.unparse(ast);
+      
+      try {
+        // System.out.println("Putting: " + cacheKey("xml2nonxml",xml.trim().substring(0,40)) + "…, " + xml.trim().hashCode());
+        cache.put(cacheKey("xml2nonxml",xml),result);
+        // System.out.println("Putting: " + cacheKey("nonxml2xml",result.trim().substring(0,40)) + "…, " + result.trim().hashCode());
+        // cache.put(cacheKey("nonxml2xml",result.trim()),xml);
+      }
+      catch (CacheException e) {
+        System.out.println("Problem caching!");
+      }
+    }
+    else {
+      System.out.println("Cache hit!");
+    }
+    return result;
   }
 }

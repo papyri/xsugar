@@ -108,7 +108,13 @@ public class XSugarStandaloneServlet extends HttpServlet
       if (direction.equals("xml2nonxml"))
       {
         if (transform_type.equals("epidoc")) {
-          result = doSplitTransform(content, transformer, direction, new EpiDocSplitter(), new LeidenPlusSplitter());
+          try {
+            result = doSplitTransform(content, transformer, direction, new EpiDocSplitter(), new LeidenPlusSplitter());
+          }
+          catch (dk.brics.grammar.parser.ParseException e) {
+            System.out.println("Parse exception in split transform, trying full transform");
+            result = transformer.XMLToNonXML(content);
+          }
         }
         else {
           result = transformer.XMLToNonXML(content);
@@ -117,7 +123,13 @@ public class XSugarStandaloneServlet extends HttpServlet
       else if (direction.equals("nonxml2xml"))
       {
         if (transform_type.equals("epidoc")) {
-          result = doSplitTransform(content, transformer, direction, new LeidenPlusSplitter(), new EpiDocSplitter());
+          try {
+            result = doSplitTransform(content, transformer, direction, new LeidenPlusSplitter(), new EpiDocSplitter());
+          }
+          catch (dk.brics.grammar.parser.ParseException e) {
+            System.out.println("Parse exception in split transform, trying full transform");
+            result = transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));
+          }
         }
         else {
           result = transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));

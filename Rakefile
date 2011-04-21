@@ -64,6 +64,18 @@ namespace :coverage do
       RUN_NOTE = ""
     end
     
+    if ENV.include?('XSUGAR_STANDALONE_ENABLED')
+      XSUGAR_STANDALONE_ENABLED = (ENV['XSUGAR_STANDALONE_ENABLED'] == "true")
+    else
+      XSUGAR_STANDALONE_ENABLED = false
+    end
+    
+    if ENV.include?('XSUGAR_STANDALONE_URL')
+      XSUGAR_STANDALONE_URL = ENV['XSUGAR_STANDALONE_URL']
+    else
+      XSUGAR_STANDALONE_URL = ''
+    end
+    
     RXSugar::Coverage::Runner.new.run(DDB_DATA_PATH, RUN_NOTE)
   end
   

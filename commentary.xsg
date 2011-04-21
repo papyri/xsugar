@@ -1,0 +1,58 @@
+
+
+NL = [\r\n]+
+SP = [ ]
+SPO = [ ]+ (MAX)
+SPO2 = [ ]*
+ANYSP = [\r\n \t]*
+
+BEGIN = "<"
+END = ">"
+
+BEGWRAP = "<W"
+ENDWRAP = "W>"
+
+QUESTION = [\?]?
+
+LINENUM = [0-9]+[/\,a-zA-Z]*[ms0-9]*
+ANYLETTER = [^\/\\\t\^<>_#@~〚〛$\*\&\:\|\{\}\?\"¯≡+\u0323]
+
+//very permisive for free text, only remove what is in grammar
+WORDSLOOSE = ([^<>\|]+) (MAX)
+      
+  wrap 
+    : [BEGWRAP] [items i] [ENDWRAP] = <wrap>[items i]</>
+    
+  url
+    : [BEGIN] [WORDSLOOSE text] "|" [WORDSLOOSE url] [END] = <a href=[WORDSLOOSE url]>[WORDSLOOSE text]</>
+      
+  bib
+    : [BEGIN] [WORDSLOOSE text] "||" [WORDSLOOSE pn] [END] = <pn ref=[WORDSLOOSE pn]>[WORDSLOOSE text]</>
+    
+  emphasis_bold
+    : [BEGIN] "b " [WORDSLOOSE text] [END] = <emph rend="bold">[WORDSLOOSE text]</>
+  
+  emphasis_italics
+    : [BEGIN] "i " [WORDSLOOSE text] [END] = <emph rend="italics">[WORDSLOOSE text]</>
+  
+  paragraph
+    : [BEGIN] "p " [items i] [END] = <p>[items i]</>
+  
+  
+  items
+    :  [item i] [items more] = [item i] [items more]
+    >: [item p] = [item p]
+
+  item
+      
+     : [url u] = [url u]
+     : [bib b] = [bib b]
+     : [emphasis_bold eb] = [emphasis_bold eb]
+     : [emphasis_italics ei] = [emphasis_italics ei]
+     : [paragraph p] = [paragraph p]
+
+     : [NL n] = [NL n]
+    >: [WORDSLOOSE w] = [WORDSLOOSE w]
+    >: [ANYLETTER a] = [ANYLETTER a]
+  
+  

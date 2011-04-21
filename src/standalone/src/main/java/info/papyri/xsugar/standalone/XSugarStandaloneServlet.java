@@ -73,6 +73,10 @@ public class XSugarStandaloneServlet extends HttpServlet
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, Exception
   {
     List<String> split_results = splitter.split(content);
+    if (split_results.size() == 1) {
+      System.out.println("Single chunk, doing transform normally");
+      return direction.equals("xml2nonxml") ? transformer.XMLToNonXML(content) : transformer.nonXMLToXML(content);
+    }
     ArrayList<String> results_list = new ArrayList();
     System.out.println("Split into " + split_results.size());
     for (String split_item : split_results) {

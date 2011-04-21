@@ -72,7 +72,18 @@ public class XSugarStandaloneServlet extends HttpServlet
   private String doSplitTransform(String content, XSugarStandaloneTransformer transformer, String direction, SplitterJoiner splitter, SplitterJoiner joiner)
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, Exception
   {
-    List<String> split_results = splitter.split(content);
+    List<String> split_results = null;
+    try {
+       split_results = splitter.split(content);
+    }
+    catch (org.xml.sax.SAXParseException e) {
+      System.out.println("SAX Parse exception, doing transform normally");
+      return direction.equals("xml2nonxml") ? transformer.XMLToNonXML(content) : transformer.nonXMLToXML(content);
+    }
+    catch (java.lang.StringIndexOutOfBoundsException e) {
+      System.out.println("Split exception, doing transform normally");
+      return direction.equals("xml2nonxml") ? transformer.XMLToNonXML(content) : transformer.nonXMLToXML(content);
+    }
     if (split_results.size() == 1) {
       System.out.println("Single chunk, doing transform normally");
       return direction.equals("xml2nonxml") ? transformer.XMLToNonXML(content) : transformer.nonXMLToXML(content);

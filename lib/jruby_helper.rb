@@ -180,7 +180,7 @@ module RXSugar
           return post_to_blackboard('nonxml', 'xml', content)
         end
       end
-            
+      
       def jruby_pipe(ruby_file, content)
         IO.popen("jruby #{ruby_file}", "w+") do |pipe|
           pipe.puts content
@@ -245,6 +245,20 @@ module RXSugar
     module InstanceMethods
 
     end
-    
+
+    class RXSugarProxy  
+      def xml_to_non_xml(content)
+        xml2nonxml(content)
+      end
+      
+      def non_xml_to_xml(content)
+        nonxml2xml(content)
+      end
+    end
+
+    class LeidenPlusRXSugarProxy < RXSugarProxy
+      include LeidenPlusClassMethods
+    end
+         
   end
 end

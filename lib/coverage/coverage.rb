@@ -221,7 +221,7 @@ module RXSugar
       attr_reader :xsugar
   
       def initialize
-        @xsugar = rxsugar_from_grammar
+        @xsugar = JRubyHelper::LeidenPlusRXSugarProxy.new()
       end
     end
 

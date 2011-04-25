@@ -39,7 +39,7 @@ module RXSugar
     
     class XSugarStandalone
       class << self
-        def transform_request(url, params)
+        def transform_request(url, params, retry_time = 0.00005)
           begin
             resp = Net::HTTP.post_form(URI.parse(url), params)
             parsed_resp = JSON.parse(resp.body)
@@ -52,9 +52,9 @@ module RXSugar
               return parsed_resp["content"]
             end
           rescue Errno::ECONNREFUSED, EOFError
-            # retry after 1 second
-            sleep(1)
-            return transform_request(url, params)
+            # retry after exponential backoff
+            sleep([retry_time, 1.0].min)
+            return transform_request(url, params, retry_time * 2)
           end
         end
       end

@@ -106,9 +106,9 @@ public class XSugarStandaloneTransformer
     }
   }
   
-  private void cachePut(String direction, String text, TransformResult result) {
+  private void cachePut(String key, TransformResult result) {
     try {
-      cache.put(cacheKey(direction,text),result);
+      cache.put(key,result);
     }
     catch (CacheException e) {
       System.out.println("Problem caching!");
@@ -119,8 +119,9 @@ public class XSugarStandaloneTransformer
     throws dk.brics.grammar.parser.ParseException
   {
     String result;
+    String key = cacheKey("nonxml2xml", text);
     
-    TransformResult cache_result = (TransformResult)cache.get(cacheKey("nonxml2xml", text));
+    TransformResult cache_result = (TransformResult)cache.get(key);
     if (cache_result == null) {
       System.out.println("Cache miss!");
       
@@ -132,11 +133,11 @@ public class XSugarStandaloneTransformer
         result = namespace_adder.fix(result);
       }
       catch (dk.brics.grammar.parser.ParseException e) {
-        cachePut("nonxml2xml",text,new TransformResult(e));
+        cachePut(key,new TransformResult(e));
         throw e;
       }
       
-      cachePut("nonxml2xml",text,new TransformResult(result));
+      cachePut(key,new TransformResult(result));
     }
     else {
       System.out.println("Cache hit!");
@@ -154,8 +155,9 @@ public class XSugarStandaloneTransformer
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, IOException
   {
     String result;
+    String key = cacheKey("xml2nonxml",xml);
     
-    TransformResult cache_result = (TransformResult)cache.get(cacheKey("xml2nonxml",xml));
+    TransformResult cache_result = (TransformResult)cache.get(key);
     if (cache_result == null) {
       System.out.println("Cache miss!");
       
@@ -167,11 +169,11 @@ public class XSugarStandaloneTransformer
         result = unparsed_l_grammar.unparse(ast);
       }
       catch (dk.brics.grammar.parser.ParseException e) {
-        cachePut("xml2nonxml",xml,new TransformResult(e));
+        cachePut(key,new TransformResult(e));
         throw e;
       }
       
-      cachePut("xml2nonxml",xml,new TransformResult(result));
+      cachePut(key,new TransformResult(result));
     }
     else {
       System.out.println("Cache hit!");

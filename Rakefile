@@ -79,9 +79,6 @@ namespace :coverage do
     RXSugar::Coverage::Runner.new.run(DDB_DATA_PATH, RUN_NOTE)
   end
   
-  
-  
-  
   task :translation do
     require 'lib/coverage/coverage'
     if ENV.include?('TRANSLATION_DATA_PATH')
@@ -120,12 +117,52 @@ namespace :coverage do
     
     RXSugar::Coverage::TranslationRunner.new.run(TRANSLATION_DATA_PATH, RUN_NOTE)
   end
+end
 
-
-  
-  
-  
-  
-  
-  
+namespace :standalone do
+  desc "Bounce a set of files through the transformation server both ways to warm the cache"
+  task :warmup do
+    require 'lib/standalone/runner'
+    
+    if ENV.include?('DATA_PATH')
+      DATA_PATH = ENV['DATA_PATH']
+    else
+      warn 'Use DATA_PATH=../path/to/dir to override default data dir'
+      DATA_PATH = '../idp.data/DDB_EpiDoc_XML'
+    end
+    
+    if ENV.include?('XSL_CHAIN')
+      XSL_CHAIN = ENV['XSL_CHAIN'].split(',')
+    else
+      warn 'Use XSL_CHAIN=file1.xsl,file2.xsl,file3.xsl to override default XSL chain'
+      XSL_CHAIN = %w{../protosite/data/xslt/ddb/preprocess.xsl ../protosite/data/xslt/ddb/strip_lb_ids.xsl ../protosite/data/xslt/ddb/get_div_edition.xsl}
+    end
+    
+    if ENV.include?('GRAMMAR_STRING')
+      GRAMMAR_STRING = ENV['GRAMMAR_STRING']
+    else
+      warn 'Use GRAMMAR_STRING=example to override default grammar string'
+      GRAMMAR_STRING = 'epidoc'
+    end
+    
+    if ENV.include?('STANDALONE_URL')
+      STANDALONE_URL = ENV['STANDALONE_URL']
+    else
+      warn 'Use STANDALONE_URL=http://localhost:9999/ to override default standalone URL'
+      STANDALONE_URL = "http://localhost:9999/"
+    end
+    
+    if ENV.include?('SAXON_JAR')
+      SAXON_JAR = ENV['SAXON_JAR']
+    else
+      warn 'Use SAXON_JAR=saxon9he.jar to override default Saxon JAR path'
+      SAXON_JAR = '../protosite/lib/java/saxon9he.jar'
+    end
+    
+    %w{DATA_PATH XSL_CHAIN GRAMMAR_STRING STANDALONE_URL SAXON_JAR}.each do |param|
+      warn "#{param}=#{Kernel.const_get(param)}"
+    end
+    
+    RXSugar::Standalone::Runner.new.run()
+  end
 end

@@ -23,6 +23,8 @@ import dk.brics.xsugar.*;
 import org.apache.jcs.JCS;
 import org.apache.jcs.access.exception.CacheException;
 
+import com.twmacinta.util.MD5;
+
 import info.papyri.xsugar.standalone.TransformResult;
 
 public class XSugarStandaloneTransformer
@@ -93,7 +95,15 @@ public class XSugarStandaloneTransformer
   }
   
   private String cacheKey(String direction, String text) {
-    return new String(grammar_hash + ":" + direction + ":" + text);
+    MD5 md5 = new MD5();
+    
+    try {
+      md5.Update(text,null);
+      return new String(grammar_hash + ":" + direction + ":" + md5.asHex());
+    }
+    catch (java.io.UnsupportedEncodingException e) {
+      return new String(grammar_hash + ":" + direction + ":" + text);
+    }
   }
   
   private void cachePut(String direction, String text, TransformResult result) {

@@ -33,6 +33,7 @@ File Structure
     init.rb                  Rails plugin init script
     lib/                     source code
         coverage/            classes for testing XSugar coverage
+        standalone/          classes for warming up standalone server
         jruby_helper.rb      helper classes for invoking RXSugar from JRuby
         modules_jruby.rb     Java->Ruby module conversion for JRuby
         modules_rjb.rb       Java->Ruby module conversion for RJB
@@ -40,7 +41,9 @@ File Structure
         rxsugar_helper.rb    helper classes for using Ruby XSugar wrapper
         util_helper.rb       helper classes for command-line scripts
         xsugar-all.jar       compiled upstream XSugar JAR
-    src/                     upstream Java source code
+    src/                     Java source code
+        standalone/          source code for standalone transformation server
+        xsugar/              upstream XSugar source code
     test/                    source code for unit testing
     translation_epidoc.xsg   XSugar grammar for EpiDoc translations
 

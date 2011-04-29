@@ -98,7 +98,7 @@ public class XSugarStandaloneTransformer
     MD5 md5 = new MD5();
     
     try {
-      md5.Update(text,null);
+      md5.Update(text.getBytes(charset));
       return new String(grammar_hash + ":" + direction + ":" + md5.asHex());
     }
     catch (java.io.UnsupportedEncodingException e) {

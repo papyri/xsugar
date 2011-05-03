@@ -110,7 +110,7 @@ public class XSugarStandaloneServlet extends HttpServlet
   }
 
   private String doTransform(String content, String transform_type, String direction)
-    throws dk.brics.grammar.parser.ParseException
+    throws dk.brics.grammar.parser.ParseException, org.jdom.JDOMException, java.lang.Exception, java.io.IOException
   {
     String result = null;
     XSugarStandaloneTransformer transformer = getTransformer(transform_type);
@@ -154,12 +154,8 @@ public class XSugarStandaloneServlet extends HttpServlet
     catch (dk.brics.grammar.parser.ParseException e) {
       System.out.println(e.getMessage());
       // System.out.println(e.getLocation().getLine() + "," + e.getLocation().getColumn());
-      e.printStackTrace();
+      // e.printStackTrace();
       throw e;
-    }
-    catch (Throwable t) {
-      System.out.println("Error! " + t.getClass().getName());
-      t.printStackTrace();
     }
 
     return result;
@@ -218,6 +214,10 @@ public class XSugarStandaloneServlet extends HttpServlet
       cause = e.getMessage();
       line = e.getLocation().getLine();
       column = e.getLocation().getColumn();
+    }
+    catch (Throwable t) {
+      parse_exception = true;
+      cause = "Unhandled error performing conversion. This is likely due to a large file containing a parse error, but due to the length of the file we are unable to fully parse it to indicate the position of the error.";
     }
 
     out.println("{");

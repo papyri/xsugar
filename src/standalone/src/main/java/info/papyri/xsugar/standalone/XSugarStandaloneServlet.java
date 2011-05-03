@@ -204,18 +204,20 @@ public class XSugarStandaloneServlet extends HttpServlet
     PrintWriter out = response.getWriter();
 
     response.setContentType("application/json;charset=UTF-8");
-    response.setStatus(HttpServletResponse.SC_OK);
     
     try {
       result = doTransform(param_content, param_type, param_direction);
+      response.setStatus(HttpServletResponse.SC_OK);
     }
     catch (dk.brics.grammar.parser.ParseException e) {
+      response.setStatus(HttpServletResponse.SC_OK);
       parse_exception = true;
       cause = e.getMessage();
       line = e.getLocation().getLine();
       column = e.getLocation().getColumn();
     }
     catch (Throwable t) {
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       parse_exception = true;
       cause = "Unhandled error performing conversion. This is likely due to a large file containing a parse error, but due to the length of the file we are unable to fully parse it to indicate the position of the error.";
     }

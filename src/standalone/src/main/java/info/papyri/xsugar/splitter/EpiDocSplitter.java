@@ -81,6 +81,7 @@ public class EpiDocSplitter implements SplitterJoiner {
     private int lineCount = 0;
     private boolean split = false;
     private char[] nl = new char[] {'☃', '\n'};
+    private String entity;
 
     public List<String> getResults() {
       return results;
@@ -190,7 +191,17 @@ public class EpiDocSplitter implements SplitterJoiner {
         chunk.append(">");
         standalone = false;
       }
-      chunk.append(ch, start, length);
+      if (entity != null) {
+        switch (ch[start]) {
+          case '<': chunk.append("&lt;"); break;
+          case '>': chunk.append("&gt;"); break;
+          case '&': chunk.append("&amp;"); break;
+        }
+        chunk.append(ch, start + 1, length -1);
+        entity = null;
+      } else {
+        chunk.append(ch, start, length);
+      }
     }
 
     @Override
@@ -210,37 +221,43 @@ public class EpiDocSplitter implements SplitterJoiner {
 
     @Override
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      throw new UnsupportedOperationException("DTDs are not supported.");
     }
 
     @Override
     public void endDTD() throws SAXException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      throw new UnsupportedOperationException("DTDs are not supported.");
     }
 
     @Override
     public void startEntity(String name) throws SAXException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      entity = name;
     }
 
     @Override
     public void endEntity(String name) throws SAXException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      //no-op
     }
 
     @Override
     public void startCDATA() throws SAXException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      throw new UnsupportedOperationException("CDATA sections are not supported.");
     }
 
     @Override
     public void endCDATA() throws SAXException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      throw new UnsupportedOperationException("CDATA sections are not supported.");
     }
 
     @Override
     public void comment(char[] ch, int start, int length) throws SAXException {
+      if (standalone) {
+        chunk.append(">");
+        standalone = false;
+      }
+      chunk.append("<!--");
       chunk.append(ch, start, length);
+      chunk.append("-->");
     }
     
   }

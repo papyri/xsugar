@@ -42,7 +42,18 @@ module RXSugar
         def transform_request(url, params, retry_time = 0.00005)
           begin
             resp = Net::HTTP.post_form(URI.parse(url), params)
+            if resp.code == 502
+              # Apache proxy error, retry
+              sleep([retry_time, 1.0].min)
+              return transform_request(url, params, retry_time * 2)
+            elsif resp.code != 200
+              # Unexpected error, report
+              error_type = params[:direction] == 'nonxml2xml' ? NonXMLParseError : XMLParseError
+              raise error_type.new(0,0,params[:content]), "Error performing transform. Response code from web service: Error #{resp.code}. Response body: #{resp.body}"
+            end
+            
             parsed_resp = JSON.parse(resp.body)
+            
             if parsed_resp.has_key?("exception")
               error_type = params[:direction] == 'nonxml2xml' ? NonXMLParseError : XMLParseError
               raise error_type.new(

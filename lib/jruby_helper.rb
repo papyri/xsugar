@@ -20,11 +20,11 @@ module RXSugar
         end
       end
       
-      #class CommentaryRXSugarSingleton < RXSugarSingleton
-      #  def initialize
-      #    @rxsugar = rxsugar_from_grammar(RXSugarHelper::COMMENTARY_GRAMMAR)
-      #  end
-      #end
+      class CommentaryRXSugarSingleton < RXSugarSingleton
+        def initialize
+          @rxsugar = rxsugar_from_grammar(RXSugarHelper::COMMENTARY_GRAMMAR)
+        end
+      end
       
       
     end
@@ -91,9 +91,6 @@ module RXSugar
         acts_as_x TranslationClassMethods
       end
       
-      #def acts_as_commentary_sugar
-      #  acts_as_x CommentaryClassMethods
-      #end
     end
     
     module ClassMethods
@@ -112,6 +109,30 @@ module RXSugar
       end          
       #====end used for translation====      
       
+      
+      #----used for commentary---
+      
+      def wrap_commentary_sugar(commentary)
+        return "<W " + commentary.strip + " W>"
+      end
+      def unwrap_commentary_sugar(commentary_sugar)
+        commentary_sugar.sub!("<W", "")
+        commentary_sugar.sub!("W>", "")
+      end
+      
+      def wrap_commentary_xml(commentary_xml)
+        return '<wrap>' + commentary_xml.strip + '</wrap>'
+      end
+      def unwrap_commentary_xml(commentary_xml)
+       # commentary_xml.sub!( '<wrap>', "")
+        commentary_xml.sub!( /<wrap(.*?)>/, "") # to catch any namespace additions
+        commentary_xml.sub!( '</wrap>', "")
+        
+        #return REXML::XPath.first(REXML::Document.new(commentary_xml), '/wrap/*').to_s
+      end
+      
+      
+      #====end used for commentary====
       
       
       def preprocess_abs(abs)
@@ -246,12 +267,16 @@ module RXSugar
       include ClassMethods
     end
     
-    #module CommentaryClassMethods
-    #  def transformer_commentary
-    #    CommentaryRXSugarSingleton
-    #  end
-    #  include ClassMethods
-    #end
+    module CommentaryClassMethods
+      def transformer_singleton
+        CommentaryRXSugarSingleton
+      end
+      
+      def transformer_name
+        "commentary"
+      end
+      include ClassMethods
+    end
     
     module InstanceMethods
 
@@ -269,6 +294,10 @@ module RXSugar
 
     class LeidenPlusRXSugarProxy < RXSugarProxy
       include LeidenPlusClassMethods
+    end
+    
+    class CommentaryRXSugarProxy < RXSugarProxy
+      include CommentaryClassMethods
     end
          
   end

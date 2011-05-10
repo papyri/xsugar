@@ -19,6 +19,14 @@
           <artifactId>jetty-maven-plugin</artifactId>
           <version>7.4.0.v20110414</version>
           <configuration>
+            <stopPort>9966</stopPort>
+            <stopKey>stop</stopKey>
+            <connectors>
+              <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                <port>9999</port>
+                <maxIdleTime>300000</maxIdleTime>
+              </connector>
+            </connectors>
             <systemProperties>
               <systemProperty>
                 <name>org.mortbay.jetty.Request.queryEncoding</name>

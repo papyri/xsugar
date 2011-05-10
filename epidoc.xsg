@@ -240,12 +240,7 @@ item
 	: [newline n] = [newline n]
 	: [special_lines sl] = [special_lines sl]
 	: [abbreviation_unknown_resolution abur] = [abbreviation_unknown_resolution abur]
-	: [uncertain_diacritical_diaeresis udd] = [uncertain_diacritical_diaeresis udd]
-	: [uncertain_diacritical_grave udg] = [uncertain_diacritical_grave udg]
-	: [uncertain_diacritical_spiritus_asper udsa] = [uncertain_diacritical_spiritus_asper udsa]
-	: [uncertain_diacritical_acute uda] = [uncertain_diacritical_acute uda]
-	: [uncertain_diacritical_circumflex udc] = [uncertain_diacritical_circumflex udc]
-	: [uncertain_diacritical_spiritus_lenis udsl] = [uncertain_diacritical_spiritus_lenis udsl]
+	: [uncertain_diacritical ud] = [uncertain_diacritical ud]
 	: [unclear_characters uc] = [unclear_characters uc]
 	: [choice_corr cc] = [choice_corr cc]
 	: [choice_reg cr] = [choice_reg cr]
@@ -256,12 +251,7 @@ item
 	: [hi_subscript hs] = [hi_subscript hs]
 	: [hi_tall ht] = [hi_tall ht]
 	: [hi_superscript hs] = [hi_superscript hs]
-	: [add_place_interlinear apl] = [add_place_interlinear apl]
-	: [add_place_general apg] = [add_place_general apg]
-	: [add_place_margin_sling apms] = [add_place_margin_sling apms]
-	: [add_place_margin_underline apmu] = [add_place_margin_underline apmu]
-	: [add_place_above apa] = [add_place_above apa]
-	: [add_place_below apb] = [add_place_below apb]
+	: [add_place ap] = [add_place ap]
 	: [hi_supraline hs] = [hi_supraline hs]
 	: [hi_supraline_underline hsu] = [hi_supraline_underline hsu]
 	: [undefined_parallel up] = [undefined_parallel up]
@@ -317,6 +307,14 @@ abbreviation_unknown_resolution
 	>: [BEGABBR] [WORD w] "(?)" [ENDABBR] = <abbr>[WORD w]<certainty locus="name" match=".."/></>
 	>: [BEGABBR] [items w] [ENDABBR] = <abbr>[items w]</>
 	>: [BEGABBR] [items w] "(?)" [ENDABBR] = <abbr>[items w]<certainty locus="name" match=".."/></>
+
+uncertain_diacritical
+	: [uncertain_diacritical_diaeresis udd] = [uncertain_diacritical_diaeresis udd]
+	: [uncertain_diacritical_grave udg] = [uncertain_diacritical_grave udg]
+	: [uncertain_diacritical_spiritus_asper udsa] = [uncertain_diacritical_spiritus_asper udsa]
+	: [uncertain_diacritical_acute uda] = [uncertain_diacritical_acute uda]
+	: [uncertain_diacritical_circumflex udc] = [uncertain_diacritical_circumflex udc]
+	: [uncertain_diacritical_spiritus_lenis udsl] = [uncertain_diacritical_spiritus_lenis udsl]
 
 //---test_uncertain_diacritical_diaeresis---
 	// (¨)
@@ -522,6 +520,14 @@ hi_tall
 hi_superscript
     : "\^" [WORDSSIC a] "\^" = <hi rend="superscript">[WORDSSIC a]</>
 	>: "\^" [items i] "\^" = <hi rend="superscript">[items i]</>
+	
+add_place
+	: [add_place_interlinear apl] = [add_place_interlinear apl]
+	: [add_place_general apg] = [add_place_general apg]
+	: [add_place_margin_sling apms] = [add_place_margin_sling apms]
+	: [add_place_margin_underline apmu] = [add_place_margin_underline apmu]
+	: [add_place_above apa] = [add_place_above apa]
+	: [add_place_below apb] = [add_place_below apb]
 	
 	//---add_place_interlinear---
 	//  >>abc<<

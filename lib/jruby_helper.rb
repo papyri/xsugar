@@ -62,7 +62,7 @@ module RXSugar
             else
               return parsed_resp["content"]
             end
-          rescue Errno::ECONNREFUSED, EOFError
+          rescue Errno::ECONNREFUSED, EOFError, Timeout::Error
             # retry after exponential backoff
             sleep([retry_time, 1.0].min)
             return transform_request(url, params, retry_time * 2)

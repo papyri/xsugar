@@ -1,4 +1,4 @@
-
+xmlns:xml = "http://www.w3.org/XML/1998/namespace"
 
 NL = [\r\n]+
 SP = [ ]
@@ -24,10 +24,13 @@ WORDSLOOSE = ([^<>\|]+) (MAX)
     : [BEGWRAP] [items i] [ENDWRAP] = <wrap>[items i]</>
     
   url
-    : [BEGIN] [WORDSLOOSE text] "|" [WORDSLOOSE url] [END] = <a href=[WORDSLOOSE url]>[WORDSLOOSE text]</>
+//: [BEGIN] [WORDSLOOSE text] "|" [WORDSLOOSE url] [END] = <a href=[WORDSLOOSE url]>[WORDSLOOSE text]</>    
+    : [BEGIN] [WORDSLOOSE text] "|" [WORDSLOOSE url] [END] = <note xml:lang="en">[WORDSLOOSE text]<ref type="url">[WORDSLOOSE url]</></>
+//<note xml:lang="en">  text <ref type=url or bibl> link </ref> </note>
       
   bib
-    : [BEGIN] [WORDSLOOSE text] "||" [WORDSLOOSE pn] [END] = <pn ref=[WORDSLOOSE pn]>[WORDSLOOSE text]</>
+//: [BEGIN] [WORDSLOOSE text] "||" [WORDSLOOSE pn] [END] = <pn ref=[WORDSLOOSE pn]>[WORDSLOOSE text]</>
+    : [BEGIN] [WORDSLOOSE text] "||" [WORDSLOOSE url] [END] = <note xml:lang="en">[WORDSLOOSE text]<ref type="pn">[WORDSLOOSE url]</></>
     
   emphasis_bold
     : [BEGIN] "b " [WORDSLOOSE text] [END] = <emph rend="bold">[WORDSLOOSE text]</>
@@ -56,3 +59,4 @@ WORDSLOOSE = ([^<>\|]+) (MAX)
     >: [ANYLETTER a] = [ANYLETTER a]
   
   
+

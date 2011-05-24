@@ -115,7 +115,7 @@ public class XSugarStandaloneTransformer
     }
   }
   
-  public String nonXMLToXML(String text)
+  public synchronized String nonXMLToXML(String text)
     throws dk.brics.grammar.parser.ParseException
   {
     String result;
@@ -151,7 +151,7 @@ public class XSugarStandaloneTransformer
     return result;
   }
   
-  public String XMLToNonXML(String xml)
+  public synchronized String XMLToNonXML(String xml)
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, IOException
   {
     String result;

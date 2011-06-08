@@ -129,6 +129,15 @@ public class EpiDocSplitter implements SplitterJoiner {
         if (lineCount % splitOn == 0) split = true;
         if (split && "ab".equals(stack.peek().get(0))) {
           split = false;
+          //strip and re-add any characters on the line prior to the lb tag to make the parse error
+          //line, column position match correctly once the multiple chunks are joined back together
+          String savechars = "";
+          int lastnl = chunk.lastIndexOf("\n");
+
+          if (lastnl != chunk.length()) { //if the last newline break is not the last character in the chunk
+            savechars = chunk.substring(lastnl+1, chunk.length()); //save the chars from the nl to the end
+            chunk.delete(lastnl+1, chunk.length()); //delete the chars from the nl to the end
+          }
           characters(nl, 0, 2);
           Deque stackClone = ((ArrayDeque)stack).clone();
           for (List elt : stack) {
@@ -141,6 +150,7 @@ public class EpiDocSplitter implements SplitterJoiner {
             startElement(null, (String)elt.get(0), null, (Attributes)elt.get(1));
           }
           characters(nl, 0, 2);
+          chunk.append(savechars); //add the chars deleted above to the beginning of the new chunk
         }
       }
       chunk.append("<");

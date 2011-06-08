@@ -115,7 +115,7 @@ public class XSugarStandaloneTransformer
     }
   }
   
-  public synchronized String nonXMLToXML(String text)
+  public synchronized String nonXMLToXML(String text, Integer counter)
     throws dk.brics.grammar.parser.ParseException
   {
     String result;
@@ -123,7 +123,7 @@ public class XSugarStandaloneTransformer
     
     TransformResult cache_result = (TransformResult)cache.get(key);
     if (cache_result == null) {
-      System.out.println("Cache miss!");
+      System.out.println("Cache miss N2X! " + counter.toString());
       
       try {
         AST ast = parser_l.parse(text, "dummy.txt");
@@ -133,14 +133,17 @@ public class XSugarStandaloneTransformer
         result = namespace_adder.fix(result);
       }
       catch (dk.brics.grammar.parser.ParseException e) {
-        cachePut(key,new TransformResult(e));
+        System.out.println("nonXMLToXML parse exception L+ text = " + text);
+        //cachePut(key,new TransformResult(e));
+        //commented out so errors not put in cache - we are getting erroneous errors and can't get by them
+        //when they are in cache because retry just pulls them again
         throw e;
       }
       
       cachePut(key,new TransformResult(result));
     }
     else {
-      System.out.println("Cache hit!");
+      System.out.println("Cache hit N2X! " + counter.toString());
       if (cache_result.isException()) {
         throw cache_result.exception;
       }
@@ -151,7 +154,7 @@ public class XSugarStandaloneTransformer
     return result;
   }
   
-  public synchronized String XMLToNonXML(String xml)
+  public synchronized String XMLToNonXML(String xml, Integer counter)
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, IOException
   {
     String result;
@@ -159,7 +162,7 @@ public class XSugarStandaloneTransformer
     
     TransformResult cache_result = (TransformResult)cache.get(key);
     if (cache_result == null) {
-      System.out.println("Cache miss!");
+      System.out.println("Cache miss X2N! " + counter.toString());
       
       try {
         String input = norm.normalize(xml, "dummy.xml");
@@ -169,14 +172,16 @@ public class XSugarStandaloneTransformer
         result = unparsed_l_grammar.unparse(ast);
       }
       catch (dk.brics.grammar.parser.ParseException e) {
-        cachePut(key,new TransformResult(e));
+        System.out.println("XMLToNonXML parse exception XML = " + xml);
+        //cachePut(key,new TransformResult(e));
+        //see comment above in nonXMLToXML
         throw e;
       }
       
       cachePut(key,new TransformResult(result));
     }
     else {
-      System.out.println("Cache hit!");
+      System.out.println("Cache hit X2N! " + counter.toString());
       result = cache_result.content;
       if (cache_result.isException()) {
         throw cache_result.exception;

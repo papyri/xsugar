@@ -185,7 +185,7 @@ public class XSugarStandaloneServlet extends HttpServlet
     out.println("<head><title>XSugarStandaloneServlet</title></head>");
     out.println("<body>");
     out.println("<h1>XSugarStandaloneServlet</h1>");
-    out.println("<form method=\"POST\" action=\"/\"/>");
+    out.println("<form method=\"POST\" action=\"\"/>");
     out.println("<textarea name=\"content\" rows=\"20\" cols=\"80\"></textarea>");
     out.println("<select name=\"type\">");
     for (String grammar : known_grammars) {

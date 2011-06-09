@@ -133,10 +133,11 @@ public class EpiDocSplitter implements SplitterJoiner {
           //line, column position match correctly once the multiple chunks are joined back together
           String savechars = "";
           int lastnl = chunk.lastIndexOf("\n");
-
-          if (lastnl != chunk.length()) { //if the last newline break is not the last character in the chunk
-            savechars = chunk.substring(lastnl+1, chunk.length()); //save the chars from the nl to the end
-            chunk.delete(lastnl+1, chunk.length()); //delete the chars from the nl to the end
+          if (lastnl != -1) {
+            if (lastnl != chunk.length()) { //if the last newline break is not the last character in the chunk
+              savechars = chunk.substring(lastnl+1, chunk.length()); //save the chars from the nl to the end
+              chunk.delete(lastnl+1, chunk.length()); //delete the chars from the nl to the end
+            }
           }
           characters(nl, 0, 2);
           Deque stackClone = ((ArrayDeque)stack).clone();

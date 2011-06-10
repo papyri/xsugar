@@ -23,6 +23,7 @@ ENDABBR = "|)"
 FRACSYM = [𐅵𐅷𐅸]+
 
 UNDERDOT = "\u0323"
+COMBINMACRON = "\u0304"
 //ca. with 0 or more spaces followed by ? mark
 CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
@@ -152,15 +153,24 @@ newline : [NL n] = [NL n]
 //								 >: [SP] [UNDERDOT] = "\u00A0"
 
 unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [ANYLETTER a] [unclears_non_terminal mu]
-								 >: [ANYLETTER a] [UNDERDOT] = [ANYLETTER a]
-		 
+                     >: [ANYLETTER a] [UNDERDOT] = [ANYLETTER a]
+                     
+supra_unclears_non_terminal : [ANYLETTER a] [UNDERDOT] [COMBINMACRON] [supra_unclears_non_terminal mu] = [ANYLETTER a] [supra_unclears_non_terminal mu]
+                     >: [ANYLETTER a] [UNDERDOT] [COMBINMACRON] = [ANYLETTER a]
+                     
+/////>: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
+supraline_non_terminal : [ANYLETTER a] [COMBINMACRON] [supraline_non_terminal ms] = [ANYLETTER a] [supraline_non_terminal ms]
+                      >: [ANYLETTER a] [COMBINMACRON] = [ANYLETTER a]
+                      >: [supra_unclears_non_terminal su] [supraline_non_terminal ms] = <unclear>[supra_unclears_non_terminal su]</> [supraline_non_terminal ms]
+                      >: [supra_unclears_non_terminal su] = <unclear>[supra_unclears_non_terminal su]</>
+////                      >: [ANYLETTER a] [COMBINMACRON] = [ANYLETTER a]
+
 morenum : [BEGNUM] [WORD w] "=" [NUM x] [ENDNUM] [morenum y] = <num value=[NUM x]>[WORD w]</>  [morenum y]
-			   >: [BEGNUM] [WORD w] "=" [NUM x] [ENDNUM] = <num value=[NUM x]>[WORD w]</>
+       >: [BEGNUM] [WORD w] "=" [NUM x] [ENDNUM] = <num value=[NUM x]>[WORD w]</>
 		 
-multwordsp
-			: [WORD a] [item c][multwordsp more] = [WORD a] [item c][multwordsp more]
-			>: [WORD a] " " [multwordsp more] = [WORD a] " " [multwordsp more]
-			>: [WORD a] = [WORD a]
+multwordsp : [WORD a] [item c][multwordsp more] = [WORD a] [item c][multwordsp more]
+          >: [WORD a] " " [multwordsp more] = [WORD a] " " [multwordsp more]
+          >: [WORD a] = [WORD a]
 
 multregs
     :[items a] "(?)" "|" [multregs more] = <reg cert="low">[items a]</>[multregs more]
@@ -309,6 +319,10 @@ item
 	>: " " "." [NUM n] "( ᾿)" = <hi rend="lenis"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
 	>: " " [ANYLETTER a] "( ᾿" [nestanc n] ")" = <hi rend="lenis"><hi rend=[nestanc n]>[ANYLETTER a]</></>
 
+	//---supraline---
+	: [supraline_non_terminal s] = <hi rend="supraline">[supraline_non_terminal s]</>
+////	>: " " "." [NUM n] "¯" = <hi rend="supraline"><gap reason="illegible" quantity=[NUM n] unit="character"></></>
+	
 	//---test unclear characters = underdots
 	: [FRACSYM f] [UNDERDOT] = <unclear>[FRACSYM f]</>
 	>: [unclears_non_terminal u] = <unclear>[unclears_non_terminal u]</>
@@ -427,14 +441,14 @@ item
 	>: "\\\|" [items i] "(?)" "\|\/" = <hi rend="subscript">[items i]<certainty match=".." locus="value"/></>
 	
 	//---tall---
-	//   |abc|
-	: "|||" [WORDSSIC a] "|||" = <hi rend="tall">[WORDSSIC a]</>
-	>: "|||" [items i] "|||" = <hi rend="tall">[items i]</>
+	//   |abc|~
+	: "~||" [WORDSSIC a] "||~tall" = <hi rend="tall">[WORDSSIC a]</>
+	>: "~||" [items i] "||~tall" = <hi rend="tall">[items i]</>
 
 	//---superscript---
 	//   ^abc^
-    : "\^" [WORDSSIC a] "\^" = <hi rend="superscript">[WORDSSIC a]</>
-	>: "\^" [items i] "\^" = <hi rend="superscript">[items i]</>
+    : "|^" [WORDSSIC a] "^|" = <hi rend="superscript">[WORDSSIC a]</>
+	>: "|^" [items i] "^|" = <hi rend="superscript">[items i]</>
 	
 	//---add_place_interlinear---
 	//  >>abc<<
@@ -487,16 +501,14 @@ item
 //    : "\|*" [WORD a] "*\|" = <hi rend="grave">[WORD a]</>
 	
 	//---supraline---
-	//   ¯abc¯ - uses non-combining macron
-	: "¯" [WORDSSIC a] "¯" = <hi rend="supraline">[WORDSSIC a]</>
-	>: "¯" [WORDSSIC a] "(?)" "¯" = <hi rend="supraline">[WORDSSIC a]<certainty match=".." locus="value"/></>
-	>: "¯" [items i] "¯" = <hi rend="supraline">[items i]</>
-	>: "¯" [items i] "(?)" "¯" = <hi rend="supraline">[items i]<certainty match=".." locus="value"/></>
-		
+	//  |¯abc¯| - uses non-combining macron
+////	: "|¯" [WORDSSIC a] "¯|" = <hi rend="supraline">[WORDSSIC a]</>
+	: "|¯" [items i] "¯|" = <hi rend="supraline">[items i]</>
+
 	//---supraline_underline---
-	//   =abc=
-    : "=" [WORDSSIC a] "=" = <hi rend="supraline-underline">[WORDSSIC a]</>
-	>: "=" [items i] "=" = <hi rend="supraline-underline">[items i]</>
+	//   ¯_abc_¯
+  : "¯_" [WORDSSIC a] "_¯" = <hi rend="supraline-underline">[WORDSSIC a]</>
+	>: "¯_" [items i] "_¯" = <hi rend="supraline-underline">[items i]</>
 		
 	//---undefined_parallel---
 	//  _abc_  - underlines **P5**
@@ -762,9 +774,9 @@ item
 	>: "lost.?lin(?) " = <gap reason="lost" extent="unknown" unit="line"><certainty match=".." locus="name"></></>
 	
 	//---test_quotation_marks---
-	// " "
-	>: "\"" [WORDS w] "\"" = <q>[WORDS w]</>
-	>: "\"" [items i] "\"" = <q>[items i]</>
+	// |" "|
+	>: "|\"" [WORDS w] "\"|" = <q>[WORDS w]</>
+	>: "|\"" [items i] "\"|" = <q>[items i]</>
 	
 	//---test_omitted---
 	//< > **P5**

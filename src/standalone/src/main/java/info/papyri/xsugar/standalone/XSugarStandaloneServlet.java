@@ -20,7 +20,7 @@ public class XSugarStandaloneServlet extends HttpServlet
 {
   private Hashtable transformers = null;
 
-  private static String[] known_grammars = {"epidoc", "translation_epidoc"};
+  private static String[] known_grammars = {"epidoc", "translation_epidoc","commentary"};
 
   public void init(ServletConfig config)
     throws ServletException
@@ -104,6 +104,18 @@ public class XSugarStandaloneServlet extends HttpServlet
       catch (org.jdom.input.JDOMParseException e) {
         System.out.println("Error transforming:\n" + split_item);
       }
+      catch (dk.brics.grammar.parser.ParseException e) {
+        if(direction.equals("nonxml2xml") && (split_results.size() < 5)) {
+          System.out.println("Parse exception in small split transform, trying full transform");
+          return transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));
+        }
+        else {
+          if(direction.equals("nonxml2xml")) {
+            e.setLocation(new dk.brics.grammar.parser.Location("dummy.txt", 0, 0, 0));
+          }
+          throw e;
+        }
+      }
     }
     System.out.println("Joining from " + results_list.size());
     return joiner.join(results_list);
@@ -139,8 +151,9 @@ public class XSugarStandaloneServlet extends HttpServlet
             result = doSplitTransform(content, transformer, direction, new LeidenPlusSplitter(), new EpiDocSplitter());
           }
           catch (dk.brics.grammar.parser.ParseException e) {
-            System.out.println("Parse exception in split transform, trying full transform");
-            result = transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));
+            throw e;
+            // System.out.println("Parse exception in split transform, trying full transform");
+            // result = transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));
           }
         }
         else {
@@ -172,7 +185,7 @@ public class XSugarStandaloneServlet extends HttpServlet
     out.println("<head><title>XSugarStandaloneServlet</title></head>");
     out.println("<body>");
     out.println("<h1>XSugarStandaloneServlet</h1>");
-    out.println("<form method=\"POST\" action=\"/\"/>");
+    out.println("<form method=\"POST\" action=\"\"/>");
     out.println("<textarea name=\"content\" rows=\"20\" cols=\"80\"></textarea>");
     out.println("<select name=\"type\">");
     for (String grammar : known_grammars) {

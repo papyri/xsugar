@@ -560,7 +560,7 @@ hi_tall
 	//---superscript---
 	//   |^abc^|
 hi_superscript
-    : "|\^" [WORDSSIC a] "\^|" = <hi rend="superscript">[WORDSSIC a]</>
+  : "|\^" [WORDSSIC a] "\^|" = <hi rend="superscript">[WORDSSIC a]</>
 	>: "|\^" [items i] "\^|" = <hi rend="superscript">[items i]</>
 	
 add_place

@@ -244,11 +244,25 @@ nestanc
 item
   : [item_can_nest icn] = [item_can_nest icn]
   >: [supraline_non_combine_macron sncm] = [supraline_non_combine_macron sncm]
+  : [quotation_marks qm] = [quotation_marks qm]
+  
+hi_supra_item
+  : [item_can_nest icn] = [item_can_nest icn]
+  : [quotation_marks qm] = [quotation_marks qm]
+  
+quote_item
+  : [item_can_nest icn] = [item_can_nest icn]
+  >: [supraline_non_combine_macron sncm] = [supraline_non_combine_macron sncm]
   
 //special items to keep hi_supraline from nesting inside itself 
 hi_supra_not_nest_items 
-  : [item_can_nest i] [hi_supra_not_nest_items more] = [item_can_nest i] [hi_supra_not_nest_items more]  
-  >: [item_can_nest i] = [item_can_nest i]
+  : [hi_supra_item i] [hi_supra_not_nest_items more] = [hi_supra_item i] [hi_supra_not_nest_items more]  
+  >: [hi_supra_item i] = [hi_supra_item i]
+  
+//special items to keep quote from nesting inside itself 
+quote_not_nest_items 
+  : [quote_item i] [quote_not_nest_items more] = [quote_item i] [quote_not_nest_items more]  
+  >: [quote_item i] = [quote_item i]
   
 //item_can_nest are all the productions that can be nested inside itself
 item_can_nest
@@ -288,7 +302,6 @@ item_can_nest
 	: [nontran_column nc] = [nontran_column nc]
 	: [lost_lines ll] = [lost_lines ll]
 	: [lost_lines_unknown llu] = [lost_lines_unknown llu]
-	: [quotation_marks qm] = [quotation_marks qm]
 	: [omitted o] = [omitted o]
 	: [sic s] = [sic s]
 	: [expan e] = [expan e]
@@ -607,15 +620,15 @@ add_place_below
 	>: "\/\/" [items a] "(?)" "\\\\" = <add place="below">[items a]<certainty match=".." locus="name"/></>
 	
 	//---supraline---
-	//   |¯abc¯| - uses non-combining macron
+	//   ¯markup¯ - uses non-combining macron
 supraline_non_combine_macron
-  : "|¯" [hi_supra_not_nest_items i] "¯|" = <hi rend="supraline">[hi_supra_not_nest_items i]</>
+  : "¯" [hi_supra_not_nest_items i] "¯" = <hi rend="supraline">[hi_supra_not_nest_items i]</>
 		
 	//---supraline_underline---
 	//   ¯_abc_¯
 hi_supraline_underline
   : "¯_" [WORDSSIC a] "_¯" = <hi rend="supraline-underline">[WORDSSIC a]</>
- >: "¯_" [items i] "_¯" = <hi rend="supraline-underline">[items i]</>
+  >: "¯_" [items i] "_¯" = <hi rend="supraline-underline">[items i]</>
 		
 	//---undefined_parallel---
 	//  |_abc_|  - underlines 
@@ -916,10 +929,9 @@ lost_lines_unknown
 	>: "lost.?lin(?) " = <gap reason="lost" extent="unknown" unit="line"><certainty match=".." locus="name"></></>
 	
 	//---test_quotation_marks---
-	// |"words in quote"|
+	// "words or markup in quote"
 quotation_marks
-	>: "|\"" [WORDS w] "\"|" = <q>[WORDS w]</>
-	>: "|\"" [items i] "\"|" = <q>[items i]</>
+  : "\"" [quote_not_nest_items i] "\"" = <q>[quote_not_nest_items i]</>
 	
 	//---test_omitted---
 	//< > 

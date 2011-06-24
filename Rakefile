@@ -6,7 +6,9 @@ task :default => :test
 if(RUBY_PLATFORM == 'java')
   Rake::TestTask.new do |t|
       t.libs << "test"
-      t.test_files = FileList["test/test_*.rb"]
+      t.test_files = FileList["test/test_*.rb"]   #for standard text epidoc.xsg testing
+      #t.test_files = FileList["test/test_translation_*.rb"]   #for tranlation translation_epidoc.xsg testing
+      #t.test_files = FileList["test/test_commentary_*.rb"]   #for frontmatter and commentary commentary.xsg testing
       t.verbose = true
   end
 else

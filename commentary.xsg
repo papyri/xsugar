@@ -1,62 +1,160 @@
 xmlns:xml = "http://www.w3.org/XML/1998/namespace"
 
 NL = [\r\n]+
-SP = [ ]
-SPO = [ ]+ (MAX)
-SPO2 = [ ]*
-ANYSP = [\r\n \t]*
 
 BEGIN = "<"
 END = ">"
 
+//BEGP = ((\n\n)|(\r\n\r\n)) (MAX)
+BEGP = [\n]{2}
+
 BEGWRAP = "<W"
 ENDWRAP = "W>"
 
-QUESTION = [\?]?
+PN_URL = ((ddbdp/)|(hgv/)|(apis/))
 
-LINENUM = [0-9]+[/\,a-zA-Z]*[ms0-9]*
-ANYLETTER = [^\/\\\t\^<>_#@~〚〛$\*\&\:\|\{\}\?\"¯≡+\u0323]
+NUM_RNG_WHL = ([0-9]+\-{1}[0-9]+|[0-9]+|[IVXLCDM]+\-{1}[IVXLCDM]+|[IVXLCDM]+|[ivxlcdm]+\-{1}[ivxlcdm]+|[ivxlcdm]+)
+
+ANYLETTER = [^\/\\\t<>_\*\:\|\`\']
 
 //very permisive for free text, only remove what is in grammar
-WORDSLOOSE = ([^<>\|]+) (MAX)
+WORDSLOOSE = ([^<>_:`'\*\|]+) (MAX)
       
-  wrap 
-    : [BEGWRAP] [items i] [ENDWRAP] = <wrap>[items i]</>
-    
-  url
-//: [BEGIN] [WORDSLOOSE text] "|" [WORDSLOOSE url] [END] = <a href=[WORDSLOOSE url]>[WORDSLOOSE text]</>    
-    : [BEGIN] [WORDSLOOSE text] "|" [WORDSLOOSE url] [END] = <note xml:lang="en">[WORDSLOOSE text]<ref type="url">[WORDSLOOSE url]</></>
-//<note xml:lang="en">  text <ref type=url or bibl> link </ref> </note>
-      
-  bib
-//: [BEGIN] [WORDSLOOSE text] "||" [WORDSLOOSE pn] [END] = <pn ref=[WORDSLOOSE pn]>[WORDSLOOSE text]</>
-    : [BEGIN] [WORDSLOOSE text] "||" [WORDSLOOSE url] [END] = <note xml:lang="en">[WORDSLOOSE text]<ref type="pn">[WORDSLOOSE url]</></>
-    
-  emphasis_bold
-    : [BEGIN] "b " [WORDSLOOSE text] [END] = <emph rend="bold">[WORDSLOOSE text]</>
+wrap 
+  : [BEGWRAP] [items i] [ENDWRAP] = <wrap>[items i]</>
   
-  emphasis_italics
-    : [BEGIN] "i " [WORDSLOOSE text] [END] = <emph rend="italics">[WORDSLOOSE text]</>
-  
-  paragraph
-    : [BEGIN] "p " [items i] [END] = <p>[items i]</>
-  
-  
-  items
-    :  [item i] [items more] = [item i] [items more]
-    >: [item p] = [item p]
+paragraph
+  : [BEGP] [paragraph_item_not_nest pinn] = <p>[paragraph_item_not_nest pinn]</>
+//  : [BEGIN] "p " [items i] [END] = <p>[items i]</>
 
-  item
-      
-     : [url u] = [url u]
-     : [bib b] = [bib b]
-     : [emphasis_bold eb] = [emphasis_bold eb]
-     : [emphasis_italics ei] = [emphasis_italics ei]
-     : [paragraph p] = [paragraph p]
+items
+  :  [item i] [items more] = [item i] [items more]
+  >: [item p] = [item p]
 
-     : [NL n] = [NL n]
-    >: [WORDSLOOSE w] = [WORDSLOOSE w]
-    >: [ANYLETTER a] = [ANYLETTER a]
+item
+  : [paragraph p] = [paragraph p]
+  : [footnote f] = [footnote f]
+  : [bib b] = [bib b]
+  : [url u] = [url u]
+  : [emphasis_bold eb] = [emphasis_bold eb]
+  : [emphasis_italics ei] = [emphasis_italics ei]
+  : [emphasis_underline el] = [emphasis_underline el]
+  : [quote q] = [quote q]
+  : [item_can_nest icn] = [item_can_nest icn]
+
+item_can_nest
+//  >: [NL n] = [NL n]
+  >: [WORDSLOOSE w] = [WORDSLOOSE w]
+  >: [ANYLETTER a] = [ANYLETTER a]
+
+paragraph_item_not_nest
+  :[paragraph_item bi] [paragraph_item_not_nest more] = [paragraph_item bi] [paragraph_item_not_nest more]
+  >:[paragraph_item bi] = [paragraph_item bi]
   
+paragraph_item
+  : [footnote f] = [footnote f]
+  : [bib b] = [bib b]
+  : [url u] = [url u]
+  : [emphasis_bold eb] = [emphasis_bold eb]
+  : [emphasis_italics ei] = [emphasis_italics ei]
+  : [emphasis_underline el] = [emphasis_underline el]
+  : [quote q] = [quote q]
+  : [item_can_nest icn] = [item_can_nest icn]
   
+bold_item_not_nest
+  :[bold_item bi] [bold_item_not_nest more] = [bold_item bi] [bold_item_not_nest more]
+  >:[bold_item bi] = [bold_item bi]
+  
+bold_item
+  : [footnote f] = [footnote f]
+  : [paragraph p] = [paragraph p]
+  : [bib b] = [bib b]  
+  : [url u] = [url u]
+  : [emphasis_italics ei] = [emphasis_italics ei]
+  : [emphasis_underline el] = [emphasis_underline el]
+  : [quote q] = [quote q]
+  : [item_can_nest icn] = [item_can_nest icn]
+  
+italic_item_not_nest
+  :[italic_item ii] [italic_item_not_nest more] = [italic_item ii] [italic_item_not_nest more]
+  >:[italic_item ii] = [italic_item ii]
+  
+italic_item
+  : [footnote f] = [footnote f]
+  : [paragraph p] = [paragraph p]
+  : [bib b] = [bib b]  
+  : [url u] = [url u]
+  : [emphasis_bold eb] = [emphasis_bold eb]
+  : [emphasis_underline el] = [emphasis_underline el]
+  : [quote q] = [quote q]
+  : [item_can_nest icn] = [item_can_nest icn]
+  
+underline_item_not_nest
+  :[underline_item ui] [underline_item_not_nest more] = [underline_item ui] [underline_item_not_nest more]
+  >:[underline_item ui] = [underline_item ui]
+  
+underline_item
+  : [footnote f] = [footnote f]
+  : [paragraph p] = [paragraph p]
+  : [bib b] = [bib b]  
+  : [url u] = [url u]
+  : [emphasis_bold eb] = [emphasis_bold eb]
+  : [emphasis_italics ei] = [emphasis_italics ei]
+  : [quote q] = [quote q]
+  : [item_can_nest icn] = [item_can_nest icn]
+  
+quote_item_not_nest
+  :[quote_item ui] [quote_item_not_nest more] = [quote_item ui] [quote_item_not_nest more]
+  >:[quote_item ui] = [quote_item ui]
+  
+quote_item
+  : [footnote f] = [footnote f]
+  : [paragraph p] = [paragraph p]
+  : [bib b] = [bib b]  
+  : [url u] = [url u]
+  : [emphasis_bold eb] = [emphasis_bold eb]
+  : [emphasis_italics ei] = [emphasis_italics ei]
+  : [emphasis_underline el] = [emphasis_underline el]
+  : [item_can_nest icn] = [item_can_nest icn]
+
+footnote
+  : "<:fn=" [WORDSLOOSE text] ":>" = <note type="footnote" xml:lang="en">[WORDSLOOSE text]</>
+  
+pn_target
+  : [PN_URL pnurl][WORDSLOOSE url] = "http://papyri.info/" [PN_URL pnurl][WORDSLOOSE url]
+  >: [WORDSLOOSE url] = "http://" [WORDSLOOSE url]
+  
+url
+  : "<:" [WORDSLOOSE text] "|" [pn_target pt] ":>" = <ref target=[pn_target pt]>[WORDSLOOSE text]</>
+//  >: "<:" [WORDSLOOSE text] "|" [WORDSLOOSE url] ":>" = <ref target=[WORDSLOOSE url]>[WORDSLOOSE text]</>
+
+bib_target
+  : "bibl/" [WORDSLOOSE url] = "http://" [WORDSLOOSE url] 
+    
+bib_scope
+  : [bib_scope_detail bsd] [bib_scope more] = [bib_scope_detail bsd] [bib_scope more]
+  : [bib_scope_detail bsd] = [bib_scope_detail bsd]
+  : =
+  
+bib_scope_detail
+  : "|v=" [NUM_RNG_WHL nrw] = <biblScope type="vol">[NUM_RNG_WHL nrw]</>
+  : "|i=" [NUM_RNG_WHL nrw] = <biblScope type="issue">[NUM_RNG_WHL nrw]</>
+  : "|p=" [NUM_RNG_WHL nrw] = <biblScope type="pp">[NUM_RNG_WHL nrw]</>
+  : "|l=" [NUM_RNG_WHL nrw] = <biblScope type="ll">[NUM_RNG_WHL nrw]</>
+  : "|ch=" [NUM_RNG_WHL nrw] = <biblScope type="chap">[NUM_RNG_WHL nrw]</>
+  
+bib
+  : "<:" [WORDSLOOSE text] "|" [bib_target bt] [bib_scope bs] ":>" = <listBibl><bibl><ref target=[bib_target bt]>[WORDSLOOSE text]</>[bib_scope bs]</></>
+  
+emphasis_bold
+  : "*" [bold_item_not_nest binn] "*" = <emph rend="bold">[bold_item_not_nest binn]</>
+
+emphasis_italics
+  : "|" [italic_item_not_nest iinn] "|" = <emph rend="italics">[italic_item_not_nest iinn]</>
+
+emphasis_underline
+  : "_" [underline_item_not_nest uinn] "_" = <emph rend="underline">[underline_item_not_nest uinn]</>
+  
+quote
+  : "``" [quote_item_not_nest qinn] "''" = <emph rend="quote">[quote_item_not_nest qinn]</>
 

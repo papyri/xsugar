@@ -51,7 +51,7 @@ module RXSugar
               error_type = params[:direction] == 'nonxml2xml' ? NonXMLParseError : XMLParseError
               raise error_type.new(0,0,params[:content]), "Error performing transform. Response code from web service: Error #{resp.code}. Response body: #{resp.body}"
             end
-            
+           
             parsed_resp = JSON.parse(resp.body)
             
             if parsed_resp.has_key?("exception")
@@ -66,6 +66,10 @@ module RXSugar
             # retry after exponential backoff
             sleep([retry_time, 1.0].min)
             return transform_request(url, params, retry_time * 2)
+          rescue JSON::ParserError => e
+            # JSON parser error, received malformed JSON (e.g. mangled Unicode)
+            error_type = params[:direction] == 'nonxml2xml' ? NonXMLParseError : XMLParseError
+            raise error_type.new(0,0,params[:content]), "Error performing transform. JSON parser error: #{e.message}"
           end
         end
       end

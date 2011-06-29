@@ -33,76 +33,76 @@ CAUNKNOWN = "ca."[ ]*"\?"
 LEADCA = "ca."[ ]*
 // diacriticals as of 7/27/2010												   ῾´¨`\^᾿
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+WORD = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 // WORDDIV breaks at space and does not allow DOT - allows +, \,
-WORDDIV = ([^ \n\r\t\[\]\^<>_#@~〚〛$\*\&\.\:\=\|\'\!\(\)\{\}\?\"¯\u0323]+) (MAX)
+WORDDIV = ([^ \n\r\t\[\]\^<>_#@~〚〛$\*\&\.\:\=\|\'\!\(\)\{\}\?\"¯\u0304\u0323]+) (MAX)
 
 // WORDVEST same as WORD except added 'v' to keep vestig out
-WORDVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+WORDVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 //WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
 //commented out because ended up being the same reg exp as WORD
-//WORDA = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+//WORDA = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 //WORDAVEST does not allow underdot (\u0323 at the end) - used to make choice work - A = abbreviation - added 'v' to keep vestig out
 //commented out because ended up being the same reg exp as WORDVEST
-//WORDAVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+//WORDAVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 //WORDS allows space (therefore multiple words) and DOT
-WORDS = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+WORDS = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 //WORDSNONUM same as WORDS except added numbers 0-9 to keep them out
-WORDSNONUM = ([^\/\\\n\r\t\[\]\^<>0-9_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+WORDSNONUM = ([^\/\\\n\r\t\[\]\^<>0-9_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 //WORDSF allows space (therefore multiple words) and DOT - allow ?, \, , $, +, : for foreign language
-WORDSF = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0323v]+) (MAX)
-//WORDSF = (([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0323v]+)|([^vac]+)) - this not work so just added v to WORDSF
+WORDSF = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0304\u0323v]+) (MAX)
+//WORDSF = (([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0304\u0323v]+)|([^vac]+)) - this not work so just added v to WORDSF
 
 //WORDSN same as WORDSF except for 'v' not in list
-WORDSN = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0323]+) (MAX)
+WORDSN = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0304\u0323]+) (MAX)
 
 //WORDSED allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
 //allowed comma on 11/09 because of p.hombert.1.32.xml parse error - change all editorial lem resp= from WORDS to WORDSED
-WORDSED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0323]+) (MAX)
+WORDSED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
 
 //WORDSBL allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
-WORDSBL = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+WORDSBL = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 // wordsnum allow '/' for fractional numbers - added DOT to break .gap on 7/7 see if break other things
-WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for supralinear - same as WORDVEST except
 //for allowing space therefore mulitple words
-WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 //WORDS4EX created 11/23 from WORDSSIC to use in expan <ex> tags to allow fraction numbers to appear within tag - removed / in not allowed
-WORDS4EX = ([^\\\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+WORDS4EX = ([^\\\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 //WORDS4EXND created 11/23 from WORDSSIC to use in expan <ex> tags to allow fraction numbers to appear within tag - removed / in not allowed
 //ND = no diacriticals allowed
-WORDS4EXND = ([^\\\[\]\^<>_#@~῾´¨`\^᾿〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+) (MAX)
+WORDS4EXND = ([^\\\[\]\^<>_#@~῾´¨`\^᾿〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
 //commented out because not using anywhere
-//WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]*) (MAX)
+//WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]*) (MAX)
 
 NUM = [0-9]+
 LINENUM = [0-9]+[/\,a-zA-Z0-9]*[ms0-9]*
 //removed all uses of below per 12/16 review
 //GAPEXTNUM = [c]?[.]?[0-9]+
 
-ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0323]
+ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0304\u0323]
 
 //ANYLETTER plus u302 and u345 - combining circumflex and iota-subscript
-ANYNCLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0302\u0323\u0345]
+ANYNCLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0302\u0304\u0323\u0345]
 
 //ANYLETTER plus 0-9 to eliminate numbers 7/22 to fix reversability on some sup lost 
 //added l on 3/30 to make space line (ex.  vac?lin) work
-ANYMULT = [^\/\\\t\[\]\^<>0-9l_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+
+ANYMULT = [^\/\\\t\[\]\^<>0-9l_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+
 
 //the third part of HANDSHIFT reg exp is same as ANYLETTER except does not allow space
-HANDSHIFT = m{1}[0-9]+[^ \/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]?
+HANDSHIFT = m{1}[0-9]+[^ \/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]?
 
 DOT = "."
 QUESTION = [\?]?

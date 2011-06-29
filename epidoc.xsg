@@ -26,6 +26,7 @@ FRACSYM = [𐅵𐅷𐅸]+
 
 UNDERDOT = "\u0323"
 COMBINMACRON = "\u0304"
+COMBINDIACRIT = ((\u0302)|(\u0345))
 
 //ca. with 0 or more spaces followed by ? mark
 CAUNKNOWN = "ca."[ ]*"\?"
@@ -90,8 +91,14 @@ NUM = [0-9]+
 LINENUM = [0-9]+[/\,a-zA-Z0-9]*[ms0-9]*
 //removed all uses of below per 12/16 review
 //GAPEXTNUM = [c]?[.]?[0-9]+
+
 ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0323]
-//added 0-9 to eliminate numbers 7/22 to fix reversability on some sup lost - added l on 3/30 to make space line (ex.  vac?lin) work
+
+//ANYLETTER plus u302 and u345 - combining circumflex and iota-subscript
+ANYNCLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0302\u0323\u0345]
+
+//ANYLETTER plus 0-9 to eliminate numbers 7/22 to fix reversability on some sup lost 
+//added l on 3/30 to make space line (ex.  vac?lin) work
 ANYMULT = [^\/\\\t\[\]\^<>0-9l_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0323]+
 
 //the third part of HANDSHIFT reg exp is same as ANYLETTER except does not allow space
@@ -155,8 +162,10 @@ newline
   : [NL n] = [NL n]
 
 unclears_non_terminal 
-  : [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [ANYLETTER a] [unclears_non_terminal mu]
-  >: [ANYLETTER a] [UNDERDOT] = [ANYLETTER a]
+  : [ANYNCLETTER a] [COMBINDIACRIT c] [UNDERDOT] [unclears_non_terminal mcu] = [ANYNCLETTER a] [COMBINDIACRIT c] [unclears_non_terminal mcu]
+  : [ANYNCLETTER a] [COMBINDIACRIT b] [UNDERDOT] = [ANYNCLETTER a] [COMBINDIACRIT b]
+  >: [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [ANYLETTER a] [unclears_non_terminal mu]
+  : [ANYLETTER a] [UNDERDOT] = [ANYLETTER a]
 
 morenum 
   : [BEGNUM] [WORD w] "=" [NUM x] [ENDNUM] [morenum y] = <num value=[NUM x]>[WORD w]</>  [morenum y]

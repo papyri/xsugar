@@ -20,7 +20,10 @@ module CommentaryGrammarAssertions
   def assert_equal_fragment_transform(non_xml_fragment, xml_fragment)
     #non_xml_fragment = "1. #{non_xml_fragment}"
 	  non_xml_fragment = enclose_leiden_fragment(non_xml_fragment)
-    assert_equal enclose_xml_fragment(xml_fragment), @xsugar.non_xml_to_xml(non_xml_fragment)
+    tempxml = @xsugar.non_xml_to_xml(non_xml_fragment)
+    tempxml.sub!(/ xmlns:xml="http:\/\/www.w3.org\/XML\/1998\/namespace"/,'')
+    #assert_equal enclose_xml_fragment(xml_fragment), @xsugar.non_xml_to_xml(non_xml_fragment)
+    assert_equal enclose_xml_fragment(xml_fragment), tempxml
     assert_equal non_xml_fragment, @xsugar.xml_to_non_xml(enclose_xml_fragment(xml_fragment))
     assert_equal_non_xml_to_xml_to_non_xml non_xml_fragment, non_xml_fragment
     assert_equal_xml_fragment_to_non_xml_to_xml_fragment xml_fragment, xml_fragment
@@ -40,6 +43,7 @@ module CommentaryGrammarAssertions
     begin
     non_xml_to_xml_from_xml_to_non_xml =
       @xsugar.non_xml_to_xml(xml_to_non_xml)
+    non_xml_to_xml_from_xml_to_non_xml.sub!(/ xmlns:xml="http:\/\/www.w3.org\/XML\/1998\/namespace"/,'')
     rescue NativeException => e
       raise RXSugar::NonXMLParseError
     end

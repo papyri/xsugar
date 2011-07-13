@@ -5,7 +5,6 @@ NL = [\r\n]+
 BEGIN = "<"
 END = ">"
 
-//BEGP = ((\n\n)|(\r\n\r\n)) (MAX)
 BEGP = [\n]{2}
 
 BEGWRAP = "<W"
@@ -15,17 +14,17 @@ PN_URL = ((ddbdp/)|(hgv/)|(apis/))
 
 NUM_RNG_WHL = ([0-9]+\-{1}[0-9]+|[0-9]+|[IVXLCDM]+\-{1}[IVXLCDM]+|[IVXLCDM]+|[ivxlcdm]+\-{1}[ivxlcdm]+|[ivxlcdm]+)
 
-ANYLETTER = [^\/\\\t<>_\*\:\|\`\']
+//same as WORDSLOOSE except for slashes and tab and no + for 1 or more and no MAX designator
+ANYLETTER = [^\/\\\t<>_\:\`\*\|]
 
 //very permisive for free text, only remove what is in grammar
-WORDSLOOSE = ([^<>_:`'\*\|]+) (MAX)
-      
+WORDSLOOSE = ([^<>_\:\`\*\|]+) (MAX)
+
 wrap 
   : [BEGWRAP] [items i] [ENDWRAP] = <wrap>[items i]</>
   
 paragraph
   : [BEGP] [paragraph_item_not_nest pinn] = <p>[paragraph_item_not_nest pinn]</>
-//  : [BEGIN] "p " [items i] [END] = <p>[items i]</>
 
 items
   :  [item i] [items more] = [item i] [items more]
@@ -43,7 +42,6 @@ item
   : [item_can_nest icn] = [item_can_nest icn]
 
 item_can_nest
-//  >: [NL n] = [NL n]
   >: [WORDSLOOSE w] = [WORDSLOOSE w]
   >: [ANYLETTER a] = [ANYLETTER a]
 
@@ -126,7 +124,6 @@ pn_target
   
 url
   : "<:" [WORDSLOOSE text] "|" [pn_target pt] ":>" = <ref target=[pn_target pt]>[WORDSLOOSE text]</>
-//  >: "<:" [WORDSLOOSE text] "|" [WORDSLOOSE url] ":>" = <ref target=[WORDSLOOSE url]>[WORDSLOOSE text]</>
 
 bib_target
   : "bibl/" [WORDSLOOSE url] = "http://" [WORDSLOOSE url] 

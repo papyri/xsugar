@@ -68,6 +68,12 @@ if(RUBY_PLATFORM == 'java')
       assert_equal_fragment_transform '<:the words for the link|www.somesite.com/index.html:>', '<ref target="http://www.somesite.com/index.html">the words for the link</ref>'
       assert_equal_fragment_transform '<:the words for the link|www.somesite.com/recall.php?do=house boat:>', '<ref target="http://www.somesite.com/recall.php?do=house boat">the words for the link</ref>'
     end 
+    
+    def test_apos_quotations
+      assert_equal_fragment_transform 'make "this" bold', 'make "this" bold'
+      assert_equal_fragment_transform 'ma"ke this\' ``a that\'s quote\'\' bold', 'ma"ke this\' <emph rend="quote">a that\'s quote</emph> bold'
+      assert_equal_fragment_transform 'make this bold', 'make this bold'
+    end
 
   end
  

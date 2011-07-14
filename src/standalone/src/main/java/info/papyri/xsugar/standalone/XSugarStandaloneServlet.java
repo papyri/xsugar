@@ -23,6 +23,11 @@ public class XSugarStandaloneServlet extends HttpServlet
 
   private static String[] known_grammars = {"epidoc", "translation_epidoc","commentary"};
 
+  /**
+   * Servlet init, called upon first request.
+   *
+   * Initializes all known grammars.
+   */
   public void init(ServletConfig config)
     throws ServletException
   {
@@ -38,6 +43,9 @@ public class XSugarStandaloneServlet extends HttpServlet
     System.out.println("Done.");
   }
 
+  /**
+   * Initialize a transformer based on a string with the name (used to access a resource).
+   */
   private XSugarStandaloneTransformer initTransformer(String transformer_name)
   {
     XSugarStandaloneTransformer transformer = null;
@@ -58,6 +66,9 @@ public class XSugarStandaloneServlet extends HttpServlet
     return transformer;
   }
 
+  /**
+   * Get the transformer for a given name, optionally initializing it if not already present.
+   */
   private XSugarStandaloneTransformer getTransformer(String transformer_name)
   {
     XSugarStandaloneTransformer transformer = 
@@ -69,7 +80,10 @@ public class XSugarStandaloneServlet extends HttpServlet
     }
     return transformer;
   }
-  
+ 
+  /**
+   * Perform an XSugar transform, trying to split the input and join the results.
+   */ 
   private String doSplitTransform(String content, XSugarStandaloneTransformer transformer, String direction, SplitterJoiner splitter, SplitterJoiner joiner)
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, Exception
   {
@@ -144,6 +158,14 @@ public class XSugarStandaloneServlet extends HttpServlet
     return joiner.join(results_list);
   }
 
+  /**
+   * Perform an XSugar transform.
+   *
+   * @param content content to be transformed
+   * @param transform_type type of transform (name of grammar)
+   * @param direction direction of transform ("xml2nonxml" or "nonxml2xml")
+   * @return string containing the result of running the transform
+   */
   private String doTransform(String content, String transform_type, String direction)
     throws dk.brics.grammar.parser.ParseException, org.jdom.JDOMException, java.lang.Exception, java.io.IOException
   {
@@ -197,6 +219,9 @@ public class XSugarStandaloneServlet extends HttpServlet
     return result;
   }
 
+  /**
+   * Handle a servlet GET request (serves an HTML form for making a POST request for a transform).
+   */
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
   {
@@ -224,6 +249,9 @@ public class XSugarStandaloneServlet extends HttpServlet
     out.println("</html>");
   }
 
+  /**
+   * Handle a servlet POST request (serves JSON result of running XSugar transform).
+   */
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
   {

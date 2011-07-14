@@ -15,18 +15,17 @@ if(RUBY_PLATFORM == 'java')
     _underline here_', '<p>    <emph rend="bold">make this bold</emph></p><p>    <emph rend="underline">underline here</emph></p>'
     end
     
-    
     def test_emphasis_nest
       assert_equal_fragment_transform '*make _this_ bold*', '<emph rend="bold">make <emph rend="underline">this</emph> bold</emph>'
       assert_equal_fragment_transform '|make *this* bold|', '<emph rend="italics">make <emph rend="bold">this</emph> bold</emph>'
       assert_equal_fragment_transform '_make |this| bold_', '<emph rend="underline">make <emph rend="italics">this</emph> bold</emph>'
-      assert_equal_fragment_transform '``make *this* a quote\'\'', '<emph rend="quote">make <emph rend="bold">this</emph> a quote</emph>'
+      assert_equal_fragment_transform '``make *this* a quote\'\'', '``make <emph rend="bold">this</emph> a quote\'\''
       assert_equal_fragment_transform '*make* this *bold*', '<emph rend="bold">make</emph> this <emph rend="bold">bold</emph>'
       assert_equal_fragment_transform '|make| this |bold|', '<emph rend="italics">make</emph> this <emph rend="italics">bold</emph>'
       assert_equal_fragment_transform '_make_ this _bold_', '<emph rend="underline">make</emph> this <emph rend="underline">bold</emph>'
-      assert_equal_fragment_transform '``make\'\' this ``a quote\'\'', '<emph rend="quote">make</emph> this <emph rend="quote">a quote</emph>'
-      assert_equal_fragment_transform '``make\'\' *this* _a_ |quote|', '<emph rend="quote">make</emph> <emph rend="bold">this</emph> <emph rend="underline">a</emph> <emph rend="italics">quote</emph>'
-      assert_equal_fragment_transform '``make *this _a |quote|_*\'\'', '<emph rend="quote">make <emph rend="bold">this <emph rend="underline">a <emph rend="italics">quote</emph></emph></emph></emph>'
+      assert_equal_fragment_transform '``make\'\' this ``a quote\'\'', '``make\'\' this ``a quote\'\''
+      assert_equal_fragment_transform '``make\'\' *this* _a_ |quote|', '``make\'\' <emph rend="bold">this</emph> <emph rend="underline">a</emph> <emph rend="italics">quote</emph>'
+      assert_equal_fragment_transform '``make *this _a |quote|_*\'\'', '``make <emph rend="bold">this <emph rend="underline">a <emph rend="italics">quote</emph></emph></emph>\'\''
     end
     
     def test_emphasis_bold
@@ -40,11 +39,6 @@ if(RUBY_PLATFORM == 'java')
     def test_emphasis_underline
       assert_equal_fragment_transform '_make this underline_', '<emph rend="underline">make this underline</emph>'
     end 
-    
-    def test_emphasis_quote
-      assert_equal_fragment_transform '``make this a quote\'\'', '<emph rend="quote">make this a quote</emph>'
-    end
- 
 
     def test_footnote
       assert_equal_fragment_transform '<:fn=this is the footnote:>', '<note type="footnote" xml:lang="en">this is the footnote</note>'
@@ -71,7 +65,7 @@ if(RUBY_PLATFORM == 'java')
     
     def test_apos_quotations
       assert_equal_fragment_transform 'make "this" bold', 'make "this" bold'
-      assert_equal_fragment_transform 'ma"ke this\' ``a that\'s quote\'\' bold', 'ma"ke this\' <emph rend="quote">a that\'s quote</emph> bold'
+      assert_equal_fragment_transform 'ma"ke this\' ``a that\'s quote\'\' bold', 'ma"ke this\' ``a that\'s quote\'\' bold'
       assert_equal_fragment_transform 'make this bold', 'make this bold'
     end
 

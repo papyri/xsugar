@@ -15,17 +15,14 @@ PN_URL = ((ddbdp/)|(hgv/)|(apis/))
 NUM_RNG_WHL = ([0-9]+\-{1}[0-9]+|[0-9]+|[IVXLCDM]+\-{1}[IVXLCDM]+|[IVXLCDM]+|[ivxlcdm]+\-{1}[ivxlcdm]+|[ivxlcdm]+)
 
 //same as WORDSLOOSE except for slashes and tab and no + for 1 or more and no MAX designator
-ANYLETTER = [^\/\\\t<>_\:\`\*\|]
+ANYLETTER = [^\/\\\t<>_\:\*\|]
 
 //very permisive for free text, only remove what is in grammar
-WORDSLOOSE = ([^<>_\:\`\*\|]+) (MAX)
+WORDSLOOSE = ([^<>_\:\*\|]+) (MAX)
 
 wrap 
   : [BEGWRAP] [items i] [ENDWRAP] = <wrap>[items i]</>
   
-paragraph
-  : [BEGP] [paragraph_item_not_nest pinn] = <p>[paragraph_item_not_nest pinn]</>
-
 items
   :  [item i] [items more] = [item i] [items more]
   >: [item p] = [item p]
@@ -38,7 +35,6 @@ item
   : [emphasis_bold eb] = [emphasis_bold eb]
   : [emphasis_italics ei] = [emphasis_italics ei]
   : [emphasis_underline el] = [emphasis_underline el]
-  : [quote q] = [quote q]
   : [item_can_nest icn] = [item_can_nest icn]
 
 item_can_nest
@@ -56,7 +52,6 @@ paragraph_item
   : [emphasis_bold eb] = [emphasis_bold eb]
   : [emphasis_italics ei] = [emphasis_italics ei]
   : [emphasis_underline el] = [emphasis_underline el]
-  : [quote q] = [quote q]
   : [item_can_nest icn] = [item_can_nest icn]
   
 bold_item_not_nest
@@ -70,7 +65,6 @@ bold_item
   : [url u] = [url u]
   : [emphasis_italics ei] = [emphasis_italics ei]
   : [emphasis_underline el] = [emphasis_underline el]
-  : [quote q] = [quote q]
   : [item_can_nest icn] = [item_can_nest icn]
   
 italic_item_not_nest
@@ -84,7 +78,6 @@ italic_item
   : [url u] = [url u]
   : [emphasis_bold eb] = [emphasis_bold eb]
   : [emphasis_underline el] = [emphasis_underline el]
-  : [quote q] = [quote q]
   : [item_can_nest icn] = [item_can_nest icn]
   
 underline_item_not_nest
@@ -98,23 +91,11 @@ underline_item
   : [url u] = [url u]
   : [emphasis_bold eb] = [emphasis_bold eb]
   : [emphasis_italics ei] = [emphasis_italics ei]
-  : [quote q] = [quote q]
   : [item_can_nest icn] = [item_can_nest icn]
   
-quote_item_not_nest
-  :[quote_item ui] [quote_item_not_nest more] = [quote_item ui] [quote_item_not_nest more]
-  >:[quote_item ui] = [quote_item ui]
+paragraph
+  : [BEGP] [paragraph_item_not_nest pinn] = <p>[paragraph_item_not_nest pinn]</>
   
-quote_item
-  : [footnote f] = [footnote f]
-  : [paragraph p] = [paragraph p]
-  : [bib b] = [bib b]  
-  : [url u] = [url u]
-  : [emphasis_bold eb] = [emphasis_bold eb]
-  : [emphasis_italics ei] = [emphasis_italics ei]
-  : [emphasis_underline el] = [emphasis_underline el]
-  : [item_can_nest icn] = [item_can_nest icn]
-
 footnote
   : "<:fn=" [WORDSLOOSE text] ":>" = <note type="footnote" xml:lang="en">[WORDSLOOSE text]</>
   
@@ -151,7 +132,5 @@ emphasis_italics
 
 emphasis_underline
   : "_" [underline_item_not_nest uinn] "_" = <emph rend="underline">[underline_item_not_nest uinn]</>
-  
-quote
-  : "``" [quote_item_not_nest qinn] "''" = <emph rend="quote">[quote_item_not_nest qinn]</>
+
 

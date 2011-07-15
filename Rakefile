@@ -19,7 +19,8 @@ end
 desc "Generate RDoc"
 task :doc => ['doc:generate']
 namespace :doc do
-  doc_destination = "doc"
+  templates_custom = File.join('doc', 'templates_custom')
+  doc_destination = File.join('doc', 'html')
 
   begin
     require 'yard'
@@ -28,7 +29,7 @@ namespace :doc do
     YARD::Rake::YardocTask.new(:generate) do |yt|
       yt.files   = Dir.glob(File.join('lib', '**', '*.rb')) + 
                    ['README.md']
-      yt.options = ['--output-dir', doc_destination, '--readme', 'README.md']
+      yt.options = ['-p', templates_custom, '--output-dir', doc_destination, '--readme', 'README.md']
     end
   rescue LoadError
     desc "Generate YARD Documentation"

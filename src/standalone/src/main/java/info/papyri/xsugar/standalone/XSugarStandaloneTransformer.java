@@ -27,6 +27,9 @@ import com.twmacinta.util.MD5;
 
 import info.papyri.xsugar.standalone.TransformResult;
 
+/**
+ * Holds an instance of an XSugar transformer, with methods for performing transforms using it.
+ */
 public class XSugarStandaloneTransformer
 {
   private Stylesheet stylesheet;
@@ -51,11 +54,9 @@ public class XSugarStandaloneTransformer
   private int grammar_hash;
   private JCS cache = null;
   
-  public XSugarStandaloneTransformer()
-  {
-  
-  }
-  
+  /**
+   * Initialize a transformer for a given XSugar grammar.
+   */ 
   public XSugarStandaloneTransformer(String grammar)
     throws dk.brics.xsugar.XSugarException, IOException, ParseException, dk.brics.relaxng.converter.ParseException, InstantiationException,	IllegalAccessException, ClassNotFoundException
   {
@@ -93,7 +94,15 @@ public class XSugarStandaloneTransformer
       System.out.println("Error initializing cache!");
     }
   }
-  
+
+  /**
+   * Generate the cache key for this transformer based on the direction and input text.
+   *
+   * Uses an MD5 of the input text, and generates keys in the form:
+   *   grammar_hash:direction:inputmd5
+   * So all of the entries for a grammar hash can be invalidated at once. 
+   * See: http://jakarta.apache.org/jcs/faq.html#hierarchical-removal  
+   */
   private String cacheKey(String direction, String text) {
     MD5 md5 = new MD5();
     
@@ -105,7 +114,10 @@ public class XSugarStandaloneTransformer
       return new String(grammar_hash + ":" + direction + ":" + text);
     }
   }
-  
+ 
+  /**
+   * Store a given transform result in the cache, rescuing cache exceptions. 
+   */
   private void cachePut(String key, TransformResult result) {
     try {
       cache.put(key,result);
@@ -114,8 +126,11 @@ public class XSugarStandaloneTransformer
       System.out.println("Problem caching!");
     }
   }
-  
-  public synchronized String nonXMLToXML(String text, Integer counter)
+ 
+  /**
+   * Use this transformer to convert a non-XML string to XML.
+   */ 
+  public synchronized String nonXMLToXML(String text)
     throws dk.brics.grammar.parser.ParseException
   {
     String result;
@@ -123,8 +138,6 @@ public class XSugarStandaloneTransformer
     
     TransformResult cache_result = (TransformResult)cache.get(key);
     if (cache_result == null) {
-      System.out.println("Cache miss N2X! " + counter.toString());
-      
       try {
         AST ast = parser_l.parse(text, "dummy.txt");
     
@@ -143,7 +156,6 @@ public class XSugarStandaloneTransformer
       cachePut(key,new TransformResult(result));
     }
     else {
-      System.out.println("Cache hit N2X! " + counter.toString());
       if (cache_result.isException()) {
         throw cache_result.exception;
       }
@@ -153,8 +165,11 @@ public class XSugarStandaloneTransformer
     }
     return result;
   }
-  
-  public synchronized String XMLToNonXML(String xml, Integer counter)
+ 
+  /**
+   * Use this transformer to convert an XML string to its non-XML representation.
+   */ 
+  public synchronized String XMLToNonXML(String xml)
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, IOException
   {
     String result;
@@ -162,8 +177,6 @@ public class XSugarStandaloneTransformer
     
     TransformResult cache_result = (TransformResult)cache.get(key);
     if (cache_result == null) {
-      System.out.println("Cache miss X2N! " + counter.toString());
-      
       try {
         String input = norm.normalize(xml, "dummy.xml");
     
@@ -181,7 +194,6 @@ public class XSugarStandaloneTransformer
       cachePut(key,new TransformResult(result));
     }
     else {
-      System.out.println("Cache hit X2N! " + counter.toString());
       result = cache_result.content;
       if (cache_result.isException()) {
         throw cache_result.exception;

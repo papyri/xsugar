@@ -99,15 +99,15 @@ public class XSugarStandaloneServlet extends HttpServlet
     }
     catch (org.xml.sax.SAXParseException e) {
       System.out.println("SAX Parse exception, doing transform normally");
-      return direction.equals("xml2nonxml") ? transformer.XMLToNonXML(content, split_counter) : transformer.nonXMLToXML(content, split_counter);
+      return direction.equals("xml2nonxml") ? transformer.XMLToNonXML(content) : transformer.nonXMLToXML(content);
     }
     catch (java.lang.StringIndexOutOfBoundsException e) {
       System.out.println("Split exception, doing transform normally");
-      return direction.equals("xml2nonxml") ? transformer.XMLToNonXML(content, split_counter) : transformer.nonXMLToXML(content, split_counter);
+      return direction.equals("xml2nonxml") ? transformer.XMLToNonXML(content) : transformer.nonXMLToXML(content);
     }
     if (split_results.size() == 1) {
       System.out.println("Single chunk, doing transform normally");
-      return direction.equals("xml2nonxml") ? transformer.XMLToNonXML(content, split_counter) : transformer.nonXMLToXML(content, split_counter);
+      return direction.equals("xml2nonxml") ? transformer.XMLToNonXML(content) : transformer.nonXMLToXML(content);
     }
     ArrayList<String> results_list = new ArrayList();
     System.out.println("Split into " + split_results.size());
@@ -117,10 +117,10 @@ public class XSugarStandaloneServlet extends HttpServlet
       try {
         String item_result = "";
         if(direction.equals("xml2nonxml")) {
-          item_result = transformer.XMLToNonXML(split_item, split_counter);
+          item_result = transformer.XMLToNonXML(split_item);
         }
         else {
-          item_result = transformer.nonXMLToXML(split_item, split_counter);
+          item_result = transformer.nonXMLToXML(split_item);
         }
         //add up the lines successfully transformed for adjusting line counter on parse exception if it occurs
         //subtract 2 for the lines added at the beginning and end of a chunk
@@ -135,7 +135,7 @@ public class XSugarStandaloneServlet extends HttpServlet
         if (direction.equals("nonxml2xml")) { 
           if (split_results.size() < 5) {
             System.out.println("Parse exception in small split transform, trying full transform");
-            return transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content), split_counter);
+            return transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));
           }
           else {
             int error_line = e.getLocation().getLine();
@@ -186,7 +186,7 @@ public class XSugarStandaloneServlet extends HttpServlet
           }
         }
         else {
-          result = transformer.XMLToNonXML(content, 0);
+          result = transformer.XMLToNonXML(content);
         }
       }
       else if (direction.equals("nonxml2xml"))
@@ -202,7 +202,7 @@ public class XSugarStandaloneServlet extends HttpServlet
           }
         }
         else {
-          result = transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content), 0);
+          result = transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));
         }
       }
       else {

@@ -5,6 +5,29 @@ if(RUBY_PLATFORM == 'java')
 
 #=begin    
     def test_paragraph
+      assert_equal_fragment_transform 'more up front
+
+aline here
+text front *make this bold* text end
+one more line', 'more up front<p>aline here
+text front <emph rend="bold">make this bold</emph> text end
+one more line</p>'
+      assert_equal_fragment_transform 'more up front
+
+another paragraph
+
+text front *make this bold* text end
+one more line', 'more up front<p>another paragraph</p><p>text front <emph rend="bold">make this bold</emph> text end
+one more line</p>'
+      assert_equal_fragment_transform '
+
+text front *make this bold* text |end|', '<p>text front <emph rend="bold">make this bold</emph> text <emph rend="italics">end</emph></p>'
+      assert_equal_fragment_transform '
+
+text front *make this bold* text end', '<p>text front <emph rend="bold">make this bold</emph> text end</p>'
+      assert_equal_fragment_transform 'text front
+
+*make this bold* text end', 'text front<p><emph rend="bold">make this bold</emph> text end</p>'
       assert_equal_fragment_transform '
 
 *make this bold*', '<p><emph rend="bold">make this bold</emph></p>'

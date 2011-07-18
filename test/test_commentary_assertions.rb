@@ -12,7 +12,7 @@ module CommentaryGrammarAssertions
   def enclose_leiden_fragment(leiden)
     #formerly lab(notxml) for transcriptions
     #need start - end for translation leiden
-    return "<W#{leiden}W>"
+    return "<W:#{leiden}:W>"
   end
 
 

@@ -2,23 +2,20 @@ xmlns:xml = "http://www.w3.org/XML/1998/namespace"
 
 NL = [\r\n]+
 
-BEGIN = "<"
-END = ">"
-
 BEGP = [\n]{2}
 
-BEGWRAP = "<W"
-ENDWRAP = "W>"
+BEGWRAP = "<W:"
+ENDWRAP = ":W>"
 
 PN_URL = ((ddbdp/)|(hgv/)|(apis/))
 
 NUM_RNG_WHL = ([0-9]+\-{1}[0-9]+|[0-9]+|[IVXLCDM]+\-{1}[IVXLCDM]+|[IVXLCDM]+|[ivxlcdm]+\-{1}[ivxlcdm]+|[ivxlcdm]+)
 
-//same as WORDSLOOSE except for slashes and tab and no + for 1 or more and no MAX designator
+//same as WORDSLOOSE except for slashes and tab, no line returns, and no + for 1 or more and no MAX designator
 ANYLETTER = [^\/\\\t<>_\:\*\|]
 
 //very permisive for free text, only remove what is in grammar
-WORDSLOOSE = ([^<>_\:\*\|]+) (MAX)
+WORDSLOOSE = ([^\n\r<>_\:\*\|]+) (MAX)
 
 wrap 
   : [BEGWRAP] [items i] [ENDWRAP] = <wrap>[items i]</>
@@ -35,10 +32,11 @@ item
   : [emphasis_bold eb] = [emphasis_bold eb]
   : [emphasis_italics ei] = [emphasis_italics ei]
   : [emphasis_underline el] = [emphasis_underline el]
+  >: [newline nl] = [newline nl]
   : [item_can_nest icn] = [item_can_nest icn]
 
 item_can_nest
-  >: [WORDSLOOSE w] = [WORDSLOOSE w]
+  : [WORDSLOOSE w] = [WORDSLOOSE w]
   >: [ANYLETTER a] = [ANYLETTER a]
 
 paragraph_item_not_nest
@@ -133,4 +131,6 @@ emphasis_italics
 emphasis_underline
   : "_" [underline_item_not_nest uinn] "_" = <emph rend="underline">[underline_item_not_nest uinn]</>
 
+newline 
+  : [NL n] = [NL n]
 

@@ -49,7 +49,7 @@ public class XSugarStandaloneServlet extends HttpServlet
   private XSugarStandaloneTransformer initTransformer(String transformer_name)
   {
     XSugarStandaloneTransformer transformer = null;
-    URL url = this.getClass().getClassLoader().getResource("/" + transformer_name + ".xsg");
+    URL url = this.getClass().getClassLoader().getResource(transformer_name + ".xsg");
     StringWriter url_writer = new StringWriter();
 
     try {

@@ -25,7 +25,7 @@ FRACSYM = [𐅵𐅷𐅸]+
 
 UNDERDOT = "\u0323"
 COMBINMACRON = "\u0304"
-COMBINDIACRIT = ((\u0302)|(\u0345))
+COMBINDIACRIT = ((\u0342)|(\u0345))
 
 //ca. with 0 or more spaces followed by ? mark
 CAUNKNOWN = "ca."[ ]*"\?"
@@ -93,8 +93,8 @@ LINENUM = [0-9]+[/\,a-zA-Z0-9]*[ms0-9]*
 
 ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0304\u0323]
 
-//ANYLETTER plus u302 and u345 - combining circumflex and iota-subscript
-ANYNCLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0302\u0304\u0323\u0345]
+//ANYLETTER plus u0342 and u0345 - combining circumflex and iota-subscript
+ANYNCLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0304\u0323\u0342\u0345]
 
 //ANYLETTER plus 0-9 to eliminate numbers 7/22 to fix reversability on some sup lost 
 //added l on 3/30 to make space line (ex.  vac?lin) work

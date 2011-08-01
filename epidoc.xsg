@@ -176,28 +176,28 @@ multwordsp
   >: [WORD a] = [WORD a]
 
 multregs
-  :[items a] "(?)" "|" [multregs more] = <reg cert="low">[items a]</>[multregs more]
-  >:[items a] "(?)" "||reg||" = <reg cert="low">[items a]</>
-  :[items a] "|" [multregs more] = <reg>[items a]</>[multregs more]
-  >:[items a] "||reg||" = <reg>[items a]</>
-  :[items a] "(?)" "=" [WORD b] "|" [multregs more] = <reg xml:lang=[WORD b] cert="low">[items a]</>[multregs more]
-  >:[items a] "(?)" "=" [WORD b] "||reg||" = <reg xml:lang=[WORD b] cert="low">[items a]</>
-  :[items a] "=" [WORD b] "|" [multregs more] = <reg xml:lang=[WORD b]>[items a]</>[multregs more]
-  >:[items a] "=" [WORD b] "||reg||" = <reg xml:lang=[WORD b]>[items a]</>
+  : [items a] "(?)" "|" [multregs more] = <reg cert="low">[items a]</>[multregs more]
+  >: [items a] "(?)" "||reg||" = <reg cert="low">[items a]</>
+  : [items a] "|" [multregs more] = <reg>[items a]</>[multregs more]
+  >: [items a] "||reg||" = <reg>[items a]</>
+  : [items a] "(?)" "=" [WORD b] "|" [multregs more] = <reg xml:lang=[WORD b] cert="low">[items a]</>[multregs more]
+  >: [items a] "(?)" "=" [WORD b] "||reg||" = <reg xml:lang=[WORD b] cert="low">[items a]</>
+  : [items a] "=" [WORD b] "|" [multregs more] = <reg xml:lang=[WORD b]>[items a]</>[multregs more]
+  >: [items a] "=" [WORD b] "||reg||" = <reg xml:lang=[WORD b]>[items a]</>
 			
 expanstuff
-  :[bef_aft_ex b] "(" [WORDS4EXND a] ")" [bef_aft_ex c] = [bef_aft_ex b]<ex>[WORDS4EXND a]</>[bef_aft_ex c]
-  :[bef_aft_ex b] "(" [WORDS4EXND f] "?" ")" [bef_aft_ex c] = [bef_aft_ex b] <ex cert="low">[WORDS4EXND f]</>[bef_aft_ex c]
-  :[bef_aft_ex b] "(" [WORDS4EXND a] ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex>[WORDS4EXND a]</> [bef_aft_ex c][expanstuff more]
-  :[bef_aft_ex b] "(" [WORDS4EXND f] "?" ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex cert="low">[WORDS4EXND f]</> [bef_aft_ex c][expanstuff more]
-  >:[bef_aft_ex b]"[" [inside_brackets i] "]"[bef_aft_ex c][expanstuff more] =  [bef_aft_ex b][inside_brackets i][bef_aft_ex c][expanstuff more]
-  >:[bef_aft_ex b]"[" [supexpan d] "]" [bef_aft_ex c][expanstuff more] = [bef_aft_ex b]<supplied reason="lost">[supexpan d]</>[bef_aft_ex c][expanstuff more]
-  >:[bef_aft_ex b]"[" [supexpan d] "]"[bef_aft_ex c] = [bef_aft_ex b]<supplied reason="lost">[supexpan d]</>[bef_aft_ex c]
-  >:[bef_aft_ex b]"[" [sup_special e] "(?)" "]"[bef_aft_ex c] [expanstuff more] = [bef_aft_ex b]<supplied reason="lost" cert="low">[sup_special e]</>[bef_aft_ex c][expanstuff more]
-  >:[bef_aft_ex b]"[" [sup_special e] "(?)" "]"[bef_aft_ex c] = [bef_aft_ex b]<supplied reason="lost" cert="low">[sup_special e]</>[bef_aft_ex c]
-  >:[bef_aft_ex b]"|_" [sup_special e] "_|"[bef_aft_ex c] [expanstuff more] = [bef_aft_ex b]<supplied evidence="parallel" reason="undefined">[sup_special e]</>[bef_aft_ex c][expanstuff more]
-  >:[bef_aft_ex b]"|_" [sup_special e] "_|"[bef_aft_ex c] = [bef_aft_ex b]<supplied evidence="parallel" reason="undefined">[sup_special e]</>[bef_aft_ex c]
-  >:[WORDVEST b][expanstuff more] = [WORDVEST b][expanstuff more]
+  : [bef_aft_ex b] "(" [WORDS4EXND a] ")" [bef_aft_ex c] = [bef_aft_ex b]<ex>[WORDS4EXND a]</>[bef_aft_ex c]
+  : [bef_aft_ex b] "(" [WORDS4EXND f] "?" ")" [bef_aft_ex c] = [bef_aft_ex b] <ex cert="low">[WORDS4EXND f]</>[bef_aft_ex c]
+  : [bef_aft_ex b] "(" [WORDS4EXND a] ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex>[WORDS4EXND a]</> [bef_aft_ex c][expanstuff more]
+  : [bef_aft_ex b] "(" [WORDS4EXND f] "?" ")" [bef_aft_ex c] [expanstuff more] = [bef_aft_ex b] <ex cert="low">[WORDS4EXND f]</> [bef_aft_ex c][expanstuff more]
+  >: [bef_aft_ex b]"[" [inside_brackets i] "]"[bef_aft_ex c][expanstuff more] =  [bef_aft_ex b][inside_brackets i][bef_aft_ex c][expanstuff more]
+  >: [bef_aft_ex b]"[" [supexpan d] "]" [bef_aft_ex c][expanstuff more] = [bef_aft_ex b]<supplied reason="lost">[supexpan d]</>[bef_aft_ex c][expanstuff more]
+  >: [bef_aft_ex b]"[" [supexpan d] "]"[bef_aft_ex c] = [bef_aft_ex b]<supplied reason="lost">[supexpan d]</>[bef_aft_ex c]
+  >: [bef_aft_ex b]"[" [sup_special e] "(?)" "]"[bef_aft_ex c] [expanstuff more] = [bef_aft_ex b]<supplied reason="lost" cert="low">[sup_special e]</>[bef_aft_ex c][expanstuff more]
+  >: [bef_aft_ex b]"[" [sup_special e] "(?)" "]"[bef_aft_ex c] = [bef_aft_ex b]<supplied reason="lost" cert="low">[sup_special e]</>[bef_aft_ex c]
+  >: [bef_aft_ex b]"|_" [sup_special e] "_|"[bef_aft_ex c] [expanstuff more] = [bef_aft_ex b]<supplied evidence="parallel" reason="undefined">[sup_special e]</>[bef_aft_ex c][expanstuff more]
+  >: [bef_aft_ex b]"|_" [sup_special e] "_|"[bef_aft_ex c] = [bef_aft_ex b]<supplied evidence="parallel" reason="undefined">[sup_special e]</>[bef_aft_ex c]
+  >: [WORDVEST b][expanstuff more] = [WORDVEST b][expanstuff more]
 // 8 lines below were between 4 and 5 above but commented out
 //  >:[bef_aft_ex b] "(" [WORDS4EX a] ")" [bef_aft_ex c] = [bef_aft_ex b]<ex>[WORDS4EX a]</>[bef_aft_ex c]
 //  >:[bef_aft_ex b] "(" [WORDS4EX f] "?" ")" [bef_aft_ex c] = [bef_aft_ex b] <ex cert="low">[WORDS4EX f]</>[bef_aft_ex c]
@@ -212,22 +212,22 @@ expanstuff
 //  >:[item c] = [item c]
 
 bef_aft_ex
-  >:[item c][bef_aft_ex more] = [item c][bef_aft_ex more]
-  >:[item c][expanstuff more] = [item c][expanstuff more]
-  >:[item c] = [item c]
+  >: [item c][bef_aft_ex more] = [item c][bef_aft_ex more]
+  >: [item c][expanstuff more] = [item c][expanstuff more]
+  >: [item c] = [item c]
   : =
 
 supexpan
-  :"(" [WORDS4EXND a] ")" = <ex>[WORDS4EXND a]</>
-  :"(" [WORDS4EXND f] "?" ")" = <ex cert="low">[WORDS4EXND f]</>
-  >:[WORDVEST b][supexpan more] = [WORDVEST b][supexpan more]
-  >:[ANYLETTER b][expanstuff more] = [ANYLETTER b][expanstuff more]
-  >:[WORDVEST b][expanstuff more] = [WORDVEST b][expanstuff more]
-  >:[item b][expanstuff more] = [item b][expanstuff more]
-  >:"(" [WORDS4EXND a] ")"[supexpan more] = <ex>[WORDS4EXND a]</>[supexpan more]
-  >:"(" [WORDS4EXND f] "?" ")"[supexpan more] = <ex cert="low">[WORDS4EXND f]</>[supexpan more]
-  >:"(" [WORDS4EXND a] ")"[expanstuff more] = <ex>[WORDS4EXND a]</>[expanstuff more]
-  >:"(" [WORDS4EXND f] "?" ")"[expanstuff more] = <ex cert="low">[WORDS4EXND f]</>[expanstuff more]
+  : "(" [WORDS4EXND a] ")" = <ex>[WORDS4EXND a]</>
+  : "(" [WORDS4EXND f] "?" ")" = <ex cert="low">[WORDS4EXND f]</>
+  >: [WORDVEST b][supexpan more] = [WORDVEST b][supexpan more]
+  >: [ANYLETTER b][expanstuff more] = [ANYLETTER b][expanstuff more]
+  >: [WORDVEST b][expanstuff more] = [WORDVEST b][expanstuff more]
+  >: [item b][expanstuff more] = [item b][expanstuff more]
+  >: "(" [WORDS4EXND a] ")"[supexpan more] = <ex>[WORDS4EXND a]</>[supexpan more]
+  >: "(" [WORDS4EXND f] "?" ")"[supexpan more] = <ex cert="low">[WORDS4EXND f]</>[supexpan more]
+  >: "(" [WORDS4EXND a] ")"[expanstuff more] = <ex>[WORDS4EXND a]</>[expanstuff more]
+  >: "(" [WORDS4EXND f] "?" ")"[expanstuff more] = <ex cert="low">[WORDS4EXND f]</>[expanstuff more]
 //  :[expandex g] = [expandex g]
 //  :[expand g] = [expand g]
 //  >:[expando g] = [expando g]
@@ -235,10 +235,10 @@ supexpan
   
 //sup_special used for inside both supplied/lost/certlow and supplied/parallel/undefined
 sup_special
-  :"(" [WORDS4EXND a] ")" = <ex>[WORDS4EXND a]</>
-  >:[WORDVEST b][sup_special more] = [WORDVEST b][sup_special more]
-  >:"(" [WORDS4EXND a] ")"[sup_special more] = <ex>[WORDS4EXND a]</>[sup_special more]
-  >:"(" [WORDS4EXND a] ")"[expanstuff more] = <ex>[WORDS4EXND a]</>[expanstuff more]
+  : "(" [WORDS4EXND a] ")" = <ex>[WORDS4EXND a]</>
+  >: [WORDVEST b][sup_special more] = [WORDVEST b][sup_special more]
+  >: "(" [WORDS4EXND a] ")"[sup_special more] = <ex>[WORDS4EXND a]</>[sup_special more]
+  >: "(" [WORDS4EXND a] ")"[expanstuff more] = <ex>[WORDS4EXND a]</>[expanstuff more]
   
 nestanc 
   : " ῾" = "asper"
@@ -478,8 +478,8 @@ choice_reg
 milestone
 	: "--------" = <milestone rend="horizontal-rule" unit="undefined"></>
 	: "----" = <milestone rend="paragraphos" unit="undefined"></>
-	:"<---->" = <supplied reason="omitted"><milestone rend="paragraphos" unit="undefined"/></>
-	:"<----(?)>" = <supplied reason="omitted" cert="low"><milestone rend="paragraphos" unit="undefined"/></>
+	: "<---->" = <supplied reason="omitted"><milestone rend="paragraphos" unit="undefined"/></>
+	: "<----(?)>" = <supplied reason="omitted" cert="low"><milestone rend="paragraphos" unit="undefined"/></>
 	: "###" = <milestone rend="box" unit="undefined"></>
 	
 illegible_dot
@@ -1015,23 +1015,23 @@ inside_brackets
 	
 	//---test_lost_space_unknown
 	//[vac?]
-	:[ANYMULT w] "vac.?" = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/></>
-	:"vac.?" [ANYMULT w] = <supplied reason="lost"><space extent="unknown" unit="character"/>[ANYMULT w]</>
-	:[spaceitem s] = <supplied reason="lost">[spaceitem s]</>
-	:[ANYMULT w] "vac.?" [ANYMULT w] = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
-	:[ANYMULT w] "vac.?" "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<space extent="unknown" unit="character"/></>
-	:"vac.?" [ANYMULT w] "(?)" = <supplied reason="lost" cert="low"><space extent="unknown" unit="character"/>[ANYMULT w]</>
-	:[spaceitem s] "(?)" = <supplied reason="lost" cert="low">[spaceitem s]</>
-	:[ANYMULT w] "vac.?" [ANYMULT w] "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
+	: [ANYMULT w] "vac.?" = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/></>
+	: "vac.?" [ANYMULT w] = <supplied reason="lost"><space extent="unknown" unit="character"/>[ANYMULT w]</>
+	: [spaceitem s] = <supplied reason="lost">[spaceitem s]</>
+	: [ANYMULT w] "vac.?" [ANYMULT w] = <supplied reason="lost">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
+	: [ANYMULT w] "vac.?" "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<space extent="unknown" unit="character"/></>
+	: "vac.?" [ANYMULT w] "(?)" = <supplied reason="lost" cert="low"><space extent="unknown" unit="character"/>[ANYMULT w]</>
+	: [spaceitem s] "(?)" = <supplied reason="lost" cert="low">[spaceitem s]</>
+	: [ANYMULT w] "vac.?" [ANYMULT w] "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<space extent="unknown" unit="character"/>[ANYMULT w]</>
 	
 	//---test_lost_paragraphos
 	//[----]
-	:[ANYMULT w] "----" = <supplied reason="lost">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/></>
-	:"----" = <supplied reason="lost"><milestone rend="paragraphos" unit="undefined"/></>
-	:[ANYMULT w] "----" [ANYMULT x] = <supplied reason="lost">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/>[ANYMULT x]</>
-	>:[ANYMULT w] "----" "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/></>
-	>:"----" "(?)" = <supplied reason="lost" cert="low"><milestone rend="paragraphos" unit="undefined"/></>
-	>:[ANYMULT w] "----" [ANYMULT x] "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/>[ANYMULT x]</>
+	: [ANYMULT w] "----" = <supplied reason="lost">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/></>
+	: "----" = <supplied reason="lost"><milestone rend="paragraphos" unit="undefined"/></>
+	: [ANYMULT w] "----" [ANYMULT x] = <supplied reason="lost">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/>[ANYMULT x]</>
+	>: [ANYMULT w] "----" "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/></>
+	>: "----" "(?)" = <supplied reason="lost" cert="low"><milestone rend="paragraphos" unit="undefined"/></>
+	>: [ANYMULT w] "----" [ANYMULT x] "(?)" = <supplied reason="lost" cert="low">[ANYMULT w]<milestone rend="paragraphos" unit="undefined"/>[ANYMULT x]</>
 	
 	//---test_lost_words---
 	// [ abc def ] lost words

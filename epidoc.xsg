@@ -40,14 +40,6 @@ WORDDIV = ([^ \n\r\t\[\]\^<>_#@~〚〛$\*\&\.\:\=\|\'\!\(\)\{\}\?\"¯\u0304\u032
 // WORDVEST same as WORD except added 'v' to keep vestig out
 WORDVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
-//WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
-//commented out because ended up being the same reg exp as WORD
-//WORDA = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
-
-//WORDAVEST does not allow underdot (\u0323 at the end) - used to make choice work - A = abbreviation - added 'v' to keep vestig out
-//commented out because ended up being the same reg exp as WORDVEST
-//WORDAVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
-
 //WORDS allows space (therefore multiple words) and DOT
 WORDS = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
@@ -68,9 +60,6 @@ WORDSED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+
 //WORDSBL allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
 WORDSBL = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
-// wordsnum allow '/' for fractional numbers - added DOT to break .gap on 7/7 see if break other things
-WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
-
 //WORDSSIC allows space (therefore multiple words) and does not allow DOT to break correctly for .gap - added vestig 7/7 for supralinear - same as WORDVEST except
 //for allowing space therefore mulitple words
 WORDSSIC = ([^\/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
@@ -82,6 +71,17 @@ WORDS4EX = ([^\\\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323
 //ND = no diacriticals allowed
 WORDS4EXND = ([^\\\[\]\^<>_#@~῾´¨`\^᾿〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
+// wordsnum allow '/' for fractional numbers - added DOT to break .gap on 7/7 see if break other things
+//WORDSNUM = ([^\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
+
+//WORDA does not allow underdot (\u0323 at the end) - used to make abbr work - A = abbreviation
+//commented out because ended up being the same reg exp as WORD
+//WORDA = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
+
+//WORDAVEST does not allow underdot (\u0323 at the end) - used to make choice work - A = abbreviation - added 'v' to keep vestig out
+//commented out because ended up being the same reg exp as WORDVEST
+//WORDAVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
+
 // WORDOPT breaks at space but has * as reg exp attribute so allows for no word to exist also in that position
 //commented out because not using anywhere
 //WORDOPT = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]*) (MAX)
@@ -91,7 +91,7 @@ LINENUM = [0-9]+[/\,a-zA-Z0-9]*[ms0-9]*
 //removed all uses of below per 12/16 review
 //GAPEXTNUM = [c]?[.]?[0-9]+
 
-ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0304\u0323]
+ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\=\|\!\(\)\{\}\?\"¯+\u0304\u0323]
 
 //ANYLETTER plus u0342 and u0345 - combining circumflex and iota-subscript
 ANYNCLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0304\u0323\u0342\u0345]

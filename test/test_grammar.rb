@@ -45,6 +45,8 @@ if(RUBY_PLATFORM == 'java')
   end
   
   def test_expan_redo_pretty_exhaustive
+    assert_equal_fragment_transform '(ἀ[κρ̣ό̣δ̣(ρυα)])', '<expan>ἀ<supplied reason="lost">κ<unclear>ρόδ</unclear><ex>ρυα</ex></supplied></expan>'
+    assert_equal_fragment_transform '(ἀ[κ ρ̣ό̣δ̣(ρυα)])', '<expan>ἀ<supplied reason="lost">κ <unclear>ρόδ</unclear><ex>ρυα</ex></supplied></expan>'
     assert_equal_fragment_transform '([(Ἑπτα)]κ̣ω̣μ̣[(ίας)])', '<expan><supplied reason="lost"><ex>Ἑπτα</ex></supplied><unclear>κωμ</unclear><supplied reason="lost"><ex>ίας</ex></supplied></expan>'
     assert_equal_fragment_transform '([Κ(α)ρ]ανίδ(ος))', '<expan><supplied reason="lost">Κ<ex>α</ex>ρ</supplied>ανίδ<ex>ος</ex></expan>'
     assert_equal_fragment_transform '((῾επταρούρῳ))', '<expan><ex>῾επταρούρῳ</ex></expan>'
@@ -75,15 +77,18 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '(κ̣(ατ)οί̣[κ(ων)])', '<expan><unclear>κ</unclear><ex>ατ</ex>ο<unclear>ί</unclear><supplied reason="lost">κ<ex>ων</ex></supplied></expan>'
     #below here from short run
     assert_equal_fragment_transform '((abc))', '<expan><ex>abc</ex></expan>'
-    assert_equal_fragment_transform '[ίως ((ἔτους)) <#ι=10(?)#>  καὶ ]', '<supplied reason="lost">ίως <expan><ex>ἔτους</ex></expan> <num value="10">ι<certainty locus="value" match=".."/></num>  καὶ </supplied>'
+    assert_equal_fragment_transform '[ίως ((ἔτους)) <#ι=10(?)#>  καὶ ]', '<supplied reason="lost">ίως <expan><ex>ἔτους</ex></expan> <num value="10">ι<certainty match="../@value" locus="value"/></num>  καὶ </supplied>'
+    #rendtick assert_equal_fragment_transform '[ίως ((ἔτους)) <#ι=10(?)#>  καὶ ]', '<supplied reason="lost">ίως <expan><ex>ἔτους</ex></expan> <num value="10">ι<certainty locus="value" match=".."/></num>  καὶ </supplied>'
     assert_equal_fragment_transform '([(eton)])', '<expan><supplied reason="lost"><ex>eton</ex></supplied></expan>'
     assert_equal_fragment_transform '(ab(c)def(gh)i(j))', '<expan>ab<ex>c</ex>def<ex>gh</ex>i<ex>j</ex></expan>'
-    assert_equal_fragment_transform '_[(ἀρ(τάβας?)) (δωδέκ(ατον)) (εἰκ(οστοτέταρτον?)) ((ἀρτάβας)) <#ιβ=frac1/12#> <#κδ=frac1/24#> *stauros* <:Ἀγαθάμμων|BL:8.441|(δ(ι)) (|μ|) κάμμονι:> \*stauros*/ *tachygraphic-marks*(?)]_', '<supplied evidence="parallel" reason="lost" cert="low"><expan>ἀρ<ex cert="low">τάβας</ex></expan> <expan>δωδέκ<ex>ατον</ex></expan> <expan>εἰκ<ex cert="low">οστοτέταρτον</ex></expan> <expan><ex>ἀρτάβας</ex></expan> <num value="1/12" rend="fraction">ιβ</num> <num value="1/24" rend="fraction">κδ</num> <g type="stauros"/> <app type="BL"><lem resp="8.441">Ἀγαθάμμων</lem><rdg><expan>δ<ex>ι</ex></expan> <abbr>μ</abbr> κάμμονι</rdg></app> <add place="above"><g type="stauros"/></add> <g type="tachygraphic-marks"/></supplied>'
+    assert_equal_fragment_transform '_[(ἀρ(τάβας?)) (δωδέκ(ατον)) (εἰκ(οστοτέταρτον?)) ((ἀρτάβας)) <#ιβ \'=1/12#> <#κδ \'=1/24#> *stauros* <:Ἀγαθάμμων|BL:8.441|(δ(ι)) (|μ|) κάμμονι:> \*stauros*/ *tachygraphic-marks*(?)]_', '<supplied evidence="parallel" reason="lost" cert="low"><expan>ἀρ<ex cert="low">τάβας</ex></expan> <expan>δωδέκ<ex>ατον</ex></expan> <expan>εἰκ<ex cert="low">οστοτέταρτον</ex></expan> <expan><ex>ἀρτάβας</ex></expan> <num value="1/12" rend="tick">ιβ</num> <num value="1/24" rend="tick">κδ</num> <g type="stauros"/> <app type="BL"><lem resp="8.441">Ἀγαθάμμων</lem><rdg><expan>δ<ex>ι</ex></expan> <abbr>μ</abbr> κάμμονι</rdg></app> <add place="above"><g type="stauros"/></add> <g type="tachygraphic-marks"/></supplied>'
+    #rendtick assert_equal_fragment_transform '_[(ἀρ(τάβας?)) (δωδέκ(ατον)) (εἰκ(οστοτέταρτον?)) ((ἀρτάβας)) <#ιβ=frac1/12#> <#κδ=frac1/24#> *stauros* <:Ἀγαθάμμων|BL:8.441|(δ(ι)) (|μ|) κάμμονι:> \*stauros*/ *tachygraphic-marks*(?)]_', '<supplied evidence="parallel" reason="lost" cert="low"><expan>ἀρ<ex cert="low">τάβας</ex></expan> <expan>δωδέκ<ex>ατον</ex></expan> <expan>εἰκ<ex cert="low">οστοτέταρτον</ex></expan> <expan><ex>ἀρτάβας</ex></expan> <num value="1/12" rend="fraction">ιβ</num> <num value="1/24" rend="fraction">κδ</num> <g type="stauros"/> <app type="BL"><lem resp="8.441">Ἀγαθάμμων</lem><rdg><expan>δ<ex>ι</ex></expan> <abbr>μ</abbr> κάμμονι</rdg></app> <add place="above"><g type="stauros"/></add> <g type="tachygraphic-marks"/></supplied>'
     assert_equal_fragment_transform '((abc 123))', '<expan><ex>abc 123</ex></expan>'
     assert_equal_fragment_transform '[ ((ἡμιωβέλιον)) <#=1/2#>(|προ|) ((δραχμὴν)) <#α=1#> (χ(αλκοῦς 2))<#=2#>]', '<supplied reason="lost"> <expan><ex>ἡμιωβέλιον</ex></expan> <num value="1/2"/><abbr>προ</abbr> <expan><ex>δραχμὴν</ex></expan> <num value="1">α</num> <expan>χ<ex>αλκοῦς 2</ex></expan><num value="2"/></supplied>'
-    assert_equal_fragment_transform '<:[.?]<#λβ=32#> .2 ἐκ <((ταλάντων))> <#κζ=27#> <((δραχμῶν))> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <((δραχμαὶ))> <#Γσ=3200#>|SoSOL:Sosin|[.?]<#λβ=32#> <#𐅵=frac1/2#> <#ιβ=frac1/12#> ἐκ ((ταλάντων)) <#ζ=7#> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <#η=frac1/8(?)#>:>', '<app type="SoSOL"><lem resp="Sosin"><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <gap reason="illegible" quantity="2" unit="character"/> ἐκ <supplied reason="omitted"><expan><ex>ταλάντων</ex></expan></supplied> <num value="27">κζ</num> <supplied reason="omitted"><expan><ex>δραχμῶν</ex></expan></supplied> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <supplied reason="omitted"><expan><ex>δραχμαὶ</ex></expan></supplied> <num value="3200">Γσ</num></lem><rdg><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <num value="1/2" rend="fraction">𐅵</num> <num value="1/12" rend="fraction">ιβ</num> ἐκ <expan><ex>ταλάντων</ex></expan> <num value="7">ζ</num> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <num value="1/8" rend="fraction">η<certainty locus="value" match=".."/></num></rdg></app>'
-    assert_equal_fragment_transform '<:(|πριμο̣σκ|)|alt:|(|πριμσκ|):>', '<app type="alternative"><lem><abbr>πριμ<unclear>ο</unclear>σκ</abbr></lem><rdg><abbr>πριμσκ</abbr></rdg></app>'
-    assert_equal_fragment_transform '<:(|πριμο̣σκ|)|alt:|(|πριμσκ(?)|):>', '<app type="alternative"><lem><abbr>πριμ<unclear>ο</unclear>σκ</abbr></lem><rdg><abbr>πριμσκ<certainty locus="name" match=".."/></abbr></rdg></app>'
+    assert_equal_fragment_transform '<:[.?]<#λβ=32#> .2 ἐκ <((ταλάντων))> <#κζ=27#> <((δραχμῶν))> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <((δραχμαὶ))> <#Γσ=3200#>|SoSOL:Sosin|[.?]<#λβ=32#> <#𐅵 \'=1/2#> <#ιβ \'=1/12#> ἐκ ((ταλάντων)) <#ζ=7#> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <#η \'=1/8(?)#>:>', '<app type="SoSOL"><lem resp="Sosin"><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <gap reason="illegible" quantity="2" unit="character"/> ἐκ <supplied reason="omitted"><expan><ex>ταλάντων</ex></expan></supplied> <num value="27">κζ</num> <supplied reason="omitted"><expan><ex>δραχμῶν</ex></expan></supplied> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <supplied reason="omitted"><expan><ex>δραχμαὶ</ex></expan></supplied> <num value="3200">Γσ</num></lem><rdg><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <num value="1/2" rend="tick">𐅵</num> <num value="1/12" rend="tick">ιβ</num> ἐκ <expan><ex>ταλάντων</ex></expan> <num value="7">ζ</num> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <num value="1/8" rend="tick">η<certainty match="../@value" locus="value"/></num></rdg></app>'
+    #rendtick assert_equal_fragment_transform '<:[.?]<#λβ=32#> .2 ἐκ <((ταλάντων))> <#κζ=27#> <((δραχμῶν))> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <((δραχμαὶ))> <#Γσ=3200#>|SoSOL:Sosin|[.?]<#λβ=32#> <#𐅵=frac1/2#> <#ιβ=frac1/12#> ἐκ ((ταλάντων)) <#ζ=7#> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <#η=frac1/8(?)#>:>', '<app type="SoSOL"><lem resp="Sosin"><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <gap reason="illegible" quantity="2" unit="character"/> ἐκ <supplied reason="omitted"><expan><ex>ταλάντων</ex></expan></supplied> <num value="27">κζ</num> <supplied reason="omitted"><expan><ex>δραχμῶν</ex></expan></supplied> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <supplied reason="omitted"><expan><ex>δραχμαὶ</ex></expan></supplied> <num value="3200">Γσ</num></lem><rdg><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <num value="1/2" rend="fraction">𐅵</num> <num value="1/12" rend="fraction">ιβ</num> ἐκ <expan><ex>ταλάντων</ex></expan> <num value="7">ζ</num> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <num value="1/8" rend="fraction">η<certainty locus="value" match=".."/></num></rdg></app>'
+    assert_equal_fragment_transform '<:(|πριμο̣σκ|)|alt|(|πριμσκ|):>', '<app type="alternative"><lem><abbr>πριμ<unclear>ο</unclear>σκ</abbr></lem><rdg><abbr>πριμσκ</abbr></rdg></app>'
+    assert_equal_fragment_transform '<:(|πριμο̣σκ|)|alt|(|πριμσκ(?)|):>', '<app type="alternative"><lem><abbr>πριμ<unclear>ο</unclear>σκ</abbr></lem><rdg><abbr>πριμσκ<certainty locus="name" match=".."/></abbr></rdg></app>'
     assert_equal_fragment_transform '((ἑπτα)κωμίας)', '<expan><ex>ἑπτα</ex>κωμίας</expan>'
     assert_equal_fragment_transform '((ἑπτα)κω̣μίας)', '<expan><ex>ἑπτα</ex>κ<unclear>ω</unclear>μίας</expan>'
     assert_equal_fragment_transform '((ἑπτα)κω̣μ[ία̣]ς)', '<expan><ex>ἑπτα</ex>κ<unclear>ω</unclear>μ<supplied reason="lost">ί<unclear>α</unclear></supplied>ς</expan>'
@@ -168,12 +173,12 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '(|bạḅdec̣g(?)|)', '<abbr>b<unclear>ab</unclear>de<unclear>c</unclear>g<certainty locus="name" match=".."/></abbr>'
     assert_equal_fragment_transform '[ ((ἡμιωβέλιον)) <#=1/2#>(|προ|) ((δραχμὴν)) <#α=1#> (χ(αλκοῦς 2))<#=2#>]', '<supplied reason="lost"> <expan><ex>ἡμιωβέλιον</ex></expan> <num value="1/2"/><abbr>προ</abbr> <expan><ex>δραχμὴν</ex></expan> <num value="1">α</num> <expan>χ<ex>αλκοῦς 2</ex></expan><num value="2"/></supplied>'
     assert_equal_fragment_transform '(|υιω(?)|)', '<abbr>υιω<certainty locus="name" match=".."/></abbr>'
-    assert_equal_fragment_transform '<:(|πριμο̣σκ|)|alt:|(|πριμσκ|):>', '<app type="alternative"><lem><abbr>πριμ<unclear>ο</unclear>σκ</abbr></lem><rdg><abbr>πριμσκ</abbr></rdg></app>'
-    assert_equal_fragment_transform '<:(|πριμο̣σκ|)|alt:|(|πριμσκ(?)|):>', '<app type="alternative"><lem><abbr>πριμ<unclear>ο</unclear>σκ</abbr></lem><rdg><abbr>πριμσκ<certainty locus="name" match=".."/></abbr></rdg></app>'
-    assert_equal_fragment_transform '<:.5(( ))|alt:|(|κουδ(?)|) :>', '<app type="alternative"><lem><gap reason="illegible" quantity="5" unit="character"/><expan><ex> </ex></expan></lem><rdg><abbr>κουδ<certainty locus="name" match=".."/></abbr> </rdg></app>'
+    assert_equal_fragment_transform '<:(|πριμο̣σκ|)|alt|(|πριμσκ|):>', '<app type="alternative"><lem><abbr>πριμ<unclear>ο</unclear>σκ</abbr></lem><rdg><abbr>πριμσκ</abbr></rdg></app>'
+    assert_equal_fragment_transform '<:(|πριμο̣σκ|)|alt|(|πριμσκ(?)|):>', '<app type="alternative"><lem><abbr>πριμ<unclear>ο</unclear>σκ</abbr></lem><rdg><abbr>πριμσκ<certainty locus="name" match=".."/></abbr></rdg></app>'
+    assert_equal_fragment_transform '<:.5(( ))|alt|(|κουδ(?)|) :>', '<app type="alternative"><lem><gap reason="illegible" quantity="5" unit="character"/><expan><ex> </ex></expan></lem><rdg><abbr>κουδ<certainty locus="name" match=".."/></abbr> </rdg></app>'
   end
   
-    # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html
+  # http://www.stoa.org/epidoc/gl/5/abbreviationsunderstood.html
   def test_abbreviation_uncertain_resolution
     # Ancient abbreviation whose resolution is uncertain
     assert_equal_fragment_transform '((abc?))', '<expan><ex cert="low">abc</ex></expan>'
@@ -190,8 +195,8 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform 'lost.?lin(?) ', '<gap reason="lost" extent="unknown" unit="line"><certainty match=".." locus="name"/></gap>'
     assert_equal_fragment_transform 'vestig.?lin(?) ', '<gap reason="illegible" extent="unknown" unit="line"><certainty match=".." locus="name"/></gap>'
   end
-    
-    # http://www.stoa.org/epidoc/gl/5/lostcertain.html
+  
+  # http://www.stoa.org/epidoc/gl/5/lostcertain.html
   def test_lost_dot_gap
     # Some number of missing characters
     assert_equal_fragment_transform '[ca.13]', '<gap reason="lost" quantity="13" unit="character" precision="low"/>'
@@ -228,7 +233,7 @@ if(RUBY_PLATFORM == 'java')
     # Some unknown number of illegible letters
     assert_equal_fragment_transform '.?', '<gap reason="illegible" extent="unknown" unit="character"/>'
   end
-    
+  
   def test_illegible_dot_gap_extentmax
     assert_equal_fragment_transform '.2-3', '<gap reason="illegible" atLeast="2" atMost="3" unit="character"/>'
     assert_equal_fragment_transform '.7-14', '<gap reason="illegible" atLeast="7" atMost="14" unit="character"/>'
@@ -352,13 +357,14 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '_[Πόσεις]_', '<supplied evidence="parallel" reason="lost">Πόσεις</supplied>'
     assert_equal_fragment_transform '_[ρῳ Φ[ιλά]]_', '<supplied evidence="parallel" reason="lost">ρῳ Φ<supplied reason="lost">ιλά</supplied></supplied>'
   end
-    
+  
   def test_evidence_parallel_cert_low
     assert_equal_fragment_transform '|_ς ἐπιστολῆς Θεοδώρου(?)_|', '<supplied evidence="parallel" reason="undefined" cert="low">ς ἐπιστολῆς Θεοδώρου</supplied>'
     assert_equal_fragment_transform '|_ωτερίου [τοῦ] λαμπροτά(?)_|', '<supplied evidence="parallel" reason="undefined" cert="low">ωτερίου <supplied reason="lost">τοῦ</supplied> λαμπροτά</supplied>'
     assert_equal_fragment_transform '|_ρῳ Φ[ιλά](?)_|', '<supplied evidence="parallel" reason="undefined" cert="low">ρῳ Φ<supplied reason="lost">ιλά</supplied></supplied>'
     assert_equal_fragment_transform '_[Πόσεις(?)]_', '<supplied evidence="parallel" reason="lost" cert="low">Πόσεις</supplied>'
-    assert_equal_fragment_transform '_[(ἀρ(τάβας?)) (δωδέκ(ατον)) (εἰκ(οστοτέταρτον?)) ((ἀρτάβας)) <#ιβ=frac1/12#> <#κδ=frac1/24#> *stauros* <:Ἀγαθάμμων|BL:8.441|(δ(ι)) (|μ|) κάμμονι:> \*stauros*/ *tachygraphic-marks*(?)]_', '<supplied evidence="parallel" reason="lost" cert="low"><expan>ἀρ<ex cert="low">τάβας</ex></expan> <expan>δωδέκ<ex>ατον</ex></expan> <expan>εἰκ<ex cert="low">οστοτέταρτον</ex></expan> <expan><ex>ἀρτάβας</ex></expan> <num value="1/12" rend="fraction">ιβ</num> <num value="1/24" rend="fraction">κδ</num> <g type="stauros"/> <app type="BL"><lem resp="8.441">Ἀγαθάμμων</lem><rdg><expan>δ<ex>ι</ex></expan> <abbr>μ</abbr> κάμμονι</rdg></app> <add place="above"><g type="stauros"/></add> <g type="tachygraphic-marks"/></supplied>'
+    assert_equal_fragment_transform '_[(ἀρ(τάβας?)) (δωδέκ(ατον)) (εἰκ(οστοτέταρτον?)) ((ἀρτάβας)) <#ιβ \'=1/12#> <#κδ \'=1/24#> *stauros* <:Ἀγαθάμμων|BL:8.441|(δ(ι)) (|μ|) κάμμονι:> \*stauros*/ *tachygraphic-marks*(?)]_', '<supplied evidence="parallel" reason="lost" cert="low"><expan>ἀρ<ex cert="low">τάβας</ex></expan> <expan>δωδέκ<ex>ατον</ex></expan> <expan>εἰκ<ex cert="low">οστοτέταρτον</ex></expan> <expan><ex>ἀρτάβας</ex></expan> <num value="1/12" rend="tick">ιβ</num> <num value="1/24" rend="tick">κδ</num> <g type="stauros"/> <app type="BL"><lem resp="8.441">Ἀγαθάμμων</lem><rdg><expan>δ<ex>ι</ex></expan> <abbr>μ</abbr> κάμμονι</rdg></app> <add place="above"><g type="stauros"/></add> <g type="tachygraphic-marks"/></supplied>'
+    #rendtick assert_equal_fragment_transform '_[(ἀρ(τάβας?)) (δωδέκ(ατον)) (εἰκ(οστοτέταρτον?)) ((ἀρτάβας)) <#ιβ=frac1/12#> <#κδ=frac1/24#> *stauros* <:Ἀγαθάμμων|BL:8.441|(δ(ι)) (|μ|) κάμμονι:> \*stauros*/ *tachygraphic-marks*(?)]_', '<supplied evidence="parallel" reason="lost" cert="low"><expan>ἀρ<ex cert="low">τάβας</ex></expan> <expan>δωδέκ<ex>ατον</ex></expan> <expan>εἰκ<ex cert="low">οστοτέταρτον</ex></expan> <expan><ex>ἀρτάβας</ex></expan> <num value="1/12" rend="fraction">ιβ</num> <num value="1/24" rend="fraction">κδ</num> <g type="stauros"/> <app type="BL"><lem resp="8.441">Ἀγαθάμμων</lem><rdg><expan>δ<ex>ι</ex></expan> <abbr>μ</abbr> κάμμονι</rdg></app> <add place="above"><g type="stauros"/></add> <g type="tachygraphic-marks"/></supplied>'
   end
   
     # http://www.stoa.org/epidoc/gl/5/erroneousinclusion.html
@@ -395,43 +401,43 @@ if(RUBY_PLATFORM == 'java')
   # http://www.stoa.org/epidoc/gl/5/unclear.html
   def test_unicode_underdot_unclear
     # eds read dotted letter with less than full confidence
-    # TODO: handle existing cert attributes
-    # In the current DDB_EpiDoc_XML, only 1809/270095 unclear tags have a cert attribute
-    # Those that do all have cert="low"
     assert_equal_fragment_transform 'ạ', '<unclear>a</unclear>'
+    assert_equal_fragment_transform 'ε̣ͅ', '<unclear>εͅ</unclear>'
+    assert_equal_fragment_transform 'ε̣͂', '<unclear>ε͂</unclear>'
   end
   
   # http://www.stoa.org/epidoc/gl/5/unclear.html
   def test_unicode_underdot_unclear_combining
     # eds read dotted letter with less than full confidence
     assert_equal_fragment_transform 'ạḅc̣', '<unclear>abc</unclear>'
+    assert_equal_fragment_transform 'ạε̣͂c̣', '<unclear>aε͂c</unclear>'
+    assert_equal_fragment_transform 'ạε̣͂c̣ε̣͂', '<unclear>aε͂cε͂</unclear>'
+    assert_equal_fragment_transform 'ε̣͂ε̣͂ε̣͂', '<unclear>ε͂ε͂ε͂</unclear>'
+    assert_equal_fragment_transform 'ε̣͂ḅε̣͂', '<unclear>ε͂bε͂</unclear>'
+    assert_equal_fragment_transform 'ε̣͂ḅε̣͂ḅ', '<unclear>ε͂bε͂b</unclear>'
+    assert_equal_fragment_transform '1. πάρες εͅε͂ ε̣͂ḅε̣͂ḅ add', '<lb n="1"/>πάρες εͅε͂ <unclear>ε͂bε͂b</unclear> add'
   end
-
-  def test_unicode_underdot_unclear_unspecified
-    # eds read dotted letter with less than full confidence
-    assert_equal_fragment_transform 'ạḅc̣', '<unclear>abc</unclear>'
-  end
-
+  
   # http://www.stoa.org/epidoc/gl/5/unclear.html
   # http://www.stoa.org/epidoc/gl/5/supplementforlost.html
   def test_unicode_underdot_unclear_combining_with_lost
     assert_equal_fragment_transform 'ạḅ[c̣ de]f', '<unclear>ab</unclear><supplied reason="lost"><unclear>c</unclear> de</supplied>f'
   end
-
+  
   # http://www.stoa.org/epidoc/gl/5/deletion.html
   def test_ancient_erasure
     # ancient erasure/cancellation/expunction
     assert_equal_fragment_transform 'a〚bc〛', 'a<del rend="erasure">bc</del>'
     assert_equal_fragment_transform 'ab〚c def g〛hi', 'ab<del rend="erasure">c def g</del>hi'
   end
-
+  
   # no EpiDoc guideline, inherited from TEI
   def test_quotation_marks
     # quotation marks on papyrus
     assert_equal_fragment_transform '"abc"', '<q>abc</q>'
     assert_equal_fragment_transform '"abc def ghi"', '<q>abc def ghi</q>'
     assert_equal_fragment_transform '"<:ἔλα 3. βα|corr|αιλαβα:> αὐτὰ"', '<q><choice><corr>ἔλα <lb n="3"/>βα</corr><sic>αιλαβα</sic></choice> αὐτὰ</q>'
-   #                                                  '<:a|corr|b:>',     '<choice><corr>a</corr><sic>b</sic></choice>'
+    assert_equal_fragment_transform '[Ἁρχῦψις] "¯[Πετεή]¯σιος" αγδ  "δεξβεφξβν" ςεφξνςφη', '<supplied reason="lost">Ἁρχῦψις</supplied> <q><hi rend="supraline"><supplied reason="lost">Πετεή</supplied></hi>σιος</q> αγδ  <q>δεξβεφξβν</q> ςεφξνςφη'
   end
   
   def test_uncertain_diacritical_diaeresis
@@ -476,11 +482,11 @@ if(RUBY_PLATFORM == 'java')
   end
   
   def test_uncertain_diacritical_spiritus_lenis 
-  #can also be known as greek psili when combined with space per wikipeidia
+    #can also be known as greek psili when combined with space per wikipeidia
     assert_equal_fragment_transform ' a( ᾿)bc', '<hi rend="lenis">a</hi>bc'
     assert_equal_fragment_transform ' ạ( ᾿)bc', '<hi rend="lenis"><unclear>a</unclear></hi>bc'
   end
-        
+  
   def test_num_exhaustive
     assert_equal_fragment_transform '<#=14#>', '<num value="14"/>'
     assert_equal_fragment_transform '<#=1/4#>', '<num value="1/4"/>'
@@ -605,7 +611,7 @@ if(RUBY_PLATFORM == 'java')
   end
     
   def test_mult_regs_no_nattrib_with_tall
-    assert_equal_fragment_transform '<:James|||Jaymes|||Jomes|reg|Jeames:>', '<choice><reg>James<hi rend="tall">Jaymes</hi>Jomes</reg><orig>Jeames</orig></choice>'
+    assert_equal_fragment_transform '<:James~||Jaymes||~tallJomes|reg|Jeames:>', '<choice><reg>James<hi rend="tall">Jaymes</hi>Jomes</reg><orig>Jeames</orig></choice>'
     assert_equal_fragment_transform '<:Jon|Jean|Jun|John||reg||Jan:>', '<choice><reg>Jon</reg><reg>Jean</reg><reg>Jun</reg><reg>John</reg><orig>Jan</orig></choice>'
   end
     
@@ -732,12 +738,11 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '<:τὸ̣(?)|subst|τα :>', '<subst><add place="inline">τ<unclear>ὸ</unclear><certainty match=".." locus="value"/></add><del rend="corrected">τα </del></subst>'
     assert_equal_fragment_transform '<:τὸ̣(?)|subst|τα (?):>', '<subst><add place="inline">τ<unclear>ὸ</unclear><certainty match=".." locus="value"/></add><del rend="corrected">τα <certainty match=".." locus="value"/></del></subst>'
   end
-    
+  
   def test_app_lem
     assert_equal_fragment_transform '<:a|BL:1.215|b:>', '<app type="BL"><lem resp="1.215">a</lem><rdg>b</rdg></app>'
-    assert_equal_fragment_transform '<:a|BL:|b:>', '<app type="BL"><lem>a</lem><rdg>b</rdg></app>'
     assert_equal_fragment_transform '<:a|ed:bgu 3 p.4|b:>', '<app type="editorial"><lem resp="bgu 3 p.4">a</lem><rdg>b</rdg></app>'
-    assert_equal_fragment_transform '<:a|alt:|b:>', '<app type="alternative"><lem>a</lem><rdg>b</rdg></app>'
+    assert_equal_fragment_transform '<:a|alt|b:>', '<app type="alternative"><lem>a</lem><rdg>b</rdg></app>'
     assert_equal_fragment_transform '<:[μου][μάμ]μη|BL:2.14|[.5][διδύ(?)]μη(?):>', '<app type="BL"><lem resp="2.14"><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
     assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|BL:1.27|η̣μο.2:>', '<app type="BL"><lem resp="1.27"><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><unclear>η</unclear>μο<gap reason="illegible" quantity="2" unit="character"/></rdg></app>'
     assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|BL:1.27|[.2]α(?):>', '<app type="BL"><lem resp="1.27"><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
@@ -746,33 +751,44 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '<:[καθ]ὰ(?)|ed:bgu 1 p.357|[.2]α:>', '<app type="editorial"><lem resp="bgu 1 p.357"><supplied reason="lost">καθ</supplied>ὰ<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α</rdg></app>'
     assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|ed:1.27|[.2]α(?):>', '<app type="editorial"><lem resp="1.27"><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
     assert_equal_fragment_transform '<:〚κ〛 (?)|ed:1.24|:>', '<app type="editorial"><lem resp="1.24"><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
-    assert_equal_fragment_transform '<:[μου][μάμ]μη|BL:|[.5][διδύ(?)]μη(?):>', '<app type="BL"><lem><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
-    assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|BL:|η̣μο.2:>', '<app type="BL"><lem><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><unclear>η</unclear>μο<gap reason="illegible" quantity="2" unit="character"/></rdg></app>'
-    assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|BL:|[.2]α(?):>', '<app type="BL"><lem><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
-    assert_equal_fragment_transform '<:〚κ〛 (?)|BL:|:>', '<app type="BL"><lem><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
+    ##assert_equal_fragment_transform '<:[μου][μάμ]μη|BL:|[.5][διδύ(?)]μη(?):>', '<app type="BL"><lem><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
+    ##assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|BL:|η̣μο.2:>', '<app type="BL"><lem><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><unclear>η</unclear>μο<gap reason="illegible" quantity="2" unit="character"/></rdg></app>'
+    ##assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|BL:|[.2]α(?):>', '<app type="BL"><lem><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
+    ##assert_equal_fragment_transform '<:〚κ〛 (?)|BL:|:>', '<app type="BL"><lem><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
     assert_equal_fragment_transform '<:[μου][μάμ]μη|ed:|[.5][διδύ(?)]μη(?):>', '<app type="editorial"><lem><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
     assert_equal_fragment_transform '<:[καθ]ὰ(?)|ed:|[.2]α:>', '<app type="editorial"><lem><supplied reason="lost">καθ</supplied>ὰ<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α</rdg></app>'
     assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|ed:|[.2]α(?):>', '<app type="editorial"><lem><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
     assert_equal_fragment_transform '<:〚κ〛 (?)|ed:|:>', '<app type="editorial"><lem><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
-    assert_equal_fragment_transform '<:[μου][μάμ]μη|alt:|[.5][διδύ(?)]μη(?):>', '<app type="alternative"><lem><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
-    assert_equal_fragment_transform '<:[καθ]ὰ(?)|alt:|[.2]α:>', '<app type="alternative"><lem><supplied reason="lost">καθ</supplied>ὰ<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α</rdg></app>'
-    assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|alt:|[.2]α(?):>', '<app type="alternative"><lem><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
-    assert_equal_fragment_transform '<:〚κ〛 (?)|alt:|:>', '<app type="alternative"><lem><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
-    assert_equal_fragment_transform '<:|alt:|〚κ〛 (?):>', '<app type="alternative"><lem/><rdg><del rend="erasure">κ</del> <certainty match=".." locus="value"/></rdg></app>'
-          
-    assert_equal_fragment_transform '<:[μου][μάμ]μη|alt:2.14|[.5][διδύ(?)]μη(?):>', '<app type="alternative"><lem resp="2.14"><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
-    assert_equal_fragment_transform '<:[καθ]ὰ(?)|alt:bgu 1 p.357|[.2]α:>', '<app type="alternative"><lem resp="bgu 1 p.357"><supplied reason="lost">καθ</supplied>ὰ<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α</rdg></app>'
-    assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|alt:1.27|[.2]α(?):>', '<app type="alternative"><lem resp="1.27"><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
-    assert_equal_fragment_transform '<:〚κ〛 (?)|alt:1.24|:>', '<app type="alternative"><lem resp="1.24"><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
-    assert_equal_fragment_transform '<:[μου][μάμ]μη|alt:|[.5][διδύ(?)]μη(?):>', '<app type="alternative"><lem><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
-    assert_equal_fragment_transform '<:[καθ]ὰ(?)|alt:|[.2]α:>', '<app type="alternative"><lem><supplied reason="lost">καθ</supplied>ὰ<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α</rdg></app>'
-    assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|alt:|[.2]α(?):>', '<app type="alternative"><lem><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
-    assert_equal_fragment_transform '<:〚κ〛 (?)|alt:|:>', '<app type="alternative"><lem><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
-    assert_equal_fragment_transform '<:[μου][μάμ]μη|alt:(test, +)|[.5][διδύ(?)]μη(?):>', '<app type="alternative"><lem resp="(test, +)"><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
-    assert_equal_fragment_transform '<:[καθ]ὰ(?)|alt:(test, +)|[.2]α:>', '<app type="alternative"><lem resp="(test, +)"><supplied reason="lost">καθ</supplied>ὰ<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α</rdg></app>'
-    assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|alt:(test, +)|[.2]α(?):>', '<app type="alternative"><lem resp="(test, +)"><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
-    assert_equal_fragment_transform '<:〚κ〛 (?)|alt:(test, +)|:>', '<app type="alternative"><lem resp="(test, +)"><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
-    assert_equal_fragment_transform '<:|alt:(test, +)|〚κ〛 (?):>', '<app type="alternative"><lem resp="(test, +)"/><rdg><del rend="erasure">κ</del> <certainty match=".." locus="value"/></rdg></app>'
+    assert_equal_fragment_transform '<:[μου][μάμ]μη|alt|[.5][διδύ(?)]μη(?):>', '<app type="alternative"><lem><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
+    assert_equal_fragment_transform '<:[καθ]ὰ(?)|alt|[.2]α:>', '<app type="alternative"><lem><supplied reason="lost">καθ</supplied>ὰ<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α</rdg></app>'
+    assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|alt|[.2]α(?):>', '<app type="alternative"><lem><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
+    assert_equal_fragment_transform '<:〚κ〛 (?)|alt|:>', '<app type="alternative"><lem><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
+    assert_equal_fragment_transform '<:|alt|〚κ〛 (?):>', '<app type="alternative"><lem/><rdg><del rend="erasure">κ</del> <certainty match=".." locus="value"/></rdg></app>'
+  end
+    
+  def test_alt
+    assert_equal_fragment_transform '<:[μου][μάμ]μη|alt|[.5][διδύ(?)]μη(?):>', '<app type="alternative"><lem><supplied reason="lost">μου</supplied><supplied reason="lost">μάμ</supplied>μη</lem><rdg><gap reason="lost" quantity="5" unit="character"/><supplied reason="lost" cert="low">διδύ</supplied>μη<certainty match=".." locus="value"/></rdg></app>'
+    assert_equal_fragment_transform '<:[καθ]ὰ(?)|alt|[.2]α:>', '<app type="alternative"><lem><supplied reason="lost">καθ</supplied>ὰ<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α</rdg></app>'
+    assert_equal_fragment_transform '<:σ̣υ̣μβολικά(?)|alt|[.2]α(?):>', '<app type="alternative"><lem><unclear>συ</unclear>μβολικά<certainty match=".." locus="value"/></lem><rdg><gap reason="lost" quantity="2" unit="character"/>α<certainty match=".." locus="value"/></rdg></app>'
+    assert_equal_fragment_transform '<:〚κ〛 (?)|alt|:>', '<app type="alternative"><lem><del rend="erasure">κ</del> <certainty match=".." locus="value"/></lem><rdg/></app>'
+    assert_equal_fragment_transform '<:|alt|〚κ〛 (?):>', '<app type="alternative"><lem/><rdg><del rend="erasure">κ</del> <certainty match=".." locus="value"/></rdg></app>'
+  end
+  
+  def test_mult_alt_rdgs
+    assert_equal_fragment_transform '<:James Jaymes Jomes|alt|Jeames:>', '<app type="alternative"><lem>James Jaymes Jomes</lem><rdg>Jeames</rdg></app>'
+    assert_equal_fragment_transform '<:Jan||alt||Jon|Jean|Jun|John:>', '<app type="alternative"><lem>Jan</lem><rdg>Jon</rdg><rdg>Jean</rdg><rdg>Jun</rdg><rdg>John</rdg></app>'
+    assert_equal_fragment_transform '<:Jan||alt||Jon(?)|Jean|Jun(?)|John:>', '<app type="alternative"><lem>Jan</lem><rdg>Jon<certainty match=".." locus="value"/></rdg><rdg>Jean</rdg><rdg>Jun<certainty match=".." locus="value"/></rdg><rdg>John</rdg></app>'
+    assert_equal_fragment_transform '<:J[a]n||alt||J[o]n|Jean|Jun|Jo[h]n:>', '<app type="alternative"><lem>J<supplied reason="lost">a</supplied>n</lem><rdg>J<supplied reason="lost">o</supplied>n</rdg><rdg>Jean</rdg><rdg>Jun</rdg><rdg>Jo<supplied reason="lost">h</supplied>n</rdg></app>'
+    assert_equal_fragment_transform '<:J[a]n||alt||J[o]n(?)|Jean|Jun(?)|Jo[h]n:>', '<app type="alternative"><lem>J<supplied reason="lost">a</supplied>n</lem><rdg>J<supplied reason="lost">o</supplied>n<certainty match=".." locus="value"/></rdg><rdg>Jean</rdg><rdg>Jun<certainty match=".." locus="value"/></rdg><rdg>Jo<supplied reason="lost">h</supplied>n</rdg></app>'
+    assert_equal_fragment_transform '<:Jan(?)||alt||Jon|Jean|Jun|John:>', '<app type="alternative"><lem>Jan<certainty match=".." locus="value"/></lem><rdg>Jon</rdg><rdg>Jean</rdg><rdg>Jun</rdg><rdg>John</rdg></app>'
+    assert_equal_fragment_transform '<:Jan(?)||alt||Jon(?)|Jean|Jun(?)|John:>', '<app type="alternative"><lem>Jan<certainty match=".." locus="value"/></lem><rdg>Jon<certainty match=".." locus="value"/></rdg><rdg>Jean</rdg><rdg>Jun<certainty match=".." locus="value"/></rdg><rdg>John</rdg></app>'
+    assert_equal_fragment_transform '<:J[a]n(?)||alt||J[o]n|Jean|Jun|Jo[h]n:>', '<app type="alternative"><lem>J<supplied reason="lost">a</supplied>n<certainty match=".." locus="value"/></lem><rdg>J<supplied reason="lost">o</supplied>n</rdg><rdg>Jean</rdg><rdg>Jun</rdg><rdg>Jo<supplied reason="lost">h</supplied>n</rdg></app>'
+    assert_equal_fragment_transform '<:J[a]n(?)||alt||J[o]n(?)|Jean|Jun(?)|Jo[h]n:>', '<app type="alternative"><lem>J<supplied reason="lost">a</supplied>n<certainty match=".." locus="value"/></lem><rdg>J<supplied reason="lost">o</supplied>n<certainty match=".." locus="value"/></rdg><rdg>Jean</rdg><rdg>Jun<certainty match=".." locus="value"/></rdg><rdg>Jo<supplied reason="lost">h</supplied>n</rdg></app>'
+  end
+   
+  def test_mult_alt_rdgs_with_tall
+    assert_equal_fragment_transform '<:Jeames|alt|James~||Jaymes||~tallJomes:>', '<app type="alternative"><lem>Jeames</lem><rdg>James<hi rend="tall">Jaymes</hi>Jomes</rdg></app>'
+    assert_equal_fragment_transform '<:Jeames||alt||Jimes|James~||Jaymes||~tallJomes:>', '<app type="alternative"><lem>Jeames</lem><rdg>Jimes</rdg><rdg>James<hi rend="tall">Jaymes</hi>Jomes</rdg></app>'
   end
     
   def test_glyph
@@ -782,6 +798,7 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '*stauros?,♱̣*', '<unclear><g type="stauros"><unclear>♱</unclear></g></unclear>'
     assert_equal_fragment_transform '*stauros,♱̣*', '<g type="stauros"><unclear>♱</unclear></g>'
     assert_equal_fragment_transform '*filler(extension)*', '<g rend="extension" type="filler"/>'
+    #assert_equal_fragment_transform '*@stauros*', '<orig><g type="stauros"/></orig>'
     assert_equal_fragment_transform '*mid-punctus*', '<g type="mid-punctus"/>'
     assert_equal_fragment_transform '*mid-punctus?*', '<unclear><g type="mid-punctus"/></unclear>'
     assert_equal_fragment_transform '*filler(extension)?*', '<unclear><g rend="extension" type="filler"/></unclear>'
@@ -797,13 +814,13 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '$m1a ', '<handShift new="m1a"/>' 
     assert_equal_fragment_transform '[$m5  ]', '<supplied reason="lost"><handShift new="m5"/> </supplied>'
   end
-    
+  
   #def test_add_place_supralinear - removed per 12/16 review
     #assert_equal_fragment_transform '#\ε/#', '<add place="supralinear">ε</add>'
     #assert_equal_fragment_transform '#\Πωλίων ἀπάτωρ?/#', '<add place="supralinear" cert="low">Πωλίων ἀπάτωρ</add>'
     #assert_equal_fragment_transform '#\*stauros* τε?/#', '<add place="supralinear" cert="low"><g type="stauros"/> τε</add>'
   #end
-    
+  
   #def test_add_place_intralinear - removed per 12/16 review
     #assert_equal_fragment_transform '<\ε/>', '<add place="intralinear">ε</add>'
     #assert_equal_fragment_transform '<\Πωλίων ἀπάτωρ/>', '<add place="intralinear">Πωλίων ἀπάτωρ</add>'
@@ -945,14 +962,17 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '/*PSI 4,409,B reprinted in (ref=p.mich;1;12=PMich 1,12)*/', '<note xml:lang="en">PSI 4,409,B reprinted in <ref n="p.mich;1;12" type="reprint-in">PMich 1,12</ref></note>'
   end
   
-  def test_P5_supraline_underline
-    assert_equal_fragment_transform '= [.?] .1ηρου=', '<hi rend="supraline-underline"> <gap reason="lost" extent="unknown" unit="character"/> <gap reason="illegible" quantity="1" unit="character"/>ηρου</hi>'
+  def test_p5_supraline_underline
+    assert_equal_fragment_transform '¯_ [.?] .1ηρου_¯', '<hi rend="supraline-underline"> <gap reason="lost" extent="unknown" unit="character"/> <gap reason="illegible" quantity="1" unit="character"/>ηρου</hi>'
+    assert_equal_fragment_transform '¯_words sic_¯', '<hi rend="supraline-underline">words sic</hi>'
+    assert_equal_fragment_transform '[Ἁρχῦψις] ¯_[Πετεή]σιος_¯ αγδ  ¯_δεξβεφξβν_¯ ςεφξνςφη', '<supplied reason="lost">Ἁρχῦψις</supplied> <hi rend="supraline-underline"><supplied reason="lost">Πετεή</supplied>σιος</hi> αγδ  <hi rend="supraline-underline">δεξβεφξβν</hi> ςεφξνςφη'
   end
   
   def test_tall
-    assert_equal_fragment_transform '|||Ἑρεννίαν Γέμελλαν|||', '<hi rend="tall">Ἑρεννίαν Γέμελλαν</hi>'
-    assert_equal_fragment_transform '|||x|||', '<hi rend="tall">x</hi>'
-    assert_equal_fragment_transform '||| ο(´ ῾)|||', '<hi rend="tall"><hi rend="acute"><hi rend="asper">ο</hi></hi></hi>'
+    assert_equal_fragment_transform '~||Ἑρεννίαν Γέμελλαν||~tall', '<hi rend="tall">Ἑρεννίαν Γέμελλαν</hi>'
+    assert_equal_fragment_transform '~||x||~tall', '<hi rend="tall">x</hi>'
+    assert_equal_fragment_transform '~|| ο(´ ῾)||~tall', '<hi rend="tall"><hi rend="acute"><hi rend="asper">ο</hi></hi></hi>'
+    assert_equal_fragment_transform '[Ἁρχῦψις] ~||[Πετεή]σιος||~tall αγδ  ~||δεξβεφξβν||~tall ςεφξνςφη', '<supplied reason="lost">Ἁρχῦψις</supplied> <hi rend="tall"><supplied reason="lost">Πετεή</supplied>σιος</hi> αγδ  <hi rend="tall">δεξβεφξβν</hi> ςεφξνςφη'
   end
 
   def test_subscript
@@ -963,18 +983,58 @@ if(RUBY_PLATFORM == 'java')
   end
   
   def test_supraline
-    assert_equal_fragment_transform '¯words sic¯', '<hi rend="supraline">words sic</hi>'
-    assert_equal_fragment_transform '¯words sic(?)¯', '<hi rend="supraline">words sic<certainty match=".." locus="value"/></hi>'
+    assert_equal_fragment_transform '[Ἁρχῦψις] ¯[Πετεή]σιος¯ αγδ  δ̄ε̄ξ̄β̄ε̄φ̄ξ̄β̄ν̄ ςεφξνςφη', '<supplied reason="lost">Ἁρχῦψις</supplied> <hi rend="supraline"><supplied reason="lost">Πετεή</supplied>σιος</hi> αγδ  <hi rend="supraline">δεξβεφξβν</hi> ςεφξνςφη'
+    #assert_equal_fragment_transform '¯words sic¯', '<hi rend="supraline">words sic</hi>'
+    assert_equal_fragment_transform 'w̄ōr̄d̄s̄ ̄s̄īc̄', '<hi rend="supraline">words sic</hi>'
+    assert_equal_fragment_transform 'w̄ōr̄d̄', '<hi rend="supraline">word</hi>'
+    assert_equal_fragment_transform 'w̄ōκ̣̄r̄d̄', '<hi rend="supraline">wo<unclear>κ</unclear>rd</hi>'
+    assert_equal_fragment_transform 'w̄κ̣̄ōκ̣̄r̄κ̣̄d̄', '<hi rend="supraline">w<unclear>κ</unclear>o<unclear>κ</unclear>r<unclear>κ</unclear>d</hi>'
+    #assert_equal_fragment_transform '¯wκ̣oκ̣rκ̣d¯', '<hi rend="supraline">w<unclear>κ</unclear>o<unclear>κ</unclear>r<unclear>κ</unclear>d</hi>'
+    assert_equal_fragment_transform '¯.1¯', '<hi rend="supraline"><gap reason="illegible" quantity="1" unit="character"/></hi>'
+    assert_equal_fragment_transform '¯.22¯', '<hi rend="supraline"><gap reason="illegible" quantity="22" unit="character"/></hi>'
+    assert_equal_fragment_transform '¯.333¯', '<hi rend="supraline"><gap reason="illegible" quantity="333" unit="character"/></hi>'
+    assert_equal_fragment_transform '¯James drinks 1̄3̄ beers¯', '<hi rend="supraline">James drinks <hi rend="supraline">13</hi> beers</hi>'
+    #assert_equal_fragment_transform '¯James drinks ¯13¯ beers¯', '<hi rend="supraline">James drinks <hi rend="supraline">13</hi> beers</hi>'
+    #assert_equal_fragment_transform '¯words sic¯', '<hi rend="supraline">words sic</hi>'
+    #assert_equal_fragment_transform '¯words sic(?)¯', '<hi rend="supraline">words sic<certainty match=".." locus="value"/></hi>'
     assert_equal_fragment_transform '¯vestig ¯', '<hi rend="supraline"><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></hi>'
-    assert_equal_fragment_transform '¯vestig (?)¯', '<hi rend="supraline"><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap><certainty match=".." locus="value"/></hi>'
+    #assert_equal_fragment_transform '¯vestig (?)¯', '<hi rend="supraline"><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap><certainty match=".." locus="value"/></hi>'
+    assert_equal_fragment_transform '¯<#α=1#>¯', '<hi rend="supraline"><num value="1">α</num></hi>'
+    assert_equal_fragment_transform '¯<#β=2#>¯', '<hi rend="supraline"><num value="2">β</num></hi>'
+    assert_equal_fragment_transform '¯<#γ=3#>¯', '<hi rend="supraline"><num value="3">γ</num></hi>'
+    assert_equal_fragment_transform '<#ᾱ=1#>', '<num value="1"><hi rend="supraline">α</hi></num>'
+    assert_equal_fragment_transform '<#β̄=2#>', '<num value="2"><hi rend="supraline">β</hi></num>'
+    assert_equal_fragment_transform '<#γ̄=3#>', '<num value="3"><hi rend="supraline">γ</hi></num>'
+    assert_equal_fragment_transform '<#[ι]ᾱ=11#>', '<num value="11"><supplied reason="lost">ι</supplied><hi rend="supraline">α</hi></num>'
+    assert_equal_fragment_transform '<#¯[ι]α¯=11#>', '<num value="11"><hi rend="supraline"><supplied reason="lost">ι</supplied>α</hi></num>'
+#=begin
+    assert_equal_fragment_transform '34. [Ἁρχῦψις] Πετεήσιος <#α=1#> ((ἔτους)) ἀπὸ ¯<#ϛ=6#> <#ŵ=1/2#> <#η \'=1/8#>¯((ἀρτάβαι)) ¯<#λα=31#>¯<#α=1#> <#δ \'=1/4#> <#η \'=1/8#> ((ἀρτάβαι)) <#δ=4#> <#ŵ=1/2#>, καὶ (με(μερισμένον)) ἀπὸ τῆς ((προτερον)) 
+
+    413. ¯<#α=1#>¯ ((ἄρουραι)) <#ρλγ=133#> <#ŵ=1/2#> <#δ \'=1/4#> 
+
+    414. ¯<#β=2#>¯   <:<#1\32 <#δ \'=1/4#>/=#>|subst|<#ρ〚μβ〛=142#>〚 <#δ \'=1/4#>〛:> ((ἀρτάβαι)) [.?] 
+
+    415. ¯<#γ=3#>¯         <#ρνθ=159#> <#δ \'=1/4#> [.?] 
+
+    416. <#ριε=115#> <#ŵ=1/2#> [((ἀρτάβαι))] .2[.?]', '<lb n="34"/><supplied reason="lost">Ἁρχῦψις</supplied> Πετεήσιος <num value="1">α</num> <expan><ex>ἔτους</ex></expan> ἀπὸ <hi rend="supraline"><num value="6">ϛ</num> <num value="1/2">ŵ</num> <num value="1/8" rend="tick">η</num></hi><expan><ex>ἀρτάβαι</ex></expan> <hi rend="supraline"><num value="31">λα</num></hi><num value="1">α</num> <num value="1/4" rend="tick">δ</num> <num value="1/8" rend="tick">η</num> <expan><ex>ἀρτάβαι</ex></expan> <num value="4">δ</num> <num value="1/2">ŵ</num>, καὶ <expan>με<ex>μερισμένον</ex></expan> ἀπὸ τῆς <expan><ex>προτερον</ex></expan> 
+
+    <lb n="413"/><hi rend="supraline"><num value="1">α</num></hi> <expan><ex>ἄρουραι</ex></expan> <num value="133">ρλγ</num> <num value="1/2">ŵ</num> <num value="1/4" rend="tick">δ</num> 
+
+    <lb n="414"/><hi rend="supraline"><num value="2">β</num></hi>   <subst><add place="inline"><num>1<add place="above">32 <num value="1/4" rend="tick">δ</num></add></num></add><del rend="corrected"><num value="142">ρ<del rend="erasure">μβ</del></num><del rend="erasure"> <num value="1/4" rend="tick">δ</num></del></del></subst> <expan><ex>ἀρτάβαι</ex></expan> <gap reason="lost" extent="unknown" unit="character"/> 
+
+    <lb n="415"/><hi rend="supraline"><num value="3">γ</num></hi>         <num value="159">ρνθ</num> <num value="1/4" rend="tick">δ</num> <gap reason="lost" extent="unknown" unit="character"/> 
+
+    <lb n="416"/><num value="115">ριε</num> <num value="1/2">ŵ</num> <supplied reason="lost"><expan><ex>ἀρτάβαι</ex></expan></supplied> <gap reason="illegible" quantity="2" unit="character"/><gap reason="lost" extent="unknown" unit="character"/>'
+#=end
   end
     
   def test_superscript
-    assert_equal_fragment_transform '^<#ι=10#> ^', '<hi rend="superscript"><num value="10">ι</num> </hi>'
-    assert_equal_fragment_transform '^<:σημεῖον|corr|σημιον:>^', '<hi rend="superscript"><choice><corr>σημεῖον</corr><sic>σημιον</sic></choice></hi>'
+    assert_equal_fragment_transform '|^<#ι=10#> ^|', '<hi rend="superscript"><num value="10">ι</num> </hi>'
+    assert_equal_fragment_transform '|^<:σημεῖον|corr|σημιον:>^|', '<hi rend="superscript"><choice><corr>σημεῖον</corr><sic>σημιον</sic></choice></hi>'
+    assert_equal_fragment_transform '[Ἁρχῦψις] |^[Πετεή]σιος^| αγδ  |^δεξβεφξβν^| ςεφξνςφη', '<supplied reason="lost">Ἁρχῦψις</supplied> <hi rend="superscript"><supplied reason="lost">Πετεή</supplied>σιος</hi> αγδ  <hi rend="superscript">δεξβεφξβν</hi> ςεφξνςφη'
   end
   
-  def test_P5_above
+  def test_p5_above
     assert_equal_fragment_transform '\\ς/', '<add place="above">ς</add>'
     assert_equal_fragment_transform '\\ς(?)/', '<add place="above">ς<certainty match=".." locus="name"/></add>'
     assert_equal_fragment_transform '\\καὶ̣ Κ̣ε̣ρ̣κεσήφεως/', '<add place="above">κα<unclear>ὶ</unclear> <unclear>Κερ</unclear>κεσήφεως</add>'
@@ -983,7 +1043,7 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '\\κα̣ὶ̣ μὴ ὁμολογη〚.1〛(?)/', '<add place="above">κ<unclear>αὶ</unclear> μὴ ὁμολογη<del rend="erasure"><gap reason="illegible" quantity="1" unit="character"/></del><certainty match=".." locus="name"/></add>'
   end
   
-  def test_P5_below
+  def test_p5_below
     assert_equal_fragment_transform '//ς\\\\', '<add place="below">ς</add>'
     assert_equal_fragment_transform '//<#δ=4#>\\\\', '<add place="below"><num value="4">δ</num></add>'
     assert_equal_fragment_transform '//ς(?)\\\\', '<add place="below">ς<certainty match=".." locus="name"/></add>'
@@ -991,18 +1051,18 @@ if(RUBY_PLATFORM == 'java')
   end
     
   def test_add_place_interlinear
-    assert_equal_fragment_transform '>) καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.(<', '<add place="interlinear"> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.</add>'
-    assert_equal_fragment_transform '>) ὧ( ῾)ν(<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν</add>'
-    assert_equal_fragment_transform '>) ὧ( ῾)ν(?)(<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν<certainty match=".." locus="name"/></add>'
-    assert_equal_fragment_transform '>)[φοινίκ]ω̣ν̣ κ̣αὶ ἐ̣λ̣αιῶν(<', '<add place="interlinear"><supplied reason="lost">φοινίκ</supplied><unclear>ων</unclear> <unclear>κ</unclear>αὶ <unclear>ἐλ</unclear>αιῶν</add>'
-    assert_equal_fragment_transform '>) $m2  (Οὐεναφρ(ίου)) (<', '<add place="interlinear"> <handShift new="m2"/> <expan>Οὐεναφρ<ex>ίου</ex></expan> </add>'
-    assert_equal_fragment_transform '>)ε(<', '<add place="interlinear">ε</add>'
-    assert_equal_fragment_transform '>)Πωλίων ἀπάτωρ(<', '<add place="interlinear">Πωλίων ἀπάτωρ</add>'
-    assert_equal_fragment_transform '>)Πωλίων ἀπάτωρ(?)(<', '<add place="interlinear">Πωλίων ἀπάτωρ<certainty match=".." locus="name"/></add>'
-    assert_equal_fragment_transform '>).1(<', '<add place="interlinear"><gap reason="illegible" quantity="1" unit="character"/></add>'
-    assert_equal_fragment_transform '>)καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?]< 8. καὶ Πάσιτ̣[ι .?] 9. >)καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?](< 10. καὶ Τεΰ̣ρ̣ει .3[.?] 11. > καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?](<', '<add place="interlinear">καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/><supplied reason="omitted"> <lb n="8"/>καὶ Πάσι<unclear>τ</unclear><supplied reason="lost">ι <gap reason="illegible" extent="unknown" unit="character"/></supplied> <lb n="9"/><add place="interlinear">καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/></add> <lb n="10"/>καὶ Τε<unclear>ΰρ</unclear>ει <gap reason="illegible" quantity="3" unit="character"/><gap reason="lost" extent="unknown" unit="character"/> <lb n="11"/></supplied> καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/></add>'
-    assert_equal_fragment_transform '<>) καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.(<>', '<supplied reason="omitted"><add place="interlinear"> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.</add></supplied>'
-    assert_equal_fragment_transform '>) ὧ( ῾)ν>) ὧ( ῾)ν(<(<', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν<add place="interlinear"><hi rend="asper">ὧ</hi>ν</add></add>'
+    assert_equal_fragment_transform '||interlin: καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.||', '<add place="interlinear"> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.</add>'
+    assert_equal_fragment_transform '||interlin: ὧ( ῾)ν||', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν</add>'
+    assert_equal_fragment_transform '||interlin: ὧ( ῾)ν(?)||', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν<certainty match=".." locus="name"/></add>'
+    assert_equal_fragment_transform '||interlin:[φοινίκ]ω̣ν̣ κ̣αὶ ἐ̣λ̣αιῶν||', '<add place="interlinear"><supplied reason="lost">φοινίκ</supplied><unclear>ων</unclear> <unclear>κ</unclear>αὶ <unclear>ἐλ</unclear>αιῶν</add>'
+    assert_equal_fragment_transform '||interlin: $m2  (Οὐεναφρ(ίου)) ||', '<add place="interlinear"> <handShift new="m2"/> <expan>Οὐεναφρ<ex>ίου</ex></expan> </add>'
+    assert_equal_fragment_transform '||interlin:ε||', '<add place="interlinear">ε</add>'
+    assert_equal_fragment_transform '||interlin:Πωλίων ἀπάτωρ||', '<add place="interlinear">Πωλίων ἀπάτωρ</add>'
+    assert_equal_fragment_transform '||interlin:Πωλίων ἀπάτωρ(?)||', '<add place="interlinear">Πωλίων ἀπάτωρ<certainty match=".." locus="name"/></add>'
+    assert_equal_fragment_transform '||interlin:.1||', '<add place="interlinear"><gap reason="illegible" quantity="1" unit="character"/></add>'
+    assert_equal_fragment_transform '||interlin:καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?]< 8. καὶ Πάσιτ̣[ι .?] 9. ||interlin:καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?]|| 10. καὶ Τεΰ̣ρ̣ει .3[.?] 11. > καὶ (κρι(θῆς)) (ἀρ(τ )) <#β=2#> [.?]||', '<add place="interlinear">καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/><supplied reason="omitted"> <lb n="8"/>καὶ Πάσι<unclear>τ</unclear><supplied reason="lost">ι <gap reason="illegible" extent="unknown" unit="character"/></supplied> <lb n="9"/><add place="interlinear">καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/></add> <lb n="10"/>καὶ Τε<unclear>ΰρ</unclear>ει <gap reason="illegible" quantity="3" unit="character"/><gap reason="lost" extent="unknown" unit="character"/> <lb n="11"/></supplied> καὶ <expan>κρι<ex>θῆς</ex></expan> <expan>ἀρ<ex>τ </ex></expan> <num value="2">β</num> <gap reason="lost" extent="unknown" unit="character"/></add>'
+    assert_equal_fragment_transform '<||interlin: καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.||>', '<supplied reason="omitted"><add place="interlinear"> καὶ οὐδ᾽ ἄλλοις ἔχοντες ἐλάσσονος τιμῆς διαθέσθαι εὐχερῶς.</add></supplied>'
+    assert_equal_fragment_transform '||interlin: ὧ( ῾)ν||interlin: ὧ( ῾)ν||||', '<add place="interlinear"><hi rend="asper">ὧ</hi>ν<add place="interlinear"><hi rend="asper">ὧ</hi>ν</add></add>'
   end
   
   def test_add_place_margin_underline
@@ -1020,6 +1080,69 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '~|veni vedi vici|~la ', '<foreign xml:lang="la">veni vedi vici</foreign>'
     assert_equal_fragment_transform '~|di\' emu Foibạmṃ[onis]|~la ', '<foreign xml:lang="la">di\' emu Foib<unclear>a</unclear>m<unclear>m</unclear><supplied reason="lost">onis</supplied></foreign>'
     assert_equal_fragment_transform '[ ~|cum obtulisset libellum Eulogii: .? ex officio.|~la  ὁποῖον]', '<supplied reason="lost"> <foreign xml:lang="la">cum obtulisset libellum Eulogii: <gap reason="illegible" extent="unknown" unit="character"/> ex officio.</foreign> ὁποῖον</supplied>'
+    assert_equal_fragment_transform '~|legi 
+    12. legi |~la ', '<foreign xml:lang="la">legi 
+    <lb n="12"/>legi </foreign>'
+    assert_equal_fragment_transform '[υσίου Τόπων ~|? .|~la  ὑ]', '<supplied reason="lost">υσίου Τόπων <foreign xml:lang="la">? .</foreign> ὑ</supplied>'
+    assert_equal_fragment_transform '[νουμηνίᾳ ~|?,|~la  ἐν τῇ Σοκν]', '<supplied reason="lost">νουμηνίᾳ <foreign xml:lang="la">?,</foreign> ἐν τῇ Σοκν</supplied>'
+    assert_equal_fragment_transform '/*abcdefg*/', '<note xml:lang="en">abcdefg</note>'
+    assert_equal_fragment_transform '/*?*/', '<note xml:lang="en">?</note>'
+    assert_equal_fragment_transform '/*m2?*/', '<note xml:lang="en">m2?</note>'
+    assert_equal_fragment_transform '/*text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4*/', '<note xml:lang="en">text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4</note>'
+    assert_equal_fragment_transform '~|di ẹ[mu]|~la ', '<foreign xml:lang="la">di <unclear>e</unclear><supplied reason="lost">mu</supplied></foreign>'
+    assert_equal_fragment_transform '/*text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4*/', '<note xml:lang="en">text continued at SB 16,13060 + BGU 13,2270 + P.Graux. 3,30 + P.Col. 2,1 recto 4</note>'
+    assert_equal_fragment_transform '~|? vac.? [ ]|~la ', '<foreign xml:lang="la">? <space extent="unknown" unit="character"/> <supplied reason="lost"> </supplied></foreign>'
+    assert_equal_fragment_transform '~|Εὐδυνέου 
+    00. πέμπτῃ|~grc ', '<foreign xml:lang="grc">Εὐδυνέου 
+    <lb n="00"/>πέμπτῃ</foreign>'
+    assert_equal_fragment_transform '~|M e(´)viae Dionusari o(´) e lege Julia |~la ', '<foreign xml:lang="la">M<hi rend="acute">e</hi>viae Dionusari<hi rend="acute">o</hi> e lege Julia </foreign>'
+    assert_equal_fragment_transform '~|di emu  i(¨)ustu diakonu eteliothe |~la ', '<foreign xml:lang="la">di emu <hi rend="diaeresis">i</hi>ustu diakonu eteliothe </foreign>'
+    assert_equal_fragment_transform '[ ~|cum obtulisset libellum Eulogii: .? ex officio.|~la  ὁποῖον]', '<supplied reason="lost"> <foreign xml:lang="la">cum obtulisset libellum Eulogii: <gap reason="illegible" extent="unknown" unit="character"/> ex officio.</foreign> ὁποῖον</supplied>'
+    assert_equal_fragment_transform '~|di\' emu Foibạmṃ[onis]|~la ', '<foreign xml:lang="la">di\' emu Foib<unclear>a</unclear>m<unclear>m</unclear><supplied reason="lost">onis</supplied></foreign>'
+    assert_equal_fragment_transform '~|di\' (em(u)) (Iust(u)) (upodiacon(u)) (sumbolai(ografu)) eteliothḥ|~la ', '<foreign xml:lang="la">di\' <expan>em<ex>u</ex></expan> <expan>Iust<ex>u</ex></expan> <expan>upodiacon<ex>u</ex></expan> <expan>sumbolai<ex>ografu</ex></expan> etelioth<unclear>h</unclear></foreign>'
+    assert_equal_fragment_transform '~|? [ ]|~la ', '<foreign xml:lang="la">? <supplied reason="lost"> </supplied></foreign>'
+    assert_equal_fragment_transform '~|?. [ ]|~la ', '<foreign xml:lang="la">?. <supplied reason="lost"> </supplied></foreign>'
+    assert_equal_fragment_transform '18. [.3]ς̣ Ζωΐλου ((ἄρουραι)) <#λ̣β̣=32#> <#𐅵 \'=1/2#> <#ιϛ \'=1/16#> <#λβ \'=1/32#>((δηναρίων
+ μυριάδες)) [.?]', '<lb n="18"/><gap reason="lost" quantity="3" unit="character"/><unclear>ς</unclear> Ζωΐλου <expan><ex>ἄρουραι</ex></expan> <num value="32"><unclear>λβ</unclear></num> <num value="1/2" rend="tick">𐅵</num> <num value="1/16" rend="tick">ιϛ</num> <num value="1/32" rend="tick">λβ</num><expan><ex>δηναρίων
+ μυριάδες</ex></expan> <gap reason="lost" extent="unknown" unit="character"/>'
+#rendtick assert_equal_fragment_transform '18. [.3]ς̣ Ζωΐλου ((ἄρουραι)) <#λ̣β̣=32#> <#𐅵=frac1/2#> <#ιϛ=frac1/16#> <#λβ=frac1/32#>((δηναρίων
+#rendtick  μυριάδες)) [.?]', '<lb n="18"/><gap reason="lost" quantity="3" unit="character"/><unclear>ς</unclear> Ζωΐλου <expan><ex>ἄρουραι</ex></expan> <num value="32"><unclear>λβ</unclear></num> <num value="1/2" rend="fraction">𐅵</num> <num value="1/16" rend="fraction">ιϛ</num> <num value="1/32" rend="fraction">λβ</num><expan><ex>δηναρίων
+#rendtick  μυριάδες</ex></expan> <gap reason="lost" extent="unknown" unit="character"/>'
+    assert_equal_fragment_transform '((δηναρίων μυριάδες))', '<expan><ex>δηναρίων μυριάδες</ex></expan>'
+    assert_equal_fragment_transform '((ὀβολοῦ 1/2))', '<expan><ex>ὀβολοῦ 1/2</ex></expan>'
+    assert_equal_fragment_transform '~| \$m3 ὁ <:δεῖνα|corr|δινα:>/ $m4 /*?*/ (κα(ὶ)) (κα(ὶ)) \$m3 (χρυ(σοῦ)) (λίτρ(ας)) <#ε=5#>/ $m4 /*?*/ ὑπομνησθήσονται διὰ τῆς τάξεως ἢ τὸ δέον{ι} δίκης ἐκτὸς ἐπιγνῶναι ἢ ἀντιλέγοντες δικάσασθαι 16. ἐν τῷ δικαστηρίῳ. $m2 (Φλά(ουιος)) Ῥωμανὸς υἱὸς Ἰακὼβ (|Φλ|) παραβάλλω Συριανὸν ἀπὸ (πριγκ(ιπαλίων)) εἰς (χρυ(σοῦ)) (λί(τρας)) <:πέντε|corr|πεντη:> <#=5#>.|~grc ', '<foreign xml:lang="grc"> <add place="above"><handShift new="m3"/>ὁ <choice><corr>δεῖνα</corr><sic>δινα</sic></choice></add> <handShift new="m4"/><note xml:lang="en">?</note> <expan>κα<ex>ὶ</ex></expan> <expan>κα<ex>ὶ</ex></expan> <add place="above"><handShift new="m3"/><expan>χρυ<ex>σοῦ</ex></expan> <expan>λίτρ<ex>ας</ex></expan> <num value="5">ε</num></add> <handShift new="m4"/><note xml:lang="en">?</note> ὑπομνησθήσονται διὰ τῆς τάξεως ἢ τὸ δέον<surplus>ι</surplus> δίκης ἐκτὸς ἐπιγνῶναι ἢ ἀντιλέγοντες δικάσασθαι <lb n="16"/>ἐν τῷ δικαστηρίῳ. <handShift new="m2"/><expan>Φλά<ex>ουιος</ex></expan> Ῥωμανὸς υἱὸς Ἰακὼβ <abbr>Φλ</abbr> παραβάλλω Συριανὸν ἀπὸ <expan>πριγκ<ex>ιπαλίων</ex></expan> εἰς <expan>χρυ<ex>σοῦ</ex></expan> <expan>λί<ex>τρας</ex></expan> <choice><corr>πέντε</corr><sic>πεντη</sic></choice> <num value="5"/>.</foreign>'
+    assert_equal_fragment_transform '~|εἰ.2η πειθην|~grc ', '<foreign xml:lang="grc">εἰ<gap reason="illegible" quantity="2" unit="character"/>η πειθην</foreign>'
+    assert_equal_fragment_transform '~|εἰ?2η πειθην|~grc ', '<foreign xml:lang="grc">εἰ?2η πειθην</foreign>'
+    assert_equal_fragment_transform '~|Sen[ec]ion (d(ixit)): καλῶς διδάσκει. αὕτη ἡ οἰκία ἐ̣[γγυς /*?*/ τῆ]ς οἰκίας τοῦ λογιστοῦ ἐστιν. ὁ λογιστὴς ἐκεῖ μένει. 15. (Fl(avius)) Leontius Beronicianus (v(ir)) (c(larissimus)) (pr(aeses)) (Tebaei(dis)) (d(ixit)): |~la ', '<foreign xml:lang="la">Sen<supplied reason="lost">ec</supplied>ion <expan>d<ex>ixit</ex></expan>: καλῶς διδάσκει. αὕτη ἡ οἰκία <unclear>ἐ</unclear><supplied reason="lost">γγυς <note xml:lang="en">?</note> τῆ</supplied>ς οἰκίας τοῦ λογιστοῦ ἐστιν. ὁ λογιστὴς ἐκεῖ μένει. <lb n="15"/><expan>Fl<ex>avius</ex></expan> Leontius Beronicianus <expan>v<ex>ir</ex></expan> <expan>c<ex>larissimus</ex></expan> <expan>pr<ex>aeses</ex></expan> <expan>Tebaei<ex>dis</ex></expan> <expan>d<ex>ixit</ex></expan>: </foreign>'
+    assert_equal_fragment_transform '~|et (rec(itavit)): Sergio et |~la ', '<foreign xml:lang="la">et <expan>rec<ex>itavit</ex></expan>: Sergio et </foreign>'
+    assert_equal_fragment_transform '(σεσημ(είωμαι)).', '<expan>σεσημ<ex>είωμαι</ex></expan>.'
+    assert_equal_fragment_transform '~|[Ac]holius (d(ixit))|~la ', '<foreign xml:lang="la"><supplied reason="lost">Ac</supplied>holius <expan>d<ex>ixit</ex></expan></foreign>'
+    assert_equal_fragment_transform '~|Acholius dixit: |~la ', '<foreign xml:lang="la">Acholius dixit: </foreign>'
+    assert_equal_fragment_transform '~|[Ac]holius (d(ixit)): |~la ', '<foreign xml:lang="la"><supplied reason="lost">Ac</supplied>holius <expan>d<ex>ixit</ex></expan>: </foreign>'
+    assert_equal_fragment_transform '~|totelo (ex(ceptoribus)). |~la ', '<foreign xml:lang="la">totelo <expan>ex<ex>ceptoribus</ex></expan>. </foreign>'
+    assert_equal_fragment_transform '~|(co(nsulibus)) die <#iiii=#> ~|(Kal(endas)) Ianuạṛịạṣ Biono|~la .2[.?]~|saṛ|~la [.1].1~|totelo (ex(ceptoribus)). |~la |~la ', '<foreign xml:lang="la"><expan>co<ex>nsulibus</ex></expan> die <num>iiii</num> <foreign xml:lang="la"><expan>Kal<ex>endas</ex></expan> Ianu<unclear>arias</unclear> Biono</foreign><gap reason="illegible" quantity="2" unit="character"/><gap reason="lost" extent="unknown" unit="character"/><foreign xml:lang="la">sa<unclear>r</unclear></foreign><gap reason="lost" quantity="1" unit="character"/><gap reason="illegible" quantity="1" unit="character"/><foreign xml:lang="la">totelo <expan>ex<ex>ceptoribus</ex></expan>. </foreign></foreign>'
+    assert_equal_fragment_transform '~|(Fl(avius)) Leontius (Beronicianu(s)) (v(ir)) (c(larissimus)) (pr(aeses)) (Tebaei(dis)) (d(ixit)): |~la ', '<foreign xml:lang="la"><expan>Fl<ex>avius</ex></expan> Leontius <expan>Beronicianu<ex>s</ex></expan> <expan>v<ex>ir</ex></expan> <expan>c<ex>larissimus</ex></expan> <expan>pr<ex>aeses</ex></expan> <expan>Tebaei<ex>dis</ex></expan> <expan>d<ex>ixit</ex></expan>: </foreign>'
+    assert_equal_fragment_transform '~|<:et|corr|ec:> (c(etera)): (or(ator)) adiecit: |~la ', '<foreign xml:lang="la"><choice><corr>et</corr><sic>ec</sic></choice> <expan>c<ex>etera</ex></expan>: <expan>or<ex>ator</ex></expan> adiecit: </foreign>'
+    assert_equal_fragment_transform '~|<:et|corr|ec:> (c(etera)): test adiecit(or(ator)): |~la ', '<foreign xml:lang="la"><choice><corr>et</corr><sic>ec</sic></choice> <expan>c<ex>etera</ex></expan>: test adiecit<expan>or<ex>ator</ex></expan>: </foreign>'
+    assert_equal_fragment_transform '~|[Ac]holius (d(ixit)): |~la ', '<foreign xml:lang="la"><supplied reason="lost">Ac</supplied>holius <expan>d<ex>ixit</ex></expan>: </foreign>'
+    assert_equal_fragment_transform '~|[Ac]holius (d(ixit))|~la ', '<foreign xml:lang="la"><supplied reason="lost">Ac</supplied>holius <expan>d<ex>ixit</ex></expan></foreign>'
+    assert_equal_fragment_transform '~|[Ac]holius (d(ixit)) |~la ', '<foreign xml:lang="la"><supplied reason="lost">Ac</supplied>holius <expan>d<ex>ixit</ex></expan> </foreign>'
+    assert_equal_fragment_transform '~|Acholius dixit: |~la ', '<foreign xml:lang="la">Acholius dixit: </foreign>'
+    assert_equal_fragment_transform '\κα̣ὶ̣ μὴ ὁμολογη〚.1〛/', '<add place="above">κ<unclear>αὶ</unclear> μὴ ὁμολογη<del rend="erasure"><gap reason="illegible" quantity="1" unit="character"/></del></add>'
+    #Gabby question tests - FORCHAR branch
+    #######assert_equal_fragment_transform '~|[Ac]holius (d(ixit))? |~la ', '<foreign xml:lang="la"><supplied reason="lost">Ac</supplied>holius <expan>d<ex>ixit</ex></expan>? </foreign>'
+    #######assert_equal_fragment_transform '~|[Ac]holius (d(ixit))?: |~la ', '<foreign xml:lang="la"><supplied reason="lost">Ac</supplied>holius <expan>d<ex>ixit</ex></expan>?: </foreign>'
+    ####assert_equal_fragment_transform '[ολὴν ἐλθεῖν ~|? .?,|~la  ἐπιτελεῖν τὰ κατὰ τῆς ὑποθήκης νόμιμα, πρὸς ὅ τι ἂν βαστάζῃ, καὶ τοῦ ἐλλείψοντος γίνεσθαι τοῖς]', '<supplied reason="lost">ολὴν ἐλθεῖν <foreign xml:lang="la">? <gap extent="unknown" reason="illegible" unit="character"/>,</foreign> ἐπιτελεῖν τὰ κατὰ τῆς ὑποθήκης νόμιμα, πρὸς ὅ τι ἂν βαστάζῃ, καὶ τοῦ ἐλλείψοντος γίνεσθαι τοῖς</supplied>'
+    #
+    #assert_equal_fragment_transform '[ολὴν ἐλθεῖν ~? .?,~la  ἐπιτελεῖν τὰ κατὰ τῆς ὑποθήκης νόμιμα, πρὸς ὅ τι ἂν βαστάζῃ, καὶ τοῦ ἐλλείψοντος γίνεσθαι τοῖς]', '<supplied reason="lost">ολὴν ἐλθεῖν <foreign xml:lang="la">? <gap extent="unknown" reason="illegible" unit="character"/>,</foreign> ἐπιτελεῖν τὰ κατὰ τῆς ὑποθήκης νόμιμα, πρὸς ὅ τι ἂν βαστάζῃ, καὶ τοῦ ἐλλείψοντος γίνεσθαι τοῖς</supplied>'
+    assert_equal_fragment_transform '(~|IỊỊCyr|~la (enaica))', '<expan><foreign xml:lang="la">I<unclear>II</unclear>Cyr</foreign><ex>enaica</ex></expan>'
+    ##assert_equal_fragment_transform '(~ḍẹṣb~la (~onorum~la ))', '<expan><foreign xml:lang="la"><unclear>d</unclear><unclear>e</unclear><unclear>s</unclear>b</foreign><ex><foreign xml:lang="la">onorum</foreign></ex></expan>'
+    assert_equal_fragment_transform '~|~||Ἑρεννίαν Γέμελλαν||~tall|~grc ', '<foreign xml:lang="grc"><hi rend="tall">Ἑρεννίαν Γέμελλαν</hi></foreign>'
+    assert_equal_fragment_transform '<:(Κών̣ων̣(ος))|BL:8.470|Κω.2ω <:vestig |corr|*monogram*:>:>', '<app type="BL"><lem resp="8.470"><expan>Κώ<unclear>ν</unclear>ω<unclear>ν</unclear><ex>ος</ex></expan></lem><rdg>Κω<gap reason="illegible" quantity="2" unit="character"/>ω <choice><corr><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></corr><sic><g type="monogram"/></sic></choice></rdg></app>'
+    assert_equal_fragment_transform '<:<:εὐωνύμου|corr||_ε̣υ̣_|ω|_ν̣υ̣[μ]ω_|:>|alt|εὐονύμῳ:>', '<app type="alternative"><lem><choice><corr>εὐωνύμου</corr><sic><supplied evidence="parallel" reason="undefined"><unclear>ευ</unclear></supplied>ω<supplied evidence="parallel" reason="undefined"><unclear>νυ</unclear><supplied reason="lost">μ</supplied>ω</supplied></sic></choice></lem><rdg>εὐονύμῳ</rdg></app>'
+    assert_equal_fragment_transform '<:~|taṇṭẹṣ|~la |alt|~|taṇṭọṣ|~la :>', '<app type="alternative"><lem><foreign xml:lang="la">ta<unclear>ntes</unclear></foreign></lem><rdg><foreign xml:lang="la">ta<unclear>ntos</unclear></foreign></rdg></app>'
+    assert_equal_fragment_transform '<:(~|Ọṛ|~la (mum))|alt|(~|Ụṛ|~la (mum)):>', '<app type="alternative"><lem><expan><foreign xml:lang="la"><unclear>Or</unclear></foreign><ex>mum</ex></expan></lem><rdg><expan><foreign xml:lang="la"><unclear>Ur</unclear></foreign><ex>mum</ex></expan></rdg></app>'
+    assert_equal_fragment_transform '<:.2|alt|vestig :>', '<app type="alternative"><lem><gap reason="illegible" quantity="2" unit="character"/></lem><rdg><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></rdg></app>'
   end
     
   def test_milestone
@@ -1050,9 +1173,11 @@ if(RUBY_PLATFORM == 'java')
   
   def test_SoSOL
     assert_equal_fragment_transform '<:πέπρα 23.- κα ὡς <(πρόκ(ειται))>. (ἔγ(ρα))ψα Μύσ̣θη̣ς (Μέλαν(ος)) <(ὑπ(ὲρ))> (αὐ̣(τοῦ)) μὴ (εἰδ̣(ότος)) (γρ(άμματα))|SoSOL:Cowey|.4κ̣.3εγψα.4.4.2:>', '<app type="SoSOL"><lem resp="Cowey">πέπρα <lb n="23" type="inWord"/>κα ὡς <supplied reason="omitted"><expan>πρόκ<ex>ειται</ex></expan></supplied>. <expan>ἔγ<ex>ρα</ex></expan>ψα Μύ<unclear>σ</unclear>θ<unclear>η</unclear>ς <expan>Μέλαν<ex>ος</ex></expan> <supplied reason="omitted"><expan>ὑπ<ex>ὲρ</ex></expan></supplied> <expan>α<unclear>ὐ</unclear><ex>τοῦ</ex></expan> μὴ <expan>εἰ<unclear>δ</unclear><ex>ότος</ex></expan> <expan>γρ<ex>άμματα</ex></expan></lem><rdg><gap reason="illegible" quantity="4" unit="character"/><unclear>κ</unclear><gap reason="illegible" quantity="3" unit="character"/>εγψα<gap reason="illegible" quantity="4" unit="character"/><gap reason="illegible" quantity="4" unit="character"/><gap reason="illegible" quantity="2" unit="character"/></rdg></app>'
-    assert_equal_fragment_transform '<:[.?]<#λβ=32#> .2 ἐκ <((ταλάντων))> <#κζ=27#> <((δραχμῶν))> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <((δραχμαὶ))> <#Γσ=3200#>|SoSOL:Sosin|[.?]<#λβ=32#> <#𐅵=frac1/2#> <#ιβ=frac1/12#> ἐκ ((ταλάντων)) <#ζ=7#> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <#η=frac1/8(?)#>:>', '<app type="SoSOL"><lem resp="Sosin"><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <gap reason="illegible" quantity="2" unit="character"/> ἐκ <supplied reason="omitted"><expan><ex>ταλάντων</ex></expan></supplied> <num value="27">κζ</num> <supplied reason="omitted"><expan><ex>δραχμῶν</ex></expan></supplied> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <supplied reason="omitted"><expan><ex>δραχμαὶ</ex></expan></supplied> <num value="3200">Γσ</num></lem><rdg><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <num value="1/2" rend="fraction">𐅵</num> <num value="1/12" rend="fraction">ιβ</num> ἐκ <expan><ex>ταλάντων</ex></expan> <num value="7">ζ</num> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <num value="1/8" rend="fraction">η<certainty locus="value" match=".."/></num></rdg></app>'
+    assert_equal_fragment_transform '<:[.?]<#λβ=32#> .2 ἐκ <((ταλάντων))> <#κζ=27#> <((δραχμῶν))> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <((δραχμαὶ))> <#Γσ=3200#>|SoSOL:Sosin|[.?]<#λβ=32#> <#𐅵 \'=1/2#> <#ιβ \'=1/12#> ἐκ ((ταλάντων)) <#ζ=7#> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <#η \'=1/8(?)#>:>', '<app type="SoSOL"><lem resp="Sosin"><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <gap reason="illegible" quantity="2" unit="character"/> ἐκ <supplied reason="omitted"><expan><ex>ταλάντων</ex></expan></supplied> <num value="27">κζ</num> <supplied reason="omitted"><expan><ex>δραχμῶν</ex></expan></supplied> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <supplied reason="omitted"><expan><ex>δραχμαὶ</ex></expan></supplied> <num value="3200">Γσ</num></lem><rdg><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <num value="1/2" rend="tick">𐅵</num> <num value="1/12" rend="tick">ιβ</num> ἐκ <expan><ex>ταλάντων</ex></expan> <num value="7">ζ</num> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <num value="1/8" rend="tick">η<certainty match="../@value" locus="value"/></num></rdg></app>'
+    #rendtick assert_equal_fragment_transform '<:[.?]<#λβ=32#> .2 ἐκ <((ταλάντων))> <#κζ=27#> <((δραχμῶν))> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <((δραχμαὶ))> <#Γσ=3200#>|SoSOL:Sosin|[.?]<#λβ=32#> <#𐅵=frac1/2#> <#ιβ=frac1/12#> ἐκ ((ταλάντων)) <#ζ=7#> <#Γ=3000#> ((τάλαντα)) <#ωοθ=879#> <#η=frac1/8(?)#>:>', '<app type="SoSOL"><lem resp="Sosin"><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <gap reason="illegible" quantity="2" unit="character"/> ἐκ <supplied reason="omitted"><expan><ex>ταλάντων</ex></expan></supplied> <num value="27">κζ</num> <supplied reason="omitted"><expan><ex>δραχμῶν</ex></expan></supplied> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <supplied reason="omitted"><expan><ex>δραχμαὶ</ex></expan></supplied> <num value="3200">Γσ</num></lem><rdg><gap reason="lost" extent="unknown" unit="character"/><num value="32">λβ</num> <num value="1/2" rend="fraction">𐅵</num> <num value="1/12" rend="fraction">ιβ</num> ἐκ <expan><ex>ταλάντων</ex></expan> <num value="7">ζ</num> <num value="3000">Γ</num> <expan><ex>τάλαντα</ex></expan> <num value="879">ωοθ</num> <num value="1/8" rend="fraction">η<certainty locus="value" match=".."/></num></rdg></app>'
     assert_equal_fragment_transform '<:〚(Λεόντ(ιος)) (Σεν̣ο̣[υθί(ου)])[ Σενουθίου ][.?] 〛|SoSOL:Ast|(Σενούθ(ιος)) \vestig / (Σενουθ(ίου)) vestig :>', '<app type="SoSOL"><lem resp="Ast"><del rend="erasure"><expan>Λεόντ<ex>ιος</ex></expan> <expan>Σε<unclear>νο</unclear><supplied reason="lost">υθί<ex>ου</ex></supplied></expan><supplied reason="lost"> Σενουθίου </supplied><gap reason="lost" extent="unknown" unit="character"/> </del></lem><rdg><expan>Σενούθ<ex>ιος</ex></expan> <add place="above"><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></add> <expan>Σενουθ<ex>ίου</ex></expan> <gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></rdg></app>'
-    assert_equal_fragment_transform '<:<#α=1#>\|<#ι=10#>|/ <#α=1#>\|<#ξ=60#>|/ <#α=1#>\|<#ρκ=120#>|/|SoSOL:Cayless|<#β=2#> <#𐅵=frac1/2#> <#ξδ=frac1/64#>:>', '<app type="SoSOL"><lem resp="Cayless"><num value="1">α</num><hi rend="subscript"><num value="10">ι</num></hi> <num value="1">α</num><hi rend="subscript"><num value="60">ξ</num></hi> <num value="1">α</num><hi rend="subscript"><num value="120">ρκ</num></hi></lem><rdg><num value="2">β</num> <num value="1/2" rend="fraction">𐅵</num> <num value="1/64" rend="fraction">ξδ</num></rdg></app>'
+    assert_equal_fragment_transform '<:<#α=1#>\|<#ι=10#>|/ <#α=1#>\|<#ξ=60#>|/ <#α=1#>\|<#ρκ=120#>|/|SoSOL:Cayless|<#β=2#> <#𐅵 \'=1/2#> <#ξδ \'=1/64#>:>', '<app type="SoSOL"><lem resp="Cayless"><num value="1">α</num><hi rend="subscript"><num value="10">ι</num></hi> <num value="1">α</num><hi rend="subscript"><num value="60">ξ</num></hi> <num value="1">α</num><hi rend="subscript"><num value="120">ρκ</num></hi></lem><rdg><num value="2">β</num> <num value="1/2" rend="tick">𐅵</num> <num value="1/64" rend="tick">ξδ</num></rdg></app>'
+    #rendtick assert_equal_fragment_transform '<:<#α=1#>\|<#ι=10#>|/ <#α=1#>\|<#ξ=60#>|/ <#α=1#>\|<#ρκ=120#>|/|SoSOL:Cayless|<#β=2#> <#𐅵=frac1/2#> <#ξδ=frac1/64#>:>', '<app type="SoSOL"><lem resp="Cayless"><num value="1">α</num><hi rend="subscript"><num value="10">ι</num></hi> <num value="1">α</num><hi rend="subscript"><num value="60">ξ</num></hi> <num value="1">α</num><hi rend="subscript"><num value="120">ρκ</num></hi></lem><rdg><num value="2">β</num> <num value="1/2" rend="fraction">𐅵</num> <num value="1/64" rend="fraction">ξδ</num></rdg></app>'
     assert_equal_fragment_transform '<:καὶ <:<καν(?)>ονικῶν(?)|corr|ονι̣κ̣ων:>|SoSOL:Elliott|καιονι̣κ̣ων:>', '<app type="SoSOL"><lem resp="Elliott">καὶ <choice><corr cert="low"><supplied reason="omitted" cert="low">καν</supplied>ονικῶν</corr><sic>ον<unclear>ικ</unclear>ων</sic></choice></lem><rdg>καιον<unclear>ικ</unclear>ων</rdg></app>'
     assert_equal_fragment_transform '<:[καὶ ὧν δε]κάτη [27]<#β=2#>|SoSOL:Gabby|[.6]ων.2[.2]<#β=2#>:>', '<app type="SoSOL"><lem resp="Gabby"><supplied reason="lost">καὶ ὧν δε</supplied>κάτη <supplied reason="lost">27</supplied><num value="2">β</num></lem><rdg><gap reason="lost" quantity="6" unit="character"/>ων<gap reason="illegible" quantity="2" unit="character"/><gap reason="lost" quantity="2" unit="character"/><num value="2">β</num></rdg></app>'
     assert_equal_fragment_transform '<:(Κών̣ων̣(ος))|SoSOL:Fox|Κω.2ω <:vestig |corr|*monogram*:>:>', '<app type="SoSOL"><lem resp="Fox"><expan>Κώ<unclear>ν</unclear>ω<unclear>ν</unclear><ex>ος</ex></expan></lem><rdg>Κω<gap reason="illegible" quantity="2" unit="character"/>ω <choice><corr><gap reason="illegible" extent="unknown" unit="character"><desc>vestiges</desc></gap></corr><sic><g type="monogram"/></sic></choice></rdg></app>'
@@ -1066,7 +1191,7 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform "(Lang: #{lang} ? char)", "<gap reason=\"ellipsis\" extent=\"unknown\" unit=\"character\"><desc>#{lang}</desc></gap>"
     assert_equal_fragment_transform "(Lang: #{lang} 2 lines)", "<gap reason=\"ellipsis\" quantity=\"2\" unit=\"line\"><desc>#{lang}</desc></gap>"
     assert_equal_fragment_transform "(Lang: #{lang} ? lines)", "<gap reason=\"ellipsis\" extent=\"unknown\" unit=\"line\"><desc>#{lang}</desc></gap>"
-   end
+    end
   end
   
   def test_nontrans
@@ -1120,7 +1245,7 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '<:Πα[νε]φρόμ 23.- μεως|ed:|Πα[νε]φρέμμεως:>', '<app type="editorial"><lem>Πα<supplied reason="lost">νε</supplied>φρόμ <lb n="23" type="inWord"/>μεως</lem><rdg>Πα<supplied reason="lost">νε</supplied>φρέμμεως</rdg></app>'
     assert_equal_fragment_transform '<:Πα[νε]φρόμ (2.-, inverse)μεως|ed:|Πα[νε]φρέμμεως:>', '<app type="editorial"><lem>Πα<supplied reason="lost">νε</supplied>φρόμ <lb n="2" rend="inverse" type="inWord"/>μεως</lem><rdg>Πα<supplied reason="lost">νε</supplied>φρέμμεως</rdg></app>'
   end
-    
+  
   def test_simple_reversibility
     #assert_equal_non_xml_to_xml_to_non_xml "<=1. test=>", "<=1. test=>"
     #assert_equal_non_xml_to_xml_to_non_xml "<=1. test1\n2. test2=>", "<=1. test1\n2. test2=>"
@@ -1148,7 +1273,7 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_non_xml_to_xml_to_non_xml "<S=.grc<=17,ms. test17ms=>", "<S=.grc<=17,ms. test17ms=>"
   end
   
-  def test_P5_linenumber_funky
+  def test_p5_linenumber_funky
     assert_equal_fragment_transform '18. ', '<lb n="18"/>'
     assert_equal_fragment_transform '18,ms7. ', '<lb n="18,ms7"/>'
     assert_equal_fragment_transform '8,ms. ', '<lb n="8,ms"/>'
@@ -1190,7 +1315,7 @@ if(RUBY_PLATFORM == 'java')
   end
   
   def test_xsugar_reversibility_true
-      assert @xsugar.reversible?
+    assert @xsugar.reversible?
   end
   end
 end

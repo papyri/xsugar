@@ -56,6 +56,8 @@ public class LeidenPlusSplitter implements SplitterJoiner {
     tokens.put("|~", "close-foreign");
     tokens.put("(", "open-expan");
     tokens.put(")", "close-expan");
+    tokens.put("〚", "open-delrend"); //any of the open del rends will be marked with this, cross-strokes, slashes, erasure
+    tokens.put("〛", "close-delrend"); //any of the close del rends will be marked with this, cross-strokes, slashes, erasure
     for (String key : tokens.keySet()) {
       tokensRev.put(tokens.get(key), key);
     }
@@ -103,7 +105,7 @@ public class LeidenPlusSplitter implements SplitterJoiner {
               elts[index] = "close-pop-twice";
             }
             else {
-              System.out.println("not null and not because sup par lost - another L+ start/stop needs special processing applied");
+              System.out.println("not null and not because sup par lost - another L+ start/stop needs special processing applied - it is " + elts[index]);
             }
           }
         }

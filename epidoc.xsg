@@ -586,52 +586,52 @@ add_place
 	: [add_place_below apb] = [add_place_below apb]
 	
 	//---add_place_interlinear---
-	//  >)abc(<
+	//  ||interlin:abc||
 add_place_interlinear
-	: ">)" [WORDSSIC a] "(<" = <add place="interlinear">[WORDSSIC a]</>
-	>: ">)" [WORDSSIC a] "(?)" "(<" = <add place="interlinear">[WORDSSIC a]<certainty match=".." locus="name"/></>
-	>: ">)" [items a] "(<" = <add place="interlinear">[items a]</>
-	>: ">)" [items a] "(?)" "(<" = <add place="interlinear">[items a]<certainty match=".." locus="name"/></>
+	: "||interlin:" [WORDSSIC a] "||" = <add place="interlinear">[WORDSSIC a]</>
+	>: "||interlin:" [WORDSSIC a] "(?)||" = <add place="interlinear">[WORDSSIC a]<certainty match=".." locus="name"/></>
+	>: "||interlin:" [items a] "||" = <add place="interlinear">[items a]</>
+	>: "||interlin:" [items a] "(?)||" = <add place="interlinear">[items a]<certainty match=".." locus="name"/></>
 
 	//---add_place_general---
 	//  ||bottom:abc||
 add_place_general
 	: "||" [ADDLIST a] ":" [WORDSSIC b] "||" = <add place=[ADDLIST a]>[WORDSSIC b]</>
-	>: "||" [ADDLIST a] ":" [WORDSSIC b] "(?)" "||" = <add place=[ADDLIST a]>[WORDSSIC b]<certainty match=".." locus="name"/></>
+	>: "||" [ADDLIST a] ":" [WORDSSIC b] "(?)||" = <add place=[ADDLIST a]>[WORDSSIC b]<certainty match=".." locus="name"/></>
 	>: "||" [ADDLIST a] ":" [items b] "||" = <add place=[ADDLIST a]>[items b]</>
-	>: "||" [ADDLIST a] ":" [items b] "(?)" "||" = <add place=[ADDLIST a]>[items b]<certainty match=".." locus="name"/></>
+	>: "||" [ADDLIST a] ":" [items b] "(?)||" = <add place=[ADDLIST a]>[items b]<certainty match=".." locus="name"/></>
 	
 	//---add_place_margin_sling---
 	//  <|abc|> 
 add_place_margin_sling
   : "<|" [WORDSSIC a] "|>" = <add rend="sling" place="margin">[WORDSSIC a]</>
-  >: "<|" [WORDSSIC a] "(?)" "|>" = <add rend="sling" place="margin">[WORDSSIC a]<certainty match=".." locus="name"/></>
+  >: "<|" [WORDSSIC a] "(?)|>" = <add rend="sling" place="margin">[WORDSSIC a]<certainty match=".." locus="name"/></>
 	>: "<|" [items a] "|>" = <add rend="sling" place="margin">[items a]</>
-	>: "<|" [items a] "(?)" "|>" = <add rend="sling" place="margin">[items a]<certainty match=".." locus="name"/></>
+	>: "<|" [items a] "(?)|>" = <add rend="sling" place="margin">[items a]<certainty match=".." locus="name"/></>
 	
 	//---add_place_margin_underline---
 	//  <_abc_> 
 add_place_margin_underline
   : "<_" [WORDSSIC a] "_>" = <add rend="underline" place="margin">[WORDSSIC a]</>
-  >: "<_" [WORDSSIC a] "(?)" "_>" = <add rend="underline" place="margin">[WORDSSIC a]<certainty match=".." locus="name"/></>
+  >: "<_" [WORDSSIC a] "(?)_>" = <add rend="underline" place="margin">[WORDSSIC a]<certainty match=".." locus="name"/></>
 	>: "<_" [items a] "_>" = <add rend="underline" place="margin">[items a]</>
-	>: "<_" [items a] "(?)" "_>" = <add rend="underline" place="margin">[items a]<certainty match=".." locus="name"/></>
+	>: "<_" [items a] "(?)_>" = <add rend="underline" place="margin">[items a]<certainty match=".." locus="name"/></>
 	
 	//---add_place_above---
 	//  \abc/
 add_place_above
 	: "\\" [WORDSSIC a] "\/" = <add place="above">[WORDSSIC a]</>
-	>: "\\" [WORDSSIC a] "(?)" "\/" = <add place="above">[WORDSSIC a]<certainty match=".." locus="name"/></>
+	>: "\\" [WORDSSIC a] "(?)\/" = <add place="above">[WORDSSIC a]<certainty match=".." locus="name"/></>
 	>: "\\" [items a] "\/" = <add place="above">[items a]</>
-	>: "\\" [items a] "(?)" "\/" = <add place="above">[items a]<certainty match=".." locus="name"/></>
+	>: "\\" [items a] "(?)\/" = <add place="above">[items a]<certainty match=".." locus="name"/></>
 	
 	//---add_place_below---
 	//   //abc\\
 add_place_below
 	: "\/\/" [WORDSSIC a] "\\\\" = <add place="below">[WORDSSIC a]</>
-	>: "\/\/" [WORDSSIC a] "(?)" "\\\\" = <add place="below">[WORDSSIC a]<certainty match=".." locus="name"/></>
+	>: "\/\/" [WORDSSIC a] "(?)\\\\" = <add place="below">[WORDSSIC a]<certainty match=".." locus="name"/></>
 	>: "\/\/" [items a] "\\\\" = <add place="below">[items a]</>
-	>: "\/\/" [items a] "(?)" "\\\\" = <add place="below">[items a]<certainty match=".." locus="name"/></>
+	>: "\/\/" [items a] "(?)\\\\" = <add place="below">[items a]<certainty match=".." locus="name"/></>
 	
 	//---supraline---
 	//   ¯markup¯ - uses non-combining macron
@@ -648,17 +648,17 @@ hi_supraline_underline
 	//  |_abc_|  - underlines 
 undefined_parallel
 		: "|_" [WORDSSIC a] "_|" = <supplied evidence="parallel" reason="undefined">[WORDSSIC a]</>
-	: "|_" [WORDSSIC a] "(?)" "_|" = <supplied evidence="parallel" reason="undefined" cert="low">[WORDSSIC a]</>
+	: "|_" [WORDSSIC a] "(?)_|" = <supplied evidence="parallel" reason="undefined" cert="low">[WORDSSIC a]</>
 	>: "|_" [items a] "_|" = <supplied evidence="parallel" reason="undefined">[items a]</>
-	>: "|_" [items a] "(?)" "_|" = <supplied evidence="parallel" reason="undefined" cert="low">[items a]</>
+	>: "|_" [items a] "(?)_|" = <supplied evidence="parallel" reason="undefined" cert="low">[items a]</>
 		
 	//---lost_parallel---
 	//  _[abc]_  - underlines
 lost_parallel
 	: "_[" [WORDSSIC a] "]_" = <supplied evidence="parallel" reason="lost">[WORDSSIC a]</>
-	: "_[" [WORDSSIC a] "(?)" "]_" = <supplied evidence="parallel" reason="lost" cert="low">[WORDSSIC a]</>
+	: "_[" [WORDSSIC a] "(?)]_" = <supplied evidence="parallel" reason="lost" cert="low">[WORDSSIC a]</>
 	>: "_[" [items a] "]_" = <supplied evidence="parallel" reason="lost">[items a]</>
-	>: "_[" [items a] "(?)" "]_" = <supplied evidence="parallel" reason="lost" cert="low">[items a]</>
+	>: "_[" [items a] "(?)]_" = <supplied evidence="parallel" reason="lost" cert="low">[items a]</>
 
 fraction
 	//---number or fraction_no_symbol---

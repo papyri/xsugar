@@ -8,7 +8,7 @@ Standalone XSugar transformer servlet.
 
 ## Usage
 
-Invoke with the Mavn `jetty:run` task:
+Invoke with the Maven `jetty:run` task:
 
     JAVA_TOOL_OPTIONS="-Xmx4G -Dorg.eclipse.jetty.server.Request.maxFormContentSize=-1 -Dfile.encoding=UTF8 -Djetty.port=9999" mvn jetty:run
 

@@ -483,6 +483,7 @@ choice_reg
 	//  '----' or  '--------'
 milestone
 	: "--------" = <milestone rend="horizontal-rule" unit="undefined"></>
+	: "~~~~~~~~" = <milestone rend="wavy-line" unit="undefined"></>
 	: "----" = <milestone rend="paragraphos" unit="undefined"></>
 	: "<---->" = <supplied reason="omitted"><milestone rend="paragraphos" unit="undefined"/></>
 	: "<----(?)>" = <supplied reason="omitted" cert="low"><milestone rend="paragraphos" unit="undefined"/></>

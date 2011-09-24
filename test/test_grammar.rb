@@ -1157,6 +1157,7 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '[συμφωνῶ ---- ἐγγ(?)]', '<supplied reason="lost" cert="low">συμφωνῶ <milestone rend="paragraphos" unit="undefined"/> ἐγγ</supplied>'
     assert_equal_fragment_transform '<---->', '<supplied reason="omitted"><milestone rend="paragraphos" unit="undefined"/></supplied>'
     assert_equal_fragment_transform '<----(?)>', '<supplied reason="omitted" cert="low"><milestone rend="paragraphos" unit="undefined"/></supplied>'
+    assert_equal_fragment_transform '~~~~~~~~', '<milestone rend="wavy-line" unit="undefined"/>'
     assert_equal_fragment_transform '--------', '<milestone rend="horizontal-rule" unit="undefined"/>'
     assert_equal_fragment_transform '###', '<milestone rend="box" unit="undefined"/>'
   end

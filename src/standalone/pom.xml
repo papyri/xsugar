@@ -65,6 +65,11 @@
       <version>2.3</version>
     </dependency>
     <dependency>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
+      <version>1.5.6</version>
+    </dependency>
+    <dependency>
       <groupId>dk.brics.xsugar</groupId>
       <artifactId>xsugar</artifactId>
       <version>1.2-2</version>

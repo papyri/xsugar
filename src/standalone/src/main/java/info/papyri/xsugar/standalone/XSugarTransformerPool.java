@@ -10,6 +10,7 @@ import org.apache.commons.pool.impl.*;
 public class XSugarTransformerPool extends GenericObjectPool {
   public XSugarTransformerPool(XSugarTransformerFactory objFactory) {
     super(objFactory);
+    this.setMaxActive(64);
   }
 
   public XSugarTransformerPool(XSugarTransformerFactory objFactory, GenericObjectPool.Config config) {

@@ -25,6 +25,9 @@ import org.apache.jcs.access.exception.CacheException;
 
 import com.twmacinta.util.MD5;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import info.papyri.xsugar.standalone.TransformResult;
 
 /**
@@ -54,6 +57,8 @@ public class XSugarStandaloneTransformer
   private int grammar_hash = 0;
   private JCS cache = null;
 
+  private static final Lock initializationLock = new ReentrantLock(true);
+
   /**
    * Initialize an empty transformer.
    */
@@ -74,10 +79,13 @@ public class XSugarStandaloneTransformer
     throws dk.brics.xsugar.XSugarException, IOException, ParseException, dk.brics.relaxng.converter.ParseException, InstantiationException,	IllegalAccessException, ClassNotFoundException
   {
     if(grammar_hash == 0) {
+
       grammar_hash = grammar.hashCode();
       System.out.println("Hash: " + grammar_hash);
 
       StylesheetParser parser = new StylesheetParser();
+
+      initializationLock.lock();
       
       stylesheet = parser.parse(grammar, "dummy.xsg", charset);
       new StylesheetChecker().check(stylesheet);
@@ -100,6 +108,8 @@ public class XSugarStandaloneTransformer
       unparsed_x_grammar = new Unparser(x_grammar);
       
       namespace_adder = new NamespaceAdder(stylesheet);
+
+      initializationLock.unlock();
       
       try {
         cache = JCS.getInstance("default");
@@ -118,7 +128,7 @@ public class XSugarStandaloneTransformer
    * So all of the entries for a grammar hash can be invalidated at once. 
    * See: http://jakarta.apache.org/jcs/faq.html#hierarchical-removal  
    */
-  private String cacheKey(String direction, String text) {
+  public String cacheKey(String direction, String text) {
     MD5 md5 = new MD5();
     
     try {

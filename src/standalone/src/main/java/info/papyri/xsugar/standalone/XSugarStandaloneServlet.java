@@ -207,7 +207,6 @@ public class XSugarStandaloneServlet extends HttpServlet
             result = doSplitTransform(content, transformer, direction, new EpiDocSplitter(), new LeidenPlusSplitter());
           }
           catch (dk.brics.grammar.parser.ParseException e) {
-            pool.returnObject(transformer);
             throw e;
             // System.out.println("Parse exception in split transform, trying full transform");
             // result = transformer.XMLToNonXML(content);
@@ -224,9 +223,6 @@ public class XSugarStandaloneServlet extends HttpServlet
             result = doSplitTransform(content, transformer, direction, new LeidenPlusSplitter(), new EpiDocSplitter());
           }
           catch (dk.brics.grammar.parser.ParseException e) {
-            pool.returnObject(transformer);
-            transformationLock.unlock();
-            System.out.println("Released lock for " + key);
             throw e;
             // System.out.println("Parse exception in split transform, trying full transform");
             // result = transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));
@@ -240,11 +236,11 @@ public class XSugarStandaloneServlet extends HttpServlet
         result = "Bad direction " + direction;
       }
     }
-    catch (dk.brics.grammar.parser.ParseException e) {
+    catch (Exception e) {
       pool.returnObject(transformer);
       transformationLock.unlock();
       System.out.println("Released lock for " + key);
-      System.out.println(e.getMessage());
+      System.out.println(e.toString());
       // System.out.println(e.getLocation().getLine() + "," + e.getLocation().getColumn());
       // e.printStackTrace();
       throw e;

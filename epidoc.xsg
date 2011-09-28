@@ -154,8 +154,8 @@ items
   >: [item p] = [item p]	
 
 linenumber 
-  : [LINENUM n] "." " " = <lb n=[LINENUM n]/>
-  >: [LINENUM n] "." "- " = <lb n=[LINENUM n] type="inWord"/>
+  : [LINENUM n] ". " = <lb n=[LINENUM n]/>
+  >: [LINENUM n] ".- " = <lb n=[LINENUM n] break="no"/>
 
 newline 
   : [NL n] = [NL n]
@@ -340,7 +340,7 @@ item_can_nest
 	//(23, perp)
 special_lines
 	: "(" [LINENUM v] ", " [WORD w] ")" = <lb n=[LINENUM v] rend=[WORD w]/>
-	>: "(" [LINENUM v] "." "-" ", " [WORD w] ")" = <lb n=[LINENUM v] rend=[WORD w] type="inWord"/>
+	>: "(" [LINENUM v] ".-, " [WORD w] ")" = <lb n=[LINENUM v] rend=[WORD w] break="no"/>
 
 	//---test_abbreviation_unknown_resolution---
 	// ab( )

@@ -46,15 +46,15 @@ public class XSugarStandaloneServlet extends HttpServlet
     System.out.println("Initializing known-grammars...");
     for (String grammar : known_grammars) {
       System.out.println(grammar);
-      initTransformer(grammar);
+      initTransformerPool(grammar);
     }
     System.out.println("Done.");
   }
 
   /**
-   * Initialize a transformer based on a string with the name (used to access a resource).
+   * Initialize a transformer pool based on a string with the name (used to access a resource).
    */
-  private XSugarTransformerPool initTransformer(String transformer_name)
+  private XSugarTransformerPool initTransformerPool(String transformer_name)
   {
     XSugarTransformerPool transformer = null;
     URL url = this.getClass().getClassLoader().getResource(transformer_name + ".xsg");
@@ -75,16 +75,16 @@ public class XSugarStandaloneServlet extends HttpServlet
   }
 
   /**
-   * Get the transformer for a given name, optionally initializing it if not already present.
+   * Get the transformer pool for a given name, optionally initializing it if not already present.
    */
-  private XSugarTransformerPool getTransformer(String transformer_name)
+  private XSugarTransformerPool getTransformerPool(String transformer_name)
   {
     XSugarTransformerPool transformer = 
       (XSugarTransformerPool)transformers.get(transformer_name);
     if (transformer == null) {
       System.out.println("Cache miss for " + transformer_name);
 
-      transformer = initTransformer(transformer_name);
+      transformer = initTransformerPool(transformer_name);
     }
     return transformer;
   }
@@ -178,7 +178,7 @@ public class XSugarStandaloneServlet extends HttpServlet
     throws dk.brics.grammar.parser.ParseException, org.jdom.JDOMException, java.lang.Exception, java.io.IOException
   {
     String result = null;
-    XSugarTransformerPool pool = getTransformer(transform_type);
+    XSugarTransformerPool pool = getTransformerPool(transform_type);
     XSugarStandaloneTransformer transformer = (XSugarStandaloneTransformer) pool.borrowObject();
     String key = transformer.cacheKey(direction, content);
     pool.returnObject(transformer);

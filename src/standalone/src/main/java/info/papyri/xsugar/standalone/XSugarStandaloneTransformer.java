@@ -57,6 +57,9 @@ public class XSugarStandaloneTransformer
   private int grammar_hash = 0;
   private JCS cache = null;
 
+  // We use a class-shared initialization lock because it seems that some things in
+  // the XSugar initialization can get into race conditions/deadlock if multiple threads
+  // call them at the same time.
   private static final Lock initializationLock = new ReentrantLock(true);
 
   /**
@@ -78,38 +81,44 @@ public class XSugarStandaloneTransformer
   public synchronized void initializeTransformer(String grammar)
     throws dk.brics.xsugar.XSugarException, IOException, ParseException, dk.brics.relaxng.converter.ParseException, InstantiationException,	IllegalAccessException, ClassNotFoundException
   {
-    if(grammar_hash == 0) {
+    // This lock could probably be finer-grained, but this seems to solve the problem.
+    initializationLock.lock();
 
+    if(grammar_hash == 0) {
       grammar_hash = grammar.hashCode();
       System.out.println("Hash: " + grammar_hash);
+      
+      try {
+        StylesheetParser parser = new StylesheetParser();
 
-      StylesheetParser parser = new StylesheetParser();
+        stylesheet = parser.parse(grammar, "dummy.xsg", charset);
+        new StylesheetChecker().check(stylesheet);
+        GrammarBuilder grammar_builder = new GrammarBuilder(false);
+        grammar_builder.convert(stylesheet);
+        
+        l_grammar = grammar_builder.getNonXMLGrammar();
+        x_grammar = grammar_builder.getXMLGrammar();
+        
+        GrammarBuilder normalizing_grammar_builder = new GrammarBuilder(true);
+        new StylesheetNormalizer().normalize(stylesheet);
+        normalizing_grammar_builder.convert(stylesheet);
+        normalized_l_grammar = normalizing_grammar_builder.getNonXMLGrammar();
+        normalized_x_grammar = normalizing_grammar_builder.getXMLGrammar();
+        
+        parser_l = new Parser(l_grammar, out);
+        parser_x = new Parser(normalized_x_grammar, out);
+        
+        unparsed_l_grammar = new Unparser(normalized_l_grammar);
+        unparsed_x_grammar = new Unparser(x_grammar);
+        
+        namespace_adder = new NamespaceAdder(stylesheet);
+      }
+      catch (Throwable t) {
+        System.out.println("Error initializing transformer for " + grammar_hash);
+        grammar_hash = 0;
+        initializationLock.unlock();
+      }
 
-      initializationLock.lock();
-      
-      stylesheet = parser.parse(grammar, "dummy.xsg", charset);
-      new StylesheetChecker().check(stylesheet);
-      GrammarBuilder grammar_builder = new GrammarBuilder(false);
-      grammar_builder.convert(stylesheet);
-      
-      l_grammar = grammar_builder.getNonXMLGrammar();
-      x_grammar = grammar_builder.getXMLGrammar();
-      
-      GrammarBuilder normalizing_grammar_builder = new GrammarBuilder(true);
-      new StylesheetNormalizer().normalize(stylesheet);
-      normalizing_grammar_builder.convert(stylesheet);
-      normalized_l_grammar = normalizing_grammar_builder.getNonXMLGrammar();
-      normalized_x_grammar = normalizing_grammar_builder.getXMLGrammar();
-      
-      parser_l = new Parser(l_grammar, out);
-      parser_x = new Parser(normalized_x_grammar, out);
-      
-      unparsed_l_grammar = new Unparser(normalized_l_grammar);
-      unparsed_x_grammar = new Unparser(x_grammar);
-      
-      namespace_adder = new NamespaceAdder(stylesheet);
-
-      initializationLock.unlock();
       
       try {
         cache = JCS.getInstance("default");
@@ -118,6 +127,8 @@ public class XSugarStandaloneTransformer
         System.out.println("Error initializing cache!");
       }
     }
+
+    initializationLock.unlock();
   }
 
   /**

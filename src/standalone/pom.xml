@@ -44,6 +44,11 @@
       <!-- used for fast-md5 -->
       <id>jboss-thirdparty-releases</id>
       <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
+      </repository>
+    <repository>
+      <!-- used to get around maven whining that we can't use a within-project jar -->
+      <id>xsugar-releases</id>
+      <url>https://raw.github.com/papyri/xsugar/master/src/standalone/mvn/releases</url>
     </repository>
   </repositories>
   
@@ -73,8 +78,6 @@
       <groupId>dk.brics.xsugar</groupId>
       <artifactId>xsugar</artifactId>
       <version>1.2-2</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/lib/xsugar-all.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.apache.jcs</groupId>

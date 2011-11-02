@@ -56,6 +56,14 @@ WORDSN = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0304\u0323]+) 
 //WORDSED allows left and right paren and '+' sign - used to make app lem editorial work when lem resp= includes parens (ex. (BL 1.24))
 //allowed comma on 11/09 because of p.hombert.1.32.xml parse error - change all editorial lem resp= from WORDS to WORDSED
 WORDSED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
+//remove colon WORDSED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
+//BL_ED = ("BL "[^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
+//SOSOL_ED = ("SoSOL "[^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
+OTHER_ED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
+//fails at ?! - doesn't like "Match if suffix is not present group" OTHER_ED = (^((?!(BL|SoSOL|[\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+)).)*$)
+//^((?!(BL|SoSOL|[\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+)).)*$   
+//^(?!.*\b(BL|SoSOL|[\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+)\b).*$
+
 
 //WORDSBL allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
 WORDSBL = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
@@ -234,6 +242,7 @@ supexpan
   >: "(" [WORDS4EXND f] "?" ")"[supexpan more] = <ex cert="low">[WORDS4EXND f]</>[supexpan more]
   >: "(" [WORDS4EXND a] ")"[expanstuff more] = <ex>[WORDS4EXND a]</>[expanstuff more]
   >: "(" [WORDS4EXND f] "?" ")"[expanstuff more] = <ex cert="low">[WORDS4EXND f]</>[expanstuff more]
+  : =
 //  :[expandex g] = [expandex g]
 //  :[expand g] = [expand g]
 //  >:[expando g] = [expando g]
@@ -302,6 +311,8 @@ item_can_nest
 	: [lost_parallel lp] = [lost_parallel lp]
 	>: [fraction f] = [fraction f]
 	: [subst s] = [subst s]
+	: [app_ed e] = [app_ed e]
+	>: [app_ed_mult e] = [app_ed_mult e]
 	>: [app_lem al] = [app_lem al]
 	: [glyph g] = [glyph g]
 	: [hand_shift hs] = [hand_shift hs]
@@ -772,6 +783,37 @@ app_lem
 	: [BEGOPT][items a] "||alt||" [mult_alt_rdgs b][ENDOPT] = <app type="alternative"><lem>[items a]</>[mult_alt_rdgs b]</>
 	>: [BEGOPT][items a] "(?)||alt||"[mult_alt_rdgs b][ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></>[mult_alt_rdgs b]</>
 	
+app_ed
+  : [BEGOPT] [lem_stuff a] "|ed|" [rdg_stuff b] [ENDOPT] = <app type="editorial">[lem_stuff a][rdg_stuff b]</>
+  >: [BEGOPT] [lem_stuff a] "|ed|" [ENDOPT] = <app type="editorial">[lem_stuff a]<rdg></></>
+
+app_ed_mult
+  >: [BEGOPT] [lem_stuff a] "||ed||" [mult_ed_rdgs b] [ENDOPT] = <app type="editorial">[lem_stuff a][mult_ed_rdgs b]</>
+  
+mult_ed_rdgs
+  : [rdg_stuff a] "|" [mult_ed_rdgs more] = [rdg_stuff a][mult_ed_rdgs more]
+  >: [rdg_stuff a] = [rdg_stuff a]
+  
+lem_stuff
+//  : [items a] "(?)=" [BL_ED e] = <lem resp=[BL_ED e]>[items a]<certainty match=".." locus="value"/></>
+//  : [items a] "=" [BL_ED e] = <lem resp=[BL_ED e]>[items a]</>
+//  : [items a] "(?)=" [SOSOL_ED e] = <lem resp=[SOSOL_ED e]>[items a]<certainty match=".." locus="value"/></>
+//  : [items a] "=" [SOSOL_ED e] = <lem resp=[SOSOL_ED e]>[items a]</>
+  : [items a] "(?)=" [OTHER_ED e] = <lem resp=[OTHER_ED e]>[items a]<certainty match=".." locus="value"/></>
+  : [items a] "=" [OTHER_ED e] = <lem resp=[OTHER_ED e]>[items a]</>
+  : [items a] "(?)" = <lem>[items a]<certainty match=".." locus="value"/></>
+  : [items a] = <lem>[items a]</>
+
+rdg_stuff
+//  : [items a] "(?)=" [BL_ED e] = <rdg resp=[BL_ED e]>[items a]<certainty match=".." locus="value"/></>
+//  : [items a] "=" [BL_ED e] = <rdg resp=[BL_ED e]>[items a]</>
+//  : [items a] "(?)=" [SOSOL_ED e] = <rdg resp=[SOSOL_ED e]>[items a]<certainty match=".." locus="value"/></>
+//  : [items a] "=" [SOSOL_ED e] = <rdg resp=[SOSOL_ED e]>[items a]</>
+  : [items a] "(?)=" [OTHER_ED e] = <rdg resp=[OTHER_ED e]>[items a]<certainty match=".." locus="value"/></>
+  : [items a] "=" [OTHER_ED e] = <rdg resp=[OTHER_ED e]>[items a]</>
+  : [items a] "(?)" = <rdg>[items a]<certainty match=".." locus="value"/></>
+  : [items a] = <rdg>[items a]</>
+  
 	//---glyph---
 	//  *a*, *a,b*, *filler(a)*, *@a*  
 glyph
@@ -1069,3 +1111,4 @@ spaceitem
 	: "vac." [NUM v] "-" [NUM w] "lin" "(?) " = <space atLeast=[NUM v] atMost=[NUM w] unit="line"><certainty match=".." locus="name"></></>
 	: "vac.ca." [NUM n] "lin" = <space quantity=[NUM n] unit="line" precision="low"></>
 	: "vac.ca." [NUM n] "lin" "(?) " = <space quantity=[NUM n] unit="line" precision="low"><certainty match=".." locus="name"></></>
+

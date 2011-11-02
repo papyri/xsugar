@@ -170,7 +170,9 @@ module RXSugar
           end #end begin
           # try to transform each XML fragment individually including <lb> tags
           ddbcov.get_all_element_children(divedition).each do |child|
-            xml_fragment_content = child.to_s.tr("'",'"')
+            #xml_fragment_content = child.to_s.tr("'",'"') - stopped changing single quote to double on 11/2/2011 and worked fine in testing JF
+            # was causing errors that were not errors in the nightly canonical testing
+            xml_fragment_content = child.to_s
             fragment_reference = XMLFragmentReference.new(xml_file, child)
             begin
               fragment_reference.text =

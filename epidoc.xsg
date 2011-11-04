@@ -58,14 +58,9 @@ WORDSN = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0304\u0323]+) 
 //allowed comma on 11/09 because of p.hombert.1.32.xml parse error - change all editorial lem resp= from WORDS to WORDSED
 WORDSED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
 //remove colon WORDSED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
-//BL_ED = ("BL "[^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
-//SOSOL_ED = ("SoSOL "[^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
-//OTHER_ED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+)&([^"\S\o\S\O\L\ "]+) (MAX)
-OTHER_ED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
-//fails at ?! - doesn't like "Match if suffix is not present group" OTHER_ED = (^((?!(BL|SoSOL|[\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+)).)*$)
-//^((?!(BL|SoSOL|[\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+)).)*$   
-//^(?!.*\b(BL|SoSOL|[\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+)\b).*$
 
+//ED_CITATION - new format of app type="editorial"
+ED_CITATION = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
 
 //WORDSBL allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
 WORDSBL = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
@@ -194,12 +189,6 @@ multregs
   >: [items a] "(?)" "=" [WORD b] "||reg||" = <reg xml:lang=[WORD b] cert="low">[items a]</>
   : [items a] "=" [WORD b] "|" [multregs more] = <reg xml:lang=[WORD b]>[items a]</>[multregs more]
   >: [items a] "=" [WORD b] "||reg||" = <reg xml:lang=[WORD b]>[items a]</>
-			
-mult_alt_rdgs
-  : [items a] "(?)|" [mult_alt_rdgs more] = <rdg>[items a]<certainty match=".." locus="value"/></>[mult_alt_rdgs more]
-  >: [items a] "(?)" = <rdg>[items a]<certainty match=".." locus="value"/></>
-  : [items a] "|" [mult_alt_rdgs more] = <rdg>[items a]</>[mult_alt_rdgs more]
-  >: [items a] = <rdg>[items a]</>
   
 expanstuff
   : [bef_aft_ex b] "(" [WORDS4EXND a] ")" [bef_aft_ex c] = [bef_aft_ex b]<ex>[WORDS4EXND a]</>[bef_aft_ex c]
@@ -737,35 +726,35 @@ app_lem
 //do not want to allow SoSOL without lem resp so those rules removed
 	
 //this set of app editorial has 'lem resp=' attribute
-	: [BEGOPT] [WORD a] "|ed:" [WORDSED e] "|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[WORD a]</><rdg>[WORDVEST b]</></>
-	>: [BEGOPT] [items a] "|ed:" [WORDSED e] "|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]</><rdg>[WORDVEST b]</></>
-	>: [BEGOPT] [WORD a] "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[WORD a]</><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]</><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "|ed:" [WORDSED c] "|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
-	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSED c] "|" [items b] "(?)"[ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
+//	: [BEGOPT] [WORD a] "|ed:" [WORDSED e] "|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[WORD a]</><rdg>[WORDVEST b]</></>
+//	>: [BEGOPT] [items a] "|ed:" [WORDSED e] "|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]</><rdg>[WORDVEST b]</></>
+//	>: [BEGOPT] [WORD a] "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[WORD a]</><rdg>[items b]</></>
+//	>: [BEGOPT] [items a] "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]</><rdg>[items b]</></>
+//	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
+//	>: [BEGOPT] [items a] "|ed:" [WORDSED c] "|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
+//	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSED c] "|" [items b] "(?)"[ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag lem on editorial with resp
-	>: [BEGOPT] "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]/><rdg>[items b]</></>
-	>: [BEGOPT] "|ed:" [WORDSED e] "|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]/><rdg>[items b]<certainty match=".." locus="value"/></></>
+//	>: [BEGOPT] "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]/><rdg>[items b]</></>
+//	>: [BEGOPT] "|ed:" [WORDSED e] "|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]/><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag lem on editorial without resp
-	>: [BEGOPT] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]</></>
-	>: [BEGOPT] "|ed:|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]<certainty match=".." locus="value"/></></>
+//	>: [BEGOPT] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]</></>
+//	>: [BEGOPT] "|ed:|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag rdg on editorial with resp
-	>: [BEGOPT] [items a] "|ed:" [WORDSED e] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]</><rdg></></>
-	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSED c] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]<certainty match=".." locus="value"/></><rdg></></>
+//	>: [BEGOPT] [items a] "|ed:" [WORDSED e] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]</><rdg></></>
+//	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSED c] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]<certainty match=".." locus="value"/></><rdg></></>
 //line below added for the '(BL 1.24)' at the end of the 'lem resp=' attribute value - parens cannot be a valid value in WORD or WORDS
 //	>: [BEGOPT] [items a] "|ed:" [WORDSED c] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]</><rdg>[items b]</></>
 //this set of app editorial does not have 'lem resp=' attribute
-	: [BEGOPT] [WORDSNONUM a] "|ed:|" [WORD b] [ENDOPT] = <app type="editorial"><lem>[WORDSNONUM a]</><rdg>[WORD b]</></>
-	>: [BEGOPT] [items a] "|ed:|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[WORDVEST b]</></>
-	>: [BEGOPT] [WORDSNONUM a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[WORDSNONUM a]</><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "(?)" "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "|ed:|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
-	>: [BEGOPT] [items a] "(?)" "|ed:|" [items b] "(?)"[ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
+//	: [BEGOPT] [WORDSNONUM a] "|ed:|" [WORD b] [ENDOPT] = <app type="editorial"><lem>[WORDSNONUM a]</><rdg>[WORD b]</></>
+//	>: [BEGOPT] [items a] "|ed:|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[WORDVEST b]</></>
+//	>: [BEGOPT] [WORDSNONUM a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[WORDSNONUM a]</><rdg>[items b]</></>
+//	>: [BEGOPT] [items a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]</></>
+//	>: [BEGOPT] [items a] "(?)" "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
+//	>: [BEGOPT] [items a] "|ed:|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
+//	>: [BEGOPT] [items a] "(?)" "|ed:|" [items b] "(?)"[ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
 //line below added for empty tag rdg on editorial without resp
-	>: [BEGOPT] [items a] "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg></></>
-	>: [BEGOPT] [items a] "(?)" "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg></></>
+//	>: [BEGOPT] [items a] "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg></></>
+//	>: [BEGOPT] [items a] "(?)" "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg></></>
 	
 //	: [BEGOPT] [WORD a] "|alt|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[WORDVEST b]</></>
 //	>: [BEGOPT] [items a] "|alt|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[WORDVEST b]</></>
@@ -784,10 +773,15 @@ app_lem
 //multiple rdg tags - needs to be down here or nested regs above not work correctly
 	: [BEGOPT][items a] "||alt||" [mult_alt_rdgs b][ENDOPT] = <app type="alternative"><lem>[items a]</>[mult_alt_rdgs b]</>
 	>: [BEGOPT][items a] "(?)||alt||"[mult_alt_rdgs b][ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></>[mult_alt_rdgs b]</>
+
+mult_alt_rdgs
+  : [items a] "(?)|" [mult_alt_rdgs more] = <rdg>[items a]<certainty match=".." locus="value"/></>[mult_alt_rdgs more]
+  >: [items a] "(?)" = <rdg>[items a]<certainty match=".." locus="value"/></>
+  : [items a] "|" [mult_alt_rdgs more] = <rdg>[items a]</>[mult_alt_rdgs more]
+  >: [items a] = <rdg>[items a]</>
 	
 app_ed
   : [BEGOPT] [lem_stuff a] "|ed|" [rdg_stuff b] [ENDOPT] = <app type="editorial">[lem_stuff a][rdg_stuff b]</>
-  >: [BEGOPT] [lem_stuff a] "|ed|" [ENDOPT] = <app type="editorial">[lem_stuff a]<rdg></></>
 
 app_ed_mult
   >: [BEGOPT] [lem_stuff a] "||ed||" [mult_ed_rdgs b] [ENDOPT] = <app type="editorial">[lem_stuff a][mult_ed_rdgs b]</>
@@ -797,24 +791,20 @@ mult_ed_rdgs
   >: [rdg_stuff a] = [rdg_stuff a]
   
 lem_stuff
-//  : [items a] "(?)=" [BL_ED e] = <lem resp=[BL_ED e]>[items a]<certainty match=".." locus="value"/></>
-//  : [items a] "=" [BL_ED e] = <lem resp=[BL_ED e]>[items a]</>
-//  : [items a] "(?)=" [SOSOL_ED e] = <lem resp=[SOSOL_ED e]>[items a]<certainty match=".." locus="value"/></>
-//  : [items a] "=" [SOSOL_ED e] = <lem resp=[SOSOL_ED e]>[items a]</>
-  : [items a] "(?)=" [OTHER_ED e] = <lem resp=[OTHER_ED e]>[items a]<certainty match=".." locus="value"/></>
-  : [items a] "=" [OTHER_ED e] = <lem resp=[OTHER_ED e]>[items a]</>
+  : [items a] "(?)=" [ED_CITATION e] = <lem resp=[ED_CITATION e]>[items a]<certainty match=".." locus="value"/></>
+  : [items a] "=" [ED_CITATION e] = <lem resp=[ED_CITATION e]>[items a]</>
   : [items a] "(?)" = <lem>[items a]<certainty match=".." locus="value"/></>
   : [items a] = <lem>[items a]</>
+  : = <lem></>
+  : "=" [ED_CITATION e] = <lem resp=[ED_CITATION e]></>
 
 rdg_stuff
-//  : [items a] "(?)=" [BL_ED e] = <rdg resp=[BL_ED e]>[items a]<certainty match=".." locus="value"/></>
-//  : [items a] "=" [BL_ED e] = <rdg resp=[BL_ED e]>[items a]</>
-//  : [items a] "(?)=" [SOSOL_ED e] = <rdg resp=[SOSOL_ED e]>[items a]<certainty match=".." locus="value"/></>
-//  : [items a] "=" [SOSOL_ED e] = <rdg resp=[SOSOL_ED e]>[items a]</>
-  : [items a] "(?)=" [OTHER_ED e] = <rdg resp=[OTHER_ED e]>[items a]<certainty match=".." locus="value"/></>
-  : [items a] "=" [OTHER_ED e] = <rdg resp=[OTHER_ED e]>[items a]</>
+  : [items a] "(?)=" [ED_CITATION e] = <rdg resp=[ED_CITATION e]>[items a]<certainty match=".." locus="value"/></>
+  : [items a] "=" [ED_CITATION e] = <rdg resp=[ED_CITATION e]>[items a]</>
   : [items a] "(?)" = <rdg>[items a]<certainty match=".." locus="value"/></>
   : [items a] = <rdg>[items a]</>
+  : = <rdg></>
+  : "=" [ED_CITATION e] = <rdg resp=[ED_CITATION e]></>
   
 	//---glyph---
 	//  *a*, *a,b*, *filler(a)*, *@a*  

@@ -694,71 +694,8 @@ subst
 	>: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[WORDVEST b]</></>
 	
 	//---app_lem---
-	//  <:|abc|def|:> 
-app_lem
-	: [BEGOPT] [WORD a] "|BL:" [WORDSBL c] "|" [WORD b] [QUESTION q] [ENDOPT] = <app type="BL"><lem resp=[WORDSBL c]>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
-//this set of app BL has 'lem resp=' attribute
-//	>: [BEGOPT] [items a] "|BL:" [WORDSBL c] "|" [WORD b] [ENDOPT] = <app type="BL"><lem resp=[WORDSBL c]>[items a]</><rdg>[WORD b]</></>
-//	>: [BEGOPT] [WORD a] "|BL:" [WORDSBL c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSBL c]>[WORD a]</><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "|BL:" [WORDSBL c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSBL c]>[items a]</><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "(?)" "|BL:" [WORDSBL c] "|" [items b] [ENDOPT] = <app type="BL"><lem resp=[WORDSBL c]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "|BL:" [WORDSBL c] "|" [items b] "(?)" [ENDOPT] = <app type="BL"><lem resp=[WORDSBL c]>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
-	>: [BEGOPT] [items a] "(?)" "|BL:" [WORDSBL c] "|" [items b] "(?)"[ENDOPT] = <app type="BL"><lem resp=[WORDSBL c]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
-//line below added for empty tag rdg on BL with resp attribute
-	>: [BEGOPT] [items a] "|BL:" [WORDSBL c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDSBL c]>[items a]</><rdg></></>
-	>: [BEGOPT] [items a] "(?)" "|BL:" [WORDSBL c] "|" [ENDOPT] = <app type="BL"><lem resp=[WORDSBL c]>[items a]<certainty match=".." locus="value"/></><rdg></></>
-//this set of app Bl does not have 'lem resp=' attribute
-	>: [BEGOPT] [items a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "(?)" "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
-	>: [BEGOPT] [items a] "|BL:|" [items b] "(?)" [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
-	>: [BEGOPT] [items a] "(?)" "|BL:|" [items b] "(?)"[ENDOPT] = <app type="BL"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
-	>: [BEGOPT] [items a] "|BL:|" [ENDOPT] = <app type="BL"><lem>[items a]</><rdg></></>
-	>: [BEGOPT] [items a] "(?)" "|BL:|" [ENDOPT] = <app type="BL"><lem>[items a]<certainty match=".." locus="value"/></><rdg></></>
-//	>: [BEGOPT] [items a] "|BL:|" [WORD b] [ENDOPT] = <app type="BL"><lem>[items a]</><rdg>[WORD b]</></>
-//	>: [BEGOPT] [WORD a] "|BL:|" [items b] [ENDOPT] = <app type="BL"><lem>[WORD a]</><rdg>[items b]</></>
-
-//  <:abc|SoSOL:sirname|def:> - repeated BL stuff above and changed to SoSOL for type - only with lem resp= to force that
-	: [BEGOPT] [WORD a] "|SoSOL:" [WORDSED c] "|" [WORD b] [QUESTION q] [ENDOPT] = <app type="SoSOL"><lem resp=[WORDSED c]>[WORD a]</><rdg>[WORD b][QUESTION q]</></>
-//this set of app SoSOL has 'lem resp=' attribute
-	>: [BEGOPT] [items a] "|SoSOL:" [WORDSED c] "|" [items b] [ENDOPT] = <app type="SoSOL"><lem resp=[WORDSED c]>[items a]</><rdg>[items b]</></>
-//line below added for empty tag rdg on SoSOL
-	>: [BEGOPT] [items a] "|SoSOL:" [WORDSED c] "|" [ENDOPT] = <app type="SoSOL"><lem resp=[WORDSED c]>[items a]</><rdg></></>
-//do not want to allow SoSOL without lem resp so those rules removed
-	
-//this set of app editorial has 'lem resp=' attribute
-//	: [BEGOPT] [WORD a] "|ed:" [WORDSED e] "|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[WORD a]</><rdg>[WORDVEST b]</></>
-//	>: [BEGOPT] [items a] "|ed:" [WORDSED e] "|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]</><rdg>[WORDVEST b]</></>
-//	>: [BEGOPT] [WORD a] "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[WORD a]</><rdg>[items b]</></>
-//	>: [BEGOPT] [items a] "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]</><rdg>[items b]</></>
-//	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
-//	>: [BEGOPT] [items a] "|ed:" [WORDSED c] "|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
-//	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSED c] "|" [items b] "(?)"[ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
-//line below added for empty tag lem on editorial with resp
-//	>: [BEGOPT] "|ed:" [WORDSED e] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]/><rdg>[items b]</></>
-//	>: [BEGOPT] "|ed:" [WORDSED e] "|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]/><rdg>[items b]<certainty match=".." locus="value"/></></>
-//line below added for empty tag lem on editorial without resp
-//	>: [BEGOPT] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]</></>
-//	>: [BEGOPT] "|ed:|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem/><rdg>[items b]<certainty match=".." locus="value"/></></>
-//line below added for empty tag rdg on editorial with resp
-//	>: [BEGOPT] [items a] "|ed:" [WORDSED e] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED e]>[items a]</><rdg></></>
-//	>: [BEGOPT] [items a] "(?)" "|ed:" [WORDSED c] "|" [ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]<certainty match=".." locus="value"/></><rdg></></>
-//line below added for the '(BL 1.24)' at the end of the 'lem resp=' attribute value - parens cannot be a valid value in WORD or WORDS
-//	>: [BEGOPT] [items a] "|ed:" [WORDSED c] "|" [items b] [ENDOPT] = <app type="editorial"><lem resp=[WORDSED c]>[items a]</><rdg>[items b]</></>
-//this set of app editorial does not have 'lem resp=' attribute
-//	: [BEGOPT] [WORDSNONUM a] "|ed:|" [WORD b] [ENDOPT] = <app type="editorial"><lem>[WORDSNONUM a]</><rdg>[WORD b]</></>
-//	>: [BEGOPT] [items a] "|ed:|" [WORDVEST b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[WORDVEST b]</></>
-//	>: [BEGOPT] [WORDSNONUM a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[WORDSNONUM a]</><rdg>[items b]</></>
-//	>: [BEGOPT] [items a] "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]</></>
-//	>: [BEGOPT] [items a] "(?)" "|ed:|" [items b] [ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
-//	>: [BEGOPT] [items a] "|ed:|" [items b] "(?)" [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>
-//	>: [BEGOPT] [items a] "(?)" "|ed:|" [items b] "(?)"[ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]<certainty match=".." locus="value"/></></>
-//line below added for empty tag rdg on editorial without resp
-//	>: [BEGOPT] [items a] "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]</><rdg></></>
-//	>: [BEGOPT] [items a] "(?)" "|ed:|" [ENDOPT] = <app type="editorial"><lem>[items a]<certainty match=".." locus="value"/></><rdg></></>
-	
-//	: [BEGOPT] [WORD a] "|alt|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[WORDVEST b]</></>
-//	>: [BEGOPT] [items a] "|alt|" [WORDVEST b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[WORDVEST b]</></>
-//	>: [BEGOPT] [WORD a] "|alt|" [items b] [ENDOPT] = <app type="alternative"><lem>[WORD a]</><rdg>[items b]</></>
+	//  <:abc|alt|def|:> 
+app_lem	
 	>: [BEGOPT] [items a] "|alt|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "(?)" "|alt|" [items b] [ENDOPT] = <app type="alternative"><lem>[items a]<certainty match=".." locus="value"/></><rdg>[items b]</></>
 	>: [BEGOPT] [items a] "|alt|" [items b] "(?)" [ENDOPT] = <app type="alternative"><lem>[items a]</><rdg>[items b]<certainty match=".." locus="value"/></></>

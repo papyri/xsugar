@@ -47,8 +47,9 @@ WORDS = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0
 WORDSNONUM = ([^\/\\\n\r\t\[\]\^<>0-9_#@~〚〛$\*\&\,\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
 //WORDSF allows space (therefore multiple words) and DOT - allow ?, \, , $, +, : for foreign language
-WORDSF = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0304\u0323v]+) (MAX)
-//WORDSF = (([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0304\u0323v]+)|([^vac]+)) - this not work so just added v to WORDSF
+// added &([^\-\-\-\-]+) at the end to not allow horizontal-rule and paragraphos on 2011-11-03
+WORDSF = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0304\u0323v]+)&([^\-\-\-\-]+) (MAX)
+//WORDSF = (([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0304\u0323v0-9]+)|([^vac]+)) - this not work so just added v to WORDSF
 
 //WORDSN same as WORDSF except for 'v' not in list
 WORDSN = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛\*\&\=\|\'\!\(\)\{\}\"¯\u0304\u0323]+) (MAX)
@@ -59,6 +60,7 @@ WORDSED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+
 //remove colon WORDSED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
 //BL_ED = ("BL "[^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
 //SOSOL_ED = ("SoSOL "[^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
+//OTHER_ED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+)&([^"\S\o\S\O\L\ "]+) (MAX)
 OTHER_ED = ([^\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+) (MAX)
 //fails at ?! - doesn't like "Match if suffix is not present group" OTHER_ED = (^((?!(BL|SoSOL|[\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+)).)*$)
 //^((?!(BL|SoSOL|[\/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\'\!\{\}\?\"¯\u0304\u0323]+)).)*$   
@@ -317,7 +319,7 @@ item_can_nest
 	: [glyph g] = [glyph g]
 	: [hand_shift hs] = [hand_shift hs]
 	: [spaceitem s] = [spaceitem s]
-	: [words_foreign wf] = [words_foreign wf]
+//	: [words_foreign wf] = [words_foreign wf]
 	: [note n] = [note n]
 	: [foreign_lang fl] = [foreign_lang fl]
 	: [figure f] = [figure f]

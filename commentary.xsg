@@ -7,7 +7,7 @@ BEGP = [\n]{2}
 BEGWRAP = "<W:"
 ENDWRAP = ":W>"
 
-PN_URL = ((ddbdp/)|(hgv/)|(apis/))
+PN_URL = ((ddbdp/)|(hgv/)|(apis/)|(biblio/))
 
 NUM_RNG_WHL = ([0-9]+\-{1}[0-9]+|[0-9]+|[IVXLCDM]+\-{1}[IVXLCDM]+|[IVXLCDM]+|[ivxlcdm]+\-{1}[ivxlcdm]+|[ivxlcdm]+)
 

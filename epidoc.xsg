@@ -122,7 +122,7 @@ FRACNUM = ([0-9]+\/{1}[0-9]+|[0-9]+)
 // appnum is for recognizing app_lem number
 APPNUM = [0-9]+\.{1}[0-9]+
 
-LANGLIST = ((Arabic)|(Aramaic)|(Coptic)|(Demotic)|(Hieratic)|(Nabatean))
+LANGLIST = ((Arabic)|(Aramaic)|(Coptic)|(Demotic)|(Gothic)|(Hebrew)|(Hieratic)|(Nabatean)|(Syriac))
 TEXTLANGLIST = ((grc)|(la)|(la\-Grek)|(grc\-Latn)|(cop))
 
 ADDLIST = ((bottom)|(left)|(right)|(top)|(margin))

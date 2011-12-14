@@ -98,7 +98,21 @@ public class LeidenPlusSplitter implements SplitterJoiner {
         int index = -1;
         while ((index = line.indexOf(key, index + 1)) >= 0) {
           if (elts[index] == null) {
-            elts[index] = tokens.get(key);
+            if (index > 0) {
+              // this condition will never be on index 0
+              // if user enters '|_[' - which is an open supplied paralell undefined followed immediately by a supplied lost
+              // it confuses the splitter which also finds open supplied paralell lost '_[' that is not really there
+              // the check below finds this condition and does not load key into the 'elts[index]'
+              if ("open-supplied.parallel.lost" == tokens.get(key) && "|".equals(line.substring(index-1, index))) {
+                continue;
+              }
+              else {
+                elts[index] = tokens.get(key);
+              }
+            }
+            else { //index not > 0
+                elts[index] = tokens.get(key);
+              }
           }
           else { //not null means another L+ start/close has been found in this position already
             if (elts[index] == "close-supplied.parallel.lost") { //means already found this one and now found the [ again so need to pop twice on unload

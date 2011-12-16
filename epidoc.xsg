@@ -280,6 +280,7 @@ item_can_nest
 	: [app_ed e] = [app_ed e]
 	>: [app_ed_mult e] = [app_ed_mult e]
 	>: [app_lem al] = [app_lem al]
+//	>: [app_lem_mult alm] = [app_lem_mult alm]   ****** Hugh uncomment this line for new app lem with resp= grammar and remove this comment ******
 	: [glyph g] = [glyph g]
 	: [hand_shift hs] = [hand_shift hs]
 	: [spaceitem s] = [spaceitem s]
@@ -677,6 +678,7 @@ subst
 	>: [BEGOPT] [WORDVEST a] "(?)" "|subst|" [items b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]<certainty match=".." locus="value"/></><del rend="corrected">[items b]</></>
 	>: [BEGOPT] [WORDVEST a] "|subst|" [WORDVEST b] [ENDOPT] = <subst><add place="inline">[WORDVEST a]</><del rend="corrected">[WORDVEST b]</></>
 	
+//start of original app_lem ********************************************************************** Hugh
 	//---app_lem---
 	//  <:abc|alt|def|:>, <:abc(?)|alt|def|:>, <:abc|alt|def(?)|:>, <:abc(?)|alt|def(?)|:>, , <:abc|alt||:>, <:abc(?)|alt||:>, <:|alt|def|:>, <:|alt|def(?)|:>
 	//  <:abc||alt||def|ghi|jkl|:>, <:abc||alt||def|ghi(?)|jkl|:>, <:abc(?)||alt||def|ghi|jkl|:>, <:abc(?)||alt||def|ghi(?)|jkl|:>
@@ -701,6 +703,28 @@ mult_alt_rdgs
   >: [items a] "(?)" = <rdg>[items a]<certainty match=".." locus="value"/></>
   : [items a] "|" [mult_alt_rdgs more] = <rdg>[items a]</>[mult_alt_rdgs more]
   >: [items a] = <rdg>[items a]</>
+//end of original app_lem ********************************************************************** Hugh
+
+
+// Hugh - to change 'app type="alternative" grammar to allow resp= on lem and rdg like 'editorial'
+// comment or remove the lines above between 'start of original app_lem' and 'end of original app_lem'
+// uncomment the lines below between 'start of new app_lem with resp=' and 'end of new app_lem with resp=' 
+// this grammar uses the exact same lem and rdg grammar as the 'editorial' 
+// uncomment the 'test_new_alternative' test cases in test_grammar.rb also
+
+
+//start of new app_lem with resp= ********************************************************************** Hugh
+//	//---app_lem---
+//	//  <:abc|alt|def:>, <:abc=citation|alt|def:>, <:abc(?)|alt|def:>, <:abc(?)=citation|alt|def:>, 
+//	//  <:abc|alt|def=citation:>, <:abc|alt|def(?):>, <:abc|alt|def(?)=citation:>,
+//	//  <:abc||alt||def|ghi|jkl|:>, <:abc||alt||def|ghi(?)|jkl|:>, <:abc||alt||def|ghi=citation|jkl|:>, <:abc(?)||alt||def|ghi(?)=citation|jkl|:>,
+//	//  and other combinations of above = standardized citations starting with BL and PN are editorial board enforced
+//app_lem
+//  : [BEGOPT] [lem_stuff a] "|alt|" [rdg_stuff b] [ENDOPT] = <app type="alternative">[lem_stuff a][rdg_stuff b]</>
+//
+//app_lem_mult
+//  >: [BEGOPT] [lem_stuff a] "||alt||" [mult_ed_rdgs b] [ENDOPT] = <app type="alternative">[lem_stuff a][mult_ed_rdgs b]</>
+//end of new app_lem with resp= ********************************************************************** Hugh
 	
 	//---app_ed---
 	//  <:abc|ed|def:>, <:abc=citation|ed|def:>, <:abc(?)|ed|def:>, <:abc(?)=citation|ed|def:>, 

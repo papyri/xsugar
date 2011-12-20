@@ -9,9 +9,9 @@ if(RUBY_PLATFORM == 'java')
 
 aline here
 text front *make this bold* text end
-one more line', 'more up front<p>aline here
+one: more line', 'more up front<p>aline here
 text front <emph rend="bold">make this bold</emph> text end
-one more line</p>'
+one: more line</p>'
       assert_equal_fragment_transform 'more up front
 
 another paragraph
@@ -65,6 +65,7 @@ text front *make this bold* text end', '<p>text front <emph rend="bold">make thi
 
     def test_footnote
       assert_equal_fragment_transform '<:fn=this is the footnote:>', '<note type="footnote" xml:lang="en">this is the footnote</note>'
+      assert_equal_fragment_transform '<:fn=thi:s is the: footnote: that contains colon:>', '<note type="footnote" xml:lang="en">thi:s is the: footnote: that contains colon</note>'
     end
 #=end
     def test_bib
@@ -84,6 +85,7 @@ text front *make this bold* text end', '<p>text front <emph rend="bold">make thi
       assert_equal_fragment_transform '<:the words for the link|apis/bgu;7;33:>', '<ref target="http://papyri.info/apis/bgu;7;33">the words for the link</ref>'
       assert_equal_fragment_transform '<:the words for the link|www.somesite.com/index.html:>', '<ref target="http://www.somesite.com/index.html">the words for the link</ref>'
       assert_equal_fragment_transform '<:the words for the link|www.somesite.com/recall.php?do=house boat:>', '<ref target="http://www.somesite.com/recall.php?do=house boat">the words for the link</ref>'
+      assert_equal_fragment_transform '<:the words for the link|www.somesite.com/rec:all.php?do=hou:se bo:at:>', '<ref target="http://www.somesite.com/rec:all.php?do=hou:se bo:at">the words for the link</ref>'
     end 
     
     def test_apos_quotations

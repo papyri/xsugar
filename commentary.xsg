@@ -12,10 +12,14 @@ PN_URL = ((ddbdp/)|(hgv/)|(apis/)|(biblio/))
 NUM_RNG_WHL = ([0-9]+\-{1}[0-9]+|[0-9]+|[IVXLCDM]+\-{1}[IVXLCDM]+|[IVXLCDM]+|[ivxlcdm]+\-{1}[ivxlcdm]+|[ivxlcdm]+)
 
 //same as WORDSLOOSE except for slashes and tab, no line returns, and no + for 1 or more and no MAX designator
-ANYLETTER = [^\/\\\t<>_\:\*\|]
+ANYLETTER = [^\/\\\t<>_\*\|]
 
 //very permisive for free text, only remove what is in grammar
-WORDSLOOSE = ([^\n\r<>_\:\*\|]+) (MAX)
+WORDSLOOSE = ([^\n\r<>_\*\|]+)
+//stops at :> at end of link or footnote grammar - stops at '|' in links
+URL_LOOSE = ([^\|>]+[^\|\:>]{1}) (MAX)
+//used for text portion of link - stops at '|' in links
+TEXT_LOOSE = ([^\n\r\|]+) (MAX)
 
 wrap 
   : [BEGWRAP] [items i] [ENDWRAP] = <wrap>[items i]</>
@@ -95,17 +99,17 @@ paragraph
   : [BEGP] [paragraph_item_not_nest pinn] = <p>[paragraph_item_not_nest pinn]</>
   
 footnote
-  : "<:fn=" [WORDSLOOSE text] ":>" = <note type="footnote" xml:lang="en">[WORDSLOOSE text]</>
+  : "<:fn=" [URL_LOOSE text] ":>" = <note type="footnote" xml:lang="en">[URL_LOOSE text]</>
   
 pn_target
-  : [PN_URL pnurl][WORDSLOOSE url] = "http://papyri.info/" [PN_URL pnurl][WORDSLOOSE url]
-  >: [WORDSLOOSE url] = "http://" [WORDSLOOSE url]
+  : [PN_URL pnurl][URL_LOOSE url] = "http://papyri.info/" [PN_URL pnurl][URL_LOOSE url]
+  >: [URL_LOOSE url] = "http://" [URL_LOOSE url]
   
 url
-  : "<:" [WORDSLOOSE text] "|" [pn_target pt] ":>" = <ref target=[pn_target pt]>[WORDSLOOSE text]</>
+  : "<:" [TEXT_LOOSE text] "|" [pn_target pt] ":>" = <ref target=[pn_target pt]>[TEXT_LOOSE text]</>
 
 bib_target
-  : "bibl/" [WORDSLOOSE url] = "http://" [WORDSLOOSE url] 
+  : "bibl/" [URL_LOOSE url] = "http://" [URL_LOOSE url] 
     
 bib_scope
   : [bib_scope_detail bsd] [bib_scope more] = [bib_scope_detail bsd] [bib_scope more]

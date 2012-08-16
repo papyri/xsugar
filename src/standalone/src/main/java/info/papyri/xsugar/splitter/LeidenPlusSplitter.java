@@ -90,14 +90,14 @@ public class LeidenPlusSplitter implements SplitterJoiner {
       if (next != null) {
         out.append("\n");
       }
-      if (line.startsWith("<S=")) {
-        Matcher m = lang.matcher(line);
+      if (line.trim().startsWith("<S=")) {
+        Matcher m = lang.matcher(line.trim());
         if (m.find()) {
           language = m.group(2);
         }
       }
-      if (line.startsWith("<T=")) {
-        Matcher m = tlang.matcher(line);
+      if (line.trim().startsWith("<T=")) {
+        Matcher m = tlang.matcher(line.trim());
         if (m.find()) {
           language = m.group(2);
         }
@@ -174,8 +174,8 @@ public class LeidenPlusSplitter implements SplitterJoiner {
               out.append(close);
             }
           }
-          result.add(out.toString()); //send out chunck
-          out = new StringBuilder();  //clear for new chunck
+          result.add(out.toString()); //send out chunk
+          out = new StringBuilder();  //clear for new chunk
           for (Iterator<String> i = elements.descendingIterator(); i.hasNext();) { //start new chunk with same tags as previous chunk
             String token = i.next();
             out.append(tokensRev.get(token));
@@ -183,7 +183,7 @@ public class LeidenPlusSplitter implements SplitterJoiner {
               out.append(language); //add language to div edition saved from first chunk
             }
             if ("open-div".equals(token)) {
-              out.append(".fake");
+              out.append(".fake ");
             }
           }
           out.append("☃\n"); // ☃\n before closer is crucial, as we'll snip there when we re-join the chunks

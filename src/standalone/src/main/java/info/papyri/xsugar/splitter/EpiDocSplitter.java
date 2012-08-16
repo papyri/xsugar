@@ -126,7 +126,9 @@ public class EpiDocSplitter implements SplitterJoiner {
       }
       if ("lb".equals(localName)) {
         lineCount++;
-        if (lineCount % splitOn == 0) split = true;
+        if (lineCount % splitOn == 0) {
+          split = true;
+        }
         if (split && "ab".equals(stack.peek().get(0))) {
           split = false;
           //strip and re-add any characters on the line prior to the lb tag to make the parse error

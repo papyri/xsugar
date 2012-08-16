@@ -27,6 +27,7 @@ public class LeidenPlusSplitter implements SplitterJoiner {
   private static Map<String, String> tokensRev = new HashMap<String, String>();
   private static Pattern linenum = Pattern.compile("^\\s*[0-9]+[/\\\\,a-zA-Z0-9]*[ms0-9]*\\.");
   private static Pattern lang = Pattern.compile("(^<S=)([-a-zA-Z.]+)");
+  private static Pattern tlang = Pattern.compile("(^<T=)([-a-zA-Z.]+)");
   private int splitOn = 20;
 
   public LeidenPlusSplitter() {
@@ -40,6 +41,8 @@ public class LeidenPlusSplitter implements SplitterJoiner {
 
   private void init() {
     tokens.put("<S=", "open-div.edition");
+    tokens.put("<T=", "open-div.translation");
+    tokens.put("=T>", "close-div.translation");
     tokens.put("<D=", "open-div");
     tokens.put("=D>", "close-div");
     tokens.put("<=", "open-ab");
@@ -84,10 +87,20 @@ public class LeidenPlusSplitter implements SplitterJoiner {
     while (line != null) {
       out.append(line);
       String next = reader.readLine();
-      if (next != null) out.append("\n");
+      if (next != null) {
+        out.append("\n");
+      }
       if (line.startsWith("<S=")) {
         Matcher m = lang.matcher(line);
-        if (m.find()) language = m.group(2);
+        if (m.find()) {
+          language = m.group(2);
+        }
+      }
+      if (line.startsWith("<T=")) {
+        Matcher m = tlang.matcher(line);
+        if (m.find()) {
+          language = m.group(2);
+        }
       }
       // figure out stack state at the end of the line
       if (line.length() > elts.length) {
@@ -103,7 +116,7 @@ public class LeidenPlusSplitter implements SplitterJoiner {
               // if user enters '|_[' - which is an open supplied paralell undefined followed immediately by a supplied lost
               // it confuses the splitter which also finds open supplied paralell lost '_[' that is not really there
               // the check below finds this condition and does not load key into the 'elts[index]'
-              if ("open-supplied.parallel.lost" == tokens.get(key) && "|".equals(line.substring(index-1, index))) {
+              if ("open-supplied.parallel.lost".equals(tokens.get(key)) && "|".equals(line.substring(index-1, index))) {
                 continue;
               }
               else {
@@ -115,7 +128,7 @@ public class LeidenPlusSplitter implements SplitterJoiner {
               }
           }
           else { //not null means another L+ start/close has been found in this position already
-            if (elts[index] == "close-supplied.parallel.lost") { //means already found this one and now found the [ again so need to pop twice on unload
+            if ("close-supplied.parallel.lost".equals(elts[index])) { //means already found this one and now found the [ again so need to pop twice on unload
               elts[index] = "close-pop-twice";
             }
             else {
@@ -132,7 +145,7 @@ public class LeidenPlusSplitter implements SplitterJoiner {
           if (elts[i].startsWith("close-") && elements.peek().equals(elts[i].replace("close-", "open-"))) {
             elements.pop();
           }
-          if (elts[i] == "close-pop-twice") { //second half of special processing with supplied lost and parallel supplied lost
+          if ("close-pop-twice".equals(elts[i])) { //second half of special processing with supplied lost and parallel supplied lost
             elements.pop();
             elements.pop();
           }
@@ -166,7 +179,7 @@ public class LeidenPlusSplitter implements SplitterJoiner {
           for (Iterator<String> i = elements.descendingIterator(); i.hasNext();) { //start new chunk with same tags as previous chunk
             String token = i.next();
             out.append(tokensRev.get(token));
-            if ("open-div.edition".equals(token)) {
+            if ("open-div.edition".equals(token) || "open-div.translation".equals(token)) {
               out.append(language); //add language to div edition saved from first chunk
             }
             if ("open-div".equals(token)) {

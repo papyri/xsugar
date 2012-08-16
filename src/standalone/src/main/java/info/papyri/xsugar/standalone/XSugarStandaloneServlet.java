@@ -1,31 +1,23 @@
 package info.papyri.xsugar.standalone;
 
-import java.io.*;
-import java.net.URL;
-import java.util.*;
-
-import javax.servlet.*;
-import javax.servlet.http.*;
-
-import info.papyri.xsugar.standalone.XSugarStandaloneTransformer;
-import info.papyri.xsugar.standalone.XSugarTransformerPool;
-import info.papyri.xsugar.standalone.XSugarTransformerFactory;
 import info.papyri.xsugar.splitter.EpiDocSplitter;
 import info.papyri.xsugar.splitter.LeidenPlusSplitter;
 import info.papyri.xsugar.splitter.SplitterJoiner;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringEscapeUtils;
-
+import java.io.*;
+import java.net.URL;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 
 public class XSugarStandaloneServlet extends HttpServlet
 {
-  private Hashtable transformers = null;
+  private HashMap<String,XSugarTransformerPool> transformers = null;
   private ConcurrentHashMap transformationLocks = null;
 
   private static String[] known_grammars = {"epidoc", "translation_epidoc","commentary"};
@@ -35,12 +27,13 @@ public class XSugarStandaloneServlet extends HttpServlet
    *
    * Initializes all known grammars.
    */
+  @Override
   public void init(ServletConfig config)
     throws ServletException
   {
     super.init(config);
 
-    transformers = new Hashtable();
+    transformers = new HashMap<String,XSugarTransformerPool>();
     transformationLocks = new ConcurrentHashMap();
 
     System.out.println("Initializing known-grammars...");
@@ -79,8 +72,7 @@ public class XSugarStandaloneServlet extends HttpServlet
    */
   private XSugarTransformerPool getTransformerPool(String transformer_name)
   {
-    XSugarTransformerPool transformer = 
-      (XSugarTransformerPool)transformers.get(transformer_name);
+    XSugarTransformerPool transformer = transformers.get(transformer_name);
     if (transformer == null) {
       System.out.println("Cache miss for " + transformer_name);
 
@@ -123,11 +115,10 @@ public class XSugarStandaloneServlet extends HttpServlet
       split_counter++;
       
       try {
-        String item_result = "";
+        String item_result;
         if(direction.equals("xml2nonxml")) {
           item_result = transformer.XMLToNonXML(split_item);
-        }
-        else {
+        } else {
           item_result = transformer.nonXMLToXML(split_item);
         }
         //add up the lines successfully transformed for adjusting line counter on parse exception if it occurs
@@ -202,7 +193,7 @@ public class XSugarStandaloneServlet extends HttpServlet
     try {
       if (direction.equals("xml2nonxml"))
       {
-        if (transform_type.equals("epidoc")) {
+        if (transform_type.contains("epidoc")) {
           try {
             result = doSplitTransform(content, transformer, direction, new EpiDocSplitter(), new LeidenPlusSplitter());
           }
@@ -218,7 +209,7 @@ public class XSugarStandaloneServlet extends HttpServlet
       }
       else if (direction.equals("nonxml2xml"))
       {
-        if (transform_type.equals("epidoc")) {
+        if (transform_type.contains("epidoc")) {
           try {
             result = doSplitTransform(content, transformer, direction, new LeidenPlusSplitter(), new EpiDocSplitter());
           }
@@ -237,17 +228,17 @@ public class XSugarStandaloneServlet extends HttpServlet
       }
     }
     catch (Exception e) {
-      pool.returnObject(transformer);
-      transformationLock.unlock();
       System.out.println("Released lock for " + key);
       System.out.println(e.toString());
       // System.out.println(e.getLocation().getLine() + "," + e.getLocation().getColumn());
       // e.printStackTrace();
       throw e;
     }
+    finally {
+      pool.returnObject(transformer);
+      transformationLock.unlock();
+    }
 
-    pool.returnObject(transformer);
-    transformationLock.unlock();
     System.out.println("Released lock for " + key);
 
     return result;
@@ -256,6 +247,7 @@ public class XSugarStandaloneServlet extends HttpServlet
   /**
    * Handle a servlet GET request (serves an HTML form for making a POST request for a transform).
    */
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
   {
@@ -286,6 +278,7 @@ public class XSugarStandaloneServlet extends HttpServlet
   /**
    * Handle a servlet POST request (serves JSON result of running XSugar transform).
    */
+  @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
   {

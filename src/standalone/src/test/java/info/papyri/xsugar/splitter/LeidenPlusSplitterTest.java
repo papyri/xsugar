@@ -79,15 +79,28 @@ public class LeidenPlusSplitterTest extends TestCase {
     String result = instance.join(in);
     assertEquals(expResult, result);
   }
+  
+  /**
+   * Test splitting a translation
+   */
+  public void testTranslation() throws Exception {
+    System.out.println("split(Reader in)");
+    String translation = loadTestFile("translation.txt");
+    Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("translation.txt"));
+    LeidenPlusSplitter instance = new LeidenPlusSplitter();
+    List result = instance.split(reader);
+    System.out.println("Chunks: " + result.size());
+    assertEquals(translation, instance.join(result));
+  }
 
   private String loadTestFile(String in) throws Exception {
     Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(in));
     char[] buffer = new char[1024];
-    int read = -1;
-    StringBuilder file = new StringBuilder();
+    int read;
+    StringBuilder sb = new StringBuilder();
     while ((read = reader.read(buffer)) > 0) {
-      file.append(buffer, 0, read);
+      sb.append(buffer, 0, read);
     }
-    return file.toString();
+    return sb.toString();
   }
 }

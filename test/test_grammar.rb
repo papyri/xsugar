@@ -1066,6 +1066,9 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '<#ᾱ=1#>', '<num value="1"><hi rend="supraline">α</hi></num>'
     assert_equal_fragment_transform '<#β̄=2#>', '<num value="2"><hi rend="supraline">β</hi></num>'
     assert_equal_fragment_transform '<#γ̄=3#>', '<num value="3"><hi rend="supraline">γ</hi></num>'
+    assert_equal_fragment_transform '<#𐅵̄=1/2#>', '<num value="1/2"><hi rend="supraline">𐅵</hi></num>'
+    assert_equal_fragment_transform '<#𐅸̄=3/4#>', '<num value="3/4"><hi rend="supraline">𐅸</hi></num>'
+    assert_equal_fragment_transform '<#ῑβ̄=1/12#>', '<num value="1/12"><hi rend="supraline">ιβ</hi></num>'
     assert_equal_fragment_transform '<#[ι]ᾱ=11#>', '<num value="11"><supplied reason="lost">ι</supplied><hi rend="supraline">α</hi></num>'
     assert_equal_fragment_transform '<#¯[ι]α¯=11#>', '<num value="11"><hi rend="supraline"><supplied reason="lost">ι</supplied>α</hi></num>'
 #=begin

@@ -404,6 +404,7 @@ supra_unclears_non_terminal
   : [ANYLETTER a] [UNDERDOT] [COMBINMACRON] = [ANYLETTER a]
 
 supraline_non_terminal 
+  : [FRACSYM f] [COMBINMACRON] = [FRACSYM f]
   : [ANYLETTER a] [COMBINMACRON] [supraline_non_terminal ms] = [ANYLETTER a] [supraline_non_terminal ms]
   : [ANYLETTER a] [COMBINMACRON] = [ANYLETTER a]
   : [supra_unclears_non_terminal su] [supraline_non_terminal ms] = <unclear>[supra_unclears_non_terminal su]</> [supraline_non_terminal ms]

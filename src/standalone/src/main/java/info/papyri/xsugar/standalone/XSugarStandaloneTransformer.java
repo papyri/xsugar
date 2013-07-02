@@ -170,6 +170,7 @@ public class XSugarStandaloneTransformer
     throws dk.brics.grammar.parser.ParseException
   {
     String result;
+    text = java.text.Normalizer.normalize(text,java.text.Normalizer.Form.NFD);
     String key = cacheKey("nonxml2xml", text);
     
     TransformResult cache_result = (TransformResult)cache.get(key);
@@ -180,6 +181,7 @@ public class XSugarStandaloneTransformer
         result = unparsed_x_grammar.unparse(ast);
         result = end_tag.fix(result);
         result = namespace_adder.fix(result);
+        result = java.text.Normalizer.normalize(result,java.text.Normalizer.Form.NFC);
       }
       catch (dk.brics.grammar.parser.ParseException e) {
         System.out.println("nonXMLToXML parse exception L+ text = " + text);
@@ -209,6 +211,7 @@ public class XSugarStandaloneTransformer
     throws org.jdom.JDOMException, dk.brics.grammar.parser.ParseException, IOException
   {
     String result;
+    xml = java.text.Normalizer.normalize(xml,java.text.Normalizer.Form.NFC);
     String key = cacheKey("xml2nonxml",xml);
     
     TransformResult cache_result = (TransformResult)cache.get(key);
@@ -219,6 +222,7 @@ public class XSugarStandaloneTransformer
         AST ast = parser_x.parse(input, "dummy.xml");
         new ASTUnescaper().unescape(ast);
         result = unparsed_l_grammar.unparse(ast);
+        result = java.text.Normalizer.normalize(result,java.text.Normalizer.Form.NFD);
       }
       catch (dk.brics.grammar.parser.ParseException e) {
         System.out.println("XMLToNonXML parse exception XML = " + xml);

@@ -60,7 +60,7 @@ module RXSugar
     end
 
     def non_xml_to_xml(text)
-        ast = @parser_l.parse(text, 'dummy.txt')
+        ast = @parser_l.parse(java.text.Normalizer.normalize(text,java.text.Normalizer::Form::NFD), 'dummy.txt')
         output = XSugarOperations::Unparser.new(@x_grammar).unparse(ast)
         output = XSugarXML::EndTagNameAdder.new.fix(output)
         output = XSugarXML::NamespaceAdder.new(@stylesheet).fix(output)

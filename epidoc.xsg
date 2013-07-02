@@ -25,7 +25,8 @@ FRACSYM = [𐅵𐅷𐅸]+
 
 UNDERDOT = "\u0323"
 COMBINMACRON = "\u0304"
-COMBINDIACRIT = ((\u0342)|(\u0345))
+COMBINDIACRIT = ([\u0300\u0301\u0308\u0313\u0314\u0340\u0341\u0342\u0343\u0344\u0345]+) (MAX)
+//COMBINDIACRIT = ((\u0342)|(\u0345))
 
 //ca. with 0 or more spaces followed by ? mark
 CAUNKNOWN = "ca."[ ]*"\?"
@@ -80,7 +81,8 @@ WORDS4EXND = ([^\\\[\]\^<>_#@~῾´¨`\^᾿〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"
 NUM = [0-9]+
 LINENUM = [0-9]+[/\,a-zA-Z0-9]*[ms0-9]*
 
-ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\=\|\!\(\)\{\}\?\"¯+\u0304\u0323]
+//Since we take NFD input, ANYLETTER is now followed by an optional number of COMBINDIACRIT
+ANYLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\=\|\!\(\)\{\}\?\"¯+\u0304\u0323][\u0300\u0301\u0308\u0313\u0314\u0340\u0341\u0342\u0343\u0344\u0345]*
 
 //ANYLETTER plus u0342 and u0345 - combining circumflex and iota-subscript
 ANYNCLETTER = [^\/\\\t\[\]\^<>_#@~〚〛$\*\&\:\=\|\!\(\)\{\}\?\"¯+\u0304\u0323\u0342\u0345]
@@ -150,8 +152,8 @@ newline
 
 // called by unclear_characters
 unclears_non_terminal 
-  : [ANYNCLETTER a] [COMBINDIACRIT c] [UNDERDOT] [unclears_non_terminal mcu] = [ANYNCLETTER a] [COMBINDIACRIT c] [unclears_non_terminal mcu]
-  : [ANYNCLETTER a] [COMBINDIACRIT b] [UNDERDOT] = [ANYNCLETTER a] [COMBINDIACRIT b]
+  : [ANYNCLETTER a] [UNDERDOT] [COMBINDIACRIT c] [unclears_non_terminal mcu] = [ANYNCLETTER a] [COMBINDIACRIT c] [unclears_non_terminal mcu]
+  : [ANYNCLETTER a] [UNDERDOT] [COMBINDIACRIT b] = [ANYNCLETTER a] [COMBINDIACRIT b]
   >: [ANYLETTER a] [UNDERDOT] [unclears_non_terminal mu] = [ANYLETTER a] [unclears_non_terminal mu]
   : [ANYLETTER a] [UNDERDOT] = [ANYLETTER a]
 
@@ -355,6 +357,7 @@ uncertain_diacritical_diaeresis
 uncertain_diacritical_grave
 	: " " [ANYLETTER a] "(`)" = <hi rend="grave">[ANYLETTER a]</>
 	>: " " [ANYLETTER a] [UNDERDOT] "(`)" = <hi rend="grave"><unclear>[ANYLETTER a]</></>
+	>: " " [ANYLETTER a] [UNDERDOT] [COMBINDIACRIT cd] "(`)" = <hi rend="grave"><unclear>[ANYLETTER a] [COMBINDIACRIT cd]</></>
 	>: " " "[." [NUM n] "]" "(`)" = <hi rend="grave"><gap reason="lost" quantity=[NUM n] unit="character"/></>
 	>: " " "." [NUM n] "(`)" = <hi rend="grave"><gap reason="illegible" quantity=[NUM n] unit="character"/></>
 	>: " " [ANYLETTER a] "(`" [nestanc n] ")" = <hi rend="grave"><hi rend=[nestanc n]>[ANYLETTER a]</></>

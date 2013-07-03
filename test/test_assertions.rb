@@ -125,7 +125,7 @@ module GrammarAssertions
     #only comparing the XML inside the ab tag - node() will pull text nodes and element nodes
     inputinsideab = REXML::XPath.match(startinput, 'div/div/ab/node()')
     #remove line number tag added during Xsugar transformation process that is not needed
-    tempinput = inputinsideab.to_s.sub!(/<lb n='1'\/>/, "")
+    tempinput = inputinsideab.nil? ? "" : inputinsideab.to_s.sub!(/<lb n='1'\/>/, "")
     #wrap it to keep away from 'adding second root' error 
     tempinput = "<wrapab>" + tempinput + "</wrapab>"
     finalinput = REXML::Document.new(tempinput)

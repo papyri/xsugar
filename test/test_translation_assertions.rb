@@ -20,6 +20,8 @@ module TranslationGrammarAssertions
   def assert_equal_fragment_transform(non_xml_fragment, xml_fragment)
     #non_xml_fragment = "1. #{non_xml_fragment}"
 	  non_xml_fragment = enclose_leiden_fragment(non_xml_fragment)
+    non_xml_fragment = RXSugar::RXSugar.nfd(non_xml_fragment)
+    xml_fragment = RXSugar::RXSugar.nfc(xml_fragment)
     assert_equal enclose_xml_fragment(xml_fragment), @xsugar.non_xml_to_xml(non_xml_fragment)
     assert_equal non_xml_fragment, @xsugar.xml_to_non_xml(enclose_xml_fragment(xml_fragment))
     assert_equal_non_xml_to_xml_to_non_xml non_xml_fragment, non_xml_fragment

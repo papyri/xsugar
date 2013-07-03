@@ -57,24 +57,32 @@ module RXSugar
 
       @parser_l = XSugarParser::Parser.new(@l_grammar, @out)
       @parser_x = XSugarParser::Parser.new(@normalized_x_grammar, @out)
+    end 
+
+    def self.nfc(text)
+      java.text.Normalizer.normalize(text,java.text.Normalizer::Form::NFC)
+    end
+
+    def self.nfd(text)
+      java.text.Normalizer.normalize(text,java.text.Normalizer::Form::NFD)
     end
 
     def non_xml_to_xml(text)
-        ast = @parser_l.parse(java.text.Normalizer.normalize(text,java.text.Normalizer::Form::NFD), 'dummy.txt')
+        ast = @parser_l.parse(self.class.nfd(text), 'dummy.txt')
         output = XSugarOperations::Unparser.new(@x_grammar).unparse(ast)
         output = XSugarXML::EndTagNameAdder.new.fix(output)
         output = XSugarXML::NamespaceAdder.new(@stylesheet).fix(output)
-        return output
+        return self.class.nfc(output)
     end
 
     def xml_to_non_xml(xml)
       norm = XSugarXML::InputNormalizer.new
-      input = norm.normalize(xml, 'dummy.xml')
+      input = self.class.nfc(norm.normalize(xml, 'dummy.xml'))
 
         ast = @parser_x.parse(input, 'dummy.xml')
         XSugarXML::ASTUnescaper.new.unescape(ast)
         output = XSugarOperations::Unparser.new(@normalized_l_grammar).unparse(ast)
-        return output
+        return self.class.nfd(output)
     end
   
     def reversible?

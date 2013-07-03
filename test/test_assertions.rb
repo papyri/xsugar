@@ -22,30 +22,19 @@ module GrammarAssertions
     return "<lb n=\"1\"/>#{xmlline}"
   end
 
-  def nfc(text)
-    java.text.Normalizer.normalize(text,java.text.Normalizer::Form::NFC)
-  end
-
-  def nfd(text)
-    java.text.Normalizer.normalize(text,java.text.Normalizer::Form::NFD)
-  end
-
   def assert_equal_fragment_transform(non_xml_fragment, xml_fragment)
     non_xml_fragment = "1. #{non_xml_fragment}"
     non_xml_fragment = lab(non_xml_fragment)
-    assert_equal nfc(ab(lb(xml_fragment))), nfc(@xsugar.non_xml_to_xml(nfd(non_xml_fragment)))
-    assert_equal nfd(non_xml_fragment), nfd(@xsugar.xml_to_non_xml(nfc(ab(lb(xml_fragment)))))
+    non_xml_fragment = RXSugar::RXSugar.nfd(non_xml_fragment)
+    xml_fragment = RXSugar::RXSugar.nfc(xml_fragment)
+    assert_equal ab(lb(xml_fragment)), @xsugar.non_xml_to_xml(non_xml_fragment)
+    assert_equal non_xml_fragment, @xsugar.xml_to_non_xml(ab(lb(xml_fragment)))
     assert_equal_non_xml_to_xml_to_non_xml non_xml_fragment, non_xml_fragment
     assert_equal_xml_fragment_to_non_xml_to_xml_fragment xml_fragment, xml_fragment
   end
-
-  def assert_equal_nfd(text)
-    assert_equal nfd(text), text
-    return text
-  end
   
   def assert_equal_non_xml_to_xml_to_non_xml(expected, input)
-    assert_equal nfd(expected), nfd(@xsugar.xml_to_non_xml(nfc(@xsugar.non_xml_to_xml(nfd(input)))))
+    assert_equal expected, @xsugar.xml_to_non_xml(@xsugar.non_xml_to_xml(input))
   end
   
   def get_attrib_text_node(xmlin, attribsback, textback, nodesback)
@@ -86,14 +75,14 @@ module GrammarAssertions
   def assert_equal_xml_fragment_to_non_xml_to_xml_fragment(expected, input)
     #convert input xml to Leiden+
     begin
-      xml_to_non_xml = nfd(@xsugar.xml_to_non_xml(nfc(ab(lb(input)))))
+      xml_to_non_xml = RXSugar::RXSugar.nfd(@xsugar.xml_to_non_xml(RXSugar::RXSugar.nfc(ab(lb(input)))))
     rescue NativeException => e
       raise RXSugar::XMLParseError
     end
     #convert Leiden+ from above back to XML for comparison to expected XML to see if they match
     begin
     non_xml_to_xml_from_xml_to_non_xml =
-      nfc(@xsugar.non_xml_to_xml(nfd(xml_to_non_xml)))
+      RXSugar::RXSugar.nfc(@xsugar.non_xml_to_xml(RXSugar::RXSugar.nfd(xml_to_non_xml)))
     rescue NativeException => e
       raise RXSugar::NonXMLParseError
     end

@@ -90,7 +90,8 @@ module GrammarAssertions
     #not sure if this the best way to compare the 2 sets of XML and match regardless of attrib order but it seems to work
     
     #parse the 'expected' XML passed in into attributes, text values, and node names
-    
+   
+    begin 
     if expected.include?("</ab><ab>")
       #jump through a lot of hoops to make multiple ab section test case work - may pull out
       tempab = ab(expected)
@@ -127,7 +128,7 @@ module GrammarAssertions
     #remove line number tag added during Xsugar transformation process that is not needed
     tempinput = inputinsideab.nil? ? "" : inputinsideab.to_s.sub!(/<lb n='1'\/>/, "")
     #wrap it to keep away from 'adding second root' error 
-    tempinput = "<wrapab>" + tempinput + "</wrapab>"
+    tempinput = "<wrapab>" + (tempinput || "") + "</wrapab>"
     finalinput = REXML::Document.new(tempinput)
     
     compare_input_attribs = Hash.new
@@ -142,7 +143,9 @@ module GrammarAssertions
     #assert equal the attribs hash, text array, and nodes array created from expected and input XML are equal
     #sort the attribs hash so the attribute order does not matter - everything else should be the same
     assert_equal compare_expected_text+compare_expected_nodes+compare_expected_attribs.sort, compare_input_text+compare_input_nodes+compare_input_attribs.sort
-    
+    rescue TypeError => e
+      raise RXSugar::XMLParseError
+    end
     return xml_to_non_xml
   end
   

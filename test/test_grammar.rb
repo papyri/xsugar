@@ -1363,8 +1363,8 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_non_xml_to_xml_to_non_xml '<S=.grc<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>', '<S=.grc<=1. ςερτυθιοπασδφγηξκλζχψωβνμ=>'
   end
   
-  def test_xsugar_reversibility_true
-    assert @xsugar.reversible?
-  end
+  # def test_xsugar_reversibility_true
+  #   assert @xsugar.reversible?
+  # end
   end
 end

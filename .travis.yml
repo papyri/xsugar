@@ -1,4 +1,7 @@
-language: ruby
+language:
+  - ruby
+  - java
+jdk: openjdk7
 rvm:
   - jruby-18mode
 env: JRUBY_OPTS="-J-Xmx512M"

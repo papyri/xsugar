@@ -2,3 +2,6 @@ language: ruby
 rvm:
   - jruby-18mode
 env: JRUBY_OPTS="-J-Xmx512M"
+script:
+  - bundle exec rake
+  - cd src/standalone && mvn test

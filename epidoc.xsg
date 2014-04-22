@@ -522,6 +522,8 @@ lang_gap
 lang_gap_line
 	: "(Lang: " [LANGLIST l] " " [NUM v] " lines)" = <gap reason="ellipsis" quantity=[NUM v] unit="line"><desc>[LANGLIST l]</></>
 	>: "(Lang: " [LANGLIST l] " " [NUM v] " lines(?))" = <gap reason="ellipsis" quantity=[NUM v] unit="line"><desc>[LANGLIST l]</><certainty match=".." locus="name"></></>
+	>: "(Lang: " [LANGLIST l] " ca. " [NUM v] " lines)" = <gap reason="ellipsis" quantity=[NUM v] unit="line" precision="low"><desc>[LANGLIST l]</></>
+	>: "(Lang: " [LANGLIST l] " ca. " [NUM v] " lines(?))" = <gap reason="ellipsis" quantity=[NUM v] unit="line" precision="low"><desc>[LANGLIST l]</><certainty match=".." locus="name"></></>
 	>: "(Lang: " [LANGLIST l] " ? lines)" = <gap reason="ellipsis" extent="unknown" unit="line"><desc>[LANGLIST l]</></>
 	>: "(Lang: " [LANGLIST l] " ? lines(?))" = <gap reason="ellipsis" extent="unknown" unit="line"><desc>[LANGLIST l]</><certainty match=".." locus="name"></></>
 	

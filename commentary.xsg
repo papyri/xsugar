@@ -135,6 +135,12 @@ emphasis_italics
 emphasis_underline
   : "_" [underline_item_not_nest uinn] "_" = <emph rend="underline">[underline_item_not_nest uinn]</>
 
+quote
+  : "''" 
+
+line_break
+  : "||" = <lb/>
+
 newline 
   : [NL n] = [NL n]
 

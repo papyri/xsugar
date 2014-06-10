@@ -35,7 +35,7 @@ item
   : [italic i] = [italic i]
   : [sic_corr sc] = [sic_corr sc] 
   : [pb p] = [pb p]
-  : [TEXT t] = [TEXT t]
+  >: [TEXT t] = [TEXT t]
 
 items
   :  [item i] [items more] = [item i] [items more]
@@ -43,8 +43,8 @@ items
 
 date
   : "<d#" [items a] "#d>" = <date>[items a]</>
-  : "<d#" [items a] "|" [DATE b] "#d>" = <date when=[DATE b]>[items a]</>
-  : "<d#" [items a] "|" [DATE b] "/" [DATE c] "#d>" = <date notBefore=[DATE b] notAfter=[DATE c]>[items a]</>
+  >: "<d#" [items a] "|" [DATE b] "#d>" = <date when=[DATE b]>[items a]</>
+  >: "<d#" [items a] "|" [DATE b] "/" [DATE c] "#d>" = <date notBefore=[DATE b] notAfter=[DATE c]>[items a]</>
 
 persname
   : "<pn:" [TEXT a] ":pn>" = <persName>[TEXT a]</> 
@@ -61,7 +61,7 @@ italic
 
 sic_corr
   : "<sic:" [items a] ":sic>" = <sic>[items a]</>
-  : "<sic:" [items a] "|" [items b] ":sic>" = <choice><sic>[items a]</><corr>[items b]</></>
+  >: "<sic:" [items a] "|" [items b] ":sic>" = <choice><sic>[items a]</><corr>[items b]</></>
 
 pb
   : "<p#" [WORD n] ">" = <pb n=[WORD n]/>

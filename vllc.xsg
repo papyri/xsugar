@@ -1,8 +1,68 @@
 xmlns:xml = "http://www.w3.org/XML/1998/namespace"
 
+// <date>, <persName>, <note>, <p>, and <underline>
+
 NL = [\r\n]+
+
+ANYSP = [\r\n \t]*
+
+DATE = \-?[0-9]{3}[1-9](\-(0[1-9]|1[0-2])(\-(0[1-9]|[1-3][0-9]))?)?
+TEXT = [^<>|]+ (MAX)
+NUM = [0-9]+
+WORD = [^\r\n \t]+ (MAX)
 
 BEGP = "<="
 ENDP = "=>"
 BEGDIV = "<D="
 ENDDIV = "=D>"
+
+file
+  : [BEGDIV] [ANYSP] [ptags] [ENDDIV] = <div>[ANYSP][ptags]</>
+
+ptags
+  :   [ptag p] [ptags more] = [ptag p] [ptags more]
+  >:  [ptag p] = [ptag p]
+
+ptag 
+  : [BEGP] [items z] [ENDP] [ANYSP a] = <p>[items z]</> [ANYSP a]
+  >: [BEGP] [ENDP] = <p></>
+
+item
+  : [date d] = [date d]
+  : [persname pn] = [persname pn]
+  : [note n] = [note n]
+  : [underline u] = [underline u]
+  : [italic i] = [italic i]
+  : [sic_corr sc] = [sic_corr sc] 
+  : [pb p] = [pb p]
+  : [TEXT t] = [TEXT t]
+
+items
+  :  [item i] [items more] = [item i] [items more]
+  >: [item p] = [item p]
+
+date
+  : "<d#" [items a] "#d>" = <date>[items a]</>
+  : "<d#" [items a] "|" [DATE b] "#d>" = <date when=[DATE b]>[items a]</>
+  : "<d#" [items a] "|" [DATE b] "/" [DATE c] "#d>" = <date notBefore=[DATE b] notAfter=[DATE c]>[items a]</>
+
+persname
+  : "<pn:" [TEXT a] ":pn>" = <persName>[TEXT a]</> 
+  : "<pn:" [TEXT a] "|" [URI ref] ":pn>" = <persName ref=[URI ref]>[TEXT a]</> 
+
+note
+  : "\/*" [NUM n] ". " [items b] "*\/" = <note n=[NUM n]>[items b]</>
+
+underline
+  : "_:" [items a] ":_" = <hi rend="underline">[items a]</>
+
+italic
+  : "_/" [items a] "/_" = <hi rend="italic">[items a]</>
+
+sic_corr
+  : "<sic:" [items a] ":sic>" = <sic>[items a]</>
+  : "<sic:" [items a] "|" [items b] ":sic>" = <choice><sic>[items a]</><corr>[items b]</></>
+
+pb
+  : "<p#" [WORD n] ">" = <pb n=[WORD n]/>
+  >: "<p#" [WORD n] "|" [WORD id] ">" = <pb xml:id=[WORD id] n=[WORD n]/>

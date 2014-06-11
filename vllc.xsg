@@ -4,12 +4,12 @@ xmlns:xml = "http://www.w3.org/XML/1998/namespace"
 
 NL = [\r\n]+
 
-ANYSP = [\r\n \t]*
+ANYSP = [\r\n \t]* (MAX)
 
 DATE = \-?[0-9]{3}[1-9](\-(0[1-9]|1[0-2])(\-(0[1-9]|[1-3][0-9]))?)?
-TEXT = [^<>|=#\/\*_]+ (MAX)
+TEXT = [^<>\|\=#\/\*_]+ (MAX)
 NUM = [0-9]+
-WORD = [^\r\n \t]+ (MAX)
+WORD = [^\r\n \t<>\|\=#\/\*_]+ (MAX)
 
 BEGP = "<="
 ENDP = "=>"
@@ -17,34 +17,51 @@ BEGDIV = "<D="
 ENDDIV = "=D>"
 
 file
-  : [BEGDIV] [ANYSP] [ptags] [ANYSP] [ENDDIV] = <div>[ANYSP][ptags][ANYSP]</>
+  : [BEGDIV] [ANYSP a] [paragraphs p] [ANYSP b] [ENDDIV] = <div>[ANYSP a] [paragraphs p] [ANYSP b]</>
 
-ptags
-  :   [ptag p] [ptags more] = [ptag p] [ptags more]
-  >:  [ptag p] = [ptag p]
+paragraphs
+  :   [paragraph p] [ANYSP a] [paragraphs more] = [paragraph p] [ANYSP a] [paragraphs more]
+  >:  [paragraph p] = [paragraph p]
 
-ptag 
-  : [BEGP] [items z] [ENDP] [ANYSP a] = <p>[items z]</> [ANYSP a]
-  >: [BEGP] [ENDP] [ANYSP a] = <p></> [ANYSP a]
-
-item
-  : [date d] = [date d]
-  : [persname pn] = [persname pn]
-  : [note n] = [note n]
-  : [underline u] = [underline u]
-  : [italic i] = [italic i]
-  : [sic_corr sc] = [sic_corr sc] 
-  : [pb p] = [pb p]
-  >: [TEXT t] = [TEXT t]
+paragraph 
+  : [BEGP] [items z] [ENDP] = <p>[items z]</> 
+  >: [BEGP] [ENDP] = <p></> 
 
 items
   :  [item i] [items more] = [item i] [items more]
   >: [item p] = [item p]
 
+item
+  >: [date d] = [date d]
+  >: [persname pn] = [persname pn]
+  >: [note n] = [note n]
+  >: [underline u] = [underline u]
+  >: [italic i] = [italic i]
+  >: [sic_corr sc] = [sic_corr sc]
+  >: [pb p] = [pb p]
+  >: [item_can_nest t] = [item_can_nest t]
+
+item_can_nest
+  : [TEXT t] = [TEXT t]
+  >: [WORD w] = [WORD w]
+
 date
-  : "<d#" [items a] "#d>" = <date>[items a]</>
-  >: "<d#" [items a] "|" [DATE b] "#d>" = <date when=[DATE b]>[items a]</>
-  >: "<d#" [items a] "|" [DATE b] "/" [DATE c] "#d>" = <date notBefore=[DATE b] notAfter=[DATE c]>[items a]</>
+  : "<d#" [date_items a] "#d>" = <date>[date_items a]</>
+  >: "<d#" [date_items a] "|" [DATE b] "#d>" = <date when=[DATE b]>[date_items a]</>
+  >: "<d#" [date_items a] "|" [DATE b] "/" [DATE c] "#d>" = <date notBefore=[DATE b] notAfter=[DATE c]>[date_items a]</>
+
+date_items
+  : [date_item d] [date_items more] = [date_item d] [date_items more]
+  >: [date_item d] = [date_item d]
+
+date_item
+  >: [persname pn] = [persname pn]
+  >: [note n] = [note n]
+  >: [underline u] = [underline u]
+  >: [italic i] = [italic i]
+  >: [sic_corr sc] = [sic_corr sc]
+  >: [pb p] = [pb p]
+  >: [item_can_nest t] = [item_can_nest t]
 
 persname
   : "<pn#" [TEXT a] "#pn>" = <persName>[TEXT a]</> 
@@ -54,15 +71,52 @@ note
   : "\/*" [NUM n] ". " [items b] "*\/" = <note n=[NUM n]>[items b]</>
 
 underline
-  : "_|" [items a] "_|" = <hi rend="underline">[items a]</>
+  : "_|" [underline_items a] "_|" = <hi rend="underline">[underline_items a]</>
+
+underline_items
+  : [underline_item u] [underline_items more] = [underline_item u] [underline_items more]
+  >: [underline_item u] = [underline_item u]
+
+underline_item
+  >: [date d] = [date d]
+  >: [persname pn] = [persname pn]
+  >: [italic i] = [italic i]
+  >: [sic_corr sc] = [sic_corr sc]
+  >: [pb p] = [pb p]
+  >: [item_can_nest t] = [item_can_nest t]
 
 italic
-  : "_/" [items a] "_/" = <hi rend="italic">[items a]</>
+  : "_/" [italic_items a] "_/" = <hi rend="italic">[italic_items a]</>
+
+italic_items
+  : [italic_item i] [italic_items more] = [italic_item i] [italic_items more]
+  >: [italic_item i] = [italic_item i]
+
+italic_item
+  >: [date d] = [date d]
+  >: [persname pn] = [persname pn]
+  >: [underline u] = [underline u]
+  >: [sic_corr sc] = [sic_corr sc]
+  >: [pb p] = [pb p]
+  >: [item_can_nest t] = [item_can_nest t]
 
 sic_corr
-  : "<sic#" [items a] "#>" = <sic>[items a]</>
-  >: "<sic#" [items a] "|" [items b] "#>" = <choice><sic>[items a]</><corr>[items b]</></>
+  : "<sc#" [sic_corr_items a] "#sc>" = <sic>[sic_corr_items a]</>
+  >: "<sc#" [sic_corr_items a] "|" [sic_corr_items b] "#sc>" = <choice><sic>[sic_corr_items a]</><corr>[sic_corr_items b]</></>
+
+sic_corr_items
+  : [sic_corr_item sc] [sic_corr_items more] = [sic_corr_item sc] [sic_corr_items more]
+  >: [sic_corr_item sc] = [sic_corr_item sc]
+
+sic_corr_item
+  >: [date d] = [date d]
+  >: [persname pn] = [persname pn]
+  >: [underline u] = [underline u]
+  >: [italic i] = [italic i]
+  >: [pb p] = [pb p]
+  >: [item_can_nest t] = [item_can_nest t]
 
 pb
-  : "<p#" [WORD n] ">" = <pb n=[WORD n]/>
-  >: "<p#" [WORD n] "|" [WORD id] ">" = <pb xml:id=[WORD id] n=[WORD n]/>
+  : "<p#" [WORD n] ">" = <pb n=[WORD n]></>
+  >: "<p#" [WORD n] "|" [WORD id] ">" = <pb xml:id=[WORD id] n=[WORD n]></>
+

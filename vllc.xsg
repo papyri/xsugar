@@ -69,6 +69,7 @@ persname
 
 note
   : "\/*" [NUM n] ". " [items b] "*\/" = <note n=[NUM n]>[items b]</>
+  >: "\/*" [items a] "*\/" = <note>[items a]</>
 
 underline
   : "_|" [underline_items a] "_|" = <hi rend="underline">[underline_items a]</>
@@ -102,7 +103,7 @@ italic_item
 
 sic_corr
   : "<sc#" [sic_corr_items a] "#sc>" = <sic>[sic_corr_items a]</>
-  >: "<sc#" [sic_corr_items a] "|" [sic_corr_items b] "#sc>" = <choice><sic>[sic_corr_items a]</><corr>[sic_corr_items b]</></>
+  >: "<sc#" [sic_corr_items a] "|" [sic_corr_items b] "#sc>" = <choice>[ANYSP]<sic>[sic_corr_items a]</>[ANYSP]<corr>[sic_corr_items b]</>[ANYSP]</>
 
 sic_corr_items
   : [sic_corr_item sc] [sic_corr_items more] = [sic_corr_item sc] [sic_corr_items more]

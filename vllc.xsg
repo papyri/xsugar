@@ -17,7 +17,7 @@ BEGDIV = "<D="
 ENDDIV = "=D>"
 
 file
-  : [BEGDIV] [ANYSP a] [paragraphs p] [ANYSP b] [ENDDIV] = <div>[ANYSP a] [paragraphs p] [ANYSP b]</>
+  : [BEGDIV] [ANYSP a] [paragraphs p] [ANYSP b] [ENDDIV] [ANYSP c] = <div>[ANYSP a] [paragraphs p] [ANYSP b]</> [ANYSP c]
 
 paragraphs
   :   [paragraph p] [ANYSP a] [paragraphs more] = [paragraph p] [ANYSP a] [paragraphs more]

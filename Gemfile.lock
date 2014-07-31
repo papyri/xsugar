@@ -1,0 +1,19 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    haml (3.0.25)
+    json (1.8.1-java)
+    progressbar (0.21.0)
+    rake (10.1.0)
+    rdoc (4.1.1)
+      json (~> 1.4)
+
+PLATFORMS
+  java
+
+DEPENDENCIES
+  haml (~> 3.0.25)
+  json
+  progressbar
+  rake
+  rdoc

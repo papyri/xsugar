@@ -4,9 +4,9 @@
   %head
     %style{ :type => "text/css" }
       :sass
-        !pass_color = #66FF66
-        !reversibility_color = #FFFF99
-        !parse_color = #CC6666
+        $pass_color: #66FF66
+        $reversibility_color: #FFFF99
+        $parse_color: #CC6666
         =element
           margin: .25em
           padding: .25em
@@ -14,13 +14,13 @@
           border: 1px solid black
         .pass
           +element
-          background-color = !pass_color
+          background-color: $pass_color
         .reversibility
           +element
-          background-color = !reversibility_color
+          background-color: $reversibility_color
         .parse
           +element
-          background-color = !parse_color
+          background-color: $parse_color
         .toggle_button
           a
             text-decoration: underline

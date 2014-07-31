@@ -1,7 +1,8 @@
 Requirements
 ------------
 
- * [JRuby](http://jruby.org/)
+ * [JRuby 1.6.8](http://jruby.org/) - preferably managed with [rbenv](https://github.com/sstephenson/rbenv)
+ * [Bundler](http://bundler.io) - `gem install bundler`
 
 Usage
 -----
@@ -9,7 +10,8 @@ Usage
 This project contains JRuby libraries and wrappers for
 [XSugar](http://www.brics.dk/xsugar/) as well as grammars for converting
 between [EpiDoc XML](http://epidoc.sourceforge.net/) and Leiden+ (a 
-Leiden-style plaintext markup).
+Leiden-style plaintext markup). There is also a pure-Java standalone
+XSugar transformation servlet in `src/standalone`.
 
 To convert between the EpiDoc and Leiden+, the utility scripts
 `xml2nonxml.rb` and `nonxml2xml.rb` are provided.
@@ -50,12 +52,9 @@ File Structure
 Testing
 -------
 
-The Ruby testing uses JRuby, so you should invoke rake with:
+The Ruby testing uses bundler for gem dependencies, so you should invoke rake with:
   
-  jruby -S rake
-  
-Since the XSugar jar requires Java 1.6, make sure your JAVA_HOME is set to a
-Java 1.6 install when running JRuby.
+  bundle exec rake
 
 Upstream
 --------

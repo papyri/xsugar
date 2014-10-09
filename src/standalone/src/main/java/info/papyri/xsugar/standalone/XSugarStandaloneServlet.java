@@ -169,6 +169,11 @@ public class XSugarStandaloneServlet extends HttpServlet
     throws dk.brics.grammar.parser.ParseException, org.jdom.JDOMException, java.lang.Exception, java.io.IOException
   {
     String result = null;
+
+    // normalize line endings
+    content = content.replaceAll("\\r\\n", "\n");
+
+    // Fetch transformer from pool and generate hash key
     XSugarTransformerPool pool = getTransformerPool(transform_type);
     XSugarStandaloneTransformer transformer = (XSugarStandaloneTransformer) pool.borrowObject();
     String key = transformer.cacheKey(direction, content);

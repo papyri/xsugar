@@ -32,12 +32,12 @@ item
   : [paragraph p] = [paragraph p]
   : [footnote f] = [footnote f]
   : [bib b] = [bib b]
-  : [url u] = [url u]
+  >: [url u] = [url u]
   : [emphasis_bold eb] = [emphasis_bold eb]
   : [emphasis_italics ei] = [emphasis_italics ei]
   : [emphasis_underline el] = [emphasis_underline el]
   >: [newline nl] = [newline nl]
-  : [item_can_nest icn] = [item_can_nest icn]
+  >: [item_can_nest icn] = [item_can_nest icn]
 
 item_can_nest
   : [WORDSLOOSE w] = [WORDSLOOSE w]
@@ -50,11 +50,11 @@ paragraph_item_not_nest
 paragraph_item
   : [footnote f] = [footnote f]
   : [bib b] = [bib b]
-  : [url u] = [url u]
+  >: [url u] = [url u]
   : [emphasis_bold eb] = [emphasis_bold eb]
   : [emphasis_italics ei] = [emphasis_italics ei]
   : [emphasis_underline el] = [emphasis_underline el]
-  : [item_can_nest icn] = [item_can_nest icn]
+  >: [item_can_nest icn] = [item_can_nest icn]
   
 bold_item_not_nest
   :[bold_item bi] [bold_item_not_nest more] = [bold_item bi] [bold_item_not_nest more]
@@ -64,10 +64,10 @@ bold_item
   : [footnote f] = [footnote f]
   : [paragraph p] = [paragraph p]
   : [bib b] = [bib b]  
-  : [url u] = [url u]
+  >: [url u] = [url u]
   : [emphasis_italics ei] = [emphasis_italics ei]
   : [emphasis_underline el] = [emphasis_underline el]
-  : [item_can_nest icn] = [item_can_nest icn]
+  >: [item_can_nest icn] = [item_can_nest icn]
   
 italic_item_not_nest
   :[italic_item ii] [italic_item_not_nest more] = [italic_item ii] [italic_item_not_nest more]
@@ -77,10 +77,10 @@ italic_item
   : [footnote f] = [footnote f]
   : [paragraph p] = [paragraph p]
   : [bib b] = [bib b]  
-  : [url u] = [url u]
+  >: [url u] = [url u]
   : [emphasis_bold eb] = [emphasis_bold eb]
   : [emphasis_underline el] = [emphasis_underline el]
-  : [item_can_nest icn] = [item_can_nest icn]
+  >: [item_can_nest icn] = [item_can_nest icn]
   
 underline_item_not_nest
   :[underline_item ui] [underline_item_not_nest more] = [underline_item ui] [underline_item_not_nest more]
@@ -90,10 +90,10 @@ underline_item
   : [footnote f] = [footnote f]
   : [paragraph p] = [paragraph p]
   : [bib b] = [bib b]  
-  : [url u] = [url u]
+  >: [url u] = [url u]
   : [emphasis_bold eb] = [emphasis_bold eb]
   : [emphasis_italics ei] = [emphasis_italics ei]
-  : [item_can_nest icn] = [item_can_nest icn]
+  >: [item_can_nest icn] = [item_can_nest icn]
   
 paragraph
   : [BEGP] [paragraph_item_not_nest pinn] = <p>[paragraph_item_not_nest pinn]</>
@@ -113,8 +113,8 @@ bib_target
     
 bib_scope
   : [bib_scope_detail bsd] [bib_scope more] = [bib_scope_detail bsd] [bib_scope more]
-  : [bib_scope_detail bsd] = [bib_scope_detail bsd]
-  : =
+  >: [bib_scope_detail bsd] = [bib_scope_detail bsd]
+  >: =
   
 bib_scope_detail
   : "|v=" [NUM_RNG_WHL nrw] = <biblScope type="vol">[NUM_RNG_WHL nrw]</>

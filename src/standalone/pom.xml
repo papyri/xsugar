@@ -34,7 +34,7 @@
               </systemProperty>
               <systemProperty>
                 <name>org.eclipse.jetty.server.Request.maxFormContentSize</name>
-                <value>1000000</value>
+                <value>5000000</value>
               </systemProperty>
             </systemProperties>
           </configuration>

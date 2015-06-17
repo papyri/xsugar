@@ -32,6 +32,10 @@
                 <name>org.mortbay.jetty.Request.queryEncoding</name>
                 <value>UTF-8</value>
               </systemProperty>
+              <systemProperty>
+                <name>org.eclipse.jetty.server.Request.maxFormContentSize</name>
+                <value>5000000</value>
+              </systemProperty>
             </systemProperties>
           </configuration>
         </plugin>

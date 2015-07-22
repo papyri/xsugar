@@ -1,6 +1,6 @@
 xmlns:xml = "http://www.w3.org/XML/1998/namespace"
 
-NL = [\r\n]+
+NL = [\r\n]
 SP = [ ]
 SPO = [ ]+ (MAX)
 SPO2 = [ ]*
@@ -26,41 +26,41 @@ FOREIGNLANG = ((la)|(grc\-Latn))
 NOTELANG = ((en)|(de))
 
 //ANYLETTER = [^\/\\\t\^<>_#@~〚〛$\*\&\:\|\{\}\?\"¯≡+\u0323]
-ANYLETTER = [^\^<>_#@~〚〛$\*\&\|\{\}\"¯≡+\u0323]
+ANYLETTER = [^\^<>_#@~\[\]〚〛$\*\&\|\{\}\"¯≡+\u0323]
 
 // WORD breaks at space and does not allow DOT
-WORD = ([^ \/\\\n\r\t\^<>_#@~〚〛$\*\&\,\.\=\|\'\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORD = ([^ \/\\\n\r\t\^<>_#@~\[\]〚〛$\*\&\,\.\=\|\'\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 // WORDDIV breaks at space and does not allow DOT - allows +, \,
-WORDDIV = ([^ \n\r\t\^<>_#@~〚〛$\*\&\.\=\|\'\(\)\{\}\?\"¯≡\u0323]+) (MAX)
+WORDDIV = ([^ \n\r\t\^<>_#@~\[\]〚〛$\*\&\.\=\|\'\(\)\{\}\?\"¯≡\u0323]+) (MAX)
 
 // WORDS allows space (therefore multiple words) and DOT
-WORDS = ([^\/\\\n\r\t\^<>_#@~〚〛$\*\&\,\=\|\'\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDS = ([^\/\\\n\r\t\^<>_#@~\[\]〚〛$\*\&\,\=\|\'\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
 //WORDSLR allows comma - used to make app lem BL work when lem resp= includes comma (ex. lem resp='cf. 5.11, 3.10')
-WORDSLR = ([^\/\\\n\r\t\^<>_#@~〚〛$\*\&\=\|\'\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
+WORDSLR = ([^\/\\\n\r\t\^<>_#@~\[\]〚〛$\*\&\=\|\'\(\)\{\}\?\"¯≡+\u0323]+) (MAX)
 
-// WORDS 
-WORDSTERM = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
+// WORDS
+WORDSTERM = ([^\n\r\t\^<>#@~\[\]〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
 //WORDSFOREIGN = WORDSTERM
-WORDSFOREIGN = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
+WORDSFOREIGN = ([^\n\r\t\^<>#@~\[\]〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
 
 //very permisive for free text
-WORDSLOOSE = ([^\n\r\t\^<>#@~〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
-WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
+WORDSLOOSE = ([^\n\r\t\^<>#@~\[\]〚〛$\*\&\=\|\{\}¯≡+\u0323]+) (MAX)
+WORDSANDMORE = ([^<>#@~\[\]〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
 
-  file    
-    : [ANYSP s][transtag a][ANYSP ss] = <body>[ANYSP s][transtag a][ANYSP ss]</> 
+  file
+    : [ANYSP s][transtag a][ANYSP ss] = <body>[ANYSP s][transtag a][ANYSP ss]</>
     : =
-      
+
   transtag
-                                                                                                                                                                                                                                                    
+
     :  [BEGTRAN] "." [WORDDIV d] [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</>
     >: [BEGTRAN] "." [WORDDIV d] [ANYSP s][divtag t][ANYSP ss] [ENDTRAN] [ANYSP sss] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][divtag t][ANYSP ss]</> [ANYSP sss] [transtag more]
 
     :  [BEGTRAN] "." [WORDDIV d] [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</>
     >: [BEGTRAN] "." [WORDDIV d] [ANYSP s][ptag p][ANYSP ss] [ENDTRAN] [ANYSP sss] [transtag more] = <div xml:lang=[WORDDIV d] type="translation" xml:space="preserve">[ANYSP s][ptag p][ANYSP ss]</> [ANYSP sss] [transtag more]
-  
+
 
   divtag
      : [BEGDIV] "." [WORDDIV d] " " [items a] [ENDDIV] = <div n=[WORDDIV d] type="textpart">[items a]</>
@@ -74,12 +74,12 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
     >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP ss][ptag p][ANYSP sss] [ENDDIV] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[ANYSP ss][ptag p][ANYSP sss]</>
     >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP ss][ptag p][ANYSP sss] [ENDDIV] [ANYSP ssss] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[ANYSP ss][ptag p][ANYSP sss]</> [ANYSP ssss][divtag more]
 
-    
+
     >: [BEGDIV] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDDIV] = <div n=[WORDDIV d] type="textpart">[ANYSP s][divtag t][ANYSP ss]</>
     >: [BEGDIV] "." [WORDDIV d] " " [ANYSP s][divtag t][ANYSP ss] [ENDDIV] [ANYSP sss] [divtag more] = <div n=[WORDDIV d] type="textpart">[ANYSP s][divtag t][ANYSP ss]</> [ANYSP sss][divtag more]
     >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP ss][divtag t][ANYSP sss] [ENDDIV] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[ANYSP ss][divtag t][ANYSP sss]</>
     >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] " " [ANYSP ss][divtag t][ANYSP sss] [ENDDIV] [ANYSP ssss] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart">[ANYSP ss][divtag t][ANYSP sss]</> [ANYSP ssss][divtag more]
-  
+
   // this is equivalent to <ab> in normal L+
   ptag
     :  [BEGP] [divtag d] [ENDP] = <p>[divtag d]</>
@@ -89,28 +89,34 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
     //>: [BEGP] [items z] [ENDP] [divtag more] = <p>[items z]</> [divtag more]
     //>: [BEGP] [items z] [ENDP] [NL] [divtag more] = <p>[items z]</> [NL] [divtag more]
     >: [BEGP] [ENDP] = <p></>
-  
+
   items
     :  [item i] [items more] = [item i] [items more]
     >: [item p] = [item p]
 
   item
-    
      : [app a] = [app a]
      : [foreign f] = [foreign f]
      : [linenumber l] = [linenumber l]
      : [del d] = [del d]
      : [term t] = [term t]
-//     : [lb l] = [lb l]
-     : [gap g] = [gap g] 
+     : [lb l] = [lb l]
+     : [gap g] = [gap g]
      : [note n] = [note n]
-     
+     : [choice c] = [choice c]
+     : [supplied s] = [supplied s]
+
      : [NL n] = [NL n]
     >: [WORDS w] = [WORDS w]
     >: [ANYLETTER a] = [ANYLETTER a]
-  
-  
-  
+
+  segs
+    : [seg s] "|" [segs more] = [seg s] [segs more]
+    >: [seg sg] = [seg sg]
+
+  seg
+    : [items i] = <seg>[items i]</>
+
   linenumber
 //    :  "(" [LINENUM n] ")." " " = <milestone unit="line" n=[LINENUM n]/>
 //    >: "(" [LINENUM n] ")." "div " = <milestone unit="line" n=[LINENUM n] rend="break"/>
@@ -122,20 +128,24 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
     :  "((" [LINENUM n] "))" = <milestone unit="line" n=[LINENUM n]/>
     >: "(((" [LINENUM n] ")))" = <milestone unit="line" n=[LINENUM n] rend="break"/>
 
-  
+
   foreign
 
     : "~|" [items a] "|~" [FOREIGNLANG lang] " " = <foreign xml:lang=[FOREIGNLANG lang]>[items a]</>
     : "~|" [WORDSFOREIGN a] "|~" [FOREIGNLANG lang] " " = <foreign xml:lang=[FOREIGNLANG lang]>[WORDSFOREIGN a]</>
-    
+
     //: "~|" [WORDSFOREIGN a][items i] "|~" [WORD lang] " " = <foreign xml:lang=[WORD lang]>[WORDSFOREIGN a][items i]</>
     //: "~|" [items i][WORDSFOREIGN a] "|~" [WORD lang] " " = <foreign xml:lang=[WORD lang]>[items i][WORDSFOREIGN a]</>
-  
-    
+
+
 // removed from lang june-2010
 //  lb
 //    : "---" = <lb></>
-  
+
+  lb
+      : [NL] [NL] = [NL]<lb></>
+      >: [NL] [NL] = <lb></>
+
   term
     : "<" [items def] "=" [WORDSTERM t] ">" = <term target=[WORDSTERM t]>[items def]</>
     //with lang
@@ -152,7 +162,7 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
   gap
     //>: "[.?]" = <gap reason="lost" extent="unknown" unit="character"></>
     //>: ".?" = <gap reason="illegible" extent="unknown" unit="character"></>
-    
+
     : "[...]" = <gap reason="lost" extent="unknown" unit="character"></>
     : "..." = <gap reason="illegible" extent="unknown" unit="character"></>
 
@@ -161,53 +171,61 @@ WORDSANDMORE = ([^<>#@~〚〛$\*\&\=\|\{\}¯≡\u0323]+) (MAX)
      //: "〚" [WORDS w] "〛" = <del>[WORDS w]</>
     >: "〚" [items a] "〛" = <del>[items a]</>
 
-  
+  supplied
+    : "[" [WORDSLOOSE w] "]" = <supplied reason="lost">[WORDSLOOSE w]</>
+    : "[" [WORD w] "]" = <supplied reason="lost">[WORD w]</>
+    >: "[" [items i] "]" = <supplied reason="lost">[items i]</>
+
+  choice
+    : [BEGOPT] [WORDSLOOSE w] "|" [segs b] [ENDOPT] = <choice><seg>[WORDSLOOSE w]</>[segs b]</>
+
   app
-  
+
     //no type  ??
     //: [BEGOPT] [WORD a] "|:" [WORDSLR c] "|" [ENDOPT] = <app><lem resp=[WORDSLR c]>[WORD a]</></>
     //: [BEGOPT] [WORD a] "|:|" [ENDOPT] = <app><lem>[WORD a]</></>
-    
+
     : [BEGOPT] [items a] "|:" [WORDSLOOSE c] "|" [ENDOPT] = <app><lem resp=[WORDSLOOSE c]>[items a]</></>
     : [BEGOPT] [items a] "|:|" [ENDOPT] = <app><lem>[items a]</></>
-    
+
     : [BEGOPT] [WORDSLOOSE a] "|:" [WORDSLOOSE c] "|" [ENDOPT] = <app><lem resp=[WORDSLOOSE c]>[WORDSLOOSE a]</></>
     : [BEGOPT] [WORDSLOOSE a] "|:|" [ENDOPT] = <app><lem>[WORDSLOOSE a]</></>
-    
-    
+
+
     // BGU
     //: [BEGOPT] [WORD a] "|BGU:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU"><lem resp=[WORDSLR c]>[WORD a]</></>
-    
+
     //: [BEGOPT] [items a] "|BGU:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU"><lem resp=[WORDSLR c]>[items a]</></>
     //: [BEGOPT] [items a] "|BGU:|" [ENDOPT] = <app type="BGU"><lem>[items a]</></>
-    
-    
+
+
     : [BEGOPT] [items a] "|BGU:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU"><lem resp=[WORDSLR c]>[items a]</></>
     : [BEGOPT] [items a] "|BGU:|" [ENDOPT] = <app type="BGU"><lem>[items a]</></>
-    
+
     : [BEGOPT] [WORDSLOOSE a] "|BGU:" [WORDSLOOSE c] "|" [ENDOPT] = <app type="BGU"><lem resp=[WORDSLOOSE c]>[WORDSLOOSE a]</></>
     : [BEGOPT] [WORDSLOOSE a] "|BGU:|" [ENDOPT] = <app type="BGU"><lem>[WORDSLOOSE a]</></>
-    
-    
+
+
     //BGU_DDbDP
     //: [BEGOPT] [WORD a] "|BGU_DDbDP:" [WORDSLR c] "|" [ENDOPT] = <app type="BGU_DDbDP"><lem resp=[WORDSLR c]>[WORD a]</></>
     //: [BEGOPT] [WORD a] "|BGU_DDbDP:|" [ENDOPT] = <app type="BGU_DDbDP"><lem>[WORD a]</></>
-    
+
     : [BEGOPT] [items a] "|BGU_DDbDP:" [WORDSLOOSE c] "|" [ENDOPT] = <app type="BGU_DDbDP"><lem resp=[WORDSLOOSE c]>[items a]</></>
     : [BEGOPT] [items a] "|BGU_DDbDP:|" [ENDOPT] = <app type="BGU_DDbDP"><lem>[items a]</></>
-    
+
     : [BEGOPT] [WORDSLOOSE a] "|BGU_DDbDP:" [WORDSLOOSE c] "|" [ENDOPT] = <app type="BGU_DDbDP"><lem resp=[WORDSLOOSE c]>[WORDSLOOSE a]</></>
     : [BEGOPT] [WORDSLOOSE a] "|BGU_DDbDP:|" [ENDOPT] = <app type="BGU_DDbDP"><lem>[WORDSLOOSE a]</></>
 
-    
+
    note
 
     //version with lang, decided not needed since note will be in same lang as overall translation 6-25-2010
   	//: "\/*" [NOTELANG nl] " " [WORDSANDMORE a] "*\/" = <note xml:lang=[NOTELANG nl]>[WORDSANDMORE a]</>
+    : "\/*" [WORD a] "|" [WORDSANDMORE more] "*\/" = <note type=[WORD a]>[WORDSANDMORE more]</>
   	: "\/*" [WORDSANDMORE a] "*\/" = <note>[WORDSANDMORE a]</>
 
-    
-    
+
+
 // DONE:
 // <gap reason="lost" extent="unknown" unit="character"/> [.?]
 // <milestone unit="line" n="*"/>

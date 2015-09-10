@@ -20,7 +20,7 @@ public class XSugarStandaloneServlet extends HttpServlet
   private HashMap<String,XSugarTransformerPool> transformers = null;
   private ConcurrentHashMap transformationLocks = null;
 
-  private static String[] known_grammars = {"epidoc", "translation_epidoc","commentary"};
+  private static String[] known_grammars = {"epidoc", "translation_epidoc","commentary","vllc"};
 
   /**
    * Servlet init, called upon first request.

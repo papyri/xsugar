@@ -335,13 +335,13 @@ public class XSugarStandaloneServlet extends HttpServlet
 
     out.println("{");
     if (!parse_exception) {
-      out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(result) + "\"");
+      out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(result).replace("\\'","'") + "\"");
     }
     else {
-      out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(param_content) + "\",");
+      out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(param_content).replace("\\'","'") + "\",");
       out.println("\"exception\":");
         out.println("{");
-          out.println("\"cause\": \"" + StringEscapeUtils.escapeJavaScript(cause) + "\",");
+          out.println("\"cause\": \"" + StringEscapeUtils.escapeJavaScript(cause).replace("\\'","'") + "\",");
           out.println("\"line\": " + line + ",");
           out.println("\"column\": " + column);
         out.println("}");

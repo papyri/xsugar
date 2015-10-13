@@ -257,6 +257,7 @@ public class XSugarStandaloneServlet extends HttpServlet
     throws ServletException, IOException
   {
     response.setContentType("text/html;charset=UTF-8");
+    response.setHeader("Access-Control-Allow-Origin","*");
     response.setStatus(HttpServletResponse.SC_OK);
     PrintWriter out = response.getWriter();
 
@@ -281,6 +282,19 @@ public class XSugarStandaloneServlet extends HttpServlet
   }
 
   /**
+   * Handle a servlet OPTIONS request.
+   */
+  @Override
+  protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException
+  {
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+    super.doOptions(request, response);
+  }
+
+  /**
    * Handle a servlet POST request (serves JSON result of running XSugar transform).
    */
   @Override
@@ -300,6 +314,7 @@ public class XSugarStandaloneServlet extends HttpServlet
     PrintWriter out = response.getWriter();
 
     response.setContentType("application/json;charset=UTF-8");
+    response.setHeader("Access-Control-Allow-Origin","*");
     
     try {
       result = doTransform(param_content, param_type, param_direction);
@@ -320,13 +335,13 @@ public class XSugarStandaloneServlet extends HttpServlet
 
     out.println("{");
     if (!parse_exception) {
-      out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(result) + "\"");
+      out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(result).replace("\\'","'") + "\"");
     }
     else {
-      out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(param_content) + "\",");
+      out.println("\"content\": \"" + StringEscapeUtils.escapeJavaScript(param_content).replace("\\'","'") + "\",");
       out.println("\"exception\":");
         out.println("{");
-          out.println("\"cause\": \"" + StringEscapeUtils.escapeJavaScript(cause) + "\",");
+          out.println("\"cause\": \"" + StringEscapeUtils.escapeJavaScript(cause).replace("\\'","'") + "\",");
           out.println("\"line\": " + line + ",");
           out.println("\"column\": " + column);
         out.println("}");

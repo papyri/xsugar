@@ -160,7 +160,7 @@ module RXSugar
       def xml2nonxml(content)
         # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin xml2nonxml.rb')
         # jruby_pipe(ruby_file, content)
-        if((defined?(Sosol::Application) && defined?(Sosol::Application.config.xsugar_standalone_enabled) && Sosol::Application.config.xsugar_standalone_enabled) || (defined?(XSUGAR_STANDALONE_ENABLED) && XSUGAR_STANDALONE_ENABLED))
+        if((defined?(Sosol::Application) && Sosol::Application.config.respond_to?(:xsugar_standalone_enabled) && Sosol::Application.config.xsugar_standalone_enabled) || (defined?(XSUGAR_STANDALONE_ENABLED) && XSUGAR_STANDALONE_ENABLED))
           xformed = XSugarStandalone.transform_request(defined?(Sosol::Application) ? Sosol::Application.config.xsugar_standalone_url : XSUGAR_STANDALONE_URL,
             {
               :content => content,
@@ -190,7 +190,7 @@ module RXSugar
       def nonxml2xml(content)
         # ruby_file = File.join(File.dirname(__FILE__), *%w'.. bin nonxml2xml.rb')
         # jruby_pipe(ruby_file, content)
-        if((defined?(Sosol::Application) && defined?(Sosol::Application.config.xsugar_standalone_enabled) && Sosol::Application.config.xsugar_standalone_enabled) || (defined?(XSUGAR_STANDALONE_ENABLED) && XSUGAR_STANDALONE_ENABLED))
+        if((defined?(Sosol::Application) && Sosol::Application.config.respond_to?(:xsugar_standalone_enabled) && Sosol::Application.config.xsugar_standalone_enabled) || (defined?(XSUGAR_STANDALONE_ENABLED) && XSUGAR_STANDALONE_ENABLED))
           xformed = XSugarStandalone.transform_request(defined?(Sosol::Application) ? Sosol::Application.config.xsugar_standalone_url : XSUGAR_STANDALONE_URL,
             {
               :content => content,

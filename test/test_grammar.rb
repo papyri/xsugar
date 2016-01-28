@@ -181,6 +181,17 @@ if(RUBY_PLATFORM == 'java')
     # Some unknown number of lost characters
     assert_equal_fragment_transform '[.?]', '<gap reason="lost" extent="unknown" unit="character"/>'
   end
+
+  def test_unclear
+    assert_equal_fragment_transform 'έ̣','<unclear>έ</unclear>'
+    assert_equal_fragment_transform '[ π]έ̣μψον','<supplied reason="lost"> π</supplied><unclear>έ</unclear>μψον'
+    assert_equal_fragment_transform '[.?]ης αὐτὸν ἐ̣ξ ','<gap reason="lost" extent="unknown" unit="character"/>ης αὐτὸν <unclear>ἐ</unclear>ξ '
+  end
+
+  def test_supraline_combining_accents
+    assert_equal_fragment_transform 'θ̄ε̄ῷ̄','<hi rend="supraline">θεῷ</hi>'
+    assert_equal_fragment_transform 'Ἀ̣φ̄ᾱί̣̄σ̣̄ε̄ω̄ς̄,','<unclear>Ἀ</unclear><hi rend="supraline">φα<unclear>ίσ</unclear>εως</hi>,'
+  end
   
   # http://www.stoa.org/epidoc/gl/5/vestiges.html
   def test_illegible_dot_gap

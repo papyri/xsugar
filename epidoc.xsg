@@ -267,7 +267,7 @@ item_can_nest
 	: [choice_corr cc] = [choice_corr cc]
 	: [choice_reg cr] = [choice_reg cr]
 	: [milestone m] = [milestone m]
-	>: [illegible_dot id] = [illegible_dot id]
+	: [illegible_dot id] = [illegible_dot id]
 	: [lang_gap lg] = [lang_gap lg]
 	: [lines_not_transcribed lnt] = [lines_not_transcribed lnt]
 	: [hi_subscript hs] = [hi_subscript hs]

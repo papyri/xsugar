@@ -109,7 +109,7 @@ public class XSugarStandaloneServlet extends HttpServlet
       System.out.println("Single chunk, doing transform normally");
       return direction.equals("xml2nonxml") ? transformer.XMLToNonXML(content) : transformer.nonXMLToXML(content);
     }
-    ArrayList<String> results_list = new ArrayList();
+    ArrayList<String> results_list = new ArrayList(split_results.size());
     System.out.println("Split into " + split_results.size());
     for (String split_item : split_results) {
       split_counter++;

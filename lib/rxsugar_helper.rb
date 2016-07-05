@@ -8,7 +8,7 @@ module RXSugar
     COMMENTARY_GRAMMAR = File.join(File.dirname(__FILE__), *%w".. commentary.xsg")
 
     def rxsugar_from_grammar(grammar_file = DEFAULT_GRAMMAR)
-      xsg = File.readlines(grammar_file).to_s
+      xsg = File.readlines(grammar_file).join('')
       RXSugar.new(xsg)
     end
 

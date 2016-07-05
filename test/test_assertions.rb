@@ -25,6 +25,8 @@ module GrammarAssertions
   def assert_equal_fragment_transform(non_xml_fragment, xml_fragment)
     non_xml_fragment = "1. #{non_xml_fragment}"
     non_xml_fragment = lab(non_xml_fragment)
+    non_xml_fragment = RXSugar::RXSugar.nfd(non_xml_fragment)
+    xml_fragment = RXSugar::RXSugar.nfc(xml_fragment)
     assert_equal ab(lb(xml_fragment)), @xsugar.non_xml_to_xml(non_xml_fragment)
     assert_equal non_xml_fragment, @xsugar.xml_to_non_xml(ab(lb(xml_fragment)))
     assert_equal_non_xml_to_xml_to_non_xml non_xml_fragment, non_xml_fragment
@@ -73,14 +75,14 @@ module GrammarAssertions
   def assert_equal_xml_fragment_to_non_xml_to_xml_fragment(expected, input)
     #convert input xml to Leiden+
     begin
-      xml_to_non_xml = @xsugar.xml_to_non_xml(ab(lb(input)))
+      xml_to_non_xml = RXSugar::RXSugar.nfd(@xsugar.xml_to_non_xml(RXSugar::RXSugar.nfc(ab(lb(input)))))
     rescue NativeException => e
       raise RXSugar::XMLParseError
     end
     #convert Leiden+ from above back to XML for comparison to expected XML to see if they match
     begin
     non_xml_to_xml_from_xml_to_non_xml =
-      @xsugar.non_xml_to_xml(xml_to_non_xml)
+      RXSugar::RXSugar.nfc(@xsugar.non_xml_to_xml(RXSugar::RXSugar.nfd(xml_to_non_xml)))
     rescue NativeException => e
       raise RXSugar::NonXMLParseError
     end
@@ -88,7 +90,8 @@ module GrammarAssertions
     #not sure if this the best way to compare the 2 sets of XML and match regardless of attrib order but it seems to work
     
     #parse the 'expected' XML passed in into attributes, text values, and node names
-    
+   
+    begin 
     if expected.include?("</ab><ab>")
       #jump through a lot of hoops to make multiple ab section test case work - may pull out
       tempab = ab(expected)
@@ -123,9 +126,9 @@ module GrammarAssertions
     #only comparing the XML inside the ab tag - node() will pull text nodes and element nodes
     inputinsideab = REXML::XPath.match(startinput, 'div/div/ab/node()')
     #remove line number tag added during Xsugar transformation process that is not needed
-    tempinput = inputinsideab.to_s.sub!(/<lb n='1'\/>/, "")
+    tempinput = inputinsideab.nil? ? "" : inputinsideab.to_s.sub!(/<lb n='1'\/>/, "")
     #wrap it to keep away from 'adding second root' error 
-    tempinput = "<wrapab>" + tempinput + "</wrapab>"
+    tempinput = "<wrapab>" + (tempinput || "") + "</wrapab>"
     finalinput = REXML::Document.new(tempinput)
     
     compare_input_attribs = Hash.new
@@ -140,7 +143,9 @@ module GrammarAssertions
     #assert equal the attribs hash, text array, and nodes array created from expected and input XML are equal
     #sort the attribs hash so the attribute order does not matter - everything else should be the same
     assert_equal compare_expected_text+compare_expected_nodes+compare_expected_attribs.sort, compare_input_text+compare_input_nodes+compare_input_attribs.sort
-    
+    rescue TypeError => e
+      raise RXSugar::XMLParseError
+    end
     return xml_to_non_xml
   end
   

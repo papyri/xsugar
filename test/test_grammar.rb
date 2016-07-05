@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 if(RUBY_PLATFORM == 'java')
   require File.join(File.dirname(__FILE__), 'test_helper')
 
@@ -1066,6 +1068,8 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '<#ᾱ=1#>', '<num value="1"><hi rend="supraline">α</hi></num>'
     assert_equal_fragment_transform '<#β̄=2#>', '<num value="2"><hi rend="supraline">β</hi></num>'
     assert_equal_fragment_transform '<#γ̄=3#>', '<num value="3"><hi rend="supraline">γ</hi></num>'
+    assert_equal_fragment_transform '<#ῑ=10#>', '<num value="10"><hi rend="supraline">ι</hi></num>'
+    assert_equal_fragment_transform '<#ῑη̄=18#>', '<num value="18"><hi rend="supraline">ιη</hi></num>'
     assert_equal_fragment_transform '<#𐅵̄=1/2#>', '<num value="1/2"><hi rend="supraline">𐅵</hi></num>'
     assert_equal_fragment_transform '<#𐅸̄=3/4#>', '<num value="3/4"><hi rend="supraline">𐅸</hi></num>'
     assert_equal_fragment_transform '<#ῑβ̄=1/12#>', '<num value="1/12"><hi rend="supraline">ιβ</hi></num>'

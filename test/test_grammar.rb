@@ -1370,5 +1370,13 @@ if(RUBY_PLATFORM == 'java')
   # def test_xsugar_reversibility_true
   #   assert @xsugar.reversible?
   # end
+
+  # DCLP tests begin here
+
+  def test_dclp_echo_of_passing
+    # this should be guaranteed to pass because it is a repeat of one above
+    assert_equal_fragment_transform '18.- ', '<lb n="18" break="no"/>'
+  end
+
   end
 end

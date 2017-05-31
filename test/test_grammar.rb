@@ -1373,9 +1373,12 @@ if(RUBY_PLATFORM == 'java')
 
   # DCLP tests begin here
 
-  def test_dclp_echo_of_passing
-    # this should be guaranteed to pass because it is a repeat of one above
-    assert_equal_fragment_transform '18.- ', '<lb n="18" break="no"/>'
+  def test_dclp_177
+    # specify corresp for a textpart div (e.g., fragment ID)
+    foo = '<S=.grc<D=.1.column.#FR365<=foo=>=D>'
+    bar = transform_non_xml_to_xml(foo)
+    assert_equal(bar, '<div xml:lang="grc" type="edition" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace"><div n="1" subtype="column" type="textpart" corresp="#FR365"><ab>foo</ab></div></div>')
+    assert_equal_edition_roundtrip(foo)
   end
 
   end

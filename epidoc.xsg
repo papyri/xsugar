@@ -41,6 +41,9 @@ WORD = ([^ \/\\\n\r\t\[\]\^<>_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\
 // WORDDIV breaks at space and does not allow DOT - allows +, \,
 WORDDIV = ([^ \n\r\t\[\]\^<>_#@~〚〛$\*\&\.\:\=\|\'\!\(\)\{\}\?\"¯\u0304\u0323]+) (MAX)
 
+//WORDDIVHASH same as WORDDIV but allows octothorpe (#) for IDREFs
+WORDDIVHASH = ([^ \n\r\t\[\]\^<>_@~〚〛$\*\&\.\:\=\|\'\!\(\)\{\}\?\"¯\u0304\u0323]+) (MAX)
+
 // WORDVEST same as WORD except added 'v' to keep vestig out
 WORDVEST = ([^ \/\\\n\r\t\[\]\^<>v_#@~〚〛$\*\&\,\.\:\=\|\'\!\(\)\{\}\?\"¯+\u0304\u0323]+) (MAX)
 
@@ -128,10 +131,14 @@ divtag
   >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
   >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
   >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+  >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] "." [WORDDIVHASH c] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart" corresp=[WORDDIVHASH c]> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa]
+  >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] "." [WORDDIVHASH c] [ANYSP a] [abtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart" corresp=[WORDDIVHASH c]> [ANYSP a] [abtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
   >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa]
   >: [BEGDIV] "." [WORDDIV n] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
   >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa]
   >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart"> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
+  >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] "." [WORDDIVHASH c] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart" corresp=[WORDDIVHASH c]> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa]
+  >: [BEGDIV] "." [WORDDIV n] "." [WORDDIV s] "." [WORDDIVHASH c] [ANYSP a] [divtag ab] [ANYSP aa][ENDDIV] [ANYSP aaa] [divtag more] = <div n=[WORDDIV n] subtype =[WORDDIV s] type="textpart" corresp=[WORDDIVHASH c]> [ANYSP a] [divtag ab][ANYSP aa]</> [ANYSP aaa] [divtag more]
 
 abtag 
   : [BEGAB] [items z] [ENDAB] [ANYSP a] = <ab>[items z]</> [ANYSP a]

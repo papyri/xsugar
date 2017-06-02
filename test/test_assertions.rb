@@ -151,5 +151,25 @@ module GrammarAssertions
   
   def transform_xml_fragment_to_non_xml(input)
     xml_to_non_xml = @xsugar.xml_to_non_xml(ab(lb(input)))
+    return xml_to_non_xml
   end
+
+  def transform_non_xml_fragment_to_xml(input)
+    return @xsugar.non_xml_to_xml(lab(input))
+  end
+
+  def transform_non_xml_to_xml(input)
+    return @xsugar.non_xml_to_xml(input)
+  end
+
+  def transform_xml_to_non_xml(input)
+    return @xsugar.xml_to_non_xml(input)
+  end
+
+  def assert_equal_edition_roundtrip(input)
+    xml = @xsugar.non_xml_to_xml(input)
+    nonxml = @xsugar.xml_to_non_xml(xml)
+    assert_equal(input, nonxml)
+  end
+
 end

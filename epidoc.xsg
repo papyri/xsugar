@@ -1059,3 +1059,7 @@ spaceitem
 	: "vac.ca." [NUM n] "lin" = <space quantity=[NUM n] unit="line" precision="low"></>
 	: "vac.ca." [NUM n] "lin(?) " = <space quantity=[NUM n] unit="line" precision="low"><certainty match=".." locus="name"></></>
 
+  // clear, but incomprehensible letters
+  // DCLP issue #141: https://github.com/DCLP/dclpxsltbox/issues/141
+  // !abc! == <orig>abc</orig>
+  : "!" [WORD a] "!" = <orig>[WORD a]</>

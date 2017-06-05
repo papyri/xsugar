@@ -1373,6 +1373,14 @@ if(RUBY_PLATFORM == 'java')
 
   # DCLP tests begin here
 
+  def test_dclp_141
+    # clear, but incomprehensible letters
+    # https://github.com/DCLP/dclpxsltbox/issues/141
+    foo = '!abc!'
+    bar = '<orig>abc</orig>'
+    assert_equal_fragment_transform foo, bar
+  end
+
   def test_dclp_177
     # specify corresp for a textpart div (e.g., fragment ID)
     foo = '<S=.grc<D=.1.column.#FR365<=foo=>=D>'

@@ -1380,6 +1380,8 @@ if(RUBY_PLATFORM == 'java')
     bar = '<orig>abc</orig>'
     assert_equal_fragment_transform foo, bar
     assert_equal_xml_fragment_to_non_xml_to_xml_fragment bar, bar
+    bar = '<lb n="11" break="no"/><orig>ν</orig> τὸ <orig>συλ</orig><gap reason="lost" quantity="1" unit="character"/><orig>φες</orig>'
+    assert_equal_xml_fragment_to_non_xml_to_xml_fragment bar, bar
   end
 
   def test_dclp_177

@@ -1,18 +1,24 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    haml (3.0.25)
+    haml (5.0.0)
+      temple (>= 0.8.0)
+      tilt
+    json (1.8.1)
     json (1.8.1-java)
     progressbar (0.21.0)
     rake (10.3.2)
     rdoc (4.1.1)
       json (~> 1.4)
+    temple (0.8.2)
+    tilt (2.0.10)
 
 PLATFORMS
   java
+  ruby
 
 DEPENDENCIES
-  haml (~> 3.0.25)
+  haml (~> 5.0.0)
   json
   progressbar
   rake

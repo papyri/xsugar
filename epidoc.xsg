@@ -107,7 +107,7 @@ FRACNUM = ([0-9]+\/{1}[0-9]+|[0-9]+)
 APPNUM = [0-9]+\.{1}[0-9]+
 
 LANGLIST = ((Arabic)|(Aramaic)|(Coptic)|(Demotic)|(Gothic)|(Hebrew)|(Hieratic)|(Nabatean)|(Syriac))
-TEXTLANGLIST = ((grc)|(la)|(ara)|(la\-Grek)|(grc\-Latn)|(cop))
+TEXTLANGLIST = ((grc)|(la)|(ara)|(la\-Grek)|(grc\-Latn)|(cop)|(egy\-Egyd))
 
 ADDLIST = ((bottom)|(left)|(right)|(top)|(margin))
 

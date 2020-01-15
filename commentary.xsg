@@ -7,7 +7,7 @@ BEGP = [\n]{2}
 BEGWRAP = "<W:"
 ENDWRAP = ":W>"
 
-PN_URL = ((ddbdp/)|(hgv/)|(apis/)|(biblio/))
+PN_URL = ((ddbdp/)|(hgv/)|(dclp/)|(apis/)|(biblio/))
 
 NUM_RNG_WHL = ([0-9]+\-{1}[0-9]+|[0-9]+|[IVXLCDM]+\-{1}[IVXLCDM]+|[IVXLCDM]+|[ivxlcdm]+\-{1}[ivxlcdm]+|[ivxlcdm]+)
 
@@ -117,11 +117,11 @@ bib_scope
   : =
   
 bib_scope_detail
-  : "|v=" [NUM_RNG_WHL nrw] = <biblScope type="vol">[NUM_RNG_WHL nrw]</>
-  : "|i=" [NUM_RNG_WHL nrw] = <biblScope type="issue">[NUM_RNG_WHL nrw]</>
-  : "|p=" [NUM_RNG_WHL nrw] = <biblScope type="pp">[NUM_RNG_WHL nrw]</>
-  : "|l=" [NUM_RNG_WHL nrw] = <biblScope type="ll">[NUM_RNG_WHL nrw]</>
-  : "|ch=" [NUM_RNG_WHL nrw] = <biblScope type="chap">[NUM_RNG_WHL nrw]</>
+  : "|v=" [NUM_RNG_WHL nrw] = <biblScope unit="vol">[NUM_RNG_WHL nrw]</>
+  : "|i=" [NUM_RNG_WHL nrw] = <biblScope unit="issue">[NUM_RNG_WHL nrw]</>
+  : "|p=" [NUM_RNG_WHL nrw] = <biblScope unit="pp">[NUM_RNG_WHL nrw]</>
+  : "|l=" [NUM_RNG_WHL nrw] = <biblScope unit="ll">[NUM_RNG_WHL nrw]</>
+  : "|ch=" [NUM_RNG_WHL nrw] = <biblScope unit="chap">[NUM_RNG_WHL nrw]</>
   
 bib
   : "<:" [WORDSLOOSE text] "|" [bib_target bt] [bib_scope bs] ":>" = <listBibl><bibl><ref target=[bib_target bt]>[WORDSLOOSE text]</>[bib_scope bs]</></>

@@ -132,7 +132,7 @@ public class XSugarStandaloneServlet extends HttpServlet
       }
       catch (dk.brics.grammar.parser.ParseException e) {
         if (direction.equals("nonxml2xml")) { 
-          if (split_results.size() < 5) {
+          if (split_results.size() < 4) {
             System.out.println("Parse exception in small split transform, trying full transform");
             return transformer.nonXMLToXML(StringEscapeUtils.unescapeHtml(content));
           }

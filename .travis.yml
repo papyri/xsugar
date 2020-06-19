@@ -5,7 +5,7 @@ language:
   - java
 jdk: openjdk8
 rvm:
-  - jruby-18mode
+  - jruby-1.6.8
 env: JRUBY_OPTS="-J-Xmx512M"
 before_install:
   - gem install bundler -v 1.15.3

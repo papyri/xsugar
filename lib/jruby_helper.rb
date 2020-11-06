@@ -66,6 +66,11 @@ module RXSugar
             # retry after exponential backoff
             sleep([retry_time, 1.0].min)
             return transform_request(url, params, retry_time * 2)
+          rescue OpenSSL::SSL::SSLError
+            parsed_uri = URI.parse(url)
+            parsed_uri.scheme = 'http'
+            url = parsed_uri.to_s
+            retry
           rescue JSON::ParserError => e
             # JSON parser error, received malformed JSON (e.g. mangled Unicode)
             error_type = params[:direction] == 'nonxml2xml' ? NonXMLParseError : XMLParseError

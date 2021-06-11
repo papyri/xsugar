@@ -28,7 +28,7 @@ public class LeidenPlusSplitter implements SplitterJoiner {
   private static Pattern linenum = Pattern.compile("^\\s*[0-9]+[/\\\\,a-zA-Z0-9]*[ms0-9]*\\.");
   private static Pattern lang = Pattern.compile("(^<S=)([-a-zA-Z.]+)");
   private static Pattern tlang = Pattern.compile("(^<T=)([-a-zA-Z.]+)");
-  private int splitOn = 20;
+  private int splitOn = 10;
 
   public LeidenPlusSplitter() {
     init();

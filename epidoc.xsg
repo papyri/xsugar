@@ -485,6 +485,10 @@ milestone
 	: "###" = <milestone rend="box" unit="undefined"></>
 	
 illegible_dot
+	: [illegible_dot_no_period idnp] ". " = [illegible_dot_no_period idnp] ". "
+	>: [illegible_dot_no_period idnp] = [illegible_dot_no_period idnp]
+
+illegible_dot_no_period
 	: [illegible_dot_gap idg] = [illegible_dot_gap idg]
 	>: [illegible_dot_max idm] = [illegible_dot_max idm]
 	>: [illegible_dot_lin idl] = [illegible_dot_lin idl]

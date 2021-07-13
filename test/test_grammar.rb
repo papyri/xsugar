@@ -183,6 +183,17 @@ if(RUBY_PLATFORM == 'java')
     # Some unknown number of lost characters
     assert_equal_fragment_transform '[.?]', '<gap reason="lost" extent="unknown" unit="character"/>'
   end
+
+  def test_unclear
+    assert_equal_fragment_transform 'έ̣','<unclear>έ</unclear>'
+    assert_equal_fragment_transform '[ π]έ̣μψον','<supplied reason="lost"> π</supplied><unclear>έ</unclear>μψον'
+    assert_equal_fragment_transform '[.?]ης αὐτὸν ἐ̣ξ ','<gap reason="lost" extent="unknown" unit="character"/>ης αὐτὸν <unclear>ἐ</unclear>ξ '
+  end
+
+  def test_supraline_combining_accents
+    assert_equal_fragment_transform 'θ̄ε̄ῷ̄','<hi rend="supraline">θεῷ</hi>'
+    assert_equal_fragment_transform 'Ἀ̣φ̄ᾱί̣̄σ̣̄ε̄ω̄ς̄,','<unclear>Ἀ</unclear><hi rend="supraline">φα<unclear>ίσ</unclear>εως</hi>,'
+  end
   
   # http://www.stoa.org/epidoc/gl/5/vestiges.html
   def test_illegible_dot_gap
@@ -192,6 +203,9 @@ if(RUBY_PLATFORM == 'java')
     assert_equal_fragment_transform '.1', '<gap reason="illegible" quantity="1" unit="character"/>'
     assert_equal_fragment_transform '.2', '<gap reason="illegible" quantity="2" unit="character"/>'
     assert_equal_fragment_transform '.3', '<gap reason="illegible" quantity="3" unit="character"/>'
+    assert_equal_fragment_transform '.4. ', '<gap reason="illegible" quantity="4" unit="character"/>. '
+    assert_equal_fragment_transform '8. .1. ' + "\n\n" + '9. <:κ|reg|κα̣:>', '<lb n="8"/><gap reason="illegible" quantity="1" unit="character"/>. ' + "\n\n" + '<lb n="9"/><choice><reg>κ</reg><orig>κ<unclear>α</unclear></orig></choice>'
+    assert_equal_fragment_transform '6. Μ̣ε̣ο̣.4. τοῦ ' + "\n\n" + '7. ((ἔτους)) ', '<lb n="6"/><unclear>Μεο</unclear><gap reason="illegible" quantity="4" unit="character"/>. τοῦ ' + "\n\n" + '<lb n="7"/><expan><ex>ἔτους</ex></expan> '
     (4..100).each do |n|
       assert_equal_fragment_transform ".#{n}", "<gap reason=\"illegible\" quantity=\"#{n}\" unit=\"character\"/>"
     end

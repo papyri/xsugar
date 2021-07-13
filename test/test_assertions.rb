@@ -27,9 +27,13 @@ module GrammarAssertions
     non_xml_fragment = lab(non_xml_fragment)
     non_xml_fragment = RXSugar::RXSugar.nfd(non_xml_fragment)
     xml_fragment = RXSugar::RXSugar.nfc(xml_fragment)
+    # non-xml -> xml equal
     assert_equal ab(lb(xml_fragment)), @xsugar.non_xml_to_xml(non_xml_fragment)
+    # xml -> non-xml equal
     assert_equal non_xml_fragment, @xsugar.xml_to_non_xml(ab(lb(xml_fragment)))
+    # non-xml -> xml -> non-xml equal
     assert_equal_non_xml_to_xml_to_non_xml non_xml_fragment, non_xml_fragment
+    # xml -> non-xml -> xml equal
     assert_equal_xml_fragment_to_non_xml_to_xml_fragment xml_fragment, xml_fragment
   end
   

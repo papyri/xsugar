@@ -328,6 +328,9 @@ public class XSugarStandaloneServlet extends HttpServlet
       column = e.getLocation().getColumn();
     }
     catch (Throwable t) {
+      if (t instanceof Error) {
+        t.printStackTrace(System.err);
+      }
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       parse_exception = true;
       cause = "Unhandled error performing conversion. This is likely due to a large file containing a parse error, but due to the length of the file we are unable to fully parse it to indicate the position of the error.";

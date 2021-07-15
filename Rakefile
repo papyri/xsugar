@@ -27,7 +27,7 @@ namespace :doc do
     require 'yard/rake/yardoc_task'
 
     YARD::Rake::YardocTask.new(:generate) do |yt|
-      yt.files   = Dir.glob(File.join('lib', '**', '*.rb')) + 
+      yt.files   = Dir.glob(File.join('lib', '**', '*.rb')) +
                    ['README.md']
       yt.options = ['-p', templates_custom, '--output-dir', doc_destination, '--readme', 'README.md']
     end
@@ -167,7 +167,7 @@ namespace :standalone do
       XSL_CHAIN = ENV['XSL_CHAIN'].split(',')
     else
       warn 'Use XSL_CHAIN=file1.xsl,file2.xsl,file3.xsl to override default XSL chain'
-      XSL_CHAIN = %w{../protosite/data/xslt/ddb/preprocess.xsl ../protosite/data/xslt/ddb/strip_lb_ids.xsl ../protosite/data/xslt/ddb/get_div_edition.xsl}
+      XSL_CHAIN = %w{../sosol/data/xslt/ddb/preprocess.xsl ../sosol/data/xslt/ddb/strip_lb_ids.xsl ../sosol/data/xslt/ddb/get_div_edition.xsl}
     end
     
     if ENV.include?('GRAMMAR_STRING')
@@ -188,7 +188,7 @@ namespace :standalone do
       SAXON_JAR = ENV['SAXON_JAR']
     else
       warn 'Use SAXON_JAR=saxon9he.jar to override default Saxon JAR path'
-      SAXON_JAR = '../protosite/lib/java/saxon9he.jar'
+      SAXON_JAR = '../sosol/lib/java/saxon9he.jar'
     end
     
     %w{DATA_PATH XSL_CHAIN GRAMMAR_STRING STANDALONE_URL SAXON_JAR}.each do |param|

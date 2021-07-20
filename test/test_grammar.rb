@@ -191,6 +191,7 @@ if(RUBY_PLATFORM == 'java')
   end
 
   def test_supraline_combining_accents
+    skip 'we need to make sure this does the correct NFD/NFC transformations'
     assert_equal_fragment_transform 'θ̄ε̄ῷ̄','<hi rend="supraline">θεῷ</hi>'
     assert_equal_fragment_transform 'Ἀ̣φ̄ᾱί̣̄σ̣̄ε̄ω̄ς̄,','<unclear>Ἀ</unclear><hi rend="supraline">φα<unclear>ίσ</unclear>εως</hi>,'
   end

@@ -1,7 +1,12 @@
+XSugar
+------
+
+[![XSugar Tests](https://github.com/papyri/xsugar/actions/workflows/xsugar-tests.yml/badge.svg)](https://github.com/papyri/xsugar/actions/workflows/xsugar-tests.yml)
+
 Requirements
 ------------
 
- * [JRuby 1.6.8](http://jruby.org/) - preferably managed with [rbenv](https://github.com/sstephenson/rbenv)
+ * [JRuby 9.1.17.0](http://jruby.org/) - preferably managed with [rbenv](https://github.com/sstephenson/rbenv)
  * [Bundler](http://bundler.io) - `gem install bundler`
 
 Usage

@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev openjdk-11-jdk-headless
+      run: sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev openjdk-11-jdk-headless maven
     - name: Set up Ruby
     # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
     # change this to (see https://github.com/ruby/setup-ruby#versioning):
@@ -24,5 +24,7 @@ jobs:
       with:
         ruby-version: jruby-9.1.17.0
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - name: Run tests
+    - name: Run XSugar grammar tests
       run: bundle exec rake
+    - name: Run XSugar standalone server tests
+      run: cd src/standalone && mvn test

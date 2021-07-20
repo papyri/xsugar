@@ -2,6 +2,8 @@ GEM
   remote: http://rubygems.org/
   specs:
     haml (3.0.25)
+    httpclient (2.8.3)
+    jruby-openssl (0.9.21-java)
     json (1.8.1-java)
     progressbar (0.21.0)
     rake (10.3.2)
@@ -13,10 +15,12 @@ PLATFORMS
 
 DEPENDENCIES
   haml (~> 3.0.25)
+  httpclient
+  jruby-openssl (~> 0.9.21)
   json
   progressbar
   rake
   rdoc
 
 BUNDLED WITH
-   1.15.3
+   1.17.3

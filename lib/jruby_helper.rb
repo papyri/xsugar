@@ -34,22 +34,25 @@ module RXSugar
     end
     
     require 'net/http'
+    require 'openssl'
     require 'uri'
     require 'json'
+    require 'httpclient'
     
     class XSugarStandalone
       class << self
         def transform_request(url, params, retry_time = 0.00005)
           begin
-            resp = Net::HTTP.post_form(URI.parse(url), params)
-            if resp.code == '502'
+            # resp = Net::HTTP.post_form(URI.parse(url), params)
+            resp = HTTPClient.new.post(url, params)
+            if resp.status == '502'
               # Apache proxy error, retry
               sleep([retry_time, 1.0].min)
               return transform_request(url, params, retry_time * 2)
-            elsif resp.code != '200'
+            elsif resp.status != '200'
               # Unexpected error, report
               error_type = params[:direction] == 'nonxml2xml' ? NonXMLParseError : XMLParseError
-              raise error_type.new(0,0,params[:content]), "Error performing transform. Response code from web service: Error #{resp.code}. Response body: #{resp.body}"
+              raise error_type.new(0,0,params[:content]), "Error performing transform. Response code from web service: Error #{resp.status}. Response body: #{resp.body}"
             end
            
             parsed_resp = JSON.parse(resp.body)

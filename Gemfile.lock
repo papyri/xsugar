@@ -5,7 +5,6 @@ GEM
       temple (>= 0.8.0)
       tilt
     httpclient (2.8.3)
-    jruby-openssl (0.10.7-java)
     json (2.5.1-java)
     progressbar (0.21.0)
     rake (13.0.6)
@@ -19,7 +18,6 @@ PLATFORMS
 DEPENDENCIES
   haml
   httpclient
-  jruby-openssl
   json
   progressbar
   rake

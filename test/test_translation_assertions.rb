@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'test/unit'
 
 module TranslationGrammarAssertions
@@ -35,14 +36,14 @@ module TranslationGrammarAssertions
   def assert_equal_xml_fragment_to_non_xml_to_xml_fragment(expected, input)
     begin
       xml_to_non_xml = @xsugar.xml_to_non_xml(enclose_xml_fragment(input))
-    rescue NativeException => e
+    rescue Encoding::CompatibilityError, NativeException => e
       raise RXSugar::XMLParseError
     end
     
     begin
     non_xml_to_xml_from_xml_to_non_xml =
       @xsugar.non_xml_to_xml(xml_to_non_xml)
-    rescue NativeException => e
+    rescue Encoding::CompatibilityError, NativeException => e
       raise RXSugar::NonXMLParseError
     end
     

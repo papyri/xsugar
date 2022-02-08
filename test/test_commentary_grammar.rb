@@ -1,3 +1,4 @@
+# encoding: utf-8
 if(RUBY_PLATFORM == 'java')
   require File.join(File.dirname(__FILE__), 'test_commentary_helper')
 

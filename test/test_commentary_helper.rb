@@ -1,3 +1,4 @@
+# encoding: utf-8
 if(RUBY_PLATFORM == 'java')
   require 'test/unit'
   require File.join(File.dirname(__FILE__), *%w".. lib rxsugar")

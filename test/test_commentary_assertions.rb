@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'test/unit'
 
 module CommentaryGrammarAssertions
@@ -36,7 +37,7 @@ module CommentaryGrammarAssertions
   def assert_equal_xml_fragment_to_non_xml_to_xml_fragment(expected, input)
     begin
       xml_to_non_xml = @xsugar.xml_to_non_xml(enclose_xml_fragment(input))
-    rescue NativeException => e
+    rescue Encoding::CompatibilityError, NativeException => e
       raise RXSugar::XMLParseError
     end
     
@@ -44,7 +45,7 @@ module CommentaryGrammarAssertions
     non_xml_to_xml_from_xml_to_non_xml =
       @xsugar.non_xml_to_xml(xml_to_non_xml)
     non_xml_to_xml_from_xml_to_non_xml.sub!(/ xmlns:xml="http:\/\/www.w3.org\/XML\/1998\/namespace"/,'')
-    rescue NativeException => e
+    rescue Encoding::CompatibilityError, NativeException => e
       raise RXSugar::NonXMLParseError
     end
     

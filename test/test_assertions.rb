@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'test/unit'
 require 'rexml/document'
 
@@ -80,14 +81,14 @@ module GrammarAssertions
     #convert input xml to Leiden+
     begin
       xml_to_non_xml = RXSugar::RXSugar.nfd(@xsugar.xml_to_non_xml(RXSugar::RXSugar.nfc(ab(lb(input)))))
-    rescue NativeException => e
+    rescue Encoding::CompatibilityError, NativeException => e
       raise RXSugar::XMLParseError
     end
     #convert Leiden+ from above back to XML for comparison to expected XML to see if they match
     begin
     non_xml_to_xml_from_xml_to_non_xml =
       RXSugar::RXSugar.nfc(@xsugar.non_xml_to_xml(RXSugar::RXSugar.nfd(xml_to_non_xml)))
-    rescue NativeException => e
+    rescue Encoding::CompatibilityError, NativeException => e
       raise RXSugar::NonXMLParseError
     end
     
@@ -104,7 +105,7 @@ module GrammarAssertions
       startexpected = REXML::Document.new(tempab)
       expectedinsideab = REXML::XPath.match(startexpected, 'div/div/ab/node()')
       #wrap it to keep away from 'adding second root' error
-      tempexpected = "<wrapab>" + expectedinsideab.to_s + "</wrapab>"
+      tempexpected = "<wrapab>" + expectedinsideab.join('') + "</wrapab>"
       finalexpected = REXML::Document.new(tempexpected)
     else
       tempexpected = "<wrapab>" + expected + "</wrapab>"
@@ -130,8 +131,8 @@ module GrammarAssertions
     #only comparing the XML inside the ab tag - node() will pull text nodes and element nodes
     inputinsideab = REXML::XPath.match(startinput, 'div/div/ab/node()')
     #remove line number tag added during Xsugar transformation process that is not needed
-    tempinput = inputinsideab.nil? ? "" : inputinsideab.to_s.sub!(/<lb n='1'\/>/, "")
-    #wrap it to keep away from 'adding second root' error 
+    tempinput = inputinsideab.nil? ? "" : inputinsideab.join('').sub!(/<lb n='1'\/>/, "")
+    #wrap it to keep away from 'adding second root' error
     tempinput = "<wrapab>" + (tempinput || "") + "</wrapab>"
     finalinput = REXML::Document.new(tempinput)
     
@@ -147,7 +148,7 @@ module GrammarAssertions
     #assert equal the attribs hash, text array, and nodes array created from expected and input XML are equal
     #sort the attribs hash so the attribute order does not matter - everything else should be the same
     assert_equal compare_expected_text+compare_expected_nodes+compare_expected_attribs.sort, compare_input_text+compare_input_nodes+compare_input_attribs.sort
-    rescue TypeError => e
+    rescue Encoding::CompatibilityError, TypeError => e
       raise RXSugar::XMLParseError
     end
     return xml_to_non_xml

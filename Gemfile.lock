@@ -14,6 +14,7 @@ GEM
 
 PLATFORMS
   java
+  universal-java-1.8
 
 DEPENDENCIES
   haml
@@ -24,4 +25,4 @@ DEPENDENCIES
   rdoc
 
 BUNDLED WITH
-   1.17.3
+   2.2.32

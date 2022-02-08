@@ -484,6 +484,7 @@ milestone
 	: "<----(?)>" = <supplied reason="omitted" cert="low"><milestone rend="paragraphos" unit="undefined"/></>
 	: ">---" = <milestone rend="diple-obelismene" unit="undefined"></>
   : "###" = <milestone rend="box" unit="undefined"></>
+  : "-$$-" = <milestone rend="coronis" unit="undefined"></>
 
 illegible_dot
 	: [illegible_dot_no_period idnp] ". " = [illegible_dot_no_period idnp] ". "

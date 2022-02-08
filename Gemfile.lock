@@ -6,10 +6,13 @@ GEM
       tilt
     httpclient (2.8.3)
     json (2.5.1-java)
+    power_assert (2.0.1)
     progressbar (0.21.0)
     rake (13.0.6)
     rdoc (6.2.0)
     temple (0.8.2)
+    test-unit (3.5.3)
+      power_assert
     tilt (2.0.10)
 
 PLATFORMS
@@ -23,6 +26,7 @@ DEPENDENCIES
   progressbar
   rake
   rdoc
+  test-unit
 
 BUNDLED WITH
    2.2.32

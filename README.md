@@ -6,7 +6,7 @@ XSugar
 Requirements
 ------------
 
- * [JRuby 9.1.17.0](http://jruby.org/) - preferably managed with [rbenv](https://github.com/sstephenson/rbenv)
+ * [JRuby 9.2.20.1](http://jruby.org/) - preferably managed with [rbenv](https://github.com/sstephenson/rbenv)
  * [Bundler](http://bundler.io) - `gem install bundler`
 
 Usage

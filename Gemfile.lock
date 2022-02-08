@@ -5,11 +5,15 @@ GEM
       temple (>= 0.8.0)
       tilt
     httpclient (2.8.3)
+    jar-dependencies (0.4.1)
     json (2.5.1-java)
     power_assert (2.0.1)
     progressbar (0.21.0)
+    psych (4.0.3-java)
+      jar-dependencies (>= 0.1.7)
     rake (13.0.6)
-    rdoc (6.2.0)
+    rdoc (6.4.0)
+      psych (>= 4.0.0)
     temple (0.8.2)
     test-unit (3.5.3)
       power_assert

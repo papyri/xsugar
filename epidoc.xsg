@@ -781,12 +781,14 @@ rdg_stuff
 glyph
 	: "*" [WORD k] "?*" = <unclear><g type=[WORD k]></></>
 	: "*filler(" [WORD a] ")?*" = <unclear><g rend=[WORD a] type="filler"></></>
+	: "*check(" [WORD a] ")?*" = <unclear><g rend=[WORD a] type="check"></></>
 	: "*" [WORD a] "*" = <g type=[WORD a]></>
 	: "*" [WORD a] "," [WORD b] "*" = <g type=[WORD a]>[WORD b]</>
 	>: "*" [WORD a] "," [items b] "*" = <g type=[WORD a]>[items b]</>
 	: "*" [WORD a] "?," [WORD b] "*" = <unclear><g type=[WORD a]>[WORD b]</></>
 	>: "*" [WORD a] "?," [items b] "*" = <unclear><g type=[WORD a]>[items b]</></>
 	: "*filler(" [WORD a] ")" "*" = <g rend=[WORD a] type="filler"></>
+	: "*check(" [WORD a] ")" "*" = <g rend=[WORD a] type="check"></>
 
 	//---hand_shift---
 	//  "$m1 ", "$m1(?) " - space afterward required

@@ -8,3 +8,5 @@ gem 'haml'
 gem 'httpclient'
 
 gem "test-unit", "~> 3.7"
+
+gem "rexml", "~> 3.4"

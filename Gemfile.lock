@@ -10,6 +10,7 @@ GEM
     progressbar (0.21.0)
     rake (13.0.6)
     rdoc (6.2.0)
+    rexml (3.4.1)
     temple (0.8.2)
     test-unit (3.7.0)
       power_assert
@@ -25,6 +26,7 @@ DEPENDENCIES
   progressbar
   rake
   rdoc
+  rexml (~> 3.4)
   test-unit (~> 3.7)
 
 BUNDLED WITH

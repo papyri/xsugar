@@ -6,3 +6,5 @@ gem 'json'
 gem 'progressbar'
 gem 'haml'
 gem 'httpclient'
+
+gem "test-unit", "~> 3.7"

@@ -825,7 +825,8 @@ figure
 del_rend
 	: [del_rend_cross drc] = [del_rend_cross drc]
 	>: [del_rend_slashes drs] = [del_rend_slashes drs]
-	>: [del_rend_erasure dre] = [del_rend_erasure dre]
+	>: [del_rend_parens drp] = [del_rend_parens drp]
+  >: [del_rend_erasure dre] = [del_rend_erasure dre]
 
 	//---del_rend_cross---
 	//  〚Xwhatever〛, 〚Xwhatever(?)〛
@@ -838,6 +839,12 @@ del_rend_cross
 del_rend_slashes
 	>: "〚\/" [items a] "〛" = <del rend="slashes">[items a]</>
 	>: "〚\/" [items a] "(?)" "〛" = <del rend="slashes">[items a]<certainty match=".." locus="value"/></>
+
+  //---del_rend_parens---
+	//  〚(whatever)〛, 〚(whatever(?))〛
+del_rend_parens
+	>: "〚\(" [items a] "\)〛" = <del rend="parens">[items a]</>
+	>: "〚\(" [items a] "(?)" "\)〛" = <del rend="parens">[items a]<certainty match=".." locus="value"/></>
 
 //this one has to be last so the first case will be caught before get here because '-' is a valid WORDS character
 	//---del_rend_erasure---
